@@ -52,7 +52,7 @@ object Updater {
             if (!isNewer(version, currentVersion)) return@withContext null
             Release(
                 version = version,
-                notes = json.optString("body").trim(),
+                notes = plainText(json.optString("body")),
                 apkUrl = apk.getString("browser_download_url"),
                 size = apk.optLong("size"),
                 pageUrl = json.optString("html_url", REPO_URL),
@@ -61,6 +61,20 @@ object Updater {
             conn.disconnect()
         }
     }
+
+    /** Release notes are Markdown; show them as plain text with bullets. */
+    private fun plainText(md: String): String = md.lines()
+        .map { line ->
+            line.trim()
+                .replace(Regex("""^#{1,6}\s*"""), "")
+                .replace(Regex("""^[-*+]\s+"""), "• ")
+                .replace(Regex("""\*\*|__|`"""), "")
+                .replace(Regex("""(?<![\w*])\*(?!\s)([^*]+?)\*(?!\w)"""), "$1")
+                .replace(Regex("""\[([^\]]+)]\([^)]*\)"""), "$1")
+        }
+        .joinToString("\n")
+        .replace(Regex("\n{3,}"), "\n\n")
+        .trim()
 
     /** Compares dotted versions numerically: 1.10.0 > 1.9.2. Suffixes like "-beta" are ignored. */
     fun isNewer(candidate: String, current: String): Boolean {

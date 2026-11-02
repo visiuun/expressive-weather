@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Expressive Weather</string>
+
+    <string name="widget_now_label">Now</string>
+    <string name="widget_now_desc">Current conditions. Resize down to a pill or up to add hourly forecast.</string>
+    <string name="widget_hourly_label">Hourly</string>
+    <string name="widget_hourly_desc">Next 48 hours, flip through pages with the arrows.</string>
+    <string name="widget_daily_label">16-day forecast</string>
+    <string name="widget_daily_desc">Scrollable daily forecast with temperature range bars.</string>
+    <string name="widget_forecast_label">Forecast hub</string>
+    <string name="widget_forecast_desc">Interactive: switch between hourly, daily and details tabs.</string>
+    <string name="widget_clock_label">Clock &amp; weather</string>
+    <string name="widget_clock_desc">Big clock and date with current weather. Tap the time for alarms.</string>
+    <string name="widget_details_label">Details</string>
+    <string name="widget_details_desc">Feels like, wind, humidity, UV, air quality and more. Tap a tile for details.</string>
+    <string name="widget_rain_label">Rain</string>
+    <string name="widget_rain_desc">Rain nowcast and precipitation chance for the next hours.</string>
+    <string name="widget_sunmoon_label">Sun &amp; moon</string>
+    <string name="widget_sunmoon_desc">Sun position, sunrise, sunset and the moon phase.</string>
+    <string name="widget_air_label">Air quality</string>
+    <string name="widget_air_desc">US AQI gauge, particulates and pollen.</string>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <color name="widget_text">@android:color/system_neutral1_50</color>
+    <color name="widget_text_variant">@android:color/system_neutral2_200</color>
+</resources>

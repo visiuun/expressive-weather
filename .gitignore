@@ -1,0 +1,19 @@
+# Gradle / Android Studio
+.gradle/
+.kotlin/
+build/
+local.properties
+*.iml
+.idea/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Signing: never commit keys or their passwords
+keystore.properties
+*.jks
+*.keystore
+
+# Built packages are published as GitHub release assets
+*.apk
+*.aab

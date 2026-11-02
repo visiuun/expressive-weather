@@ -125,7 +125,7 @@ Nothing else is sent anywhere: the check is a single anonymous request to the pu
 |---|---|
 | **Android** | 7.0 (API 24) and newer, tested up to Android 16 |
 | **Devices** | Phones, tablets and foldables (layouts adapt to wide screens) |
-| **APK** | One universal APK. No native code, so it runs on every CPU (ARM, ARM64, x86, x86_64) |
+| **APK** | One universal APK for every CPU type (ARM, ARM64, x86, x86_64) |
 | **Google services** | Not needed |
 | **Widget previews** | Live previews in the widget picker on Android 15+ |
 

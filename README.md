@@ -22,23 +22,25 @@ No ads, no tracking, no API keys, no Google Play Services.
 
 ## Widgets
 
-Ten home screen widgets. All of them resize, follow your wallpaper colours (Material You) and dark mode, and many are interactive right on the home screen.
+Twelve home screen widgets with big, chunky numbers and rounded tiles nested inside each card. All of them resize, follow your wallpaper colours (Material You), dark mode and the OLED black option, and many are interactive right on the home screen.
 
-<img src="docs/screenshots/widgets-1.png" alt="Clock, Now, Air quality, Sun and moon, Rain, Details and Hourly widgets" width="100%" />
-<img src="docs/screenshots/widgets-2.png" alt="Forecast hub widget with Hourly and Details tabs, and the 16-day widget" width="100%" />
+<img src="docs/screenshots/widgets-1.png" alt="Clock and weather, Now, Air quality, Sun and moon, Rain, Details, Hourly and Weather shape widgets" width="100%" />
+<img src="docs/screenshots/widgets-2.png" alt="Forecast hub, 16-day forecast, Now, Forecast stack and Data tile widgets (wind, UV, sunset, moon, pressure)" width="100%" />
 
 | Widget | Size | What it does |
 |---|---|---|
-| **Now** | 2×1 to 5×5 | Current conditions. Shrinks to a slim pill, grows to add an hourly strip |
-| **Clock & weather** | 4×2 | Big clock and date beside the weather. Tap the time for alarms, the date for your calendar |
+| **Now** | 2×1 to 5×5 | Current conditions. Shrinks to a slim pill, grows into a current-weather tile beside hourly tiles |
+| **Clock & weather** | 4×2 | Big clock, a date pill, the current weather and the next hours. Tap the time for alarms, the date for your calendar |
 | **Hourly** | 4×2 | The next 48 hours. Use the ‹ › arrows to page through them |
 | **16-day forecast** | 4×3 | Scrollable daily list with temperature range bars. Tap a day to open it |
 | **Forecast hub** | 4×4 | Switch between **Hourly**, **Daily** and **Details** tabs without opening the app |
 | **Details** | 4×2 | Feels like, wind with a direction arrow, humidity, UV, air quality, rain, pressure, visibility… More tiles appear as you enlarge it |
 | **Rain** | 4×2 | Plain-language nowcast ("Rain starting in ~30 min") and a chart of rain chance for the next 12 or 24 hours |
 | **Sun & moon** | 4×2 | The sun's position between sunrise and sunset, and the moon phase |
-| **Air quality** | 2×2 | AQI gauge, fine particles and the strongest pollen |
+| **Air quality** | 2×2 | Big AQI with its level, fine particles and the strongest pollen |
 | **Weather shape** | 1×1 and up (2×2 default) | The temperature inside one of 28 Material 3 Expressive shapes (cookie, clover, sunny, gem, ghost…). Pick the shape, colours and transparency with a live preview |
+| **Forecast stack** | 4×3 | Stacked panes: the sky and temperature in expressive shapes beside the place, then hourly tiles, then daily tiles |
+| **Data tile** | 2×2 | One number, big: wind, UV index, air quality, feels like, humidity, pressure, rain chance, sunrise/sunset, moon or visibility. Choose it in the widget's settings |
 
 ## The app
 
@@ -134,7 +136,6 @@ Once a widget is placed:
 
 | Tap… | …to |
 |---|---|
-| the ⟳ button | refresh every widget now |
 | the place name | switch **this widget** to your next saved place (each widget can show a different place) |
 | **Hourly / Daily / Details** (Forecast hub) | switch tabs |
 | **‹ ›** (Hourly) | page through the next 48 hours |

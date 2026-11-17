@@ -67,13 +67,17 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT < 35) return
         val sp = getSharedPreferences("weather", MODE_PRIVATE)
         val version = BuildConfig.VERSION_CODE.toLong()
-        if (sp.getLong("widget_previews", 0) == version) return
+        // Bump the key when widget designs change so the picker gets fresh previews.
+        if (sp.getLong(PREVIEWS_KEY, 0) == version) return
         lifecycleScope.launch {
             val mgr = GlanceAppWidgetManager(this@MainActivity)
             val ok = widgetReceivers.all {
                 runCatching { mgr.setWidgetPreviews(it) == GlanceAppWidgetManager.SET_WIDGET_PREVIEWS_RESULT_SUCCESS }.getOrDefault(false)
             }
-            if (ok) sp.edit().putLong("widget_previews", version).apply()
+            if (ok) sp.edit().putLong(PREVIEWS_KEY, version).apply()
         }
     }
 }
+
+/** Shared-prefs key recording which app version published the widget picker previews (bumped when widget designs change). */
+private const val PREVIEWS_KEY = "widget_previews_v3"

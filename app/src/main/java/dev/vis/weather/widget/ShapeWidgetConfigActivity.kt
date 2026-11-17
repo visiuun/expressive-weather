@@ -62,8 +62,8 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -82,7 +82,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
@@ -362,7 +361,19 @@ private fun ShapePreview(cfg: ShapeConfig, settings: Settings, d: WData, dark: B
                 icon, WeatherInfo.describe(d.code, d.isDay), Modifier.size(l.icon),
                 colorFilter = if (pal.monoIcon) ColorFilter.tint(fg) else null,
             )
-            Text(d.fmt.temp(d.temp), color = fg, fontSize = l.temp.sp, fontWeight = FontWeight.Medium, maxLines = 1, lineHeight = (l.temp * 1.1f).sp)
+            // Same chunky bitmap numerals as the widget.
+            val tempText = d.fmt.temp(d.temp)
+            val maxPx = with(density) { (l.side - l.inset * 2).toPx() }
+            val glyphs = remember(tempText, l.temp, maxPx) {
+                ChunkyText.render(context, tempText, with(density) { l.temp.dp.toPx() }, maxPx, if (l.temp >= 40f) 120 else l.temp.toInt())
+            }
+            Spacer(Modifier.height(2.dp))
+            Image(
+                glyphs.bitmap.asImageBitmap(), tempText,
+                Modifier.size(with(density) { glyphs.widthPx.toDp() }, with(density) { glyphs.heightPx.toDp() }),
+                colorFilter = ColorFilter.tint(fg),
+            )
+            Spacer(Modifier.height(2.dp))
             if (l.hiLo) {
                 val day = d.day
                 if (day != null) Text("${d.fmt.temp(day.max)} / ${d.fmt.temp(day.min)}", color = soft, fontSize = l.small.sp, maxLines = 1)

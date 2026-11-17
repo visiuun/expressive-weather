@@ -18,7 +18,7 @@
     <string name="widget_sunmoon_label">Sun &amp; moon</string>
     <string name="widget_sunmoon_desc">Sun position, sunrise, sunset and the moon phase.</string>
     <string name="widget_air_label">Air quality</string>
-    <string name="widget_air_desc">US AQI gauge, particulates and pollen.</string>
+    <string name="widget_air_desc">US AQI with its level, particulates and pollen.</string>
 
     <string name="shortcut_map">Map</string>
     <string name="shortcut_map_long">Weather map &amp; radar</string>

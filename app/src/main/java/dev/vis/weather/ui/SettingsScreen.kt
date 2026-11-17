@@ -211,8 +211,10 @@ private val widgetDescriptions = mapOf(
     "Details" to "Feels like, wind, humidity, UV, air and more",
     "Rain" to "Nowcast and rain chance chart",
     "Sun & moon" to "Sun position and moon phase",
-    "Air quality" to "AQI gauge, particles and pollen",
+    "Air quality" to "Big AQI, level, particles and pollen",
     "Weather shape" to "Temperature in an expressive shape you choose",
+    "Forecast stack" to "Now, hours and days as stacked panes",
+    "Data tile" to "One metric, big: wind, UV, air, sun, moon and more",
 )
 
 @Composable
@@ -315,6 +317,8 @@ private val pinnableWidgets = listOf(
     "Sun & moon" to SunMoonWidgetReceiver::class.java,
     "Air quality" to AirWidgetReceiver::class.java,
     "Weather shape" to dev.vis.weather.widget.ShapeWidgetReceiver::class.java,
+    "Forecast stack" to dev.vis.weather.widget.StackWidgetReceiver::class.java,
+    "Data tile" to dev.vis.weather.widget.DataTileWidgetReceiver::class.java,
 )
 
 private val widgetShapes = listOf(

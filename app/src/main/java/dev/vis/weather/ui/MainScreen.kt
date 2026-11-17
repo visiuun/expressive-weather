@@ -627,3 +627,4 @@ private fun ErrorState(message: String, onRetry: () -> Unit, onSearch: () -> Uni
     Spacer(Modifier.height(8.dp))
     FilledTonalButton(onClick = onSearch, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("Choose another place") }
 }
+

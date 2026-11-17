@@ -38,7 +38,6 @@ import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.layout.width
-import androidx.glance.text.FontWeight
 import androidx.glance.text.TextAlign
 import androidx.glance.unit.ColorProvider
 import dev.vis.weather.R
@@ -51,6 +50,7 @@ import dev.vis.weather.data.WeatherInfo
  */
 class ShapeWidget : GlanceAppWidget() {
     override val sizeMode: SizeMode = SizeMode.Exact
+    override val previewSizeMode: androidx.glance.appwidget.PreviewSizeMode get() = SizeMode.Responsive(setOf(PreviewSizes.SMALL))
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         if (WidgetRepo.model(context, null)?.forecast == null) WidgetRefreshWorker.runNow(context)
@@ -134,7 +134,7 @@ private fun ShapeContent(d: WData, cfg: ShapeConfig) {
                 ShapeIcon(d, pal, fg, l.icon)
                 Spacer(GlanceModifier.width(10.dp))
                 Column {
-                    Txt(temp, l.temp.sp, fg, FontWeight.Medium)
+                    Num(temp, l.temp.dp, fg, maxWidth = size.width - l.inset * 2 - l.icon - 10.dp)
                     if (l.hiLo) Txt(hiLo, l.small.sp, soft)
                     if (l.place) Txt(d.model.place.name, l.small.sp, soft)
                 }
@@ -150,7 +150,9 @@ private fun ShapeContent(d: WData, cfg: ShapeConfig) {
                     Spacer(GlanceModifier.height(2.dp))
                 }
                 ShapeIcon(d, pal, fg, l.icon)
-                Txt(temp, l.temp.sp, fg, FontWeight.Medium, align = TextAlign.Center)
+                Spacer(GlanceModifier.height(2.dp))
+                Num(temp, l.temp.dp, fg, maxWidth = l.side - l.inset * 2)
+                Spacer(GlanceModifier.height(2.dp))
                 if (l.hiLo) Txt(hiLo, l.small.sp, soft, align = TextAlign.Center)
             }
         }

@@ -1,4 +1,10 @@
 <resources>
     <color name="widget_text">#FF1B1B1F</color>
     <color name="widget_text_variant">#FF44474F</color>
+    <!-- Widget surfaces: frame and the tonal tiles nested in it. -->
+    <color name="widget_bg">#FFF8F9FF</color>
+    <color name="widget_bg_oled">#FFF8F9FF</color>
+    <color name="widget_tile">#FFE6E8F0</color>
+    <color name="widget_tile_oled">#FFE6E8F0</color>
+    <color name="widget_on_accent">#FF001C3A</color>
 </resources>

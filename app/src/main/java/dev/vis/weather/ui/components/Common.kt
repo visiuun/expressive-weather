@@ -53,6 +53,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
 import dev.vis.weather.data.Sky
 
@@ -223,8 +224,19 @@ fun <T> ConnectedChoice(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 8.dp),
             ) {
-                Text(label(option), maxLines = 1, style = MaterialTheme.typography.labelLarge)
+                // Wide fonts (Chunky) shrink to fit instead of cutting the label off.
+                val style = MaterialTheme.typography.labelLarge
+                Text(
+                    label(option),
+                    maxLines = 1,
+                    style = style,
+                    softWrap = false,
+                    autoSize = androidx.compose.foundation.text.TextAutoSize.StepBased(
+                        minFontSize = 9.sp, maxFontSize = style.fontSize, stepSize = 0.5.sp,
+                    ),
+                )
             }
         }
     }

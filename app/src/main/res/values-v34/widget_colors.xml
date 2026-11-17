@@ -1,0 +1,9 @@
+<resources>
+    <color name="widget_text">@android:color/system_on_surface_light</color>
+    <color name="widget_text_variant">@android:color/system_on_surface_variant_light</color>
+    <color name="widget_bg">@android:color/system_surface_bright_light</color>
+    <color name="widget_bg_oled">@android:color/system_surface_bright_light</color>
+    <color name="widget_tile">@android:color/system_surface_container_high_light</color>
+    <color name="widget_tile_oled">@android:color/system_surface_container_high_light</color>
+    <color name="widget_on_accent">@android:color/system_on_primary_container_light</color>
+</resources>

@@ -28,7 +28,7 @@ class Prefs(context: Context) {
             customSeed = sp.getInt("custom_seed", d.customSeed),
             paletteStyle = enumOf("palette_style", d.paletteStyle),
             secretTheme = sp.getString("secret_theme", null),
-            fontStyle = enumOf("font_style", d.fontStyle),
+            fontStyle = enumOf("font_style_v2", d.fontStyle), // v2: Chunky became the default in 1.5
             fontEdges = enumOf("font_edges", d.fontEdges),
             readingFont = enumOf("reading_font", d.readingFont),
             heroBackground = sp.getBoolean("sky_backdrop", d.heroBackground),
@@ -69,7 +69,7 @@ class Prefs(context: Context) {
             putInt("custom_seed", s.customSeed)
             putString("palette_style", s.paletteStyle.name)
             putString("secret_theme", s.secretTheme)
-            putString("font_style", s.fontStyle.name)
+            putString("font_style_v2", s.fontStyle.name)
             putString("font_edges", s.fontEdges.name)
             putString("reading_font", s.readingFont.name)
             putBoolean("sky_backdrop", s.heroBackground)

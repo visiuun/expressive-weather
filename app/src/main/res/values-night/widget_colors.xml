@@ -1,4 +1,9 @@
 <resources>
     <color name="widget_text">#FFE3E2E6</color>
     <color name="widget_text_variant">#FFC4C6D0</color>
+    <color name="widget_bg">#FF1D2024</color>
+    <color name="widget_bg_oled">#FF000000</color>
+    <color name="widget_tile">#FF32353A</color>
+    <color name="widget_tile_oled">#FF26292E</color>
+    <color name="widget_on_accent">#FFD4E3FF</color>
 </resources>

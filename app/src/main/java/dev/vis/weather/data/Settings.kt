@@ -68,10 +68,10 @@ data class Settings(
     val oled: Boolean = true,
     val colorSource: ColorSource = ColorSource.WEATHER,
     val customSeed: Int = 0xFFFF5A36.toInt(),
-    val paletteStyle: PaletteStyle = PaletteStyle.BALANCED,
+    val paletteStyle: PaletteStyle = PaletteStyle.EXPRESSIVE,
     /** Id of an unlocked hidden theme that overrides the colours, or null. */
     val secretTheme: String? = null,
-    val fontStyle: FontStyle = FontStyle.DEFAULT,
+    val fontStyle: FontStyle = FontStyle.CHUNKY,
     val fontEdges: FontEdges = FontEdges.ROUNDED,
     val readingFont: ReadingFont = ReadingFont.NONE,
     val heroBackground: Boolean = true,

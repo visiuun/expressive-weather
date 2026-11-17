@@ -3,4 +3,9 @@
     <string name="widget_shape_label">Weather shape</string>
     <string name="widget_shape_desc">Temperature and sky inside an expressive shape. Pick the shape and colours in its settings.</string>
     <string name="widget_shape_config_title">Weather shape</string>
+    <string name="widget_stack_label">Forecast stack</string>
+    <string name="widget_stack_desc">Now, the next hours and the next days as stacked panes.</string>
+    <string name="widget_tile_label">Data tile</string>
+    <string name="widget_tile_desc">One number, big: wind, UV, air quality, humidity, pressure, rain, sun, moon and more. Choose it in the widget settings.</string>
+    <string name="widget_tile_config_title">Data tile</string>
 </resources>

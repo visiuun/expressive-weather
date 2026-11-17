@@ -96,7 +96,7 @@ object WidgetUpdater {
     val widgets: List<GlanceAppWidget>
         get() = listOf(
             NowWidget(), HourlyWidget(), DailyWidget(), ForecastWidget(), ClockWidget(),
-            DetailsWidget(), RainWidget(), SunMoonWidget(), AirWidget(), ShapeWidget(),
+            DetailsWidget(), RainWidget(), SunMoonWidget(), AirWidget(), ShapeWidget(), StackWidget(), DataTileWidget(),
         )
 
     private suspend fun ids(context: Context): List<Pair<GlanceAppWidget, GlanceId>> {

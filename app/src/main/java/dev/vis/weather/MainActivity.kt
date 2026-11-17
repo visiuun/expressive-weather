@@ -24,6 +24,13 @@ class MainActivity : ComponentActivity() {
         if (savedInstanceState == null) handleWidgetIntent(intent)
         setContent { WeatherApp(vm) }
         publishWidgetPreviews()
+        dev.vis.weather.alerts.AlertScheduler.sync(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Apply the chosen (or weather-matched) launcher icon once the user has left the app.
+        runCatching { dev.vis.weather.data.AppIcons.sync(this) }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -32,7 +39,22 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun handleWidgetIntent(intent: Intent?) {
-        if (intent == null || !intent.hasExtra(WidgetLinks.EXTRA_PLACE)) return
+        if (intent == null) return
+        if (intent.hasExtra(dev.vis.weather.alerts.Notifier.EXTRA_OPEN) || intent.hasExtra(dev.vis.weather.alerts.Notifier.EXTRA_PLACE)) {
+            vm.openFromNotification(
+                intent.getStringExtra(dev.vis.weather.alerts.Notifier.EXTRA_OPEN),
+                intent.getStringExtra(dev.vis.weather.alerts.Notifier.EXTRA_PLACE),
+            )
+            return
+        }
+        // App shortcuts (long-press the launcher icon)
+        when (intent.action) {
+            "dev.vis.weather.action.MAP", "dev.vis.weather.action.ALERTS", "dev.vis.weather.action.FRIENDS" -> {
+                vm.openFromNotification(intent.action!!.substringAfterLast('.').lowercase(), null)
+                return
+            }
+        }
+        if (!intent.hasExtra(WidgetLinks.EXTRA_PLACE)) return
         vm.openFromWidget(
             intent.getStringExtra(WidgetLinks.EXTRA_PLACE),
             intent.getStringExtra(WidgetLinks.EXTRA_METRIC),

@@ -1,8 +1,6 @@
 package dev.vis.weather.data
 
 import java.time.Instant
-import kotlin.math.PI
-import kotlin.math.cos
 
 enum class Sky { CLEAR, PARTLY, CLOUDY, FOG, DRIZZLE, RAIN, FREEZING, SNOW, THUNDER }
 
@@ -131,26 +129,12 @@ object WeatherInfo {
 
     private const val SYNODIC = 29.530588853
 
+    /** Moon phase now (or at [epochSec]); computed with [Astro] (Meeus), accurate to a few minutes of phase. */
     fun moon(epochSec: Long = Instant.now().epochSecond): MoonInfo {
-        val jd = epochSec / 86400.0 + 2440587.5
-        // Reference new moon: 2000-01-06 18:14 UTC (JD 2451550.26)
-        var age = (jd - 2451550.26) % SYNODIC
-        if (age < 0) age += SYNODIC
-        val p = age / SYNODIC
-        val illum = (1 - cos(2 * PI * p)) / 2
-        val name = when {
-            p < 0.0339 -> "New moon"
-            p < 0.216 -> "Waxing crescent"
-            p < 0.284 -> "First quarter"
-            p < 0.466 -> "Waxing gibbous"
-            p < 0.534 -> "Full moon"
-            p < 0.716 -> "Waning gibbous"
-            p < 0.784 -> "Last quarter"
-            p < 0.966 -> "Waning crescent"
-            else -> "New moon"
-        }
+        val m = Astro.moonState(epochSec)
+        val p = m.phase
         val toFull = ((0.5 - p + 1) % 1) * SYNODIC
         val toNew = ((1 - p) % 1) * SYNODIC
-        return MoonInfo(p, illum, name, toFull, toNew)
+        return MoonInfo(p, m.illumination, m.name, toFull, toNew)
     }
 }

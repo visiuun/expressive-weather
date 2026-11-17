@@ -19,4 +19,11 @@
     <string name="widget_sunmoon_desc">Sun position, sunrise, sunset and the moon phase.</string>
     <string name="widget_air_label">Air quality</string>
     <string name="widget_air_desc">US AQI gauge, particulates and pollen.</string>
+
+    <string name="shortcut_map">Map</string>
+    <string name="shortcut_map_long">Weather map &amp; radar</string>
+    <string name="shortcut_alerts">Alerts</string>
+    <string name="shortcut_alerts_long">Alerts &amp; warnings</string>
+    <string name="shortcut_friends">Friends</string>
+    <string name="shortcut_friends_long">Family &amp; friends</string>
 </resources>

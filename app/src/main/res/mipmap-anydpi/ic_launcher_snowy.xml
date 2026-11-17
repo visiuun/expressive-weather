@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pre-Android 8 launchers have no adaptive icons: a round badge with the same foreground. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <gradient android:angle="315" android:startColor="#FF94D6F5" android:endColor="#FF3B87C9" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_launcher_fg_snowy" />
+</layer-list>

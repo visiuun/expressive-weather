@@ -14,6 +14,8 @@ enum class Metric(val title: String) {
     MOON("Moon"),
     AIR("Air quality"),
     POLLEN("Pollen"),
+    SEA("Sea conditions"),
+    FIRE("Fire weather"),
 }
 
 /** Lets any tile open its detail screen without threading callbacks through every function. */

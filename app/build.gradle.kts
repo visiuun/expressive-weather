@@ -21,8 +21,8 @@ android {
         applicationId = "dev.vis.weather"
         minSdk = 24
         targetSdk = 36
-        versionCode = 4
-        versionName = "1.3.0"
+        versionCode = 5
+        versionName = "1.4.0"
     }
 
     signingConfigs {
@@ -81,4 +81,6 @@ dependencies {
     implementation("androidx.glance:glance-appwidget:1.2.0")
     implementation("androidx.glance:glance-material3:1.2.0")
     implementation("androidx.work:work-runtime:2.11.0")
+    // HCT tonal palettes / dynamic schemes for weather & custom colours (pure Kotlin, no Compose deps)
+    implementation("com.materialkolor:material-color-utilities:5.0.1")
 }

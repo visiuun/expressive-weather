@@ -83,17 +83,12 @@ object WidgetRepo {
     fun model(context: Context, pinned: String?): WidgetModel? {
         val (key, place) = resolve(context, pinned) ?: return null
         val prefs = Prefs(context)
-        val forecast = prefs.loadCache(place.key)?.let { (f, a, t) -> runCatching { WeatherApi.parse(f, a, t) }.getOrNull() }
+        val forecast = dev.vis.weather.data.ForecastRepo.parseCache(context, place)
         return WidgetModel(key, place, forecast, prefs.settings.value, pinned != null && pinned.isNotEmpty() && pinned == key)
     }
 
     suspend fun fetch(context: Context, place: Place): Boolean = runCatching {
-        coroutineScope {
-            val f = async { WeatherApi.forecastJson(place.lat, place.lon) }
-            val a = async { WeatherApi.airJson(place.lat, place.lon) }
-            val fJson = f.await()
-            Prefs(context).saveCache(place.key, fJson, a.await(), System.currentTimeMillis())
-        }
+        dev.vis.weather.data.ForecastRepo.fetch(context, place)
     }.isSuccess
 }
 
@@ -101,7 +96,7 @@ object WidgetUpdater {
     val widgets: List<GlanceAppWidget>
         get() = listOf(
             NowWidget(), HourlyWidget(), DailyWidget(), ForecastWidget(), ClockWidget(),
-            DetailsWidget(), RainWidget(), SunMoonWidget(), AirWidget(),
+            DetailsWidget(), RainWidget(), SunMoonWidget(), AirWidget(), ShapeWidget(),
         )
 
     private suspend fun ids(context: Context): List<Pair<GlanceAppWidget, GlanceId>> {

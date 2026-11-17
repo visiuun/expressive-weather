@@ -121,7 +121,8 @@ abstract class WeatherWidget : GlanceAppWidget() {
 
 @Composable
 fun WidgetTheme(settings: Settings, content: @Composable () -> Unit) {
-    if (settings.dynamicColor && Build.VERSION.SDK_INT >= 31) GlanceTheme(content = content)
+    // Widgets follow the wallpaper unless the app uses a custom colour.
+    if (settings.colorSource != dev.vis.weather.data.ColorSource.CUSTOM && Build.VERSION.SDK_INT >= 31) GlanceTheme(content = content)
     else GlanceTheme(colors = ColorProviders(light = LightScheme, dark = DarkScheme), content = content)
 }
 

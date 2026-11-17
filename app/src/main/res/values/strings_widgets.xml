@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_shape_label">Weather shape</string>
+    <string name="widget_shape_desc">Temperature and sky inside an expressive shape. Pick the shape and colours in its settings.</string>
+    <string name="widget_shape_config_title">Weather shape</string>
+</resources>

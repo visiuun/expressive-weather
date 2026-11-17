@@ -71,6 +71,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -81,6 +84,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.vis.weather.data.Forecast
+import dev.vis.weather.data.HomeCard
 import dev.vis.weather.data.Settings
 import dev.vis.weather.data.Sky
 import dev.vis.weather.ui.components.MorphingBlob
@@ -104,18 +108,42 @@ fun MainScreen(
     onRequestLocation: () -> Unit,
     onOpenAppSettings: () -> Unit,
     onOpenDay: (Int) -> Unit,
+    warnings: List<dev.vis.weather.alerts.Warning> = emptyList(),
+    onOpenWarnings: () -> Unit = {},
+    onOpenFriends: () -> Unit = {},
+    onOpenAlert: (dev.vis.weather.alerts.AlertType) -> Unit = {},
 ) {
+    val f = state.forecast
+    val listState = rememberLazyListState()
+    val showSky = f != null && settings.heroBackground
+    Box(Modifier.fillMaxSize()) {
+        if (showSky && f != null) {
+            // The live sky sits behind the top of the screen and fades away as the forecast scrolls over it.
+            val fade by remember {
+                derivedStateOf {
+                    if (listState.firstVisibleItemIndex > 0) 0f
+                    else (1f - listState.firstVisibleItemScrollOffset / 900f).coerceIn(0f, 1f)
+                }
+            }
+            val precipRate = f.minutely.firstOrNull { it.time >= f.current.time }?.precip?.times(4)
+                ?: f.current.precipitation
+            dev.vis.weather.ui.effects.WeatherSky(
+                dev.vis.weather.ui.theme.WeatherMood(f.current.code, f.current.isDay),
+                f.current.windSpeed, precipRate, settings,
+                Modifier.fillMaxWidth().height(620.dp).graphicsLayer { alpha = fade },
+            )
+        }
     Column(Modifier.fillMaxSize()) {
         TopBar(state, onOpenLocations, onOpenSettings)
-        val f = state.forecast
         when {
             state.selection == null -> Welcome(onRequestLocation, onOpenLocations)
             state.usingCurrent && state.needsPermission && f == null ->
                 PermissionNeeded(onRequestLocation, onOpenAppSettings, onOpenLocations)
             f == null && state.loading -> Loading()
             f == null -> ErrorState(state.error ?: "No data yet", onRefresh, onOpenLocations)
-            else -> Content(f, state, settings, onRefresh, onOpenDay)
+            else -> Content(f, state, settings, listState, onRefresh, onOpenDay, warnings, onOpenWarnings, onOpenFriends, onOpenAlert)
         }
+    }
     }
 }
 
@@ -176,11 +204,27 @@ private fun TopBar(state: UiState, onOpenLocations: () -> Unit, onOpenSettings: 
 }
 
 @Composable
-private fun Content(f: Forecast, state: UiState, settings: Settings, onRefresh: () -> Unit, onOpenDay: (Int) -> Unit) {
+private fun Content(
+    f: Forecast,
+    state: UiState,
+    settings: Settings,
+    listState: androidx.compose.foundation.lazy.LazyListState,
+    onRefresh: () -> Unit,
+    onOpenDay: (Int) -> Unit,
+    warnings: List<dev.vis.weather.alerts.Warning>,
+    onOpenWarnings: () -> Unit,
+    onOpenFriends: () -> Unit,
+    onOpenAlert: (dev.vis.weather.alerts.AlertType) -> Unit,
+) {
     val fmt = remember(settings, f.zone) { Fmt(settings, f.zone) }
     val pullState = rememberPullToRefreshState()
-    val listState = rememberLazyListState()
     val nowcast = remember(f, settings) { nowcastText(f, fmt) }
+    val haptics = dev.vis.weather.ui.effects.rememberWeatherHaptics(settings)
+    var wasLoading by remember { mutableStateOf(false) }
+    LaunchedEffect(state.loading) {
+        if (wasLoading && !state.loading && state.error == null) haptics.onRefresh(dev.vis.weather.ui.theme.WeatherMood(f.current.code, f.current.isDay))
+        wasLoading = state.loading
+    }
 
     LaunchedEffect(state.forecastKey) { listState.scrollToItem(0) }
 
@@ -205,7 +249,7 @@ private fun Content(f: Forecast, state: UiState, settings: Settings, onRefresh: 
                 start = 16.dp,
                 end = 16.dp,
                 top = 4.dp,
-                bottom = 24.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+                bottom = 24.dp + dev.vis.weather.ui.components.LocalBottomInset.current,
             ),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
@@ -226,11 +270,22 @@ private fun Content(f: Forecast, state: UiState, settings: Settings, onRefresh: 
                 }
             }
             item(key = "hero") { Hero(f, fmt, settings, w) }
-            item(key = "highlights") { Highlights(f, fmt, w) }
-            if (nowcast != null) item(key = "nowcast") { Box(w) { NowcastCard(f, fmt, nowcast) } }
-            item(key = "hourly") { Box(w) { HourlyCard(f, fmt) } }
-            item(key = "daily") { Box(w) { DailyCard(f, fmt, onOpenDay) } }
-            item(key = "details") { Box(w) { DetailGrid(f, fmt) } }
+            settings.cardOrder.filter { it !in settings.hiddenCards }.forEach { card ->
+                when (card) {
+                    HomeCard.WARNINGS -> if (warnings.isNotEmpty()) item(key = "warnings") {
+                        dev.vis.weather.ui.alerts.WarningsBanner(warnings, fmt, onOpenWarnings, w)
+                    }
+                    HomeCard.HIGHLIGHTS -> item(key = "highlights") { Highlights(f, fmt, w) }
+                    HomeCard.NOWCAST -> if (nowcast != null) item(key = "nowcast") { Box(w) { NowcastCard(f, fmt, nowcast) } }
+                    HomeCard.HOURLY -> item(key = "hourly") { Box(w) { HourlyCard(f, fmt, settings.hourlyStyle) } }
+                    HomeCard.DAILY -> item(key = "daily") { Box(w) { DailyCard(f, fmt, onOpenDay, settings.dailyDays) } }
+                    HomeCard.WARDROBE -> item(key = "wardrobe") {
+                        dev.vis.weather.ui.alerts.WardrobeCard(f, settings, { onOpenAlert(dev.vis.weather.alerts.AlertType.WARDROBE) }, w)
+                    }
+                    HomeCard.FRIENDS -> item(key = "friends") { dev.vis.weather.ui.friends.FriendsCard(f, settings, onOpenFriends, w) }
+                    HomeCard.DETAILS -> item(key = "details") { Box(w) { DetailGrid(f, fmt) } }
+                }
+            }
             item(key = "footer") { Footer(f, fmt, w) }
         }
     }
@@ -242,21 +297,24 @@ private fun Hero(f: Forecast, fmt: Fmt, settings: Settings, modifier: Modifier) 
     val sky = WeatherInfo.sky(c.code)
     val cs = MaterialTheme.colorScheme
     val today = f.today
-    val (bg, fg) = heroColors(sky, c.isDay)
+    val skyColors = dev.vis.weather.ui.theme.LocalAppColors.current.sky
+    val (bg0, _) = heroColors(sky, c.isDay)
     val withBg = settings.heroBackground
+    val fg = skyColors.onSky
+    val bg = bg0
     val blobShapes = run {
         when {
-            !c.isDay -> listOf(MaterialShapes.Cookie9Sided, MaterialShapes.Puffy, MaterialShapes.Cookie6Sided)
+            !c.isDay -> listOf(MaterialShapes.Cookie9Sided, MaterialShapes.Cookie7Sided, MaterialShapes.Cookie6Sided)
             sky == Sky.CLEAR || sky == Sky.PARTLY -> listOf(MaterialShapes.SoftBurst, MaterialShapes.Cookie12Sided, MaterialShapes.Sunny)
-            sky == Sky.RAIN || sky == Sky.DRIZZLE || sky == Sky.THUNDER -> listOf(MaterialShapes.Puffy, MaterialShapes.Clover8Leaf, MaterialShapes.Cookie9Sided)
-            else -> listOf(MaterialShapes.Cookie12Sided, MaterialShapes.PuffyDiamond, MaterialShapes.Flower)
+            sky == Sky.RAIN || sky == Sky.DRIZZLE || sky == Sky.THUNDER -> listOf(MaterialShapes.Cookie7Sided, MaterialShapes.Clover8Leaf, MaterialShapes.Cookie9Sided)
+            else -> listOf(MaterialShapes.Cookie12Sided, MaterialShapes.Diamond, MaterialShapes.Flower)
         }
     }
     val content = if (withBg) fg else cs.onSurface
     val blob = if (withBg) fg.copy(alpha = 0.12f) else bg
 
     val body: @Composable () -> Unit = {
-        Column(Modifier.padding(horizontal = if (withBg) 24.dp else 8.dp, vertical = if (withBg) 22.dp else 4.dp)) {
+        Column(Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
             Box(Modifier.fillMaxWidth()) {
                 Box(
                     Modifier.align(Alignment.TopEnd).padding(top = 6.dp).size(172.dp),
@@ -293,12 +351,16 @@ private fun Hero(f: Forecast, fmt: Fmt, settings: Settings, modifier: Modifier) 
                 }
             }
             Spacer(Modifier.height(4.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            // Wet bulb: how well sweat can cool you (air temperature + humidity), shown right after "feels like".
+            val wetBulb = dev.vis.weather.data.Indices.wetBulb(c.temp, c.humidity)
+            androidx.compose.foundation.layout.FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
                 HeroPill("Feels ${fmt.temp(c.feelsLike)}", withBg, fg)
+                if (settings.showWetBulb && !wetBulb.isNaN()) HeroPill("Wet bulb ${fmt.temp(wetBulb)}", withBg, fg)
                 if (today != null) {
-                    Spacer(Modifier.width(6.dp))
                     HeroPill("↑ ${fmt.temp(today.max)}", withBg, fg)
-                    Spacer(Modifier.width(6.dp))
                     HeroPill("↓ ${fmt.temp(today.min)}", withBg, fg)
                 }
             }
@@ -308,13 +370,14 @@ private fun Hero(f: Forecast, fmt: Fmt, settings: Settings, modifier: Modifier) 
                 style = MaterialTheme.typography.bodyLarge,
                 color = if (withBg) fg else cs.onSurfaceVariant,
             )
+            if (f.observation != null) {
+                Spacer(Modifier.height(10.dp))
+                dev.vis.weather.ui.detail.ObservationBadge(f, fmt)
+            }
         }
     }
-    if (withBg) {
-        Surface(modifier, shape = RoundedCornerShape(44.dp), color = bg, contentColor = fg) { body() }
-    } else {
-        Box(modifier) { body() }
-    }
+    // With the sky backdrop on, the hero sits directly on the live sky (see MainScreen); otherwise on the surface.
+    Box(modifier) { body() }
 }
 
 @Composable
@@ -349,7 +412,7 @@ private fun Highlights(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val rainChance = f.upcoming.take(12).maxOfOrNull { if (it.precipProb.isNaN()) 0.0 else it.precipProb } ?: Double.NaN
     val items = buildList {
         add(HighlightItem(Icons.Rounded.Air, fmt.windNum(c.windSpeed), "${fmt.windUnit} ${WeatherInfo.compass(c.windDir)}", MaterialShapes.Cookie6Sided, dev.vis.weather.ui.components.Metric.WIND))
-        add(HighlightItem(Icons.Rounded.WaterDrop, fmt.pct(c.humidity), "Humidity", MaterialShapes.Puffy, dev.vis.weather.ui.components.Metric.HUMIDITY))
+        add(HighlightItem(Icons.Rounded.WaterDrop, fmt.pct(c.humidity), "Humidity", MaterialShapes.Cookie7Sided, dev.vis.weather.ui.components.Metric.HUMIDITY))
         add(HighlightItem(Icons.Rounded.Umbrella, fmt.pct(rainChance), "Rain 12 h", MaterialShapes.Clover4Leaf, dev.vis.weather.ui.components.Metric.PRECIP))
         add(HighlightItem(Icons.Rounded.WbSunny, if (c.uv.isNaN()) "–" else c.uv.roundToInt().toString(), "UV ${WeatherInfo.uvLevel(c.uv).lowercase()}", MaterialShapes.Sunny, dev.vis.weather.ui.components.Metric.UV))
         f.air?.usAqi?.takeIf { !it.isNaN() }?.let {

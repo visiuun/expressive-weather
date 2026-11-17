@@ -7,12 +7,12 @@
 **A beautiful, private, open weather app for Android, built with Material 3 Expressive.**
 No ads, no tracking, no API keys, no Google Play Services.
 
-[![Latest release](https://img.shields.io/github/v/release/visiuun/expressive-weather?style=flat-square&label=download&color=7c4dff)](https://github.com/visiuun/expressive-weather/releases/latest)
+[![Latest release](https://img.shields.io/github/v/release/visiuun/expressive-weather?style=flat-square&label=download&color=4f8ef7)](https://github.com/visiuun/expressive-weather/releases/latest)
 [![Android 7.0+](https://img.shields.io/badge/Android-7.0%2B-3ddc84?style=flat-square&logo=android&logoColor=white)](#compatibility)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC%20BY--NC%204.0-lightgrey?style=flat-square)](LICENSE)
 [![Build](https://img.shields.io/github/actions/workflow/status/visiuun/expressive-weather/build.yml?style=flat-square)](https://github.com/visiuun/expressive-weather/actions)
 
-<img src="docs/screenshots/hero.png" alt="Expressive Weather app and home screen widgets" width="100%" />
+<img src="docs/screenshots/hero.png" alt="Expressive Weather: weather screen, map, alerts, family & friends and appearance" width="100%" />
 
 ### [⬇ Download the latest APK](https://github.com/visiuun/expressive-weather/releases/latest)
 
@@ -22,7 +22,7 @@ No ads, no tracking, no API keys, no Google Play Services.
 
 ## Widgets
 
-Nine home screen widgets. All of them resize, follow your wallpaper colours (Material You) and dark mode, and many are interactive right on the home screen.
+Ten home screen widgets. All of them resize, follow your wallpaper colours (Material You) and dark mode, and many are interactive right on the home screen.
 
 <img src="docs/screenshots/widgets-1.png" alt="Clock, Now, Air quality, Sun and moon, Rain, Details and Hourly widgets" width="100%" />
 <img src="docs/screenshots/widgets-2.png" alt="Forecast hub widget with Hourly and Details tabs, and the 16-day widget" width="100%" />
@@ -38,37 +38,77 @@ Nine home screen widgets. All of them resize, follow your wallpaper colours (Mat
 | **Rain** | 4×2 | Plain-language nowcast ("Rain starting in ~30 min") and a chart of rain chance for the next 12 or 24 hours |
 | **Sun & moon** | 4×2 | The sun's position between sunrise and sunset, and the moon phase |
 | **Air quality** | 2×2 | AQI gauge, fine particles and the strongest pollen |
+| **Weather shape** | 1×1 and up (2×2 default) | The temperature inside one of 28 Material 3 Expressive shapes (cookie, clover, sunny, gem, ghost…). Pick the shape, colours and transparency with a live preview |
 
 ## The app
 
 <table>
   <tr>
-    <td><img src="docs/screenshots/app-main.png" alt="Main screen" /></td>
-    <td><img src="docs/screenshots/app-details.png" alt="16-day forecast and detail tiles" /></td>
-    <td><img src="docs/screenshots/app-details2.png" alt="Sun, moon and air quality" /></td>
-    <td><img src="docs/screenshots/app-metric.png" alt="Precipitation detail screen" /></td>
+    <td><img src="docs/screenshots/app-main.png" alt="Weather screen with the live sky" /></td>
+    <td><img src="docs/screenshots/app-wardrobe.png" alt="What to wear and Family & friends cards" /></td>
+    <td><img src="docs/screenshots/app-map.png" alt="Weather map with rain radar" /></td>
+    <td><img src="docs/screenshots/app-alerts.png" alt="Alerts and notifications" /></td>
+  </tr>
+  <tr align="center">
+    <td>Live sky & forecast</td>
+    <td>What to wear & friends</td>
+    <td>Radar & weather map</td>
+    <td>Alerts</td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/app-friends.png" alt="Family & friends with an official warning" /></td>
+    <td><img src="docs/screenshots/app-detail.png" alt="Humidity detail screen" /></td>
+    <td><img src="docs/screenshots/app-appearance.png" alt="Appearance settings" /></td>
     <td><img src="docs/screenshots/app-settings.png" alt="Settings" /></td>
   </tr>
   <tr align="center">
-    <td>Now & next 48 h</td>
-    <td>16 days & tiles</td>
-    <td>Sun, moon, air</td>
+    <td>Family & friends</td>
     <td>Detail screens</td>
+    <td>Appearance</td>
     <td>Settings</td>
   </tr>
 </table>
 
-- **Current conditions** with a plain-language summary ("Today: light rain, high 9°. Similar temperatures tomorrow.")
-- **48-hour forecast** with temperature, rain, wind and UV charts
-- **16-day forecast**. Tap any day for its hour-by-hour breakdown
-- **A detail screen for every stat**: wind (a compass that turns with your phone), humidity (water that sloshes when you tilt the phone), UV, feels like, pressure, visibility, precipitation, cloud cover, sun, moon, air quality and pollen
-- **15-minute rain nowcast** for the next few hours
-- **Air quality** (US & European AQI, PM2.5, PM10, ozone…) and **pollen** for six plant types
-- **Several locations**: your current location plus any number of saved places
-- **Works offline**: the last forecast for each place is cached
-- **Themes**: system, light, dark and **OLED black**, Material You dynamic colour, three card styles, colour or black & white icons, and three app icons
-- **Units**: °C/°F, km/h, m/s, mph, knots, mm/in, hPa, inHg, mmHg, 12/24-hour clock
+- **A sky that changes with the weather**: the theme shifts with the conditions (golden on a clear afternoon, slate under cloud, charcoal in a storm, deep blue at night), with **live effects** behind the forecast: rain angled by the wind, snow, hail, fog, lightning, sun rays and twinkling stars. Subtle **haptics** match the weather
+- **Current conditions** with a plain-language summary, compared with yesterday, and a **"Locally verified" correction** from the nearest airport weather station (METAR). Optionally show the **wet-bulb temperature** next to "feels like"
+- **48-hour forecast** as a graph, compact list or cards, and up to **16 days**. Tap any day for its hour-by-hour breakdown
+- **Choose your forecast model** or let Auto pick the best high-resolution regional model (ICON, AROME, HARMONIE, HRRR, UKMO, MET Nordic, GEM, JMA…)
+- **A detail screen for every stat**: wind (a compass that turns with your phone), humidity (water that sloshes when you tilt the phone) with **cooling comfort** (wet bulb), UV with the hours you need protection, pressure trend with a headache note, visibility, precipitation (today's total, rain/snow/ice), cloud cover, **fire weather index**, sun (first and last light, solar noon, daylight change, solstices), moon (rise, set, next full moon, **stargazing tonight**), air quality (US and European AQI against WHO limits) and pollen
+- **Sea conditions** on the coast: waves, swell, wave period, sea temperature with wetsuit advice, currents and tides, with guidance for swimming, surfing and sailing
+- **Weather map**: animated rain radar plus temperature, wind, cloud, pressure and precipitation layers with a 48-hour time slider, and active hurricanes and tropical storms
+- **Official weather warnings** (yellow, amber, red) for the US, Canada, Germany and 36 more European countries, on the main screen and as notifications
+- **What to wear**: clothing and carry-item advice for your day, based on your commute and how easily you feel the cold
+- **Family & friends**: see the weather where your people live, compare temperature, rain and UV, and get their warnings. Pick them from your contacts without giving the app contacts access
+- **15-minute rain nowcast**, **air quality** and **pollen** for six plant types
+- **Several locations**, and **works offline**: the last forecast for each place is cached
+- **Make it yours**: weather, wallpaper (Material You) or any custom colour in three palette styles; system, light, dark and **OLED black**; fonts in Default, Chunky or Tall with sharp or rounded edges, plus **Lexend** and **OpenDyslexic** for readability; reorder or hide every section of the main screen
+- **A minimal app icon** (the Material 3 Expressive sun shape in white on black), or one that **changes with the weather**, or any of 12 icons; plus app shortcuts for the map, alerts and friends
+- **Units**: °C/°F, km/h, m/s, mph, knots, mm/in, hPa, inHg, mmHg, km/mi, 12/24-hour clock
+- **Your activity**: check-in streaks, the hottest and coldest weather you've seen and the conditions you've collected, kept only on your phone
 - **Automatic updates** straight from this repository's releases
+- …and a few secrets. Try typing a few unusual words into the place search.
+
+## Alerts & notifications
+
+Everything is optional and set up in the **Alerts** tab. Each alert has its own screen with its settings, a plain explanation of how it works and a **Send a test notification** button.
+
+| Alert | What it does |
+|---|---|
+| **Weather warnings** | Official warnings from NWS (US), Environment Canada, Deutscher Wetterdienst and MeteoAlarm (36 more European countries). Choose the minimum level and whether to include all saved places. You're notified once per warning and again if it's upgraded |
+| **Imminent rain & snow** | A heads-up minutes before rain or snow starts, with a **live countdown** and a coloured intensity timeline that keeps updating until it starts, then says when it will stop. Shown as a **Live Update** in the status bar on Android 16 |
+| **Rain alert** | Rain likely in the next few hours, checked once at a set time or all day during the hours you choose |
+| **Wind & storm alert** | Gusts above your limit or thunderstorms in the next hours, even without an official warning |
+| **Morning briefing** | Your day's weather each morning, compared with yesterday |
+| **Weather for tomorrow** | An evening summary of tomorrow |
+| **What to wear** | Daily clothing advice, using a work location for office hours if you set one |
+| **Dangerous wet bulb** | Warns as soon as heat and humidity are forecast to reach a dangerous wet-bulb temperature, even during quiet hours |
+| **Frost, UV, air quality, pollen** | Each with its own threshold (pollen per allergen: trees, grass, weeds) |
+| **Hay fever tablet reminder** | A daily reminder, optionally only on high-pollen days |
+| **Pressure drop** | Rapid falls in barometric pressure, which can trigger headaches for some people |
+| **Family & friends** | Warnings at the places of the people in your list |
+| **Status bar weather** | The current temperature always in your status bar, with today's forecast in the notification |
+
+Plus **quiet hours** (alerts arrive silently overnight, but amber and red warnings still sound), a history of recent notifications, exact timing when Android allows it, and separate notification channels so you can fine-tune sounds in Android settings.
 
 ## How to use
 
@@ -114,9 +154,13 @@ Nothing else is sent anywhere: the check is a single anonymous request to the pu
 - **No accounts, ads, analytics or trackers.**
 - Your location is only used to request the forecast for those coordinates and to look up the place name.
 - **No Google Play Services**: location uses Android's own `LocationManager`, so the app works on de-Googled ROMs such as GrapheneOS, LineageOS, CalyxOS and /e/OS.
+- Your contacts stay private: Family & friends uses the system contact picker, so the app never gets access to your contacts. Only the name and photo of the people you pick are kept, on your phone.
 - Network requests go only to:
-  - [Open-Meteo](https://open-meteo.com) for forecasts, air quality and place search (free and open source, no API key)
-  - [OpenStreetMap Nominatim](https://nominatim.openstreetmap.org) to turn your coordinates into a place name
+  - [Open-Meteo](https://open-meteo.com) for forecasts, air quality, marine data and place search (free and open source, no API key)
+  - [OpenStreetMap Nominatim](https://nominatim.openstreetmap.org) to turn coordinates into a place name and region
+  - [aviationweather.gov](https://aviationweather.gov) (NOAA) for the nearest station observation, when local correction is on (only a rough area is sent)
+  - The national warning services: [NWS](https://www.weather.gov), [Environment Canada](https://weather.gc.ca), [Bright Sky](https://brightsky.dev) for Deutscher Wetterdienst, [MeteoAlarm](https://meteoalarm.org)
+  - [RainViewer](https://www.rainviewer.com) for radar, [OpenStreetMap](https://www.openstreetmap.org) map tiles, and the [NOAA National Hurricane Center](https://www.nhc.noaa.gov) on the map
   - [GitHub](https://github.com/visiuun/expressive-weather/releases) to check for updates (can be turned off)
 
 ## Compatibility
@@ -166,14 +210,18 @@ Note: Android only installs an update over an existing app if both are signed wi
 
 ```
 app/src/main/java/dev/vis/weather/
-├── data/       Open-Meteo client & parsing, location, preferences, offline cache, self-updater
-├── ui/         Jetpack Compose screens: main, day, metric details, locations, settings
-│   ├── components/   charts, tiles, weather icons, compass, sensor effects
-│   └── theme/        Material 3 Expressive theme, dynamic colour, OLED black
-└── widget/     Jetpack Glance widgets, background refresh (WorkManager), widget art
+├── alerts/     warnings providers, alert engine, notifications, scheduling (WorkManager + exact alarms)
+├── data/       Open-Meteo client & parsing, models, marine, METAR correction, astronomy, friends, cache
+├── ui/         Jetpack Compose screens: main, day, metric details, alerts, map, friends, settings
+│   ├── components/   charts, tiles, weather icons, compass, sensor effects, settings rows
+│   ├── detail/       sea, sun & moon and index detail screens
+│   ├── effects/      live weather sky and haptics
+│   ├── map/          tile map, radar and model layers
+│   └── theme/        weather-reactive colour, typography, secret themes
+└── widget/     Jetpack Glance widgets, shape widget, background refresh, widget art
 ```
 
-Built with Kotlin, Jetpack Compose, Material 3 Expressive, Jetpack Glance and WorkManager. No other third-party libraries.
+Built with Kotlin, Jetpack Compose, Material 3 Expressive, Jetpack Glance and WorkManager. The only other library is [material-color-utilities](https://github.com/jordond/MaterialKolor) for colour schemes.
 
 </details>
 
@@ -184,7 +232,9 @@ Bug reports, ideas and pull requests are welcome. Please [open an issue](https:/
 ## Credits
 
 - Weather and air-quality data by **[Open-Meteo.com](https://open-meteo.com)**, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), based on national weather services (DWD, NOAA, Météo-France, ECMWF and others) and Copernicus CAMS.
-- Place names © **[OpenStreetMap](https://www.openstreetmap.org/copyright)** contributors, ODbL.
+- Place names and map tiles © **[OpenStreetMap](https://www.openstreetmap.org/copyright)** contributors, ODbL.
+- Weather warnings from the **National Weather Service**, **Environment and Climate Change Canada**, **Deutscher Wetterdienst** (via [Bright Sky](https://brightsky.dev)) and **[MeteoAlarm](https://meteoalarm.org)/EUMETNET** (CC BY 4.0). Station observations from **NOAA aviationweather.gov**. Radar by **[RainViewer](https://www.rainviewer.com)**. Storms from the **NOAA National Hurricane Center**.
+- Fonts: **Google Sans Flex** and **Lexend** (SIL Open Font License), **OpenDyslexic** (SIL OFL).
 - Shapes, motion and colour from Google's **Material 3 Expressive**.
 
 ## License

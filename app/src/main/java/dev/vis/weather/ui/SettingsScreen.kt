@@ -28,6 +28,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Air
+import androidx.compose.material.icons.rounded.BugReport
+import androidx.compose.material.icons.rounded.Groups
+import androidx.compose.material.icons.rounded.Insights
+import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.Storage
 import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.Dashboard
 import androidx.compose.material.icons.rounded.Wallpaper
@@ -82,6 +87,8 @@ import dev.vis.weather.widget.NowWidgetReceiver
 import dev.vis.weather.widget.RainWidgetReceiver
 import dev.vis.weather.widget.SunMoonWidgetReceiver
 
+enum class SettingsPage { APPEARANCE, LAYOUT, UNITS, ALERTS, FRIENDS, APP_ICON, WIDGETS, DATA, STATS }
+
 @Composable
 fun SettingsScreen(
     settings: Settings,
@@ -90,149 +97,123 @@ fun SettingsScreen(
     update: ((Settings) -> Settings) -> Unit,
     onCheckUpdates: () -> Unit,
     onInstallUpdate: () -> Unit,
+    onOpen: (SettingsPage) -> Unit,
 ) {
     val context = LocalContext.current
-    Column(Modifier.fillMaxSize().statusBarsPadding()) {
-        Row(Modifier.padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") }
-            Spacer(Modifier.width(4.dp))
-            Text("Settings", style = MaterialTheme.typography.headlineMediumEmphasized)
+    dev.vis.weather.ui.components.SubScreen("Settings", onBack) { w ->
+        item {
+            dev.vis.weather.ui.components.SettingsGroup("Look & feel", w) {
+                val n = 4
+                dev.vis.weather.ui.components.SettingsAction(
+                    "Appearance", "Colours, theme, fonts and weather effects", Icons.Rounded.Palette, MaterialShapes.Flower, 0, n, chevron = true,
+                ) { onOpen(SettingsPage.APPEARANCE) }
+                dev.vis.weather.ui.components.SettingsAction(
+                    "Layout", "Forecast style and the order of sections", Icons.Rounded.Dashboard, MaterialShapes.Square, 1, n, chevron = true,
+                ) { onOpen(SettingsPage.LAYOUT) }
+                dev.vis.weather.ui.components.SettingsAction(
+                    "App icon", "Static or changes with the weather", Icons.Rounded.Apps, MaterialShapes.Cookie12Sided, 2, n, chevron = true,
+                ) { onOpen(SettingsPage.APP_ICON) }
+                dev.vis.weather.ui.components.SettingsAction(
+                    "Widgets", "Add widgets to your home screen", Icons.Rounded.Widgets, MaterialShapes.Cookie4Sided, 3, n, chevron = true,
+                ) { onOpen(SettingsPage.WIDGETS) }
+            }
         }
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(
-                start = 16.dp, end = 16.dp, top = 8.dp,
-                bottom = 24.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
-            ),
-        ) {
-            val w = Modifier.widthIn(max = 720.dp).fillMaxWidth()
-            item {
-                Group("Appearance", w) {
-                    val items = buildList<@Composable (Int, Int) -> Unit> {
-                        add { i, n ->
-                            ChoiceItem(
-                                "Theme", Icons.Rounded.Contrast, MaterialShapes.Cookie4Sided, i, n,
-                                ThemeMode.entries, settings.theme,
-                                { when (it) { ThemeMode.SYSTEM -> "System"; ThemeMode.LIGHT -> "Light"; ThemeMode.DARK -> "Dark" } },
-                            ) { v -> update { it.copy(theme = v) } }
-                        }
-                        add { i, n ->
-                            SwitchItem(
-                                "OLED black", "Pure black background in dark theme, saves battery on OLED screens",
-                                Icons.Rounded.DarkMode, MaterialShapes.Cookie9Sided, i, n, settings.oled,
-                            ) { v -> update { it.copy(oled = v) } }
-                        }
-                        if (Build.VERSION.SDK_INT >= 31) {
-                            add { i, n ->
-                                SwitchItem(
-                                    "Dynamic color", "Use colors from your wallpaper (Material You)",
-                                    Icons.Rounded.Palette, MaterialShapes.Flower, i, n, settings.dynamicColor,
-                                ) { v -> update { it.copy(dynamicColor = v) } }
-                            }
-                        }
-                        add { i, n ->
-                            SwitchItem(
-                                "Hero background", "Colored card behind the current conditions",
-                                Icons.Rounded.Wallpaper, MaterialShapes.Cookie6Sided, i, n, settings.heroBackground,
-                            ) { v -> update { it.copy(heroBackground = v) } }
-                        }
-                        add { i, n ->
-                            ChoiceItem(
-                                "Card style", Icons.Rounded.Dashboard, MaterialShapes.Square, i, n,
-                                CardStyle.entries, settings.cardStyle,
-                                { when (it) { CardStyle.FILLED -> "Filled"; CardStyle.OUTLINED -> "Outlined"; CardStyle.NONE -> "None" } },
-                            ) { v -> update { it.copy(cardStyle = v) } }
-                        }
-                        add { i, n ->
-                            ChoiceItem(
-                                "Weather icons", Icons.Rounded.WbCloudy, MaterialShapes.Puffy, i, n,
-                                listOf(false, true), settings.monoIcons,
-                                { if (it) "Black & white" else "Color" },
-                            ) { v -> update { it.copy(monoIcons = v) } }
-                        }
-                        add { i, n ->
-                            ChoiceItem(
-                                "App icon", Icons.Rounded.Apps, MaterialShapes.Cookie12Sided, i, n,
-                                AppIcon.entries, settings.appIcon,
-                                { when (it) { AppIcon.OLED -> "Black"; AppIcon.LIGHT -> "White"; AppIcon.COLOR -> "Color" } },
-                            ) { v -> update { it.copy(appIcon = v) } }
-                        }
-                    }
-                    items.forEachIndexed { i, c -> c(i, items.size) }
-                }
+        item {
+            dev.vis.weather.ui.components.SettingsGroup("Weather", w) {
+                val n = 5
+                dev.vis.weather.ui.components.SettingsAction(
+                    "Alerts & notifications", "Warnings, rain, daily briefings and more", Icons.Rounded.Notifications, MaterialShapes.Sunny, 0, n, chevron = true,
+                ) { onOpen(SettingsPage.ALERTS) }
+                dev.vis.weather.ui.components.SettingsAction(
+                    "Family & friends", "Weather where your people are", Icons.Rounded.Groups, MaterialShapes.Cookie7Sided, 1, n, chevron = true,
+                ) { onOpen(SettingsPage.FRIENDS) }
+                dev.vis.weather.ui.components.SettingsAction(
+                    "Units", "Metric, imperial and clock", Icons.Rounded.Thermostat, MaterialShapes.Arch, 2, n, chevron = true,
+                ) { onOpen(SettingsPage.UNITS) }
+                dev.vis.weather.ui.components.SettingsAction(
+                    "Data & accuracy", "Forecast model, local correction and sources", Icons.Rounded.Storage, MaterialShapes.Gem, 3, n, chevron = true,
+                ) { onOpen(SettingsPage.DATA) }
+                dev.vis.weather.ui.components.SettingsAction(
+                    "Your activity", "Streaks, records and conditions you've seen", Icons.Rounded.Insights, MaterialShapes.Clover8Leaf, 4, n, chevron = true,
+                ) { onOpen(SettingsPage.STATS) }
             }
-            item {
-                Group("Units", w.padding(top = 20.dp)) {
-                    val n = 5
-                    ChoiceItem("Temperature", Icons.Rounded.Thermostat, MaterialShapes.Arch, 0, n, TempUnit.entries, settings.tempUnit, {
-                        if (it == TempUnit.C) "°C" else "°F"
-                    }) { v -> update { it.copy(tempUnit = v) } }
-                    ChoiceItem("Wind speed", Icons.Rounded.Air, MaterialShapes.Cookie6Sided, 1, n, WindUnit.entries, settings.windUnit, {
-                        when (it) { WindUnit.KMH -> "km/h"; WindUnit.MS -> "m/s"; WindUnit.MPH -> "mph"; WindUnit.KN -> "kn" }
-                    }) { v -> update { it.copy(windUnit = v) } }
-                    ChoiceItem("Precipitation", Icons.Rounded.WaterDrop, MaterialShapes.Puffy, 2, n, PrecipUnit.entries, settings.precipUnit, {
-                        if (it == PrecipUnit.MM) "mm" else "in"
-                    }) { v -> update { it.copy(precipUnit = v) } }
-                    ChoiceItem("Pressure", Icons.Rounded.Compress, MaterialShapes.Gem, 3, n, PressureUnit.entries, settings.pressureUnit, {
-                        when (it) { PressureUnit.HPA -> "hPa"; PressureUnit.INHG -> "inHg"; PressureUnit.MMHG -> "mmHg" }
-                    }) { v -> update { it.copy(pressureUnit = v) } }
-                    SwitchItem("24-hour clock", null, Icons.Rounded.Schedule, MaterialShapes.Cookie12Sided, 4, n, settings.use24h) { v ->
-                        update { it.copy(use24h = v) }
-                    }
+        }
+        item {
+            Group("Updates", w) {
+                SwitchItem(
+                    "Check for updates automatically", "Looks for new releases on GitHub when the app starts",
+                    Icons.Rounded.Update, MaterialShapes.Cookie9Sided, 0, 2, settings.autoUpdate,
+                ) { v -> update { it.copy(autoUpdate = v) } }
+                val r = updates.release
+                val progress = updates.progress
+                val status = when {
+                    progress != null -> "Downloading… ${(progress * 100).toInt()}%"
+                    updates.checking -> "Checking…"
+                    updates.message != null -> updates.message
+                    else -> "Installed version ${Updater.currentVersion}"
                 }
+                ActionItem(
+                    if (r != null) "Install version ${r.version}" else "Check for updates", status,
+                    Icons.Rounded.SystemUpdate, MaterialShapes.Flower, 1, 2,
+                ) { if (r != null) onInstallUpdate() else onCheckUpdates() }
             }
-            val pinnable = Build.VERSION.SDK_INT >= 26 &&
-                AppWidgetManager.getInstance(context).isRequestPinAppWidgetSupported
-            if (pinnable) {
-                item {
-                    Group("Widgets", w.padding(top = 20.dp)) {
-                        pinnableWidgets.forEachIndexed { i, (title, receiver) ->
-                            ActionItem(title, "Add to home screen", Icons.Rounded.Widgets, widgetShapes[i % widgetShapes.size], i, pinnableWidgets.size) {
-                                AppWidgetManager.getInstance(context).requestPinAppWidget(ComponentName(context, receiver), null, null)
-                            }
-                        }
-                    }
+        }
+        item {
+            Group("About", w) {
+                InfoItem(
+                    "Open data, no tracking",
+                    "No accounts, ads, analytics or Google Play Services. Forecasts by Open-Meteo.com (CC BY 4.0) from national weather services; " +
+                        "warnings from NWS, ECCC, DWD and MeteoAlarm; radar by RainViewer; maps © OpenStreetMap contributors © CARTO. " +
+                        "See Data & accuracy for every source.",
+                    0, 4,
+                )
+                InfoItem("Expressive Weather", "Version ${Updater.currentVersion} · Material 3 Expressive", 1, 4)
+                ActionItem("Source code", Updater.REPO_URL.removePrefix("https://"), Icons.Rounded.Code, MaterialShapes.Cookie6Sided, 2, 4) {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Updater.REPO_URL)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 }
-            }
-            item {
-                Group("Updates", w.padding(top = 20.dp)) {
-                    SwitchItem(
-                        "Check for updates automatically", "Looks for new releases on GitHub when the app starts",
-                        Icons.Rounded.Update, MaterialShapes.Cookie9Sided, 0, 2, settings.autoUpdate,
-                    ) { v -> update { it.copy(autoUpdate = v) } }
-                    val r = updates.release
-                    val progress = updates.progress
-                    val status = when {
-                        progress != null -> "Downloading… ${(progress * 100).toInt()}%"
-                        updates.checking -> "Checking…"
-                        updates.message != null -> updates.message
-                        else -> "Installed version ${Updater.currentVersion}"
-                    }
-                    ActionItem(
-                        if (r != null) "Install version ${r.version}" else "Check for updates", status,
-                        Icons.Rounded.SystemUpdate, MaterialShapes.Flower, 1, 2,
-                    ) { if (r != null) onInstallUpdate() else onCheckUpdates() }
-                }
-            }
-            item {
-                Group("About", w.padding(top = 20.dp)) {
-                    InfoItem(
-                        "Open data, no tracking",
-                        "Forecasts, air quality & geocoding by Open-Meteo.com (CC BY 4.0), using national weather services (DWD, NOAA, Météo-France, ECMWF and more). " +
-                            "Air quality from Copernicus CAMS. Place names © OpenStreetMap contributors via Nominatim. " +
-                            "Location uses Android's own LocationManager, so no Google Play Services are needed.",
-                        0, 3,
-                    )
-                    InfoItem("Expressive Weather", "Version ${Updater.currentVersion} · Material 3 Expressive", 1, 3)
-                    ActionItem("Source code", Updater.REPO_URL.removePrefix("https://"), Icons.Rounded.Code, MaterialShapes.Cookie6Sided, 2, 3) {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Updater.REPO_URL)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                    }
+                ActionItem("Report a bug", "Opens a new issue on GitHub", Icons.Rounded.BugReport, MaterialShapes.Clover4Leaf, 3, 4) {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Updater.REPO_URL + "/issues/new")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 }
             }
         }
     }
 }
+
+@Composable
+fun WidgetsScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+    val pinnable = Build.VERSION.SDK_INT >= 26 && AppWidgetManager.getInstance(context).isRequestPinAppWidgetSupported
+    dev.vis.weather.ui.components.SubScreen("Widgets", onBack) { w ->
+        item {
+            Group(if (pinnable) "Tap to add to your home screen" else "Add from your home screen widget picker", w) {
+                pinnableWidgets.forEachIndexed { i, (title, receiver) ->
+                    ActionItem(title, widgetDescriptions[title], Icons.Rounded.Widgets, widgetShapes[i % widgetShapes.size], i, pinnableWidgets.size) {
+                        if (pinnable) AppWidgetManager.getInstance(context).requestPinAppWidget(ComponentName(context, receiver), null, null)
+                    }
+                }
+            }
+        }
+        item {
+            Text(
+                "Touch and hold a widget, then drag its handles to resize it. Tap the place name on a widget to switch it to your next saved place.",
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = w.padding(horizontal = 8.dp),
+            )
+        }
+    }
+}
+
+private val widgetDescriptions = mapOf(
+    "Now" to "Current conditions, from a slim pill to a dashboard",
+    "Hourly" to "The next 48 hours, paged",
+    "16-day forecast" to "Scrollable daily list with range bars",
+    "Forecast hub" to "Hourly, daily and details tabs",
+    "Clock & weather" to "Big clock and date beside the weather",
+    "Details" to "Feels like, wind, humidity, UV, air and more",
+    "Rain" to "Nowcast and rain chance chart",
+    "Sun & moon" to "Sun position and moon phase",
+    "Air quality" to "AQI gauge, particles and pollen",
+    "Weather shape" to "Temperature in an expressive shape you choose",
+)
 
 @Composable
 private fun Group(title: String, modifier: Modifier, content: @Composable ColumnScope.() -> Unit) {
@@ -333,10 +314,11 @@ private val pinnableWidgets = listOf(
     "Rain" to RainWidgetReceiver::class.java,
     "Sun & moon" to SunMoonWidgetReceiver::class.java,
     "Air quality" to AirWidgetReceiver::class.java,
+    "Weather shape" to dev.vis.weather.widget.ShapeWidgetReceiver::class.java,
 )
 
 private val widgetShapes = listOf(
-    MaterialShapes.Cookie4Sided, MaterialShapes.Puffy, MaterialShapes.Gem, MaterialShapes.Flower,
+    MaterialShapes.Cookie4Sided, MaterialShapes.Cookie7Sided, MaterialShapes.Gem, MaterialShapes.Flower,
     MaterialShapes.Cookie12Sided, MaterialShapes.Square, MaterialShapes.Arch, MaterialShapes.Sunny, MaterialShapes.Clover4Leaf,
 )
 

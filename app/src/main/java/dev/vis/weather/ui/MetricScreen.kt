@@ -64,6 +64,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
 import dev.vis.weather.data.Forecast
+import dev.vis.weather.data.Indices
+import dev.vis.weather.ui.detail.AirSections
+import dev.vis.weather.ui.detail.CloudSections
+import dev.vis.weather.ui.detail.FeelsSections
+import dev.vis.weather.ui.detail.FireHero
+import dev.vis.weather.ui.detail.FireSections
+import dev.vis.weather.ui.detail.HumiditySections
+import dev.vis.weather.ui.detail.MoonHeroText
+import dev.vis.weather.ui.detail.MoonSections
+import dev.vis.weather.ui.detail.PrecipSections
+import dev.vis.weather.ui.detail.PressureSections
+import dev.vis.weather.ui.detail.SeaHero
+import dev.vis.weather.ui.detail.SeaSections
+import dev.vis.weather.ui.detail.SunHeroTimes
+import dev.vis.weather.ui.detail.SunSections
+import dev.vis.weather.ui.detail.UvSections
+import dev.vis.weather.ui.detail.VisibilitySections
+import dev.vis.weather.ui.detail.fireSeries
+import dev.vis.weather.ui.detail.seaColor
 import dev.vis.weather.data.Settings
 import dev.vis.weather.data.WeatherInfo
 import dev.vis.weather.ui.components.LiveCompass
@@ -146,6 +165,7 @@ fun MetricScreen(f: Forecast, settings: Settings, metric: Metric, onBack: () -> 
         ) {
             val w = Modifier.widthIn(max = 720.dp).fillMaxWidth()
             item(key = "hero") { Box(w) { Hero(f, fmt, metric) } }
+            if (metric in TOP_SECTIONS) item(key = "insights") { Box(w) { TopSections(f, fmt, metric) } }
             if (series != null && series.values.isNotEmpty()) {
                 item(key = "chart") {
                     Box(w) {
@@ -175,7 +195,6 @@ fun MetricScreen(f: Forecast, settings: Settings, metric: Metric, onBack: () -> 
             when (metric) {
                 Metric.SUN -> item(key = "sun") { Box(w) { SunTable(f, fmt) } }
                 Metric.MOON -> item(key = "moon") { Box(w) { MoonCalendar(f, fmt) } }
-                Metric.AIR -> f.air?.let { a -> item(key = "pol") { Box(w) { Pollutants(a) } } }
                 Metric.POLLEN -> f.air?.let { a -> item(key = "pl") { Box(w) { PollenTypes(a) } } }
                 else -> {}
             }
@@ -210,6 +229,31 @@ fun MetricScreen(f: Forecast, settings: Settings, metric: Metric, onBack: () -> 
     }
 }
 
+
+private val TOP_SECTIONS = setOf(
+    Metric.HUMIDITY, Metric.UV, Metric.FEELS, Metric.PRESSURE, Metric.VISIBILITY, Metric.PRECIP,
+    Metric.CLOUD, Metric.SUN, Metric.MOON, Metric.AIR, Metric.SEA, Metric.FIRE,
+)
+
+/** Insight cards shown between the hero and the hourly chart. */
+@Composable
+private fun TopSections(f: Forecast, fmt: Fmt, metric: Metric) {
+    when (metric) {
+        Metric.HUMIDITY -> HumiditySections(f, fmt)
+        Metric.UV -> UvSections(f, fmt)
+        Metric.FEELS -> FeelsSections(f)
+        Metric.PRESSURE -> PressureSections(f, fmt)
+        Metric.VISIBILITY -> VisibilitySections(f, fmt)
+        Metric.PRECIP -> PrecipSections(f, fmt)
+        Metric.CLOUD -> CloudSections(f, fmt)
+        Metric.SUN -> SunSections(f, fmt)
+        Metric.MOON -> MoonSections(f, fmt)
+        Metric.AIR -> f.air?.let { AirSections(it, fmt) }
+        Metric.SEA -> SeaSections(f, fmt)
+        Metric.FIRE -> FireSections(f, fmt)
+        else -> {}
+    }
+}
 
 @Composable
 private fun Legend(c: Color, text: String, dashed: Boolean) {
@@ -293,7 +337,7 @@ private fun Hero(f: Forecast, fmt: Fmt, metric: Metric) {
                     Text(fmt.pct(c.humidity), style = MaterialTheme.typography.displayMediumEmphasized, color = Color.White)
                 }
                 Spacer(Modifier.height(18.dp))
-                BigNumber("", "", comfort(c.dewPoint), "Dew point ${fmt.temp(c.dewPoint)}. Tilt or shake your phone — the water moves with it.")
+                BigNumber("", "", Indices.humidityComfort(c.dewPoint, c.humidity).label, "Dew point ${fmt.temp(c.dewPoint)}. Tilt or shake your phone — the water moves with it.")
             }
             Metric.UV -> {
                 Box(Modifier.size(220.dp), contentAlignment = Alignment.Center) {
@@ -308,7 +352,7 @@ private fun Hero(f: Forecast, fmt: Fmt, metric: Metric) {
                 BigNumber("", "", WeatherInfo.uvLevel(c.uv), WeatherInfo.uvAdvice(maxOf(c.uv.takeIf { it.ok() } ?: 0.0, today?.uvMax?.takeIf { it.ok() } ?: 0.0)))
             }
             Metric.FEELS -> {
-                BlobHero(listOf(MaterialShapes.Cookie12Sided, MaterialShapes.Arch, MaterialShapes.Puffy), cs.tertiaryContainer) {
+                BlobHero(listOf(MaterialShapes.Cookie12Sided, MaterialShapes.Arch, MaterialShapes.Cookie7Sided), cs.tertiaryContainer) {
                     Text(fmt.temp(c.feelsLike), style = MaterialTheme.typography.displayLargeEmphasized, color = cs.onTertiaryContainer)
                 }
                 Spacer(Modifier.height(18.dp))
@@ -328,19 +372,8 @@ private fun Hero(f: Forecast, fmt: Fmt, metric: Metric) {
             Metric.PRESSURE -> {
                 PressureGauge(c.pressure, Modifier.size(260.dp, 200.dp), fmt)
                 Spacer(Modifier.height(10.dp))
-                val nowIdx = f.hourlyAll.indexOfLast { it.time <= c.time }
-                val past = if (nowIdx >= 3) f.hourlyAll[nowIdx - 3].pressure else Double.NaN
-                val d = c.pressure - past
-                BigNumber(
-                    "", "",
-                    when { d.isNaN() -> ""; d > 1 -> "Rising"; d < -1 -> "Falling"; else -> "Steady" },
-                    when {
-                        d.isNaN() -> ""
-                        d > 1 -> "Rising pressure usually means settling, drier weather."
-                        d < -1 -> "Falling pressure often comes before clouds, rain and wind."
-                        else -> "No big changes expected from pressure alone."
-                    },
-                )
+                val trend = remember(f) { Indices.pressureTrend(f) }
+                BigNumber("", "", trend?.label ?: "", trend?.let { dev.vis.weather.ui.detail.pressureDelta(fmt, it.change3h) } ?: "")
             }
             Metric.VISIBILITY -> {
                 BlobHero(listOf(MaterialShapes.Oval, MaterialShapes.Pill, MaterialShapes.Cookie6Sided), cs.secondaryContainer) {
@@ -350,7 +383,7 @@ private fun Hero(f: Forecast, fmt: Fmt, metric: Metric) {
                     }
                 }
                 Spacer(Modifier.height(18.dp))
-                BigNumber("", "", WeatherInfo.visibilityLevel(c.visibility), "How far you can clearly see objects. Fog, rain, snow and haze lower it.")
+                BigNumber("", "", Indices.visibilityRating(c.visibility).label, "How far you can clearly see objects. Fog, rain, snow and haze lower it.")
             }
             Metric.PRECIP -> {
                 val next24 = f.upcoming.take(24).sumOf { if (it.precip.ok()) it.precip else 0.0 }
@@ -384,19 +417,21 @@ private fun Hero(f: Forecast, fmt: Fmt, metric: Metric) {
             Metric.SUN -> {
                 SunArc(f, Modifier.fillMaxWidth().height(170.dp))
                 Spacer(Modifier.height(10.dp))
+                SunHeroTimes(f, fmt)
+                Spacer(Modifier.height(14.dp))
                 if (today != null) {
                     BigNumber(
                         "", "",
-                        "${fmt.time(today.sunrise)}  →  ${fmt.time(today.sunset)}",
+                        "",
                         "${fmt.duration(today.daylight)} of daylight, ${fmt.duration(today.sunshine)} of sunshine expected.",
                     )
                 }
             }
             Metric.MOON -> {
-                val moon = WeatherInfo.moon(c.time)
+                val moon = remember(c.time) { dev.vis.weather.data.Astro.moonState(c.time) }
                 MoonPhase(moon.phase, f.latitude < 0, Modifier.size(220.dp))
                 Spacer(Modifier.height(18.dp))
-                BigNumber("", "", moon.name, "${(moon.illumination * 100).roundToInt()}% illuminated · full moon in ${moon.daysToFull.roundToInt()} days · new moon in ${moon.daysToNew.roundToInt()} days")
+                MoonHeroText(f, fmt)
             }
             Metric.AIR -> {
                 val a = f.air
@@ -432,17 +467,10 @@ private fun Hero(f: Forecast, fmt: Fmt, metric: Metric) {
                     "Pollen forecasts from Copernicus CAMS cover Europe only.",
                 )
             }
+            Metric.SEA -> SeaHero(f, fmt)
+            Metric.FIRE -> FireHero(f, fmt)
         }
     }
-}
-
-private fun comfort(dew: Double) = when {
-    dew.isNaN() -> ""
-    dew < 10 -> "Dry and comfortable"
-    dew < 16 -> "Comfortable"
-    dew < 20 -> "Slightly humid"
-    dew < 24 -> "Humid and muggy"
-    else -> "Oppressive"
 }
 
 private fun cloudWord(cover: Double) = when {
@@ -553,7 +581,15 @@ private fun seriesFor(f: Forecast, fmt: Fmt, m: Metric): Series? {
                 bottom = { i -> ah[i].pollen.withIndex().filter { it.value.ok() }.maxByOrNull { it.value }?.let { POLLEN_NAMES[it.index].take(5) } ?: "" },
             )
         }
-        Metric.SUN, Metric.MOON -> null
+        Metric.FIRE -> {
+            val v = fireSeries(f)
+            if (v.all { it.isNaN() }) null else Series(
+                times, icons, v, { dash(it) }, true, Color(0xFFFF9800),
+                lo = 0.0, hi = maxOf(v.cleanMax().takeIf { it.ok() } ?: 0.0, 50.0), barColor = { Color(Indices.fireBand(it).color) },
+                bottom = { fmt.pct(hrs[it].humidity) },
+            )
+        }
+        Metric.SUN, Metric.MOON, Metric.SEA -> null
     }
 }
 
@@ -694,7 +730,14 @@ private fun daysFor(f: Forecast, fmt: Fmt, m: Metric): List<DayRange> {
                 )
             }
         }
-        Metric.SUN, Metric.MOON -> emptyList()
+        Metric.FIRE -> f.daily.mapNotNull { d ->
+            val v = byDate[d.date]?.map { Indices.fireIndex(it) }?.cleanMax() ?: return@mapNotNull null
+            if (v.isNaN()) null else {
+                val b = Indices.fireBand(v)
+                DayRange(d.date, d.code, 0.0, v, "", r(v), Color(b.color), b.label)
+            }
+        }
+        Metric.SUN, Metric.MOON, Metric.SEA -> emptyList()
     }
 }
 
@@ -758,7 +801,7 @@ private fun SunTable(f: Forecast, fmt: Fmt) {
                     Text("↓ ${fmt.time(d.sunset)}", style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
                     Column(horizontalAlignment = Alignment.End) {
                         Text(fmt.duration(d.daylight), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
-                        Text("☀ ${fmt.duration(d.sunshine)}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("${fmt.duration(d.sunshine)} sun", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -784,44 +827,6 @@ private fun MoonCalendar(f: Forecast, fmt: Fmt) {
                     MoonPhase(m.phase, f.latitude < 0, Modifier.size(40.dp))
                     Spacer(Modifier.height(4.dp))
                     Text("${(m.illumination * 100).roundToInt()}%", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun Pollutants(a: dev.vis.weather.data.AirQuality) {
-    val items = listOf(
-        Triple("PM2.5", a.pm25, "Fine particles from combustion and traffic; reach deep into the lungs. WHO 24 h guideline: 15 µg/m³." to 15.0),
-        Triple("PM10", a.pm10, "Coarser particles: dust, pollen, construction. WHO 24 h guideline: 45 µg/m³." to 45.0),
-        Triple("O₃ Ozone", a.o3, "Forms in sunlight from traffic emissions; peaks on hot afternoons. WHO 8 h guideline: 100 µg/m³." to 100.0),
-        Triple("NO₂", a.no2, "Mainly from vehicle exhaust. WHO 24 h guideline: 25 µg/m³." to 25.0),
-        Triple("SO₂", a.so2, "From burning sulphur-containing fuels. WHO 24 h guideline: 40 µg/m³." to 40.0),
-        Triple("CO", a.co, "Carbon monoxide from incomplete combustion. WHO 24 h guideline: 4000 µg/m³." to 4000.0),
-    )
-    SectionCard("Pollutants", Icons.Rounded.Science, MaterialShapes.Flower) {
-        Column(Modifier.padding(horizontal = 18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            items.forEach { (name, v, info) ->
-                val (text, limit) = info
-                val frac = if (v.ok()) (v / (limit * 2)).toFloat().coerceIn(0f, 1f) else 0f
-                Column {
-                    Row(verticalAlignment = Alignment.Bottom) {
-                        Text(name, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-                        Text(
-                            if (v.isNaN()) "–" else if (v < 10) String.format("%.1f", v) else v.roundToInt().toString(),
-                            style = MaterialTheme.typography.titleMediumEmphasized,
-                        )
-                        Text(" µg/m³", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                    Spacer(Modifier.height(4.dp))
-                    LinearWavyProgressIndicator(
-                        progress = { frac },
-                        modifier = Modifier.fillMaxWidth(),
-                        color = if (frac <= 0.5f) Color(0xFF4CAF50) else if (frac < 0.8f) Color(0xFFFF9800) else Color(0xFFF44336),
-                    )
-                    Spacer(Modifier.height(4.dp))
-                    Text(text, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
@@ -862,6 +867,8 @@ private fun about(m: Metric): String = when (m) {
     Metric.SUN -> "Sunrise and sunset are when the top edge of the sun touches the horizon. Daylight is the time between them; sunshine is the time with direct sun not hidden by clouds."
     Metric.MOON -> "The moon goes through a full cycle of phases every 29.5 days. Phases are calculated on your device, so they work offline."
     Metric.AIR -> "The Air Quality Index turns pollutant concentrations into one number. It is based on the Copernicus Atmosphere Monitoring Service (CAMS) model, not a local sensor, so very local sources may not show up."
+    Metric.SEA -> "Wave height is the significant wave height: the average of the highest third of waves, roughly what an experienced observer would estimate. Single waves can be up to twice as high. Swell is made by distant storms; wind waves by local wind. Data: Open-Meteo Marine (ECMWF, Météo-France, DWD and Copernicus Marine wave and ocean models)."
+    Metric.FIRE -> Indices.FIRE_EXPLAINER
     Metric.POLLEN -> "Pollen concentration in grains per cubic metre of air, from the CAMS European pollen model. Sensitive people may notice symptoms from around 10–20 grains/m³ for grass and birch."
 }
 
@@ -882,11 +889,28 @@ private fun scale(m: Metric): List<Triple<Color, String, String>> = when (m) {
         Triple(Color(0xFF7E0023), "301+ Hazardous", "Emergency conditions."),
     )
     Metric.HUMIDITY -> listOf(
-        Triple(Color(0xFF4A9EFF), "Dew point < 10°C", "Dry and comfortable."),
-        Triple(Color(0xFF35C7B0), "10–16°C", "Comfortable."),
-        Triple(Color(0xFFFFC107), "16–20°C", "Slightly humid."),
-        Triple(Color(0xFFFF9800), "20–24°C", "Humid and muggy."),
-        Triple(Color(0xFFF44336), "24°C+", "Oppressive."),
+        Triple(Color(0xFF4A9EFF), "Dew point < 10°C · Dry", "Crisp air."),
+        Triple(Color(0xFF35C7B0), "10–15°C · Comfortable", "You won't notice the humidity."),
+        Triple(Color(0xFF4CAF50), "15–18°C · Noticeable", "Moisture starts to be felt."),
+        Triple(Color(0xFFFFC107), "18–21°C · Sticky", "Clammy; exercise feels harder."),
+        Triple(Color(0xFFFF9800), "21–24°C · Muggy", "Uncomfortable for most people."),
+        Triple(Color(0xFFF44336), "24°C+ · Oppressive", "Very uncomfortable."),
+    )
+    Metric.SEA -> listOf(
+        Triple(seaColor(0), "< 0.1 m · Calm", "Glassy water."),
+        Triple(seaColor(1), "0.1–0.5 m · Rippled", "Wavelets, no breaking crests."),
+        Triple(seaColor(2), "0.5–1.25 m · Slight", "Small waves, a few white horses."),
+        Triple(seaColor(3), "1.25–2.5 m · Moderate", "Many white horses."),
+        Triple(seaColor(4), "2.5–4 m · Rough", "Large waves, foam and spray."),
+        Triple(seaColor(5), "4–6 m · Very rough", "Heaped-up sea."),
+        Triple(seaColor(6), "6 m+ · High", "Dangerous seas."),
+    )
+    Metric.FIRE -> listOf(
+        Triple(Color(0xFF4CAF50), "0–14 Low", "Fires unlikely to spread quickly."),
+        Triple(Color(0xFFFFC107), "15–29 Moderate", "Care with flames outdoors."),
+        Triple(Color(0xFFFF9800), "30–49 High", "Avoid open fires near dry grass."),
+        Triple(Color(0xFFF44336), "50–74 Very high", "No open fires."),
+        Triple(Color(0xFF7E0023), "75+ Extreme", "Follow fire bans; be ready to leave."),
     )
     Metric.WIND -> listOf(
         Triple(Color(0xFF4CAF50), "< 20 km/h", "Light: leaves rustle, flags flutter."),

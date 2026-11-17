@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_map"
+        android:shortcutId="map"
+        android:shortcutLongLabel="@string/shortcut_map_long"
+        android:shortcutShortLabel="@string/shortcut_map">
+        <intent
+            android:action="dev.vis.weather.action.MAP"
+            android:targetClass="dev.vis.weather.MainActivity"
+            android:targetPackage="dev.vis.weather" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_alerts"
+        android:shortcutId="alerts"
+        android:shortcutLongLabel="@string/shortcut_alerts_long"
+        android:shortcutShortLabel="@string/shortcut_alerts">
+        <intent
+            android:action="dev.vis.weather.action.ALERTS"
+            android:targetClass="dev.vis.weather.MainActivity"
+            android:targetPackage="dev.vis.weather" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_friends"
+        android:shortcutId="friends"
+        android:shortcutLongLabel="@string/shortcut_friends_long"
+        android:shortcutShortLabel="@string/shortcut_friends">
+        <intent
+            android:action="dev.vis.weather.action.FRIENDS"
+            android:targetClass="dev.vis.weather.MainActivity"
+            android:targetPackage="dev.vis.weather" />
+    </shortcut>
+</shortcuts>

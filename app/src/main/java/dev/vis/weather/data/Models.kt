@@ -29,6 +29,12 @@ data class Current(
     val windGust: Double,
     val visibility: Double,
     val uv: Double,
+    /** Liquid rain in the last interval (mm), excluding [showers]. */
+    val rain: Double = Double.NaN,
+    /** Convective showers (mm). */
+    val showers: Double = Double.NaN,
+    /** Snowfall in cm (fresh snow, not water equivalent). */
+    val snowfall: Double = Double.NaN,
 )
 
 data class Hour(
@@ -48,6 +54,20 @@ data class Hour(
     val pressure: Double,
     val visibility: Double,
     val cloudCover: Double,
+    /** mm of rain from large-scale systems. */
+    val rain: Double = Double.NaN,
+    /** mm of convective showers. */
+    val showers: Double = Double.NaN,
+    /** cm of fresh snow. Water equivalent ≈ cm × 10 / 7 mm. */
+    val snowfall: Double = Double.NaN,
+    /** Snow on the ground, metres. */
+    val snowDepth: Double = Double.NaN,
+    /** Wet-bulb temperature, °C. */
+    val wetBulb: Double = Double.NaN,
+    /** Height of the 0 °C level above sea level, metres. */
+    val freezingLevel: Double = Double.NaN,
+    /** Global horizontal (shortwave) radiation, W/m². */
+    val radiation: Double = Double.NaN,
 )
 
 data class Day(
@@ -68,6 +88,10 @@ data class Day(
     val windMax: Double,
     val gustMax: Double,
     val windDir: Double,
+    val rainSum: Double = Double.NaN,
+    val showersSum: Double = Double.NaN,
+    /** cm of fresh snow over the day. */
+    val snowfallSum: Double = Double.NaN,
 )
 
 data class Minute(val time: Long, val precip: Double)
@@ -86,7 +110,18 @@ data class AirQuality(
 )
 
 /** Hourly air-quality forecast. [pollen] holds alder, birch, grass, mugwort, olive, ragweed in that order. */
-data class AirHour(val time: Long, val usAqi: Double, val euAqi: Double, val pm25: Double, val pm10: Double, val o3: Double, val pollen: List<Double>)
+data class AirHour(
+    val time: Long,
+    val usAqi: Double,
+    val euAqi: Double,
+    val pm25: Double,
+    val pm10: Double,
+    val o3: Double,
+    val pollen: List<Double>,
+    val no2: Double = Double.NaN,
+    val so2: Double = Double.NaN,
+    val co: Double = Double.NaN,
+)
 
 data class Forecast(
     val zone: ZoneId,
@@ -100,6 +135,16 @@ data class Forecast(
     val minutely: List<Minute>,
     val air: AirQuality?,
     val fetchedAt: Long,
+    /** Open-Meteo model id the forecast came from ("best_match" = automatic). */
+    val model: String = ForecastModels.AUTO,
+    /** True when the chosen model had gaps (variables or days) that were filled from the automatic blend. */
+    val modelFilled: Boolean = false,
+    /** Yesterday's daily summary (from past_days=1), used for "warmer than yesterday" comparisons. */
+    val yesterday: Day? = null,
+    /** Sea conditions; null inland. */
+    val marine: Marine? = null,
+    /** Nearby station observation used to correct the first hours (local correction), or null. */
+    val observation: Observation? = null,
 ) {
     /** Next 48 hours starting from the current hour. */
     val upcoming: List<Hour> by lazy {
@@ -109,29 +154,3 @@ data class Forecast(
 
     val today: Day? get() = daily.firstOrNull()
 }
-
-enum class ThemeMode { SYSTEM, LIGHT, DARK }
-enum class TempUnit { C, F }
-enum class WindUnit { KMH, MS, MPH, KN }
-enum class PrecipUnit { MM, IN }
-enum class PressureUnit { HPA, INHG, MMHG }
-enum class CardStyle { FILLED, OUTLINED, NONE }
-
-/** Launcher icon variants, each backed by an <activity-alias> in the manifest. */
-enum class AppIcon(val alias: String) { OLED("LauncherOled"), LIGHT("LauncherLight"), COLOR("LauncherColor") }
-
-data class Settings(
-    val theme: ThemeMode = ThemeMode.SYSTEM,
-    val oled: Boolean = false,
-    val dynamicColor: Boolean = true,
-    val tempUnit: TempUnit = TempUnit.C,
-    val windUnit: WindUnit = WindUnit.KMH,
-    val precipUnit: PrecipUnit = PrecipUnit.MM,
-    val pressureUnit: PressureUnit = PressureUnit.HPA,
-    val use24h: Boolean = true,
-    val heroBackground: Boolean = false,
-    val cardStyle: CardStyle = CardStyle.FILLED,
-    val monoIcons: Boolean = false,
-    val appIcon: AppIcon = AppIcon.OLED,
-    val autoUpdate: Boolean = true,
-)

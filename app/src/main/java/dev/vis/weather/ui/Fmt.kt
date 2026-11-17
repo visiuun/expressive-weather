@@ -60,7 +60,7 @@ class Fmt(val s: Settings, val zone: ZoneId) {
         else -> pressureValue(hpa).roundToInt().toString()
     }
 
-    private val imperial get() = s.tempUnit == TempUnit.F
+    private val imperial get() = s.distanceUnit == dev.vis.weather.data.DistanceUnit.MI
 
     fun distanceNum(m: Double): String {
         if (m.isNaN()) return "–"

@@ -11,6 +11,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -72,8 +73,14 @@ private val RainBlue = Color(0xFF4A9EFF)
 enum class HourlyMetric(val label: String) { TEMP("Temp"), RAIN("Rain"), WIND("Wind"), UV("UV") }
 
 @Composable
-fun HourlyCard(f: Forecast, fmt: Fmt) {
+fun HourlyCard(f: Forecast, fmt: Fmt, style: dev.vis.weather.data.HourlyStyle = dev.vis.weather.data.HourlyStyle.STANDARD) {
     var metric by rememberSaveable { mutableStateOf(HourlyMetric.TEMP) }
+    if (style != dev.vis.weather.data.HourlyStyle.STANDARD) {
+        SectionCard("Next 48 hours", Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
+            HourlyStrip(f, fmt, cards = style == dev.vis.weather.data.HourlyStyle.CARDS)
+        }
+        return
+    }
     SectionCard("Next 48 hours", Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
         ConnectedChoice(
             options = HourlyMetric.entries,
@@ -229,8 +236,8 @@ fun uvColor(uv: Double): Color = when {
 }
 
 @Composable
-fun DailyCard(f: Forecast, fmt: Fmt, onOpenDay: (Int) -> Unit) {
-    val days = f.daily
+fun DailyCard(f: Forecast, fmt: Fmt, onOpenDay: (Int) -> Unit, maxDays: Int = 16) {
+    val days = f.daily.take(maxDays.coerceAtLeast(1))
     if (days.isEmpty()) return
     val lo = days.mapNotNull { it.min.takeIf { v -> !v.isNaN() } }.minOrNull() ?: 0.0
     val hi = days.mapNotNull { it.max.takeIf { v -> !v.isNaN() } }.maxOrNull() ?: 1.0
@@ -374,6 +381,65 @@ fun NowcastCard(f: Forecast, fmt: Fmt, text: String) {
             mins.lastOrNull()?.let {
                 Text(fmt.time(it.time), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
+        }
+    }
+}
+
+
+/** Compact / card layouts for the hourly forecast (Settings → Layout). */
+@Composable
+private fun HourlyStrip(f: Forecast, fmt: Fmt, cards: Boolean) {
+    val hours = f.upcoming
+    val lo = hours.mapNotNull { it.temp.takeIf { v -> !v.isNaN() } }.minOrNull() ?: 0.0
+    val hi = hours.mapNotNull { it.temp.takeIf { v -> !v.isNaN() } }.maxOrNull() ?: 1.0
+    Row(
+        Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 14.dp),
+        horizontalArrangement = Arrangement.spacedBy(if (cards) 8.dp else 2.dp),
+    ) {
+        hours.forEachIndexed { i, h ->
+            val now = i == 0
+            val content: @Composable () -> Unit = {
+                Column(
+                    Modifier.width(if (cards) 64.dp else 52.dp).padding(vertical = if (cards) 12.dp else 4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        if (now) "Now" else fmt.hour(h.time), style = MaterialTheme.typography.labelMedium,
+                        color = if (now && cards) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    WeatherIcon(h.code, h.isDay, Modifier.size(28.dp))
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        fmt.temp(h.temp), style = MaterialTheme.typography.titleMediumEmphasized,
+                        color = if (now && cards) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                    )
+                    if (!cards) {
+                        // A small thermometer bar so compact mode still reads as a trend.
+                        val frac = if (hi - lo < 0.1) 0.5f else ((h.temp - lo) / (hi - lo)).toFloat().coerceIn(0f, 1f)
+                        Box(Modifier.padding(top = 4.dp).width(6.dp).height(36.dp).clip(RoundedCornerShape(3.dp)).background(MaterialTheme.colorScheme.surfaceContainerHighest)) {
+                            Box(
+                                Modifier.align(Alignment.BottomCenter).width(6.dp).height((8 + 28 * frac).dp)
+                                    .clip(RoundedCornerShape(3.dp)).background(tempColor(h.temp)),
+                            )
+                        }
+                    }
+                    if (!h.precipProb.isNaN() && h.precipProb >= 10) {
+                        Text(
+                            "${h.precipProb.roundToInt()}%", style = MaterialTheme.typography.labelSmall,
+                            color = if (now && cards) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
+                        )
+                    } else {
+                        Spacer(Modifier.height(16.dp))
+                    }
+                }
+            }
+            if (cards) {
+                Surface(
+                    shape = RoundedCornerShape(24.dp),
+                    color = if (now) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHigh,
+                ) { content() }
+            } else content()
         }
     }
 }

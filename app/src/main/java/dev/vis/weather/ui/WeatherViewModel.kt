@@ -45,7 +45,8 @@ data class UiState(
 }
 
 /** Where a widget tap should land once the app is open. */
-data class WidgetNav(val metric: dev.vis.weather.ui.components.Metric?, val day: Int)
+/** Where a widget / notification tap should land. [open]: "alerts", "warnings", "friends", "wardrobe", "metric:X", "day:N". */
+data class WidgetNav(val metric: dev.vis.weather.ui.components.Metric?, val day: Int, val open: String? = null)
 
 data class UpdateUi(
     val release: dev.vis.weather.data.Release? = null,
@@ -133,10 +134,15 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
     fun dismissUpdate() = _update.update { it.copy(dismissed = true) }
 
     fun updateSettings(t: (Settings) -> Settings) {
-        val before = settings.value.appIcon
+        val before = settings.value
         prefs.updateSettings(t)
-        val after = settings.value.appIcon
-        if (after != before) dev.vis.weather.data.AppIcons.apply(getApplication(), after)
+        if (settings.value.forecastModel != before.forecastModel || settings.value.localCorrection != before.localCorrection) {
+            dev.vis.weather.data.ForecastRepo.clearMemory()
+            refresh()
+        }
+        // The launcher icon is applied when the app goes to the background (MainActivity.onStop) so the
+        // launcher doesn't refresh under the user; keep background work in step with the dynamic icon.
+        if (settings.value.appIcon != before.appIcon) dev.vis.weather.alerts.AlertScheduler.sync(getApplication())
         updateWidgets()
     }
 
@@ -157,13 +163,40 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
 
     fun consumeNav() { _nav.value = null }
 
+    /** Opened from a notification. */
+    fun openFromNotification(open: String?, placeKey: String?) {
+        val s = _state.value
+        if (placeKey != null && placeKey != s.selection) {
+            if (placeKey == UiState.CURRENT) useCurrentLocation()
+            else s.places.firstOrNull { it.key == placeKey }?.let { selectPlace(it) }
+        }
+        if (open == null) return
+        val metric = open.removePrefix("metric:").takeIf { open.startsWith("metric:") }
+            ?.let { m -> dev.vis.weather.ui.components.Metric.entries.firstOrNull { it.name == m } }
+        val day = open.removePrefix("day:").takeIf { open.startsWith("day:") }?.toIntOrNull() ?: -1
+        _nav.value = WidgetNav(metric, day, open.takeIf { metric == null && day < 0 })
+    }
+
+    private fun afterRefresh(place: Place, forecast: Forecast) {
+        val app = getApplication<Application>()
+        dev.vis.weather.data.ForecastRepo.remember(place, forecast)
+        runCatching { dev.vis.weather.data.Stats.record(app, place, forecast) }
+        viewModelScope.launch {
+            runCatching { dev.vis.weather.alerts.WarningStore.refresh(app, place) }
+            val alerts = dev.vis.weather.alerts.AlertPrefs.get(app)
+            if (alerts.config(dev.vis.weather.alerts.AlertType.ONGOING).enabled) {
+                val key = if (_state.value.usingCurrent) UiState.CURRENT else place.key
+                runCatching { dev.vis.weather.alerts.AlertEngine.showOngoing(app, forecast, key, place, settings.value) }
+            }
+            runCatching { dev.vis.weather.alerts.BackgroundHooks.afterRefresh(app, settings.value, forecast) }
+        }
+    }
+
     private fun showCached() {
         val place = _state.value.activePlace ?: return
-        val cached = prefs.loadCache(place.key) ?: return
+        dev.vis.weather.alerts.WarningStore.get(getApplication(), place.key)
         viewModelScope.launch {
-            val f = withContext(Dispatchers.Default) {
-                runCatching { WeatherApi.parse(cached.first, cached.second, cached.third) }.getOrNull()
-            }
+            val f = withContext(Dispatchers.Default) { dev.vis.weather.data.ForecastRepo.parseCache(getApplication(), place) }
             if (f != null && _state.value.forecast == null) {
                 _state.update { it.copy(forecast = f, forecastKey = place.key) }
             }
@@ -190,16 +223,10 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
                         return@launch
                     }
                 }
-                val (fJson, aJson) = coroutineScope {
-                    val f = async { WeatherApi.forecastJson(place.lat, place.lon) }
-                    val a = async { WeatherApi.airJson(place.lat, place.lon) }
-                    f.await() to a.await()
-                }
-                val now = System.currentTimeMillis()
-                val forecast = withContext(Dispatchers.Default) { WeatherApi.parse(fJson, aJson, now) }
-                withContext(Dispatchers.IO) { prefs.saveCache(place.key, fJson, aJson, now) }
+                val forecast = dev.vis.weather.data.ForecastRepo.fetch(getApplication(), place)
                 _state.update { it.copy(forecast = forecast, forecastKey = place.key, loading = false, error = null) }
                 updateWidgets()
+                afterRefresh(place, forecast)
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -296,6 +323,18 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun onQueryChange(q: String) {
+        val code = q.trim().lowercase()
+        if (code in dev.vis.weather.ui.game.DropDash.codes) {
+            _search.update { SearchState() }
+            _nav.value = WidgetNav(null, -1, "game")
+            return
+        }
+        dev.vis.weather.ui.theme.SecretThemes.unlock(getApplication(), q)?.let { theme ->
+            _search.update { SearchState() }
+            updateSettings { it.copy(secretTheme = theme.id) }
+            android.widget.Toast.makeText(getApplication(), "Secret theme unlocked: ${theme.name}", android.widget.Toast.LENGTH_LONG).show()
+            return
+        }
         _search.update { it.copy(query = q, error = null) }
         searchJob?.cancel()
         if (q.isBlank()) {

@@ -585,5 +585,5 @@ class AirWidgetReceiver : WeatherWidgetReceiver() { override val glanceAppWidget
 val widgetReceivers = listOf(
     NowWidgetReceiver::class, HourlyWidgetReceiver::class, DailyWidgetReceiver::class, ForecastWidgetReceiver::class,
     ClockWidgetReceiver::class, DetailsWidgetReceiver::class, RainWidgetReceiver::class, SunMoonWidgetReceiver::class,
-    AirWidgetReceiver::class,
+    AirWidgetReceiver::class, ShapeWidgetReceiver::class,
 )

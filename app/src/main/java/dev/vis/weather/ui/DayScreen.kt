@@ -41,6 +41,7 @@ import androidx.compose.material.icons.rounded.Compress
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.DeviceThermostat
 import androidx.compose.material.icons.rounded.Grain
+import androidx.compose.material.icons.rounded.LocalFireDepartment
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Thermostat
 import androidx.compose.material.icons.rounded.Visibility
@@ -72,7 +73,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
+import dev.vis.weather.data.Astro
 import dev.vis.weather.data.Day
+import dev.vis.weather.data.Indices
+import dev.vis.weather.data.Insights
 import dev.vis.weather.data.Forecast
 import dev.vis.weather.data.Hour
 import dev.vis.weather.data.Settings
@@ -89,7 +93,7 @@ import dev.vis.weather.ui.components.SectionCard
 import dev.vis.weather.ui.components.ShapeBadge
 import dev.vis.weather.ui.components.WeatherIcon
 import dev.vis.weather.ui.components.heroColors
-import java.time.ZoneOffset
+import dev.vis.weather.ui.detail.snow
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
@@ -264,7 +268,7 @@ private fun DayHero(d: Day, hours: List<Hour>, fmt: Fmt, modifier: Modifier) {
     val (blob, _) = heroColors(sky, true)
     val shapes = run {
         if (sky == Sky.CLEAR || sky == Sky.PARTLY) listOf(MaterialShapes.SoftBurst, MaterialShapes.Sunny, MaterialShapes.Cookie12Sided)
-        else listOf(MaterialShapes.Puffy, MaterialShapes.Cookie9Sided, MaterialShapes.Clover8Leaf)
+        else listOf(MaterialShapes.Cookie7Sided, MaterialShapes.Cookie9Sided, MaterialShapes.Clover8Leaf)
     }
     Column(modifier.padding(horizontal = 8.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -389,6 +393,7 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
                     listOfNotNull(
                         d.precipProbMax.takeIf { !it.isNaN() }?.let { "${it.roundToInt()}% chance" },
                         d.precipHours.takeIf { !it.isNaN() && it > 0 }?.let { "${it.roundToInt()} h of rain" },
+                        d.snowfallSum.takeIf { !it.isNaN() && it >= 0.1 }?.let { "${fmt.snow(it)} of snow" },
                     ).joinToString(" · "),
                     it,
                 )
@@ -404,10 +409,15 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
         )
         Pair2(
             {
+                val uw = remember(f, d) { Indices.uvWindow(f, d.date) }
                 Stat(
                     "UV max", Icons.Rounded.WbSunny, MaterialShapes.Sunny,
                     if (d.uvMax.isNaN()) dash else d.uvMax.roundToInt().toString(), "",
-                    "${WeatherInfo.uvLevel(d.uvMax)}. ${WeatherInfo.uvAdvice(d.uvMax)}",
+                    "${WeatherInfo.uvLevel(d.uvMax)}" + when {
+                        uw == null -> ". ${WeatherInfo.uvAdvice(d.uvMax)}"
+                        uw.start == 0L -> ", peak ${fmt.time(uw.peakTime)}. ${WeatherInfo.uvAdvice(d.uvMax)}"
+                        else -> ", peak ${fmt.time(uw.peakTime)}. Protect ${fmt.time(uw.start)}–${fmt.time(uw.end)}."
+                    },
                     it,
                 )
             },
@@ -425,7 +435,7 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
             {
                 val a = avg(hum)
                 Stat(
-                    "Humidity", Icons.Rounded.WaterDrop, MaterialShapes.Puffy,
+                    "Humidity", Icons.Rounded.WaterDrop, MaterialShapes.Cookie7Sided,
                     if (a.isNaN()) dash else a.roundToInt().toString(), "%",
                     "Range ${fmt.pct(minOf(hum))}–${fmt.pct(maxOf(hum))}",
                     it,
@@ -433,16 +443,10 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
             },
             {
                 val a = avg(dew)
+                val hd = remember(f, d) { Insights.humidityDay(f, d.date) }
                 Stat(
                     "Dew point", Icons.Rounded.DeviceThermostat, MaterialShapes.Arch, fmt.temp(a), "",
-                    when {
-                        a.isNaN() -> ""
-                        a < 10 -> "Dry and comfortable"
-                        a < 16 -> "Comfortable"
-                        a < 20 -> "Slightly humid"
-                        a < 24 -> "Humid and muggy"
-                        else -> "Oppressive"
-                    },
+                    hd?.first ?: Indices.humidityComfort(a, avg(hum)).label,
                     it,
                 )
             },
@@ -477,8 +481,36 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
             {
                 Stat(
                     "Feels like", Icons.Rounded.Thermostat, MaterialShapes.Cookie4Sided,
-                    fmt.temp(d.feelsMax), "",
-                    "Low ${fmt.temp(d.feelsMin)}",
+                    "${fmt.temp(d.feelsMin)} – ${fmt.temp(d.feelsMax)}", "",
+                    when {
+                        d.feelsMax.isNaN() || d.max.isNaN() -> ""
+                        d.feelsMax - d.max > 2 -> "Feels warmer than ${fmt.temp(d.max)} in the afternoon"
+                        d.feelsMin - d.min < -2 -> "Feels colder than ${fmt.temp(d.min)} at the coldest"
+                        else -> "Close to the actual ${fmt.temp(d.min)} – ${fmt.temp(d.max)}"
+                    },
+                    it,
+                )
+            },
+        )
+        Pair2(
+            {
+                val peak = hours.maxByOrNull { h -> Indices.fireIndex(h).let { v -> if (v.isNaN()) -1.0 else v } }
+                val v = peak?.let { h -> Indices.fireIndex(h) } ?: Double.NaN
+                val b = Indices.fireBand(v)
+                Stat(
+                    "Fire weather", Icons.Rounded.LocalFireDepartment, MaterialShapes.SoftBurst,
+                    if (v.isNaN()) dash else v.roundToInt().toString(), "",
+                    if (peak == null || v.isNaN()) "" else "${b.label}, peak ${fmt.hour(peak.time)}",
+                    it,
+                )
+            },
+            {
+                val peak = hours.filter { h -> !h.wetBulb.isNaN() }.maxByOrNull { h -> h.wetBulb }
+                val b = Indices.coolingComfort(peak?.wetBulb ?: Double.NaN, d.max)
+                Stat(
+                    "Cooling comfort", Icons.Rounded.WaterDrop, MaterialShapes.Cookie7Sided,
+                    fmt.temp(peak?.wetBulb ?: Double.NaN), "",
+                    if (peak == null) "" else "${b.label} · wet-bulb peak ${fmt.hour(peak.time)}",
                     it,
                 )
             },
@@ -490,8 +522,10 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
 
 @Composable
 private fun SunMoon(f: Forecast, d: Day, fmt: Fmt) {
-    val noon = d.date.atTime(12, 0).toEpochSecond(ZoneOffset.UTC)
-    val moon = WeatherInfo.moon(noon)
+    val lon = if (f.longitude.isNaN()) 0.0 else f.longitude
+    val sun = remember(f, d) { Astro.sunDay(d.date, f.latitude, lon) }
+    val moon = remember(f, d) { Astro.moonState(d.date.atTime(21, 0).atZone(f.zone).toEpochSecond(), f.latitude, lon) }
+    val moonDay = remember(f, d) { Astro.moonDay(d.date, f.zone, f.latitude, lon) }
     AppCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -514,6 +548,12 @@ private fun SunMoon(f: Forecast, d: Day, fmt: Fmt) {
                     Text(fmt.time(d.sunset), style = MaterialTheme.typography.titleLargeEmphasized)
                 }
             }
+            Spacer(Modifier.height(6.dp))
+            Text(
+                "First light ${fmt.time(sun.firstLight)} · last light ${fmt.time(sun.lastLight)} · sun ${sun.noonElevation.roundToInt()}° high at ${fmt.time(sun.solarNoon)}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
             Spacer(Modifier.height(16.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 MoonPhase(moon.phase, southern = f.latitude < 0, modifier = Modifier.size(56.dp))
@@ -527,6 +567,18 @@ private fun SunMoon(f: Forecast, d: Day, fmt: Fmt) {
                     )
                 }
                 Spacer(Modifier.weight(1f))
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        "Rise ${if (moonDay.rise != 0L) fmt.time(moonDay.rise) else "–"}",
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                    Text(
+                        "Set ${if (moonDay.set != 0L) fmt.time(moonDay.set) else "–"}",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Spacer(Modifier.width(10.dp))
                 Icon(Icons.Rounded.DarkMode, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
@@ -562,7 +614,8 @@ private fun HourRow(h: Hour, fmt: Fmt, index: Int, count: Int, modifier: Modifie
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    "${fmt.wind(h.windSpeed)} ${WeatherInfo.compass(h.windDir)} · ${fmt.pct(h.humidity)} RH",
+                    "${fmt.wind(h.windSpeed)} ${WeatherInfo.compass(h.windDir)} · ${fmt.pct(h.humidity)} RH" +
+                        (if (!h.snowfall.isNaN() && h.snowfall >= 0.1) " · ${fmt.snow(h.snowfall)} snow" else if (!h.precip.isNaN() && h.precip >= 0.1) " · ${fmt.precip(h.precip)}" else ""),
                     style = MaterialTheme.typography.labelSmall,
                     color = cs.onSurfaceVariant,
                     maxLines = 1,

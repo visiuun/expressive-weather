@@ -24,27 +24,58 @@ import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
- * Glance can't use font files, so big numbers are drawn into bitmaps with the app's chunky cut of
- * Google Sans Flex and shown with Image. Bitmaps are white masks: tint them with a theme colour.
+ * Glance can't use font files, so big numbers are drawn into bitmaps with the same Google Sans Flex
+ * cut the app uses (font style, rounded or sharp edges, weight and optical size follow the user's
+ * Appearance settings) and shown with Image. Bitmaps are white masks: tint them with a theme colour.
+ * A trailing "°" is drawn like the app's hero: smaller and raised.
  */
 object ChunkyText {
-    /** The app's "chunky" cut: wide, semi-bold, fully rounded. opsz is added per size. */
-    private const val AXES = "'wdth' 118, 'wght' 600, 'ROND' 100"
-
     /** Largest bitmap we render (px); bigger numbers are drawn smaller and scaled up. ~0.7 MB. */
     private const val MAX_AREA = 180_000
 
     class Glyphs(val bitmap: Bitmap, val widthPx: Float, val heightPx: Float)
 
-    @Volatile private var flex: Typeface? = null
+    private val faces = HashMap<String, Typeface?>()
     private val cache = object : LruCache<String, Glyphs>(6 * 1024 * 1024) {
         override fun sizeOf(key: String, value: Glyphs) = value.bitmap.byteCount
     }
 
-    private fun typeface(context: Context): Typeface? {
-        if (Build.VERSION.SDK_INT < 26) return null
-        flex?.let { return it }
-        return runCatching { ResourcesCompat.getFont(context.applicationContext, R.font.google_sans_flex) }.getOrNull()?.also { flex = it }
+    /** Axes matching [dev.vis.weather.ui.theme.AppType] for a display-size number (hero uses Medium + shift). */
+    private fun axes(s: dev.vis.weather.data.Settings, opsz: Int, weight: Int? = null): String {
+        val chunky = s.fontStyle == dev.vis.weather.data.FontStyle.CHUNKY
+        val wdth = when (s.fontStyle) {
+            dev.vis.weather.data.FontStyle.DEFAULT -> 100
+            dev.vis.weather.data.FontStyle.CHUNKY -> if (opsz >= 36) 118 else 125
+            dev.vis.weather.data.FontStyle.TALL -> 76
+        }
+        val wght = weight ?: (500 + if (chunky) 100 else 0)
+        val rond = if (s.fontEdges == dev.vis.weather.data.FontEdges.ROUNDED) 100 else 0
+        return "'wght' $wght, 'wdth' $wdth, 'ROND' $rond, 'opsz' $opsz, 'slnt' 0"
+    }
+
+    /** A typeface with the axes baked in (API 29+ Font.Builder applies them reliably), else null. */
+    private fun face(context: Context, axes: String): Typeface? = synchronized(faces) {
+        faces.getOrPut(axes) {
+            if (Build.VERSION.SDK_INT >= 29) runCatching {
+                val font = android.graphics.fonts.Font.Builder(context.applicationContext.resources, R.font.google_sans_flex)
+                    .setFontVariationSettings(axes).build()
+                Typeface.CustomFallbackBuilder(android.graphics.fonts.FontFamily.Builder(font).build()).build()
+            }.getOrNull() else null
+        }
+    }
+
+    private fun paint(context: Context, axes: String, sizePx: Float): Paint {
+        val p = Paint(Paint.ANTI_ALIAS_FLAG or Paint.SUBPIXEL_TEXT_FLAG).apply { color = android.graphics.Color.WHITE; textSize = sizePx }
+        val baked = face(context, axes)
+        when {
+            baked != null -> p.typeface = baked
+            Build.VERSION.SDK_INT >= 26 -> {
+                p.typeface = runCatching { ResourcesCompat.getFont(context.applicationContext, R.font.google_sans_flex) }.getOrNull() ?: Typeface.DEFAULT_BOLD
+                p.fontVariationSettings = axes
+            }
+            else -> p.typeface = Typeface.DEFAULT_BOLD
+        }
+        return p
     }
 
     /**
@@ -52,22 +83,33 @@ object ChunkyText {
      * (display cut for big numbers, sturdier text cut for small ones).
      */
     fun render(context: Context, text: String, sizePx: Float, maxWidthPx: Float, opsz: Int): Glyphs {
-        val key = "$text|${sizePx.toInt()}|${maxWidthPx.toInt()}|$opsz"
+        val settings = dev.vis.weather.data.Prefs(context).settings.value
+        val ax = axes(settings, opsz)
+        val key = "$text|${sizePx.toInt()}|${maxWidthPx.toInt()}|$ax"
         cache.get(key)?.let { return it }
-        val p = Paint(Paint.ANTI_ALIAS_FLAG or Paint.SUBPIXEL_TEXT_FLAG).apply { color = android.graphics.Color.WHITE }
-        val face = typeface(context)
-        if (face != null && Build.VERSION.SDK_INT >= 26) {
-            p.typeface = face
-            p.fontVariationSettings = "$AXES, 'opsz' $opsz"
-        } else {
-            p.typeface = Typeface.DEFAULT_BOLD
+
+        val degree = text.endsWith("°") && text.length > 1
+        val body = if (degree) text.dropLast(1) else text
+        val display = opsz >= 36
+        val p = paint(context, ax, sizePx)
+        // The hero's tight tracking (-6 sp at 136 sp).
+        if (display && settings.fontStyle == dev.vis.weather.data.FontStyle.CHUNKY) p.letterSpacing = -0.044f
+        val dp = if (degree) paint(context, axes(settings, (opsz * 0.53f).toInt().coerceAtLeast(9), if (settings.fontStyle == dev.vis.weather.data.FontStyle.CHUNKY) 500 else 400), sizePx * 0.53f) else null
+
+        fun measure(): Pair<Rect, Float> {
+            val b = Rect(); p.getTextBounds(body, 0, body.length, b)
+            var extra = 0f
+            if (dp != null) {
+                val db = Rect(); dp.getTextBounds("°", 0, 1, db)
+                extra = p.textSize * 0.03f + db.width()
+            }
+            return b to extra
         }
-        p.textSize = sizePx
-        val b = Rect()
-        p.getTextBounds(text, 0, text.length, b)
-        if (b.width() > maxWidthPx && maxWidthPx > 0) {
-            p.textSize = sizePx * maxWidthPx / b.width()
-            p.getTextBounds(text, 0, text.length, b)
+        var (b, extra) = measure()
+        if (maxWidthPx > 0 && b.width() + extra > maxWidthPx) {
+            val k = maxWidthPx / (b.width() + extra)
+            p.textSize *= k; dp?.let { it.textSize *= k }
+            measure().let { b = it.first; extra = it.second }
         }
         // A fixed top (digit height) so values of different lengths line up.
         val z = Rect()
@@ -76,14 +118,19 @@ object ChunkyText {
         val top = min(b.top, z.top) - pad
         val bottom = max(b.bottom, 0) + pad
         val left = b.left - pad
-        val right = b.right + pad
+        val right = b.right + extra + pad
         val w = right - left
         val h = bottom - top
         val k = min(1f, sqrt(MAX_AREA / (w * h).coerceAtLeast(1f)))
         val bmp = createBitmap(ceil(w * k).toInt().coerceAtLeast(1), ceil(h * k).toInt().coerceAtLeast(1))
         Canvas(bmp).apply {
             scale(k, k)
-            drawText(text, -left, -top, p)
+            drawText(body, -left, -top, p)
+            if (dp != null) {
+                val db = Rect(); dp.getTextBounds("°", 0, 1, db)
+                // Top of the degree sits on the digits' cap line, like the app's raised "°".
+                drawText("°", b.right - left + p.textSize * 0.03f - db.left, -top + z.top - db.top, dp)
+            }
         }
         return Glyphs(bmp, w, h).also { cache.put(key, it) }
     }

@@ -199,7 +199,17 @@ object Notifier {
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setCategory(NotificationCompat.CATEGORY_STATUS)
             .setContentIntent(openIntent(context, null, placeKey, ONGOING_ID))
-        runCatching { NotificationManagerCompat.from(context).notify(ONGOING_ID, b.build()) }
+            // Android 14+ lets people swipe away ongoing notifications; put it straight back.
+            .setDeleteIntent(
+                PendingIntent.getBroadcast(
+                    context, ONGOING_ID,
+                    Intent(context, AlertReceiver::class.java).setAction(AlertScheduler.ACTION_REPOST_ONGOING)
+                        .putExtra("temp", temp).putExtra("title", title).putExtra("text", text)
+                        .putExtra("big", bigText).putExtra("place", placeKey).putExtra("placeName", placeName),
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+                )
+            )
+        runCatching { NotificationManagerCompat.from(context).notify(ONGOING_ID, b.build().apply { flags = flags or android.app.Notification.FLAG_NO_CLEAR }) }
     }
 
     fun cancelOngoing(context: Context) = NotificationManagerCompat.from(context).cancel(ONGOING_ID)

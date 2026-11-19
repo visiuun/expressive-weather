@@ -34,6 +34,7 @@ import java.util.concurrent.TimeUnit
 object AlertScheduler {
     private const val WATCH = "alerts-watch"
     const val ACTION_DAILY = "dev.vis.weather.action.DAILY_ALERT"
+    const val ACTION_REPOST_ONGOING = "dev.vis.weather.action.REPOST_ONGOING"
     const val EXTRA_TYPE = "type"
 
     private val network = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
@@ -127,6 +128,18 @@ class AlertReceiver : BroadcastReceiver() {
                 if (!cfg.enabled) return
                 AlertScheduler.runDailyNow(context, type)
                 AlertScheduler.scheduleDaily(context, type, cfg.time)
+            }
+            AlertScheduler.ACTION_REPOST_ONGOING -> {
+                if (!AlertPrefs.get(context).config(AlertType.ONGOING).enabled) return
+                Notifier.postOngoing(
+                    context,
+                    intent.getStringExtra("temp") ?: return,
+                    intent.getStringExtra("title").orEmpty(),
+                    intent.getStringExtra("text").orEmpty(),
+                    intent.getStringExtra("big").orEmpty(),
+                    intent.getStringExtra("place"),
+                    intent.getStringExtra("placeName").orEmpty(),
+                )
             }
             else -> AlertScheduler.sync(context)
         }

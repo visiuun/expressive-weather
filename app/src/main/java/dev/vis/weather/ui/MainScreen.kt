@@ -2,6 +2,10 @@
 
 package dev.vis.weather.ui
 
+import dev.vis.weather.inSentence
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
+import dev.vis.weather.L
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
@@ -35,6 +39,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.rounded.Air
@@ -112,6 +117,8 @@ fun MainScreen(
     onOpenWarnings: () -> Unit = {},
     onOpenFriends: () -> Unit = {},
     onOpenAlert: (dev.vis.weather.alerts.AlertType) -> Unit = {},
+    onOpenMap: () -> Unit = {},
+    onCustomize: () -> Unit = {},
 ) {
     val f = state.forecast
     val listState = rememberLazyListState()
@@ -140,8 +147,8 @@ fun MainScreen(
             state.usingCurrent && state.needsPermission && f == null ->
                 PermissionNeeded(onRequestLocation, onOpenAppSettings, onOpenLocations)
             f == null && state.loading -> Loading()
-            f == null -> ErrorState(state.error ?: "No data yet", onRefresh, onOpenLocations)
-            else -> Content(f, state, settings, listState, onRefresh, onOpenDay, warnings, onOpenWarnings, onOpenFriends, onOpenAlert)
+            f == null -> ErrorState(state.error ?: stringResource(R.string.m_no_data_yet), onRefresh, onOpenLocations)
+            else -> Content(f, state, settings, listState, onRefresh, onOpenDay, warnings, onOpenWarnings, onOpenFriends, onOpenAlert, onOpenMap, onCustomize)
         }
     }
     }
@@ -177,7 +184,7 @@ private fun TopBar(state: UiState, onOpenLocations: () -> Unit, onOpenSettings: 
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f, fill = false)) {
                     Text(
-                        place?.name ?: if (state.usingCurrent) "Current location" else "Choose a place",
+                        place?.name ?: if (state.usingCurrent) stringResource(R.string.m_current_location) else stringResource(R.string.m_choose_place),
                         style = MaterialTheme.typography.titleMediumEmphasized,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -198,7 +205,7 @@ private fun TopBar(state: UiState, onOpenLocations: () -> Unit, onOpenSettings: 
         }
         Spacer(Modifier.width(8.dp))
         FilledTonalIconButton(onClick = onOpenSettings) {
-            Icon(Icons.Rounded.Settings, contentDescription = "Settings")
+            Icon(Icons.Rounded.Settings, contentDescription = stringResource(R.string.m_settings))
         }
     }
 }
@@ -215,6 +222,8 @@ private fun Content(
     onOpenWarnings: () -> Unit,
     onOpenFriends: () -> Unit,
     onOpenAlert: (dev.vis.weather.alerts.AlertType) -> Unit,
+    onOpenMap: () -> Unit,
+    onCustomize: () -> Unit,
 ) {
     val fmt = remember(settings, f.zone) { Fmt(settings, f.zone) }
     val pullState = rememberPullToRefreshState()
@@ -261,7 +270,7 @@ private fun Content(
                             Icon(Icons.Rounded.ErrorOutline, null, tint = MaterialTheme.colorScheme.onErrorContainer)
                             Spacer(Modifier.width(10.dp))
                             Text(
-                                "${state.error}. Showing data from ${fmt.time(f.fetchedAt / 1000)}.",
+                                stringResource(R.string.m_error_showing_cached, state.error.orEmpty(), fmt.time(f.fetchedAt / 1000)),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onErrorContainer,
                             )
@@ -277,6 +286,12 @@ private fun Content(
                     }
                     HomeCard.HIGHLIGHTS -> item(key = "highlights") { Highlights(f, fmt, w) }
                     HomeCard.NOWCAST -> if (nowcast != null) item(key = "nowcast") { Box(w) { NowcastCard(f, fmt, nowcast) } }
+                    HomeCard.RADAR -> item(key = "radar") {
+                        val p = state.activePlace
+                        val lat = p?.lat ?: f.latitude
+                        val lon = p?.lon ?: f.longitude
+                        if (!lat.isNaN() && !lon.isNaN()) dev.vis.weather.ui.map.RadarCard(lat, lon, settings, fmt, onOpenMap, w)
+                    }
                     HomeCard.HOURLY -> item(key = "hourly") { Box(w) { HourlyCard(f, fmt, settings.hourlyStyle) } }
                     HomeCard.DAILY -> item(key = "daily") { Box(w) { DailyCard(f, fmt, onOpenDay, settings.dailyDays) } }
                     HomeCard.WARDROBE -> item(key = "wardrobe") {
@@ -286,7 +301,7 @@ private fun Content(
                     HomeCard.DETAILS -> item(key = "details") { Box(w) { DetailGrid(f, fmt) } }
                 }
             }
-            item(key = "footer") { Footer(f, fmt, w) }
+            item(key = "footer") { Footer(f, fmt, w, onCustomize) }
         }
     }
 }
@@ -357,8 +372,8 @@ private fun Hero(f: Forecast, fmt: Fmt, settings: Settings, modifier: Modifier) 
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                HeroPill("Feels ${fmt.temp(c.feelsLike)}", withBg, fg)
-                if (settings.showWetBulb && !wetBulb.isNaN()) HeroPill("Wet bulb ${fmt.temp(wetBulb)}", withBg, fg)
+                HeroPill(stringResource(R.string.m_hero_feels, fmt.temp(c.feelsLike)), withBg, fg)
+                if (settings.showWetBulb && !wetBulb.isNaN()) HeroPill(stringResource(R.string.m_hero_wet_bulb, fmt.temp(wetBulb)), withBg, fg)
                 if (today != null) {
                     HeroPill("↑ ${fmt.temp(today.max)}", withBg, fg)
                     HeroPill("↓ ${fmt.temp(today.min)}", withBg, fg)
@@ -411,17 +426,17 @@ private fun Highlights(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val today = f.today
     val rainChance = f.upcoming.take(12).maxOfOrNull { if (it.precipProb.isNaN()) 0.0 else it.precipProb } ?: Double.NaN
     val items = buildList {
-        add(HighlightItem(Icons.Rounded.Air, fmt.windNum(c.windSpeed), "${fmt.windUnit} ${WeatherInfo.compass(c.windDir)}", MaterialShapes.Cookie6Sided, dev.vis.weather.ui.components.Metric.WIND))
-        add(HighlightItem(Icons.Rounded.WaterDrop, fmt.pct(c.humidity), "Humidity", MaterialShapes.Cookie7Sided, dev.vis.weather.ui.components.Metric.HUMIDITY))
-        add(HighlightItem(Icons.Rounded.Umbrella, fmt.pct(rainChance), "Rain 12 h", MaterialShapes.Clover4Leaf, dev.vis.weather.ui.components.Metric.PRECIP))
-        add(HighlightItem(Icons.Rounded.WbSunny, if (c.uv.isNaN()) "–" else c.uv.roundToInt().toString(), "UV ${WeatherInfo.uvLevel(c.uv).lowercase()}", MaterialShapes.Sunny, dev.vis.weather.ui.components.Metric.UV))
+        add(HighlightItem(Icons.Rounded.Air, fmt.windNum(c.windSpeed), stringResource(R.string.m_hl_wind, fmt.windUnit, WeatherInfo.compass(c.windDir)), MaterialShapes.Cookie6Sided, dev.vis.weather.ui.components.Metric.WIND))
+        add(HighlightItem(Icons.Rounded.WaterDrop, fmt.pct(c.humidity), stringResource(R.string.m_hl_humidity), MaterialShapes.Cookie7Sided, dev.vis.weather.ui.components.Metric.HUMIDITY))
+        add(HighlightItem(Icons.Rounded.Umbrella, fmt.pct(rainChance), stringResource(R.string.m_hl_rain_12h), MaterialShapes.Clover4Leaf, dev.vis.weather.ui.components.Metric.PRECIP))
+        add(HighlightItem(Icons.Rounded.WbSunny, if (c.uv.isNaN()) "–" else c.uv.roundToInt().toString(), stringResource(R.string.m_hl_uv, WeatherInfo.uvLevel(c.uv).inSentence()), MaterialShapes.Sunny, dev.vis.weather.ui.components.Metric.UV))
         f.air?.usAqi?.takeIf { !it.isNaN() }?.let {
-            add(HighlightItem(Icons.Rounded.Masks, it.roundToInt().toString(), "Air quality", MaterialShapes.Flower, dev.vis.weather.ui.components.Metric.AIR))
+            add(HighlightItem(Icons.Rounded.Masks, it.roundToInt().toString(), stringResource(R.string.m_hl_air), MaterialShapes.Flower, dev.vis.weather.ui.components.Metric.AIR))
         }
         add(HighlightItem(Icons.Rounded.Compress, fmt.pressureNum(c.pressure), fmt.pressureUnit, MaterialShapes.Gem, dev.vis.weather.ui.components.Metric.PRESSURE))
-        add(HighlightItem(Icons.Rounded.Visibility, fmt.distanceNum(c.visibility), "${fmt.distanceUnit} visibility", MaterialShapes.Oval, dev.vis.weather.ui.components.Metric.VISIBILITY))
+        add(HighlightItem(Icons.Rounded.Visibility, fmt.distanceNum(c.visibility), stringResource(R.string.m_hl_visibility, fmt.distanceUnit), MaterialShapes.Oval, dev.vis.weather.ui.components.Metric.VISIBILITY))
         if (today != null) {
-            val upNext = if (c.time < today.sunrise || c.time > today.sunset) "Sunrise" to today.sunrise else "Sunset" to today.sunset
+            val upNext = if (c.time < today.sunrise || c.time > today.sunset) stringResource(R.string.m_sunrise) to today.sunrise else stringResource(R.string.m_sunset) to today.sunset
             add(HighlightItem(Icons.Rounded.WbTwilight, fmt.time(upNext.second), upNext.first, MaterialShapes.SoftBurst, dev.vis.weather.ui.components.Metric.SUN))
         }
     }
@@ -480,49 +495,55 @@ private fun summary(f: Forecast, fmt: Fmt): String {
     // Next notable precipitation in the next 12 hours
     val wetHour = upcoming.drop(1).take(12).firstOrNull { !it.precipProb.isNaN() && it.precipProb >= 50 }
     if (wetHour != null && WeatherInfo.sky(f.current.code) !in setOf(Sky.RAIN, Sky.DRIZZLE)) {
-        val kind = when (WeatherInfo.sky(wetHour.code)) {
-            Sky.SNOW -> "Snow"
-            Sky.THUNDER -> "Thunderstorms"
-            else -> "Rain"
+        val likely = when (WeatherInfo.sky(wetHour.code)) {
+            Sky.SNOW -> R.string.m_summary_snow_likely
+            Sky.THUNDER -> R.string.m_summary_thunder_likely
+            else -> R.string.m_summary_rain_likely
         }
-        parts += "$kind likely around ${fmt.hour(wetHour.time)}."
+        parts += L.s(likely, fmt.hour(wetHour.time))
     }
     if (today != null) {
-        val later = WeatherInfo.describe(today.code).lowercase()
-        parts += "Today: $later, high ${fmt.temp(today.max)}."
+        val later = WeatherInfo.describe(today.code).inSentence()
+        parts += L.s(R.string.m_summary_today, later, fmt.temp(today.max))
     }
     if (today != null && tomorrow != null && !today.max.isNaN() && !tomorrow.max.isNaN()) {
         val d = tomorrow.max - today.max
         parts += when {
-            d >= 3 -> "Tomorrow will be warmer (${fmt.temp(tomorrow.max)})."
-            d <= -3 -> "Tomorrow will be cooler (${fmt.temp(tomorrow.max)})."
-            else -> "Similar temperatures tomorrow."
+            d >= 3 -> L.s(R.string.m_summary_warmer, fmt.temp(tomorrow.max))
+            d <= -3 -> L.s(R.string.m_summary_cooler, fmt.temp(tomorrow.max))
+            else -> L.s(R.string.m_summary_similar)
         }
     }
     val gust = upcoming.take(12).maxOfOrNull { if (it.windGust.isNaN()) 0.0 else it.windGust } ?: 0.0
-    if (gust >= 50) parts += "Strong gusts up to ${fmt.wind(gust)}."
+    if (gust >= 50) parts += L.s(R.string.m_summary_gusts, fmt.wind(gust))
     return parts.joinToString(" ")
 }
 
 @Composable
-private fun Footer(f: Forecast, fmt: Fmt, modifier: Modifier) {
+private fun Footer(f: Forecast, fmt: Fmt, modifier: Modifier, onCustomize: () -> Unit) {
     val mins = ((System.currentTimeMillis() - f.fetchedAt) / 60000).toInt()
     Column(modifier.padding(top = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        androidx.compose.material3.FilledTonalButton(onClick = onCustomize) {
+            Icon(Icons.Rounded.Tune, null, Modifier.size(18.dp))
+            Spacer(Modifier.width(8.dp))
+            Text(stringResource(R.string.h_customize_home))
+        }
+        Spacer(Modifier.height(14.dp))
         Text(
-            if (mins < 1) "Updated just now" else "Updated ${fmt.time(f.fetchedAt / 1000)}",
+            if (mins < 1) stringResource(R.string.m_updated_just_now) else stringResource(R.string.m_updated_at, fmt.time(f.fetchedAt / 1000)),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            "Weather data by Open-Meteo.com (CC BY 4.0) · Air quality: Copernicus CAMS · Places © OpenStreetMap contributors",
+            stringResource(R.string.m_footer_credits),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
         if (!f.elevation.isNaN()) {
             Text(
-                "Elevation ${f.elevation.roundToInt()} m · ${f.zone.id}",
+                stringResource(R.string.m_footer_elevation, f.elevation.roundToInt(), f.zone.id),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -536,7 +557,7 @@ private fun Loading() {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             LoadingIndicator(Modifier.size(96.dp))
             Spacer(Modifier.height(16.dp))
-            Text("Fetching the forecast…", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.m_loading), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
@@ -573,10 +594,10 @@ private fun CenteredColumn(content: @Composable () -> Unit) {
 private fun Welcome(onRequestLocation: () -> Unit, onSearch: () -> Unit) = CenteredColumn {
     BigShapeIcon { WeatherIcon(2, true, Modifier.size(110.dp), animated = true) }
     Spacer(Modifier.height(28.dp))
-    Text("Hello, weather", style = MaterialTheme.typography.displaySmallEmphasized, textAlign = TextAlign.Center)
+    Text(stringResource(R.string.m_welcome_title), style = MaterialTheme.typography.displaySmallEmphasized, textAlign = TextAlign.Center)
     Spacer(Modifier.height(8.dp))
     Text(
-        "Detailed forecasts from open data. Use your location or search for any place on Earth.",
+        stringResource(R.string.m_welcome_body),
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center,
@@ -585,13 +606,13 @@ private fun Welcome(onRequestLocation: () -> Unit, onSearch: () -> Unit) = Cente
     Button(onClick = onRequestLocation, modifier = Modifier.fillMaxWidth().height(56.dp)) {
         Icon(Icons.Rounded.MyLocation, null)
         Spacer(Modifier.width(10.dp))
-        Text("Use my location", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.m_use_my_location), style = MaterialTheme.typography.titleMedium)
     }
     Spacer(Modifier.height(10.dp))
     FilledTonalButton(onClick = onSearch, modifier = Modifier.fillMaxWidth().height(56.dp)) {
         Icon(Icons.Rounded.Search, null)
         Spacer(Modifier.width(10.dp))
-        Text("Search for a place", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.m_search_place), style = MaterialTheme.typography.titleMedium)
     }
 }
 
@@ -599,32 +620,32 @@ private fun Welcome(onRequestLocation: () -> Unit, onSearch: () -> Unit) = Cente
 private fun PermissionNeeded(onRequest: () -> Unit, onOpenAppSettings: () -> Unit, onSearch: () -> Unit) = CenteredColumn {
     BigShapeIcon { Icon(Icons.Rounded.MyLocation, null, Modifier.size(72.dp), tint = MaterialTheme.colorScheme.onPrimaryContainer) }
     Spacer(Modifier.height(28.dp))
-    Text("Location access", style = MaterialTheme.typography.headlineMediumEmphasized, textAlign = TextAlign.Center)
+    Text(stringResource(R.string.m_permission_title), style = MaterialTheme.typography.headlineMediumEmphasized, textAlign = TextAlign.Center)
     Spacer(Modifier.height(8.dp))
     Text(
-        "Allow location to get the forecast where you are. Approximate location is enough.",
+        stringResource(R.string.m_permission_body),
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center,
     )
     Spacer(Modifier.height(24.dp))
-    Button(onClick = onRequest, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("Allow location") }
+    Button(onClick = onRequest, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text(stringResource(R.string.m_allow_location)) }
     Spacer(Modifier.height(8.dp))
-    OutlinedButton(onClick = onOpenAppSettings, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("Open app settings") }
+    OutlinedButton(onClick = onOpenAppSettings, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text(stringResource(R.string.m_open_app_settings)) }
     Spacer(Modifier.height(8.dp))
-    FilledTonalButton(onClick = onSearch, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("Search instead") }
+    FilledTonalButton(onClick = onSearch, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text(stringResource(R.string.m_search_instead)) }
 }
 
 @Composable
 private fun ErrorState(message: String, onRetry: () -> Unit, onSearch: () -> Unit) = CenteredColumn {
     BigShapeIcon { Icon(Icons.Rounded.ErrorOutline, null, Modifier.size(72.dp), tint = MaterialTheme.colorScheme.onPrimaryContainer) }
     Spacer(Modifier.height(28.dp))
-    Text("Couldn't load weather", style = MaterialTheme.typography.headlineMediumEmphasized, textAlign = TextAlign.Center)
+    Text(stringResource(R.string.m_error_title), style = MaterialTheme.typography.headlineMediumEmphasized, textAlign = TextAlign.Center)
     Spacer(Modifier.height(8.dp))
     Text(message, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
     Spacer(Modifier.height(24.dp))
-    Button(onClick = onRetry, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("Try again") }
+    Button(onClick = onRetry, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text(stringResource(R.string.m_try_again)) }
     Spacer(Modifier.height(8.dp))
-    FilledTonalButton(onClick = onSearch, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("Choose another place") }
+    FilledTonalButton(onClick = onSearch, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text(stringResource(R.string.m_choose_another_place)) }
 }
 

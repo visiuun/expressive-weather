@@ -44,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.glance.GlanceId
@@ -52,6 +53,7 @@ import androidx.glance.appwidget.state.getAppWidgetState
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.lifecycle.lifecycleScope
+import dev.vis.weather.R
 import dev.vis.weather.data.Place
 import dev.vis.weather.data.Prefs
 import dev.vis.weather.ui.UiState
@@ -145,10 +147,10 @@ private fun TileConfigScreen(
                 Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 8.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, "Cancel") }
+                IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, stringResource(R.string.w_cfg_cancel)) }
                 Spacer(Modifier.width(4.dp))
-                Text("Data tile", style = MaterialTheme.typography.headlineMediumEmphasized, modifier = Modifier.weight(1f))
-                Button(onClick = { onSave(metric, place) }) { Text("Save") }
+                Text(stringResource(R.string.widget_tile_config_title), style = MaterialTheme.typography.headlineMediumEmphasized, modifier = Modifier.weight(1f))
+                Button(onClick = { onSave(metric, place) }) { Text(stringResource(R.string.w_cfg_save)) }
                 Spacer(Modifier.width(8.dp))
             }
             LazyColumn(
@@ -156,7 +158,7 @@ private fun TileConfigScreen(
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp + navBottom),
             ) {
                 item {
-                    SettingsGroup("Show") {
+                    SettingsGroup(stringResource(R.string.w_cfg_show)) {
                         TileMetric.entries.forEachIndexed { i, m ->
                             val now = d?.let { data -> m.read(data).let { r -> listOfNotNull("${r.value}${if (r.unit.isEmpty()) "" else " " + r.unit}", r.pill).joinToString(" · ") } }
                             SettingsAction(
@@ -167,16 +169,16 @@ private fun TileConfigScreen(
                     }
                 }
                 item {
-                    SettingsGroup("Location", Modifier.padding(top = 18.dp)) {
+                    SettingsGroup(stringResource(R.string.w_cfg_location), Modifier.padding(top = 18.dp)) {
                         val n = choices.size + 1
                         SettingsAction(
-                            "Follow the app", "Shows the place open in the app", Icons.Rounded.MyLocation, MaterialShapes.Cookie9Sided, 0, n,
+                            stringResource(R.string.w_cfg_follow_app), stringResource(R.string.w_cfg_follow_app_desc), Icons.Rounded.MyLocation, MaterialShapes.Cookie9Sided, 0, n,
                             trailing = { RadioButton(selected = place.isEmpty(), onClick = null) },
                         ) { place = "" }
                         choices.forEachIndexed { i, (key, p) ->
                             val current = key == UiState.CURRENT
                             SettingsAction(
-                                p.name, if (current) "Your location" else p.region.ifBlank { null },
+                                p.name, if (current) stringResource(R.string.w_cfg_your_location) else p.region.ifBlank { null },
                                 if (current) Icons.Rounded.NearMe else Icons.Rounded.Place,
                                 if (current) MaterialShapes.Circle else MaterialShapes.Clover4Leaf, i + 1, n,
                                 trailing = { RadioButton(selected = place == key, onClick = null) },

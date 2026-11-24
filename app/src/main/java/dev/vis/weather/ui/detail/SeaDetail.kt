@@ -2,6 +2,7 @@
 
 package dev.vis.weather.ui.detail
 
+import dev.vis.weather.inSentence
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -53,7 +54,11 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.vis.weather.L
+import dev.vis.weather.R
 import androidx.compose.ui.unit.sp
 import dev.vis.weather.data.Forecast
 import dev.vis.weather.data.Marine
@@ -90,7 +95,7 @@ fun SeaHero(f: Forecast, fmt: Fmt) {
             )
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(fmt.waveNum(h?.waveHeight ?: Double.NaN), style = MaterialTheme.typography.displayLargeEmphasized)
-                Text(fmt.waveUnit + " waves", style = MaterialTheme.typography.titleMedium, color = cs.onSurfaceVariant)
+                Text(stringResource(R.string.dt_sea_unit_waves, fmt.waveUnit), style = MaterialTheme.typography.titleMedium, color = cs.onSurfaceVariant)
             }
         }
         Spacer(Modifier.height(18.dp))
@@ -98,8 +103,8 @@ fun SeaHero(f: Forecast, fmt: Fmt) {
         Spacer(Modifier.height(6.dp))
         val parts = listOfNotNull(
             state.description.takeIf { it.isNotEmpty() },
-            h?.waveDir?.takeIf { it.ok() }?.let { "Waves from the ${WeatherInfo.compass(it)}." },
-            h?.seaTemp?.takeIf { it.ok() }?.let { "Water ${fmt.temp(it)}." },
+            h?.waveDir?.takeIf { it.ok() }?.let { stringResource(R.string.dt_sea_waves_from, WeatherInfo.compass(it)) },
+            h?.seaTemp?.takeIf { it.ok() }?.let { stringResource(R.string.dt_sea_water_temp, fmt.temp(it)) },
         )
         Text(parts.joinToString(" "), style = MaterialTheme.typography.bodyLarge, color = cs.onSurfaceVariant, textAlign = TextAlign.Center)
     }
@@ -127,11 +132,11 @@ private fun WaveChartCard(f: Forecast, m: Marine, fmt: Fmt, now: MarineHour?) {
     if (hours.isEmpty()) return
     val swellC = MaterialTheme.colorScheme.primary
     val windC = MaterialTheme.colorScheme.tertiary
-    SectionCard("Next 24 hours", Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
+    SectionCard(pluralStringResource(R.plurals.dt_next_hours, 24, 24), Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
         Row(Modifier.padding(horizontal = 18.dp), verticalAlignment = Alignment.CenterVertically) {
-            Swatch(swellC, "Swell")
+            Swatch(swellC, stringResource(R.string.dt_swell))
             Spacer(Modifier.width(16.dp))
-            Swatch(windC, "Wind waves")
+            Swatch(windC, stringResource(R.string.dt_wind_waves))
         }
         Gap(8.dp)
         WaveBars(hours, fmt, swellC, windC)
@@ -140,9 +145,9 @@ private fun WaveChartCard(f: Forecast, m: Marine, fmt: Fmt, now: MarineHour?) {
             Gap()
             StatChips(
                 listOf(
-                    Triple("Wave period", "${p.roundToInt()} s", MarineInfo.swellQuality(p)),
-                    Triple("Swell", fmt.wave(now.swellHeight), now.swellDir.takeIf { it.ok() }?.let { "from ${WeatherInfo.compass(it)}" }),
-                    Triple("Wind waves", fmt.wave(now.windWaveHeight), now.windWavePeriod.takeIf { it.ok() }?.let { "${it.roundToInt()} s" }),
+                    Triple(stringResource(R.string.dt_wave_period), stringResource(R.string.dt_seconds_short, p.roundToInt()), MarineInfo.swellQuality(p)),
+                    Triple(stringResource(R.string.dt_swell), fmt.wave(now.swellHeight), now.swellDir.takeIf { it.ok() }?.let { stringResource(R.string.dt_from_dir, WeatherInfo.compass(it)) }),
+                    Triple(stringResource(R.string.dt_wind_waves), fmt.wave(now.windWaveHeight), now.windWavePeriod.takeIf { it.ok() }?.let { stringResource(R.string.dt_seconds_short, it.roundToInt()) }),
                 )
             )
             Gap(10.dp)
@@ -169,6 +174,7 @@ private fun WaveBars(hours: List<MarineHour>, fmt: Fmt, swellC: Color, windC: Co
     val timeStyle = MaterialTheme.typography.labelSmall.copy(color = cs.onSurfaceVariant)
     val nowStyle = timeStyle.copy(color = cs.primary, fontWeight = FontWeight.Bold)
     val track = cs.surfaceContainerHighest
+    val nowLabel = stringResource(R.string.dt_now)
     val hi = maxOf(hours.maxOf { maxOf(if (it.waveHeight.ok()) it.waveHeight else 0.0, (if (it.swellHeight.ok()) it.swellHeight else 0.0) + (if (it.windWaveHeight.ok()) it.windWaveHeight else 0.0)) }, 1.0)
     Row(Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 10.dp)) {
         Canvas(Modifier.width(colW * hours.size).height(150.dp)) {
@@ -198,7 +204,7 @@ private fun WaveBars(hours: List<MarineHour>, fmt: Fmt, swellC: Color, windC: Co
                     val wv = if (h.waveHeight.ok()) h.waveHeight else total
                     val ml = measurer.measure(fmt.waveNum(wv), labelStyle)
                     drawText(ml, topLeft = Offset(i * cw + cw / 2 - ml.size.width / 2, 0f))
-                    val mt = measurer.measure(if (i == 0) "Now" else fmt.hour(h.time), if (i == 0) nowStyle else timeStyle)
+                    val mt = measurer.measure(if (i == 0) nowLabel else fmt.hour(h.time), if (i == 0) nowStyle else timeStyle)
                     drawText(mt, topLeft = Offset(i * cw + cw / 2 - mt.size.width / 2, bottom + 4.dp.toPx()))
                 }
             }
@@ -214,13 +220,17 @@ private fun WaveOutlook(f: Forecast, m: Marine, fmt: Fmt) {
     val roughest = days.maxBy { it.waveMax }
     val calmest = days.minBy { it.waveMax }
     val headline = when {
-        roughest.waveMax - calmest.waveMax < 0.3 -> "Similar all week"
-        else -> "Roughest ${dayWord(roughest.date, today, fmt)}"
+        roughest.waveMax - calmest.waveMax < 0.3 -> stringResource(R.string.dt_wave_similar)
+        else -> stringResource(R.string.dt_wave_roughest, dayWord(roughest.date, today, fmt))
     }
-    val body = if (roughest.waveMax - calmest.waveMax < 0.3) "Waves stay around ${fmt.wave(roughest.waveMax)}."
-    else "Up to ${fmt.wave(roughest.waveMax)} (${MarineInfo.seaState(roughest.waveMax).label.lowercase()}). Calmest ${dayWord(calmest.date, today, fmt)} at ${fmt.wave(calmest.waveMax)}."
+    val body = if (roughest.waveMax - calmest.waveMax < 0.3) stringResource(R.string.dt_wave_stay_around, fmt.wave(roughest.waveMax))
+    else stringResource(
+        R.string.dt_wave_outlook_body,
+        fmt.wave(roughest.waveMax), MarineInfo.seaState(roughest.waveMax).label.inSentence(),
+        dayWord(calmest.date, today, fmt), fmt.wave(calmest.waveMax),
+    )
     val hi = days.maxOf { it.waveMax }.coerceAtLeast(1.0)
-    InsightCard("Wave outlook", Icons.Rounded.CalendarMonth, MaterialShapes.Clover4Leaf, headline, body) {
+    InsightCard(stringResource(R.string.dt_wave_outlook), Icons.Rounded.CalendarMonth, MaterialShapes.Clover4Leaf, headline, body) {
         Gap()
         OutlookList(
             days.map { d ->
@@ -230,15 +240,15 @@ private fun WaveOutlook(f: Forecast, m: Marine, fmt: Fmt) {
         )
         if (m.daily.size > days.size) {
             Gap(8.dp)
-            Body("Wave forecasts reach ${days.size} days ahead here.", Modifier.padding(horizontal = 18.dp))
+            Body(pluralStringResource(R.plurals.dt_wave_reach, days.size, days.size), Modifier.padding(horizontal = 18.dp))
         }
     }
 }
 
 private fun dayWord(d: java.time.LocalDate, today: java.time.LocalDate, fmt: Fmt): String = when (d) {
-    today -> "today"
-    today.plusDays(1) -> "tomorrow"
-    else -> "on " + d.dayOfWeek.getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.getDefault())
+    today -> L.s(R.string.dt_today_lc)
+    today.plusDays(1) -> L.s(R.string.dt_tomorrow_lc)
+    else -> L.s(R.string.dt_on_weekday, d.dayOfWeek.getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.getDefault()))
 }
 
 // ---- sea temperature
@@ -249,16 +259,19 @@ private fun SeaTempCard(f: Forecast, m: Marine, fmt: Fmt, now: MarineHour) {
     val week = m.daily.map { it.seaTempAvg }.filter { it.ok() }
     val trend = if (week.size >= 3) week.last() - week.first() else Double.NaN
     InsightCard(
-        "Sea temperature", Icons.Rounded.Thermostat, MaterialShapes.Cookie7Sided,
-        "${fmt.temp(sst)} · ${MarineInfo.waterFeel(sst)}",
-        MarineInfo.wetsuit(sst) + if (sst < 15) " Cold water shock is possible — enter slowly." else "",
+        stringResource(R.string.dt_sea_temperature), Icons.Rounded.Thermostat, MaterialShapes.Cookie7Sided,
+        stringResource(R.string.dt_dot_pair, fmt.temp(sst), MarineInfo.waterFeel(sst)),
+        if (sst < 15) stringResource(R.string.dt_sea_cold_shock, MarineInfo.wetsuit(sst)) else MarineInfo.wetsuit(sst),
     ) {
         Gap()
         StatChips(
             listOfNotNull(
-                Triple("Air now", fmt.temp(f.current.temp), null),
-                Triple("Water now", fmt.temp(sst), null),
-                if (trend.ok()) Triple("Next week", fmt.tempDelta(trend), if (kotlin.math.abs(trend) < 0.5) "Steady" else if (trend > 0) "Warming" else "Cooling") else null,
+                Triple(stringResource(R.string.dt_air_now), fmt.temp(f.current.temp), null),
+                Triple(stringResource(R.string.dt_water_now), fmt.temp(sst), null),
+                if (trend.ok()) Triple(
+                    stringResource(R.string.dt_next_week), fmt.tempDelta(trend),
+                    stringResource(if (kotlin.math.abs(trend) < 0.5) R.string.dt_trend_steady else if (trend > 0) R.string.dt_trend_warming else R.string.dt_trend_cooling),
+                ) else null,
             )
         )
     }
@@ -270,14 +283,17 @@ private fun SeaTempCard(f: Forecast, m: Marine, fmt: Fmt, now: MarineHour) {
 private fun CurrentCard(now: MarineHour, fmt: Fmt) {
     val info = MarineInfo.current(now.currentSpeed)
     InsightCard(
-        "Currents", Icons.Rounded.Explore, MaterialShapes.Gem,
-        "${info.label} · ${fmt.wind(now.currentSpeed)}",
-        (now.currentDir.takeIf { it.ok() }?.let { "Flowing toward the ${WeatherInfo.compass(it)}. " } ?: "") + info.text,
+        stringResource(R.string.dt_currents), Icons.Rounded.Explore, MaterialShapes.Gem,
+        stringResource(R.string.dt_dot_pair, info.label, fmt.wind(now.currentSpeed)),
+        listOfNotNull(
+            now.currentDir.takeIf { it.ok() }?.let { stringResource(R.string.dt_current_flow, WeatherInfo.compass(it)) },
+            info.text,
+        ).joinToString(" "),
         accent = if (info.caution) Color(0xFFFF9800) else Color(0xFF35C7B0),
     ) {
         if (info.caution) {
             Gap(10.dp)
-            Note("Caution for swimmers. If you're caught in a current, don't fight it: swim parallel to the shore, then back in.", icon = Icons.Rounded.Warning)
+            Note(stringResource(R.string.dt_current_caution), icon = Icons.Rounded.Warning)
         }
     }
 }
@@ -293,16 +309,16 @@ private fun TideCard(f: Forecast, m: Marine, fmt: Fmt) {
     val now = f.current.time
     val rising = hours.zipWithNext().firstOrNull { (a, b) -> now in a.time..b.time }?.let { (a, b) -> b.seaLevel > a.seaLevel }
     val headline = when {
-        next == null -> "Tides"
-        next.high -> "High tide ${fmt.time(next.time)}"
-        else -> "Low tide ${fmt.time(next.time)}"
+        next == null -> stringResource(R.string.dt_tides)
+        next.high -> stringResource(R.string.dt_high_tide, fmt.time(next.time))
+        else -> stringResource(R.string.dt_low_tide, fmt.time(next.time))
     }
-    val body = buildString {
-        if (rising != null) append(if (rising) "The tide is coming in. " else "The tide is going out. ")
-        val range = MarineInfo.tideRange(hours)
-        append("Range about ${fmt.wave(range)} over the next two days. Includes storm surge from the model; local tide tables are more precise.")
-    }
-    InsightCard("Tides", Icons.Rounded.WaterDrop, MaterialShapes.Pill, headline, body) {
+    val rangeText = stringResource(R.string.dt_tide_range, fmt.wave(MarineInfo.tideRange(hours)))
+    val body = listOfNotNull(
+        rising?.let { stringResource(if (it) R.string.dt_tide_coming_in else R.string.dt_tide_going_out) },
+        rangeText,
+    ).joinToString(" ")
+    InsightCard(stringResource(R.string.dt_tides), Icons.Rounded.WaterDrop, MaterialShapes.Pill, headline, body) {
         Gap()
         TideChart(hours, extremes, now, fmt)
     }
@@ -317,6 +333,7 @@ private fun TideChart(hours: List<MarineHour>, extremes: List<dev.vis.weather.da
     val sub = MaterialTheme.typography.labelSmall.copy(color = cs.onSurfaceVariant, fontSize = 10.sp)
     val ring = cardBackdrop()
     val colW = 22.dp
+    val nowLabel = stringResource(R.string.dt_now)
     Row(Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 10.dp)) {
         Canvas(Modifier.width(colW * hours.size + 40.dp).height(170.dp)) {
             val cw = colW.toPx()
@@ -344,7 +361,7 @@ private fun TideChart(hours: List<MarineHour>, extremes: List<dev.vis.weather.da
             if (now in t0..hours.last().time) {
                 val nx = x(now)
                 drawLine(cs.outline, Offset(nx, top - 10.dp.toPx()), Offset(nx, bottom + 6.dp.toPx()), 1.5.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(8f, 8f)))
-                val mt = measurer.measure("Now", label.copy(color = cs.primary))
+                val mt = measurer.measure(nowLabel, label.copy(color = cs.primary))
                 drawText(mt, topLeft = Offset(nx - mt.size.width / 2, size.height - mt.size.height))
             }
             extremes.forEach { e ->
@@ -352,7 +369,7 @@ private fun TideChart(hours: List<MarineHour>, extremes: List<dev.vis.weather.da
                 drawCircle(ring, 7.dp.toPx(), p)
                 drawCircle(if (e.high) line else cs.tertiary, 5.dp.toPx(), p)
                 val t1 = measurer.measure(fmt.time(e.time), label)
-                val t2 = measurer.measure((if (e.high) "High " else "Low ") + fmt.tide(e.height), sub)
+                val t2 = measurer.measure(L.s(if (e.high) R.string.dt_tide_high_short else R.string.dt_tide_low_short, fmt.tide(e.height)), sub)
                 val above = e.high
                 val ty = if (above) p.y - 10.dp.toPx() - t1.size.height - t2.size.height else p.y + 10.dp.toPx()
                 drawText(t1, topLeft = Offset(p.x - t1.size.width / 2, ty))
@@ -367,7 +384,7 @@ private fun TideChart(hours: List<MarineHour>, extremes: List<dev.vis.weather.da
 @Composable
 private fun ActivityCard(f: Forecast, now: MarineHour) {
     var activity by rememberSaveable { mutableStateOf(SeaActivity.GENERAL) }
-    SectionCard("Activities", Icons.Rounded.Sailing, MaterialShapes.Slanted) {
+    SectionCard(stringResource(R.string.dt_activities), Icons.Rounded.Sailing, MaterialShapes.Slanted) {
         ConnectedChoice(
             SeaActivity.entries, activity, { it.label }, { activity = it },
             Modifier.padding(horizontal = 18.dp).fillMaxWidth(),

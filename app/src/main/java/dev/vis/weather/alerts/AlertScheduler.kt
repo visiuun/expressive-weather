@@ -150,7 +150,7 @@ private fun workingInfo(context: Context): ForegroundInfo {
     Notifier.ensureChannels(context)
     val n = NotificationCompat.Builder(context, Channel.ONGOING.id)
         .setSmallIcon(R.drawable.ic_stat_cloud)
-        .setContentTitle("Checking the weather…")
+        .setContentTitle(context.getString(R.string.al_checking_weather))
         .setSilent(true)
         .setPriority(NotificationCompat.PRIORITY_MIN)
         .build()

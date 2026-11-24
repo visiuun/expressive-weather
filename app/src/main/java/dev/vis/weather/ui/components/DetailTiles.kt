@@ -2,6 +2,9 @@
 
 package dev.vis.weather.ui.components
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
+import dev.vis.weather.R
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.ui.draw.clip
@@ -39,6 +42,7 @@ import androidx.compose.material.icons.rounded.Grain
 import androidx.compose.material.icons.rounded.LocalFireDepartment
 import androidx.compose.material.icons.rounded.Umbrella
 import androidx.compose.material.icons.rounded.Waves
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -71,6 +75,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
+import dev.vis.weather.data.DetailTile
 import dev.vis.weather.data.Forecast
 import dev.vis.weather.data.Indices
 import dev.vis.weather.data.Insights
@@ -162,36 +167,66 @@ private fun TileRow(left: @Composable (Modifier) -> Unit, right: @Composable (Mo
 @Composable
 fun DetailGrid(f: Forecast, fmt: Fmt) {
     val c = f.current
+    // Tiles in the user's order (Settings → Layout), skipping hidden ones and those with nothing to say.
+    val tiles = remember(f, fmt.s.tileOrder, fmt.s.hiddenTiles) {
+        val today = fmt.localDate(f.current.time)
+        fmt.s.tileOrder.filter { it !in fmt.s.hiddenTiles }.filter { t ->
+            when (t) {
+                DetailTile.FIRE -> f.upcoming.take(24).any { !Indices.fireIndex(it).isNaN() }
+                DetailTile.COOLING -> (f.hourlyAll.filter { fmt.localDate(it.time) == today }.map { it.wetBulb }.filter { !it.isNaN() }.maxOrNull() ?: 0.0) >= 20
+                DetailTile.SEA -> f.marine?.at(f.current.time) != null
+                DetailTile.AIR -> f.air != null
+                DetailTile.POLLEN -> f.air?.pollen?.isNotEmpty() == true
+                else -> true
+            }
+        }
+    }
+    @Composable
+    fun Small(t: DetailTile, m: Modifier) = when (t) {
+        DetailTile.WIND -> WindTile(f, fmt, m)
+        DetailTile.HUMIDITY -> HumidityTile(f, fmt, m)
+        DetailTile.UV -> UvTile(f, m)
+        DetailTile.FEELS -> FeelsLikeTile(f, fmt, m)
+        DetailTile.PRESSURE -> PressureTile(f, fmt, m)
+        DetailTile.VISIBILITY -> VisibilityTile(c.visibility, fmt, m)
+        DetailTile.PRECIP -> PrecipTile(f, fmt, m)
+        DetailTile.CLOUD -> CloudTile(c.cloudCover, m)
+        DetailTile.TODAY_PRECIP -> TodayPrecipTile(f, fmt, m)
+        DetailTile.FIRE -> FireTile(f, fmt, m)
+        DetailTile.COOLING -> CoolingTile(f, fmt, m)
+        else -> {}
+    }
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        TileRow({ WindTile(f, fmt, it) }, { HumidityTile(f, fmt, it) })
-        TileRow({ UvTile(f, it) }, { FeelsLikeTile(f, fmt, it) })
-        TileRow({ PressureTile(f, fmt, it) }, { VisibilityTile(c.visibility, fmt, it) })
-        TileRow({ PrecipTile(f, fmt, it) }, { CloudTile(c.cloudCover, it) })
-        // Optional tiles, paired two by two; a leftover one spans the full width.
-        val extras = remember(f) { optionalTiles(f, fmt) }
-        extras.chunked(2).forEach { pair ->
-            if (pair.size == 2) {
-                TileRow({ m -> pair[0](f, fmt, m) }, { m -> pair[1](f, fmt, m) })
+        // Small tiles pair up two by two; a wide tile (or the end) leaves an unpaired one spanning the full width.
+        var pending: DetailTile? = null
+        @Composable
+        fun flush() {
+            pending?.let { Small(it, Modifier.fillMaxWidth()) }
+            pending = null
+        }
+        tiles.forEach { t ->
+            if (!t.wide) {
+                val p = pending
+                if (p == null) pending = t else {
+                    key(p, t) { TileRow({ Small(p, it) }, { Small(t, it) }) }
+                    pending = null
+                }
             } else {
-                pair[0](f, fmt, Modifier.fillMaxWidth())
+                flush()
+                key(t) {
+                    Spacer(Modifier.height(8.dp))
+                    when (t) {
+                        DetailTile.SUN -> SunTile(f, fmt)
+                        DetailTile.MOON -> MoonTile(f, fmt)
+                        DetailTile.SEA -> SeaTile(f, fmt)
+                        DetailTile.AIR -> f.air?.let { AirQualityTile(it) }
+                        DetailTile.POLLEN -> f.air?.let { PollenTile(it.pollen) }
+                        else -> {}
+                    }
+                }
             }
         }
-        Spacer(Modifier.height(8.dp))
-        SunTile(f, fmt)
-        Spacer(Modifier.height(8.dp))
-        MoonTile(f, fmt)
-        if (f.marine?.at(f.current.time) != null) {
-            Spacer(Modifier.height(8.dp))
-            SeaTile(f, fmt)
-        }
-        f.air?.let { air ->
-            Spacer(Modifier.height(8.dp))
-            AirQualityTile(air)
-            if (air.pollen.isNotEmpty()) {
-                Spacer(Modifier.height(8.dp))
-                PollenTile(air.pollen)
-            }
-        }
+        flush()
         if (fmt.s.showDataSource) {
             Spacer(Modifier.height(8.dp))
             DataSourceLine(f, fmt, Modifier.fillMaxWidth().padding(horizontal = 16.dp))
@@ -199,29 +234,15 @@ fun DetailGrid(f: Forecast, fmt: Fmt) {
     }
 }
 
-private typealias TileFn = @Composable (Forecast, Fmt, Modifier) -> Unit
-
-/** Tiles that only appear when they have something to say. */
-private fun optionalTiles(f: Forecast, fmt: Fmt): List<TileFn> {
-    val out = mutableListOf<TileFn>()
-    out += { ff, fm, m -> TodayPrecipTile(ff, fm, m) }
-    val fire = f.upcoming.take(24).map { Indices.fireIndex(it) }.filter { !it.isNaN() }
-    if (fire.isNotEmpty()) out += { ff, fm, m -> FireTile(ff, fm, m) }
-    val today = fmt.localDate(f.current.time)
-    val wbMax = f.hourlyAll.filter { fmt.localDate(it.time) == today }.map { it.wetBulb }.filter { !it.isNaN() }.maxOrNull()
-    if (wbMax != null && wbMax >= 20) out += { ff, fm, m -> CoolingTile(ff, fm, m) }
-    return out
-}
-
 // ---- Wind
 
 @Composable
 private fun WindTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val c = f.current
-    Tile("Wind", Icons.Rounded.Air, MaterialShapes.Cookie6Sided, modifier, metric = Metric.WIND) {
+    Tile(stringResource(R.string.m_metric_wind), Icons.Rounded.Air, MaterialShapes.Cookie6Sided, modifier, metric = Metric.WIND) {
         val heading by rememberHeading(f.latitude, if (f.longitude.isNaN()) 0.0 else f.longitude)
         BigValue(fmt.windNum(c.windSpeed), fmt.windUnit)
-        Caption("From ${WeatherInfo.compass(c.windDir)} · gusts ${fmt.windNum(c.windGust)}")
+        Caption(stringResource(R.string.m_wind_from_gusts, WeatherInfo.compass(c.windDir), fmt.windNum(c.windGust)))
         Spacer(Modifier.height(12.dp))
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             LiveCompass(c.windDir, heading, Modifier.size(112.dp))
@@ -236,9 +257,9 @@ private fun WindTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
 @Composable
 private fun HumidityTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val c = f.current
-    Tile("Humidity", Icons.Rounded.WaterDrop, MaterialShapes.Cookie7Sided, modifier, metric = Metric.HUMIDITY) {
+    Tile(stringResource(R.string.m_metric_humidity), Icons.Rounded.WaterDrop, MaterialShapes.Cookie7Sided, modifier, metric = Metric.HUMIDITY) {
         BigValue(if (c.humidity.isNaN()) "–" else c.humidity.roundToInt().toString(), "%")
-        Caption("Dew point ${fmt.temp(c.dewPoint)}")
+        Caption(stringResource(R.string.m_dew_point, fmt.temp(c.dewPoint)))
         Spacer(Modifier.weight(1f))
         Spacer(Modifier.height(12.dp))
         val slosh = rememberSlosh()
@@ -264,7 +285,7 @@ private fun UvTile(f: Forecast, modifier: Modifier) {
     val max = f.today?.uvMax ?: Double.NaN
     val ring = cardBackdrop()
     val dot = MaterialTheme.colorScheme.onSurface
-    Tile("UV index", Icons.Rounded.WbSunny, MaterialShapes.Sunny, modifier, metric = Metric.UV) {
+    Tile(stringResource(R.string.m_metric_uv), Icons.Rounded.WbSunny, MaterialShapes.Sunny, modifier, metric = Metric.UV) {
         BigValue(if (uv.isNaN()) "–" else uv.roundToInt().toString())
         Text(WeatherInfo.uvLevel(uv), style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.weight(1f))
@@ -283,7 +304,7 @@ private fun UvTile(f: Forecast, modifier: Modifier) {
             }
         }
         Spacer(Modifier.height(8.dp))
-        Caption(if (max.isNaN()) WeatherInfo.uvAdvice(uv) else "Today's max ${max.roundToInt()}. ${WeatherInfo.uvAdvice(max)}")
+        Caption(if (max.isNaN()) WeatherInfo.uvAdvice(uv) else stringResource(R.string.m_uv_today_max, max.roundToInt(), WeatherInfo.uvAdvice(max)))
     }
 }
 
@@ -293,19 +314,19 @@ private fun UvTile(f: Forecast, modifier: Modifier) {
 private fun FeelsLikeTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val c = f.current
     val diff = c.feelsLike - c.temp
-    Tile("Feels like", Icons.Rounded.Thermostat, MaterialShapes.Arch, modifier, metric = Metric.FEELS) {
+    Tile(stringResource(R.string.m_metric_feels), Icons.Rounded.Thermostat, MaterialShapes.Arch, modifier, metric = Metric.FEELS) {
         BigValue(fmt.temp(c.feelsLike))
-        Caption("Actual ${fmt.temp(c.temp)}")
+        Caption(stringResource(R.string.m_feels_actual, fmt.temp(c.temp)))
         Spacer(Modifier.weight(1f))
         Spacer(Modifier.height(10.dp))
         Caption(
             when {
                 diff.isNaN() -> ""
-                diff < -1.5 && c.windSpeed > 10 -> "Wind is making it feel colder."
-                diff < -1.5 -> "Feels colder than the actual temperature."
-                diff > 1.5 && c.humidity > 60 -> "Humidity is making it feel warmer."
-                diff > 1.5 -> "Feels warmer than the actual temperature."
-                else -> "Similar to the actual temperature."
+                diff < -1.5 && c.windSpeed > 10 -> stringResource(R.string.m_feels_wind_colder)
+                diff < -1.5 -> stringResource(R.string.m_feels_colder)
+                diff > 1.5 && c.humidity > 60 -> stringResource(R.string.m_feels_humid_warmer)
+                diff > 1.5 -> stringResource(R.string.m_feels_warmer)
+                else -> stringResource(R.string.m_feels_similar)
             }
         )
     }
@@ -318,7 +339,7 @@ private fun PressureTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val p = f.current.pressure
     val trend = remember(f) { Indices.pressureTrend(f) }
     val cs = MaterialTheme.colorScheme
-    Tile("Pressure", Icons.Rounded.Compress, MaterialShapes.Gem, modifier, metric = Metric.PRESSURE) {
+    Tile(stringResource(R.string.m_metric_pressure), Icons.Rounded.Compress, MaterialShapes.Gem, modifier, metric = Metric.PRESSURE) {
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
             Canvas(Modifier.size(140.dp, 112.dp)) {
                 val stroke = 10.dp.toPx()
@@ -345,7 +366,7 @@ private fun PressureTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
         Spacer(Modifier.height(4.dp))
         if (trend != null) {
             Text(trend.label, style = MaterialTheme.typography.titleMedium, color = if (trend.fast) Color(0xFFF44336) else MaterialTheme.colorScheme.onSurface)
-            Caption(if (trend.headache != null && trend.fast) "Headache risk for sensitive people" else "over the last 3 hours")
+            Caption(if (trend.headache != null && trend.fast) stringResource(R.string.m_pressure_headache) else stringResource(R.string.m_pressure_last_3h))
         }
     }
 }
@@ -354,7 +375,7 @@ private fun PressureTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
 
 @Composable
 private fun VisibilityTile(m: Double, fmt: Fmt, modifier: Modifier) {
-    Tile("Visibility", Icons.Rounded.Visibility, MaterialShapes.Oval, modifier, metric = Metric.VISIBILITY) {
+    Tile(stringResource(R.string.m_metric_visibility), Icons.Rounded.Visibility, MaterialShapes.Oval, modifier, metric = Metric.VISIBILITY) {
         BigValue(fmt.distanceNum(m), fmt.distanceUnit)
         Text(WeatherInfo.visibilityLevel(m), style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.weight(1f))
@@ -374,13 +395,13 @@ private fun PrecipTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val next24 = f.upcoming.take(24).sumOf { if (it.precip.isNaN()) 0.0 else it.precip }
     val nowIdx = f.hourlyAll.indexOfLast { it.time <= f.current.time }
     val last24 = if (nowIdx > 0) f.hourlyAll.subList(maxOf(0, nowIdx - 23), nowIdx + 1).sumOf { if (it.precip.isNaN()) 0.0 else it.precip } else Double.NaN
-    Tile("Precipitation", Icons.Rounded.Grain, MaterialShapes.Clover8Leaf, modifier, metric = Metric.PRECIP) {
+    Tile(stringResource(R.string.m_metric_precip), Icons.Rounded.Grain, MaterialShapes.Clover8Leaf, modifier, metric = Metric.PRECIP) {
         BigValue(fmt.precip(next24).substringBefore(' '), fmt.precip(next24).substringAfter(' ', ""))
-        Caption("expected in next 24 h")
+        Caption(stringResource(R.string.m_precip_next_24h))
         Spacer(Modifier.weight(1f))
         Spacer(Modifier.height(10.dp))
-        Caption("${fmt.precip(last24)} in last 24 h")
-        f.today?.let { if (!it.precipProbMax.isNaN()) Caption("Chance today ${it.precipProbMax.roundToInt()}%") }
+        Caption(stringResource(R.string.m_precip_last_24h, fmt.precip(last24)))
+        f.today?.let { if (!it.precipProbMax.isNaN()) Caption(stringResource(R.string.m_precip_chance_today, it.precipProbMax.roundToInt())) }
     }
 }
 
@@ -388,7 +409,7 @@ private fun PrecipTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
 
 @Composable
 private fun CloudTile(cover: Double, modifier: Modifier) {
-    Tile("Cloud cover", Icons.Rounded.Cloud, MaterialShapes.Bun, modifier, metric = Metric.CLOUD) {
+    Tile(stringResource(R.string.m_metric_cloud), Icons.Rounded.Cloud, MaterialShapes.Bun, modifier, metric = Metric.CLOUD) {
         Box(Modifier.fillMaxWidth().padding(top = 4.dp), contentAlignment = Alignment.Center) {
             CircularWavyProgressIndicator(
                 progress = { ((if (cover.isNaN()) 0.0 else cover) / 100).toFloat() },
@@ -400,11 +421,11 @@ private fun CloudTile(cover: Double, modifier: Modifier) {
         Caption(
             when {
                 cover.isNaN() -> ""
-                cover < 12 -> "Clear sky"
-                cover < 37 -> "Mostly clear"
-                cover < 62 -> "Partly cloudy"
-                cover < 87 -> "Mostly cloudy"
-                else -> "Overcast"
+                cover < 12 -> stringResource(R.string.m_cloud_clear)
+                cover < 37 -> stringResource(R.string.m_cloud_mostly_clear)
+                cover < 62 -> stringResource(R.string.m_cloud_partly)
+                cover < 87 -> stringResource(R.string.m_cloud_mostly_cloudy)
+                else -> stringResource(R.string.m_cloud_overcast)
             }
         )
     }
@@ -415,14 +436,14 @@ private fun CloudTile(cover: Double, modifier: Modifier) {
 @Composable
 private fun TodayPrecipTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val p = remember(f) { Insights.precipitationToday(f) }
-    Tile("Today", Icons.Rounded.Umbrella, MaterialShapes.Clover4Leaf, modifier, metric = Metric.PRECIP) {
+    Tile(stringResource(R.string.m_tile_today_precip), Icons.Rounded.Umbrella, MaterialShapes.Clover4Leaf, modifier, metric = Metric.PRECIP) {
         val amount = fmt.precip(p.soFar)
         BigValue(amount.substringBefore(' '), amount.substringAfter(' ', ""))
         Text(p.headline, style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.weight(1f))
         Spacer(Modifier.height(10.dp))
-        if (p.snowSoFar + p.snowLater >= 0.1) Caption("Snow ${fmt.snow(p.snowSoFar + p.snowLater)} today")
-        Caption(if (p.later >= 0.05) "${fmt.precip(p.later)} more later" else p.laterText)
+        if (p.snowSoFar + p.snowLater >= 0.1) Caption(stringResource(R.string.m_snow_today, fmt.snow(p.snowSoFar + p.snowLater)))
+        Caption(if (p.later >= 0.05) stringResource(R.string.m_precip_more_later, fmt.precip(p.later)) else p.laterText)
     }
 }
 
@@ -438,7 +459,7 @@ private fun FireTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val peakV = peak?.let { Indices.fireIndex(it) } ?: Double.NaN
     val ring = cardBackdrop()
     val dot = MaterialTheme.colorScheme.onSurface
-    Tile("Fire weather", Icons.Rounded.LocalFireDepartment, MaterialShapes.SoftBurst, modifier, metric = Metric.FIRE) {
+    Tile(stringResource(R.string.m_metric_fire), Icons.Rounded.LocalFireDepartment, MaterialShapes.SoftBurst, modifier, metric = Metric.FIRE) {
         BigValue(if (now.isNaN()) "–" else now.roundToInt().toString())
         Text(band.label, style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.weight(1f))
@@ -457,8 +478,8 @@ private fun FireTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
         }
         Spacer(Modifier.height(8.dp))
         Caption(
-            if (peak != null && !peakV.isNaN() && Indices.fireBand(peakV).level > band.level) "${Indices.fireBand(peakV).label} by ${fmt.hour(peak.time)}"
-            else "Fosberg index, 0–100"
+            if (peak != null && !peakV.isNaN() && Indices.fireBand(peakV).level > band.level) stringResource(R.string.m_fire_peak_by, Indices.fireBand(peakV).label, fmt.hour(peak.time))
+            else stringResource(R.string.m_fire_scale)
         )
     }
 }
@@ -472,19 +493,19 @@ private fun CoolingTile(f: Forecast, fmt: Fmt, modifier: Modifier) {
     val band = Indices.coolingComfort(wb, c.temp)
     val today = fmt.localDate(c.time)
     val peak = f.hourlyAll.filter { fmt.localDate(it.time) == today && !it.wetBulb.isNaN() }.maxByOrNull { it.wetBulb }
-    Tile("Cooling comfort", Icons.Rounded.Thermostat, MaterialShapes.Cookie7Sided, modifier, metric = Metric.HUMIDITY) {
+    Tile(stringResource(R.string.m_tile_cooling), Icons.Rounded.Thermostat, MaterialShapes.Cookie7Sided, modifier, metric = Metric.HUMIDITY) {
         BigValue(fmt.temp(wb))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(12.dp).clip(MaterialShapes.Cookie4Sided.toShape()).background(Color(band.color)))
             Spacer(Modifier.width(6.dp))
             Text(band.label, style = MaterialTheme.typography.titleMedium)
         }
-        Caption("Wet-bulb temperature")
+        Caption(stringResource(R.string.m_wet_bulb_temp))
         Spacer(Modifier.weight(1f))
         Spacer(Modifier.height(10.dp))
         if (peak != null) {
             val pb = Indices.coolingComfort(peak.wetBulb, peak.temp)
-            Caption(if (pb.level > band.level) "${pb.label} around ${fmt.hour(peak.time)}" else band.text.substringBefore('.') + ".")
+            Caption(if (pb.level > band.level) stringResource(R.string.m_cooling_peak_around, pb.label, fmt.hour(peak.time)) else band.text.substringBefore('.') + ".")
         }
     }
 }
@@ -500,7 +521,7 @@ private fun SeaTile(f: Forecast, fmt: Fmt) {
     val tides = remember(m, f.current.time) { if (m.hasTides) MarineInfo.tides(m.hourly.filter { it.time >= f.current.time - 3 * 3600 }.take(36)) else emptyList() }
     val nextTide = tides.firstOrNull { it.time > f.current.time }
     val track = MaterialTheme.colorScheme.surfaceContainerHighest
-    Tile("Sea conditions", Icons.Rounded.Waves, MaterialShapes.Clover8Leaf, Modifier.fillMaxWidth(), metric = Metric.SEA) {
+    Tile(stringResource(R.string.m_metric_sea), Icons.Rounded.Waves, MaterialShapes.Clover8Leaf, Modifier.fillMaxWidth(), metric = Metric.SEA) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 Modifier.size(76.dp).clip(MaterialShapes.Cookie12Sided.toShape()).background(seaColor(state.level).copy(alpha = 0.3f)),
@@ -516,9 +537,9 @@ private fun SeaTile(f: Forecast, fmt: Fmt) {
                 Text(state.label, style = MaterialTheme.typography.titleLargeEmphasized)
                 Caption(
                     listOfNotNull(
-                        now.seaTemp.takeIf { !it.isNaN() }?.let { "Water ${fmt.temp(it)}" },
-                        now.swellPeriod.takeIf { !it.isNaN() }?.let { "${it.roundToInt()} s swell" },
-                        now.waveDir.takeIf { !it.isNaN() }?.let { "from ${WeatherInfo.compass(it)}" },
+                        now.seaTemp.takeIf { !it.isNaN() }?.let { stringResource(R.string.m_sea_water, fmt.temp(it)) },
+                        now.swellPeriod.takeIf { !it.isNaN() }?.let { stringResource(R.string.m_sea_swell, it.roundToInt()) },
+                        now.waveDir.takeIf { !it.isNaN() }?.let { stringResource(R.string.m_sea_from, WeatherInfo.compass(it)) },
                     ).joinToString(" · ")
                 )
             }
@@ -539,12 +560,12 @@ private fun SeaTile(f: Forecast, fmt: Fmt) {
                 }
             }
             Spacer(Modifier.height(4.dp))
-            Text("Next 24 hours", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.m_next_24_hours), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         val cur = MarineInfo.current(now.currentSpeed)
         val bits = listOfNotNull(
-            nextTide?.let { "${if (it.high) "High" else "Low"} tide ${fmt.time(it.time)}" },
-            if (cur.caution) "Caution for swimmers: strong current" else null,
+            nextTide?.let { if (it.high) stringResource(R.string.m_tide_high, fmt.time(it.time)) else stringResource(R.string.m_tide_low, fmt.time(it.time)) },
+            if (cur.caution) stringResource(R.string.m_sea_current_caution) else null,
         )
         if (bits.isNotEmpty()) {
             Spacer(Modifier.height(8.dp))
@@ -563,7 +584,7 @@ private fun SunTile(f: Forecast, fmt: Fmt) {
     val progress = if (d.sunset > d.sunrise) ((now - d.sunrise).toFloat() / (d.sunset - d.sunrise)).coerceIn(0f, 1f) else 0f
     val tomorrow = f.daily.getOrNull(1)
     val dayDelta = if (tomorrow != null && !tomorrow.daylight.isNaN() && !d.daylight.isNaN()) (tomorrow.daylight - d.daylight) / 60 else Double.NaN
-    Tile("Sun", Icons.Rounded.WbTwilight, MaterialShapes.SoftBurst, Modifier.fillMaxWidth(), metric = Metric.SUN) {
+    Tile(stringResource(R.string.m_metric_sun), Icons.Rounded.WbTwilight, MaterialShapes.SoftBurst, Modifier.fillMaxWidth(), metric = Metric.SUN) {
         Canvas(Modifier.fillMaxWidth().height(110.dp)) {
             val pad = 16.dp.toPx()
             val w = size.width - pad * 2
@@ -596,29 +617,29 @@ private fun SunTile(f: Forecast, fmt: Fmt) {
         }
         Row(Modifier.fillMaxWidth()) {
             Column(Modifier.weight(1f)) {
-                Caption("Sunrise")
+                Caption(stringResource(R.string.m_sunrise))
                 Text(fmt.time(d.sunrise), style = MaterialTheme.typography.titleLargeEmphasized)
             }
             Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                Caption("Daylight")
+                Caption(stringResource(R.string.m_daylight))
                 Text(fmt.duration(d.daylight), style = MaterialTheme.typography.titleMedium)
             }
             Column(Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                Caption("Sunset")
+                Caption(stringResource(R.string.m_sunset))
                 Text(fmt.time(d.sunset), style = MaterialTheme.typography.titleLargeEmphasized)
             }
         }
         Spacer(Modifier.height(8.dp))
-        val sunshine = if (d.sunshine.isNaN()) "" else "${fmt.duration(d.sunshine)} of sunshine expected today. "
+        val sunshine = if (d.sunshine.isNaN()) "" else stringResource(R.string.m_sunshine_today, fmt.duration(d.sunshine))
         val delta = if (dayDelta.isNaN()) "" else {
             val m = dayDelta.roundToInt()
             when {
-                m > 0 -> "Tomorrow is $m min longer."
-                m < 0 -> "Tomorrow is ${-m} min shorter."
-                else -> "Tomorrow's daylight is about the same."
+                m > 0 -> pluralStringResource(R.plurals.m_daylight_longer, m, m)
+                m < 0 -> pluralStringResource(R.plurals.m_daylight_shorter, -m, -m)
+                else -> stringResource(R.string.m_daylight_same)
             }
         }
-        Caption(sunshine + delta)
+        Caption(listOf(sunshine, delta).filter { it.isNotEmpty() }.joinToString(" "))
     }
 }
 
@@ -628,19 +649,19 @@ private fun SunTile(f: Forecast, fmt: Fmt) {
 private fun MoonTile(f: Forecast, fmt: Fmt) {
     val moon = WeatherInfo.moon(f.current.time)
     val lat = f.latitude
-    Tile("Moon", Icons.Rounded.DarkMode, MaterialShapes.Cookie9Sided, Modifier.fillMaxWidth(), metric = Metric.MOON) {
+    Tile(stringResource(R.string.m_metric_moon), Icons.Rounded.DarkMode, MaterialShapes.Cookie9Sided, Modifier.fillMaxWidth(), metric = Metric.MOON) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             MoonPhase(moon.phase, southern = lat < 0, modifier = Modifier.size(84.dp))
             Spacer(Modifier.width(18.dp))
             Column(Modifier.weight(1f)) {
                 Text(moon.name, style = MaterialTheme.typography.headlineSmallEmphasized)
-                Caption("${(moon.illumination * 100).roundToInt()}% illuminated")
+                Caption(stringResource(R.string.m_moon_illuminated, (moon.illumination * 100).roundToInt()))
                 val today = fmt.localDate(f.current.time)
                 Caption(
                     if (moon.daysToFull < moon.daysToNew) {
-                        "Full moon ${fmt.shortDate(today.plusDays(moon.daysToFull.roundToInt().toLong()))}"
+                        stringResource(R.string.m_moon_full_on, fmt.shortDate(today.plusDays(moon.daysToFull.roundToInt().toLong())))
                     } else {
-                        "New moon ${fmt.shortDate(today.plusDays(moon.daysToNew.roundToInt().toLong()))}"
+                        stringResource(R.string.m_moon_new_on, fmt.shortDate(today.plusDays(moon.daysToNew.roundToInt().toLong())))
                     }
                 )
             }
@@ -655,7 +676,7 @@ private fun AirQualityTile(air: dev.vis.weather.data.AirQuality) {
     val band = WeatherInfo.usAqi(if (air.usAqi.isNaN()) 0.0 else air.usAqi)
     val ring = cardBackdrop()
     val dot = MaterialTheme.colorScheme.onSurface
-    Tile("Air quality", Icons.Rounded.Masks, MaterialShapes.Flower, Modifier.fillMaxWidth(), metric = Metric.AIR) {
+    Tile(stringResource(R.string.m_metric_air), Icons.Rounded.Masks, MaterialShapes.Flower, Modifier.fillMaxWidth(), metric = Metric.AIR) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 Modifier
@@ -673,7 +694,7 @@ private fun AirQualityTile(air: dev.vis.weather.data.AirQuality) {
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
                 Text(band.label, style = MaterialTheme.typography.titleLargeEmphasized)
-                Caption("US AQI" + if (!air.euAqi.isNaN()) " · European AQI ${air.euAqi.roundToInt()} (${WeatherInfo.euAqi(air.euAqi)})" else "")
+                Caption(if (!air.euAqi.isNaN()) stringResource(R.string.m_aqi_us_eu, air.euAqi.roundToInt(), WeatherInfo.euAqi(air.euAqi)) else stringResource(R.string.m_aqi_us))
             }
         }
         Spacer(Modifier.height(12.dp))
@@ -727,7 +748,7 @@ private fun Pollutant(label: String, v: Double, modifier: Modifier) {
 
 @Composable
 private fun PollenTile(pollen: List<Pair<String, Double>>) {
-    Tile("Pollen", Icons.Rounded.LocalFlorist, MaterialShapes.Clover4Leaf, Modifier.fillMaxWidth(), metric = Metric.POLLEN) {
+    Tile(stringResource(R.string.m_metric_pollen), Icons.Rounded.LocalFlorist, MaterialShapes.Clover4Leaf, Modifier.fillMaxWidth(), metric = Metric.POLLEN) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             pollen.forEach { (name, v) ->
                 val (level, frac) = WeatherInfo.pollenLevel(v)
@@ -754,6 +775,6 @@ private fun PollenTile(pollen: List<Pair<String, Double>>) {
             }
         }
         Spacer(Modifier.height(6.dp))
-        Text("grains/m³ · Europe only", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(stringResource(R.string.m_pollen_footer), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

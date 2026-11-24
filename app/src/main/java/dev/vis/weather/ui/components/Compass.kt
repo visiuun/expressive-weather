@@ -2,6 +2,8 @@
 
 package dev.vis.weather.ui.components
 
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,6 +66,7 @@ fun LiveCompass(
     val arrowPath = remember { WindArrow.toPath().asComposePath() }
     val measurer = rememberTextMeasurer()
     val nStyle = MaterialTheme.typography.labelMedium.copy(color = cs.primary, fontWeight = FontWeight.Bold)
+    val north = stringResource(R.string.m_compass_north)
     val dial = cs.surfaceContainerHigh
     val shapeColor = cs.primaryContainer
     val onShape = cs.onPrimaryContainer
@@ -83,7 +86,7 @@ fun LiveCompass(
             }
             if (heading != null) {
                 // Real north marker orbiting the rim.
-                val m = measurer.measure("N", nStyle)
+                val m = measurer.measure(north, nStyle)
                 val a = (-h) * PI / 180
                 val rr = r - 12.dp.toPx()
                 drawText(m, topLeft = Offset(ctr.x + rr * sin(a).toFloat() - m.size.width / 2, ctr.y - rr * cos(a).toFloat() - m.size.height / 2))

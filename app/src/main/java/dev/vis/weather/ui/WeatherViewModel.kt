@@ -1,5 +1,7 @@
 package dev.vis.weather.ui
 
+import dev.vis.weather.R
+import dev.vis.weather.L
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -98,13 +100,13 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
                 _update.update {
                     it.copy(
                         checking = false, release = r,
-                        message = if (r == null) "You're on the latest version (${Updater.currentVersion})" else "Version ${r.version} is available",
+                        message = if (r == null) L.s(R.string.m_update_latest, Updater.currentVersion) else L.s(R.string.m_update_available, r.version),
                     )
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _update.update { it.copy(checking = false, message = if (manual) "Couldn't check for updates" else null) }
+                _update.update { it.copy(checking = false, message = if (manual) L.s(R.string.m_update_check_failed) else null) }
             }
         }
     }
@@ -113,7 +115,7 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
         val r = _update.value.release ?: return
         val app = getApplication<Application>()
         if (!Updater.canInstall(app)) {
-            _update.update { it.copy(message = "Allow installing apps from Expressive Weather, then tap Update again") }
+            _update.update { it.copy(message = L.s(R.string.m_update_allow_install)) }
             Updater.openInstallPermissionSettings(app)
             return
         }
@@ -122,11 +124,11 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
             try {
                 val apk = Updater.download(app, r) { p -> _update.update { it.copy(progress = p) } }
                 Updater.install(app, apk)
-                _update.update { it.copy(progress = null, message = "Installing ${r.version}…") }
+                _update.update { it.copy(progress = null, message = L.s(R.string.m_update_installing, r.version)) }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _update.update { it.copy(progress = null, message = "Update failed: ${e.message ?: "unknown error"}") }
+                _update.update { it.copy(progress = null, message = L.s(R.string.m_update_failed, e.message ?: L.s(R.string.m_unknown_error))) }
             }
         }
     }
@@ -234,9 +236,9 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
                     it.copy(
                         loading = false,
                         error = when (e) {
-                            is java.net.UnknownHostException -> "No internet connection"
-                            is java.net.SocketTimeoutException -> "The weather service timed out"
-                            else -> e.message ?: "Something went wrong"
+                            is java.net.UnknownHostException -> L.s(R.string.m_err_no_internet)
+                            is java.net.SocketTimeoutException -> L.s(R.string.m_err_timeout)
+                            else -> e.message ?: L.s(R.string.m_err_generic)
                         },
                     )
                 }
@@ -255,8 +257,8 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
         val previous = _state.value.currentPlace
         if (loc == null) {
             if (previous != null) return previous
-            val msg = if (!LocationProvider.isLocationEnabled(app)) "Location is turned off. Turn it on or search for a city."
-            else "Couldn't get your location. Try again or search for a city."
+            val msg = if (!LocationProvider.isLocationEnabled(app)) L.s(R.string.m_err_location_off)
+            else L.s(R.string.m_err_location_failed)
             _state.update { it.copy(loading = false, error = msg) }
             return null
         }
@@ -283,7 +285,7 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
             useCurrentLocation()
         } else {
             _state.update {
-                it.copy(needsPermission = true, error = "Location permission denied. You can search for a city instead.")
+                it.copy(needsPermission = true, error = L.s(R.string.m_err_permission_denied))
             }
         }
     }
@@ -332,7 +334,7 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
         dev.vis.weather.ui.theme.SecretThemes.unlock(getApplication(), q)?.let { theme ->
             _search.update { SearchState() }
             updateSettings { it.copy(secretTheme = theme.id) }
-            android.widget.Toast.makeText(getApplication(), "Secret theme unlocked: ${theme.name}", android.widget.Toast.LENGTH_LONG).show()
+            android.widget.Toast.makeText(getApplication(), L.s(R.string.m_secret_theme_unlocked, theme.name), android.widget.Toast.LENGTH_LONG).show()
             return
         }
         _search.update { it.copy(query = q, error = null) }
@@ -350,7 +352,7 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _search.update { it.copy(searching = false, error = "Search failed — check your connection") }
+                _search.update { it.copy(searching = false, error = L.s(R.string.m_search_failed)) }
             }
         }
     }

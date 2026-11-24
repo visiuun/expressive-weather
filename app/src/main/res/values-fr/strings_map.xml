@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Map screen: weather layer names. *_title is the full name shown in the panel header and as
+         accessibility label; *_short is the compact label on the selected layer button in the bottom toolbar. -->
+    <string name="map_layer_none_title">Carte</string>
+    <string name="map_layer_none_short">Carte</string>
+    <string name="map_layer_radar_title">Radar</string>
+    <string name="map_layer_radar_short">Radar</string>
+    <string name="map_layer_temperature_title">Température</string>
+    <string name="map_layer_temperature_short">Temp.</string>
+    <string name="map_layer_wind_title">Vent</string>
+    <string name="map_layer_wind_short">Vent</string>
+    <string name="map_layer_clouds_title">Couverture nuageuse</string>
+    <string name="map_layer_clouds_short">Nuages</string>
+    <string name="map_layer_pressure_title">Pression</string>
+    <string name="map_layer_pressure_short">Pression</string>
+    <string name="map_layer_precipitation_title">Précipitations</string>
+    <string name="map_layer_precipitation_short">Pluie</string>
+    <string name="map_layer_storms_title">Tempêtes tropicales</string>
+    <string name="map_layer_storms_short">Tempêtes</string>
+
+    <!-- Map screen: error pill shown when a layer fails to download, with a Retry button. -->
+    <string name="map_error_radar">Impossible de charger le radar</string>
+    <string name="map_error_forecast">Impossible de charger la carte des prévisions</string>
+    <string name="map_error_storms">Impossible de charger les tempêtes</string>
+    <string name="map_error_generic">Impossible de charger les données de la carte</string>
+    <string name="map_retry">Réessayer</string>
+
+    <!-- Map timeline labels, relative to now. %1$s is a sign character (+ or −), %2$d/%3$d are numbers.
+         Keep these very short (they sit under a slider). -->
+    <string name="map_now">Maint.</string>
+    <string name="map_rel_minutes">%1$s%2$d min</string>
+    <string name="map_rel_hours">%1$s%2$d h</string>
+    <string name="map_rel_hours_minutes">%1$s%2$d h %3$d</string>
+    <!-- Forecast hour: %1$s = day name (e.g. Today, Tue), %2$s = time of day -->
+    <string name="map_day_time">%1$s %2$s</string>
+    <!-- Radar timeline: %1$s = time of a nowcast (future) radar frame -->
+    <string name="map_radar_forecast_time">Prévision · %1$s</string>
+
+    <!-- Map top panel subtitle. %1$s = relative time (e.g. Now, −30 min), %2$s = clock time. RainViewer / Open-Meteo are brand names. -->
+    <string name="map_sub_radar">%1$s · %2$s · RainViewer</string>
+    <string name="map_sub_radar_empty">Aucune image radar disponible pour le moment</string>
+    <!-- %1$s = relative hour (e.g. +3h), %2$s = day and time -->
+    <string name="map_sub_model">%1$s · %2$s · Open-Meteo</string>
+    <plurals name="map_sub_storms_active">
+        <item quantity="one">%1$d active · NOAA NHC</item>
+        <item quantity="many">%1$d actives · NOAA NHC</item>
+        <item quantity="other">%1$d actives · NOAA NHC</item>
+    </plurals>
+    <string name="map_loading">Chargement…</string>
+    <string name="map_no_storms">Aucune tempête tropicale active pour le moment</string>
+
+    <!-- Map legend under the radar layer: precipitation intensity (light rain, moderate rain, heavy rain) -->
+    <string name="map_legend_radar_light">Faible</string>
+    <string name="map_legend_radar_moderate">Modérée</string>
+    <string name="map_legend_radar_heavy">Forte</string>
+    <!-- Map legend under the cloud cover layer: clear sky, partly cloudy, overcast -->
+    <string name="map_legend_cloud_clear">Dégagé</string>
+    <string name="map_legend_cloud_partly">Partiel</string>
+    <string name="map_legend_cloud_overcast">Couvert</string>
+    <!-- Map legend precipitation rate: %1$s = amount with unit (e.g. 25 mm), "per hour" -->
+    <string name="map_legend_per_hour">%1$s/h</string>
+
+    <!-- Map controls (accessibility labels) -->
+    <string name="map_cd_sources">Sources des données cartographiques</string>
+    <string name="map_cd_recenter">Centrer sur mon lieu</string>
+    <string name="map_cd_play">Lire</string>
+    <string name="map_cd_pause">Pause</string>
+    <string name="map_cd_back_to_now">Revenir à maintenant</string>
+
+    <!-- Map data sources sheet. Service and licence names (OpenStreetMap, CARTO, ODbL, CC BY 4.0...) stay untranslated. -->
+    <string name="map_sources_title">Données cartographiques</string>
+    <string name="map_sources_body">Les tuiles et les données météo sont récupérées directement auprès de ces services. Aucun compte, aucune clé API, et rien vous concernant n\'est envoyé hormis la zone de carte que vous consultez.</string>
+    <!-- %1$s = what the service provides, %2$s = its licence -->
+    <string name="map_source_line">%1$s · %2$s</string>
+    <string name="map_source_osm_what">Données cartographiques et tuiles standard</string>
+    <!-- Positron and Dark Matter are CARTO product names -->
+    <string name="map_source_carto_what">Fonds de carte Positron et Dark Matter</string>
+    <string name="map_source_rainviewer_what">Images radar</string>
+    <string name="map_source_rainviewer_license">API RainViewer gratuite</string>
+    <string name="map_source_openmeteo_what">Température, vent, nuages, pression et précipitations</string>
+    <string name="map_source_nhc_what">Tempêtes tropicales</string>
+    <string name="map_source_nhc_license">Domaine public (États-Unis)</string>
+
+    <!-- Tropical cyclone classifications (NOAA National Hurricane Center) -->
+    <string name="map_storm_td">Dépression tropicale</string>
+    <string name="map_storm_std">Dépression subtropicale</string>
+    <string name="map_storm_ts">Tempête tropicale</string>
+    <string name="map_storm_sts">Tempête subtropicale</string>
+    <string name="map_storm_hu">Ouragan</string>
+    <!-- %1$d = Saffir–Simpson category 1–5 -->
+    <string name="map_storm_hu_cat">Ouragan · Catégorie %1$d</string>
+    <string name="map_storm_ty">Typhon</string>
+    <!-- %1$d = Saffir–Simpson category 1–5 -->
+    <string name="map_storm_ty_cat">Typhon · Catégorie %1$d</string>
+    <string name="map_storm_ptc">Cyclone post-tropical</string>
+    <string name="map_storm_pc">Cyclone tropical potentiel</string>
+    <string name="map_storm_generic">Cyclone tropical</string>
+    <!-- Fallback name for a storm the NHC has not named -->
+    <string name="map_storm_unnamed">Sans nom</string>
+
+    <!-- Storm marker on the map. Label: %1$s = storm name, %2$s = short category (e.g. Cat 3) or classification code -->
+    <string name="map_storm_marker">%1$s · %2$s</string>
+    <!-- Short Saffir–Simpson category on the storm marker, %1$d = 1–5 -->
+    <string name="map_storm_cat_short">Cat. %1$d</string>
+    <!-- Accessibility label of a storm marker: %1$s = classification (e.g. Hurricane · Category 3), %2$s = storm name -->
+    <string name="map_storm_cd">%1$s %2$s</string>
+
+    <!-- Storm details sheet -->
+    <string name="map_storm_wind">Vent soutenu</string>
+    <string name="map_storm_pressure">Pression</string>
+    <string name="map_storm_moving">Déplacement</string>
+    <string name="map_storm_stationary">Stationnaire ou inconnu</string>
+    <!-- %1$s = compass direction (e.g. NW), %2$s = speed with unit -->
+    <string name="map_storm_moving_value">%1$s à %2$s</string>
+    <string name="map_storm_position">Position</string>
+    <string name="map_storm_updated">Mis à jour</string>
+    <string name="map_storm_advisory">Lire le bulletin du NHC</string>
+    <!-- Hemisphere letters in coordinates (e.g. 23.4°N, 71.2°W) -->
+    <string name="map_hemi_north">N</string>
+    <string name="map_hemi_south">S</string>
+    <string name="map_hemi_east">E</string>
+    <string name="map_hemi_west">O</string>
+
+</resources>

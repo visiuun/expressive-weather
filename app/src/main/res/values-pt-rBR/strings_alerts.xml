@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ============================================================ Alert groups (section headers on the Alerts screen) -->
+    <string name="al_group_safety">Avisos e chuva</string>
+    <string name="al_group_daily">Resumos diários</string>
+    <string name="al_group_health">Saúde e conforto</string>
+    <string name="al_group_more">Mais</string>
+
+    <!-- ============================================================ Alert types: title, one-line subtitle, long description -->
+    <string name="al_type_warnings_title">Alertas meteorológicos</string>
+    <string name="al_type_warnings_subtitle">Alertas oficiais amarelos, laranja e vermelhos</string>
+    <string name="al_type_warnings_desc">Receba uma notificação assim que um serviço meteorológico nacional emitir um alerta para a sua localização e quando ele for elevado. Abrange os EUA (NWS), o Canadá (ECCC), a Alemanha (DWD) e mais 36 países europeus (MeteoAlarm).</string>
+
+    <string name="al_type_nowcast_title">Chuva e neve iminentes</string>
+    <string name="al_type_nowcast_subtitle">Minutos antes de começar a chover ou nevar</string>
+    <string name="al_type_nowcast_desc">Um aviso pouco antes de a chuva ou a neve chegar, com uma contagem regressiva ao vivo que se atualiza até começar e informa quando vai parar. Usa a previsão imediata de 15 minutos, com dados de alta resolução baseados em radar na Europa e na América do Norte.</string>
+
+    <string name="al_type_rain_title">Alerta de chuva</string>
+    <string name="al_type_rain_subtitle">Chuva prevista nas próximas horas</string>
+    <string name="al_type_rain_desc">Pegue o guarda-chuva: receba uma notificação quando houver probabilidade de chuva nas próximas horas. Verifique uma vez em um horário definido ou o dia todo, durante as horas que você escolher.</string>
+
+    <string name="al_type_storm_title">Alerta de vento e tempestade</string>
+    <string name="al_type_storm_subtitle">Rajadas fortes ou tempestades à vista</string>
+    <string name="al_type_storm_desc">Receba uma notificação quando houver previsão de rajadas acima do seu limite ou de tempestades nas próximas 12 horas, mesmo sem alerta oficial emitido.</string>
+
+    <string name="al_type_today_title">Resumo da manhã</string>
+    <string name="al_type_today_subtitle">O tempo do seu dia em resumo</string>
+    <string name="al_type_today_desc">Um breve resumo toda manhã: condições, máxima e mínima, horário da chuva, vento e tudo o que for relevante, em comparação com ontem.</string>
+
+    <string name="al_type_tomorrow_title">Tempo para amanhã</string>
+    <string name="al_type_tomorrow_subtitle">Resumo noturno do dia seguinte</string>
+    <string name="al_type_tomorrow_desc">Toda noite, um resumo fácil de ler sobre amanhã para você se planejar: comparação com hoje, chuva, vento e neve.</string>
+
+    <string name="al_type_wardrobe_title">O que vestir</string>
+    <string name="al_type_wardrobe_subtitle">Dicas de roupa e do que levar</string>
+    <string name="al_type_wardrobe_desc">Dicas diárias sobre o que vestir e levar, adaptadas ao seu trajeto, a como você sente o frio e ao tempo em casa e no trabalho.</string>
+
+    <string name="al_type_frost_title">Alerta de geada</string>
+    <string name="al_type_frost_subtitle">Temperaturas noturnas abaixo de zero</string>
+    <string name="al_type_frost_desc">Receba uma notificação na noite anterior quando a temperatura da madrugada estiver prevista para cair até o seu limite, para proteger plantas, canos e animais e ter tempo de descongelar o carro.</string>
+
+    <string name="al_type_uv_title">Alerta de UV</string>
+    <string name="al_type_uv_subtitle">Índice UV acima do seu limite</string>
+    <string name="al_type_uv_desc">Toda manhã, um lembrete para proteger a pele quando o índice UV for ultrapassar o seu limite, com os horários em que a proteção é necessária.</string>
+
+    <string name="al_type_heat_title">Bulbo úmido perigoso</string>
+    <string name="al_type_heat_subtitle">Quando calor e umidade ficam perigosos</string>
+    <string name="al_type_heat_desc">A temperatura de bulbo úmido combina calor e umidade para mostrar o quanto o suor consegue resfriar você. Receba um aviso assim que a previsão indicar um nível perigoso, para reduzir o esforço, buscar sombra ou ar fresco e se manter hidratado.</string>
+
+    <string name="al_type_air_title">Alerta de qualidade do ar</string>
+    <string name="al_type_air_subtitle">Qualidade do ar no seu limite ou pior</string>
+    <string name="al_type_air_desc">No horário do alerta, verifica a previsão do Índice Europeu de Qualidade do Ar. Se atingir o seu limite ou pior, você recebe um aviso para limitar o esforço ao ar livre.</string>
+
+    <string name="al_type_pollen_title">Alerta de pólen</string>
+    <string name="al_type_pollen_subtitle">Pólen elevado para as suas alergias</string>
+    <string name="al_type_pollen_desc">Toda manhã, verifica a previsão de pólen para os alérgenos que você escolher e avisa quando os níveis passam da sua sensibilidade. As previsões de pólen cobrem a Europa.</string>
+
+    <string name="al_type_tablet_title">Lembrete do antialérgico</string>
+    <string name="al_type_tablet_subtitle">Um lembrete diário para tomar o comprimido</string>
+    <string name="al_type_tablet_desc">Um lembrete diário simples no horário que você escolher. Opcionalmente, só nos dias em que o limite do seu alerta de pólen for atingido.</string>
+
+    <string name="al_type_pressure_title">Alerta de queda de pressão</string>
+    <string name="al_type_pressure_subtitle">Quedas rápidas da pressão atmosférica</string>
+    <string name="al_type_pressure_desc">Quedas rápidas de pressão costumam anteceder tempestades e podem desencadear dores de cabeça ou enxaquecas em algumas pessoas. Receba uma notificação quando a pressão estiver prevista para cair rapidamente em 3 horas.</string>
+
+    <string name="al_type_friends_title">Família e amigos</string>
+    <string name="al_type_friends_subtitle">Alertas onde estão as suas pessoas</string>
+    <string name="al_type_friends_desc">Receba uma notificação quando um alerta oficial for emitido para o local de alguém da sua lista de Família e amigos.</string>
+
+    <string name="al_type_ongoing_title">Clima na barra de status</string>
+    <string name="al_type_ongoing_subtitle">Temperatura atual sempre à vista</string>
+    <string name="al_type_ongoing_desc">Mostra a temperatura atual na barra de status e uma notificação silenciosa com a previsão de hoje, atualizada em segundo plano.</string>
+
+    <!-- ============================================================ Notification channels (shown in Android system settings) -->
+    <string name="al_channel_warnings_title">Alertas meteorológicos</string>
+    <string name="al_channel_warnings_desc">Alertas oficiais de tempo severo</string>
+    <string name="al_channel_nowcast_title">Chuva e neve iminentes</string>
+    <string name="al_channel_nowcast_desc">Chuva ou neve começando dentro de uma hora</string>
+    <string name="al_channel_alerts_title">Avisos do tempo</string>
+    <string name="al_channel_alerts_desc">Avisos de chuva, vento, geada, UV, qualidade do ar, pólen e pressão</string>
+    <string name="al_channel_daily_title">Resumos diários</string>
+    <string name="al_channel_daily_desc">Resumo da manhã, tempo para amanhã e o que vestir</string>
+    <string name="al_channel_reminders_title">Lembretes</string>
+    <string name="al_channel_reminders_desc">Lembrete do antialérgico</string>
+    <string name="al_channel_friends_title">Família e amigos</string>
+    <string name="al_channel_friends_desc">Alertas nos locais da sua família e amigos</string>
+    <string name="al_channel_ongoing_title">Clima na barra de status</string>
+    <string name="al_channel_ongoing_desc">Condições atuais, sempre visíveis</string>
+
+    <!-- Silent notification shown while a daily alert is being prepared (older Android versions) -->
+    <string name="al_checking_weather">Verificando o tempo…</string>
+
+    <!-- ============================================================ Official warnings -->
+    <!-- CAP severity labels -->
+    <string name="al_severity_minor">Menor</string>
+    <string name="al_severity_moderate">Moderado</string>
+    <string name="al_severity_severe">Severo</string>
+    <string name="al_severity_extreme">Extremo</string>
+    <!-- Warning colour levels (Yellow / Amber / Red warning) -->
+    <string name="al_level_blue">Azul</string>
+    <string name="al_level_yellow">Amarelo</string>
+    <string name="al_level_amber">Laranja</string>
+    <string name="al_level_red">Vermelho</string>
+    <!-- Hazard types of an official warning -->
+    <string name="al_hazard_thunderstorm">Tempestade</string>
+    <string name="al_hazard_wind">Vento</string>
+    <string name="al_hazard_rain">Chuva</string>
+    <string name="al_hazard_flood">Inundação</string>
+    <string name="al_hazard_snow_ice">Neve e gelo</string>
+    <string name="al_hazard_fog">Nevoeiro</string>
+    <string name="al_hazard_heat">Calor</string>
+    <string name="al_hazard_cold">Frio</string>
+    <string name="al_hazard_coastal">Zona costeira</string>
+    <string name="al_hazard_fire">Incêndio</string>
+    <string name="al_hazard_avalanche">Avalanche</string>
+    <string name="al_hazard_tornado">Tornado</string>
+    <string name="al_hazard_hurricane">Furacão</string>
+    <string name="al_hazard_dust">Poeira</string>
+    <string name="al_hazard_weather">Tempo</string>
+
+    <!-- Warning notification title. %1$s = colour level (e.g. "Yellow"), %2$s = hazard in lower case (e.g. "wind") -->
+    <string name="al_warning_title">Alerta %1$s de %2$s</string>
+    <!-- Friend's warning notification title. %1$s = friend's name, %2$s = colour level (lower case), %3$s = hazard (lower case) -->
+    <string name="al_warning_title_friend">%1$s: alerta %2$s de %3$s</string>
+    <!-- Time window of a warning. %1$s / %2$s = day and time, e.g. "Tue 14:00" -->
+    <string name="al_warning_from_until">De %1$s até %2$s</string>
+    <string name="al_warning_until">Até %1$s</string>
+    <!-- %1$s = issuing weather service -->
+    <string name="al_warning_issued_by">Emitido por %1$s</string>
+    <!-- %1$s = issuing weather service, %2$s = data source (e.g. "MeteoAlarm") -->
+    <string name="al_warning_issued_by_via">Emitido por %1$s · via %2$s</string>
+    <!-- Label on a warning card. %1$s = colour level ("Yellow"), %2$s = hazard ("Wind") -->
+    <string name="al_warning_card_label">Alerta %1$s · %2$s</string>
+    <string name="al_warning_what_to_do">O que fazer</string>
+
+    <!-- Test warning notification (sent by "Send a test notification") -->
+    <string name="al_test_warning_event">Alerta amarelo de vento</string>
+    <string name="al_test_warning_headline">Este é um teste das notificações de alertas meteorológicos.</string>
+    <!-- %1$s = place name -->
+    <string name="al_test_warning_desc">Não há nenhum alerta ativo para %1$s no momento. Os alertas reais têm esta aparência.</string>
+    <string name="al_test_source">Teste</string>
+
+    <!-- ============================================================ Imminent rain & snow (nowcast) notifications -->
+    <!-- Short status bar chip text while it is raining / snowing -->
+    <string name="al_nowcast_chip_rain">Chuva</string>
+    <string name="al_nowcast_chip_snow">Neve</string>
+    <!-- Short status bar chip: minutes until rain starts, e.g. "20m" -->
+    <string name="al_nowcast_chip_minutes">%1$d min</string>
+    <string name="al_nowcast_raining_now">Chovendo agora</string>
+    <string name="al_nowcast_snowing_now">Nevando agora</string>
+    <!-- %1$s = place name -->
+    <string name="al_nowcast_raining_now_in">Chovendo agora em %1$s</string>
+    <string name="al_nowcast_snowing_now_in">Nevando agora em %1$s</string>
+    <plurals name="al_nowcast_ending_in">
+        <item quantity="one">Termina em ~%1$d min</item>
+        <item quantity="many">Termina em ~%1$d min</item>
+        <item quantity="other">Termina em ~%1$d min</item>
+    </plurals>
+    <string name="al_nowcast_continuing">Deve continuar por um tempo</string>
+    <!-- Kind of precipitation approaching; used as %1$s in al_nowcast_approaching -->
+    <string name="al_nowcast_kind_light_rain">Chuva fraca</string>
+    <string name="al_nowcast_kind_rain">Chuva</string>
+    <string name="al_nowcast_kind_heavy_rain">Chuva forte</string>
+    <string name="al_nowcast_kind_light_snow">Neve fraca</string>
+    <string name="al_nowcast_kind_snow">Neve</string>
+    <string name="al_nowcast_kind_heavy_snow">Neve forte</string>
+    <!-- %1$s = kind, e.g. "Heavy rain" -->
+    <string name="al_nowcast_approaching">%1$s se aproximando</string>
+    <!-- %1$s = kind, e.g. "Heavy rain", %2$s = place name -->
+    <string name="al_nowcast_approaching_place">%1$s se aproximando de %2$s</string>
+    <string name="al_nowcast_rain_any_moment">Chuva a qualquer momento</string>
+    <string name="al_nowcast_snow_any_moment">Neve a qualquer momento</string>
+    <plurals name="al_nowcast_starting_in">
+        <item quantity="one">Começa em ~%1$d min</item>
+        <item quantity="many">Começa em ~%1$d min</item>
+        <item quantity="other">Começa em ~%1$d min</item>
+    </plurals>
+    <string name="al_nowcast_test_title">Chuva se aproximando (teste)</string>
+
+    <!-- ============================================================ Rain alert notification -->
+    <!-- %1$s = time -->
+    <string name="al_rain_expected_at">Chuva prevista às %1$s</string>
+    <string name="al_snow_expected_at">Neve prevista às %1$s</string>
+    <string name="al_rain_advice">Pegue o guarda-chuva antes de sair.</string>
+    <string name="al_snow_advice">Agasalhe-se e reserve mais tempo para o trajeto.</string>
+    <!-- %1$s = advice sentence above, %2$d = chance in percent, %3$s = amount (e.g. "3 mm"), %4$d = hours -->
+    <string name="al_rain_big_amount">%1$s %2$d%% de chance, cerca de %3$s nas próximas %4$d h.</string>
+    <!-- %1$s = advice sentence above, %2$d = chance in percent -->
+    <string name="al_rain_big">%1$s %2$d%% de chance.</string>
+    <string name="al_no_rain_title">Sem previsão de chuva</string>
+    <plurals name="al_no_rain_text" tools:ignore="ImpliedQuantity">
+        <item quantity="one">Tempo seco na próxima hora. Você seria notificado aqui se houvesse probabilidade de chuva.</item>
+        <item quantity="many">Tempo seco nas próximas %1$d horas. Você seria notificado aqui se houvesse probabilidade de chuva.</item>
+        <item quantity="other">Tempo seco nas próximas %1$d horas. Você seria notificado aqui se houvesse probabilidade de chuva.</item>
+    </plurals>
+
+    <!-- ============================================================ Wind & storm notification -->
+    <!-- %1$s = time -->
+    <string name="al_storm_thunder_title">Tempestades possíveis a partir das %1$s</string>
+    <string name="al_storm_thunder_text">Raios, aguaceiros fortes e rajadas intensas são possíveis. Planeje ficar em local fechado.</string>
+    <!-- %1$s = wind speed, %2$s = time -->
+    <string name="al_storm_gust_title">Rajadas de até %1$s por volta das %2$s</string>
+    <!-- %1$s = time -->
+    <string name="al_storm_gust_text">Ventania a partir das %1$s. Prenda objetos soltos e tenha cuidado de bicicleta e em veículos altos.</string>
+
+    <!-- ============================================================ Pressure drop notification -->
+    <!-- %1$s = amount with unit, e.g. "5 hPa" -->
+    <string name="al_pressure_rapid">Queda rápida de pressão (−%1$s)</string>
+    <string name="al_pressure_significant">Queda significativa de pressão (−%1$s)</string>
+    <string name="al_pressure_moderate">Queda moderada de pressão (−%1$s)</string>
+    <!-- %1$s = amount with unit, %2$s = time -->
+    <string name="al_pressure_text">A previsão indica queda de %1$s na pressão em 3 horas a partir das %2$s. Talvez seja bom planejar o seu dia de acordo.</string>
+
+    <!-- ============================================================ Dangerous wet bulb notification -->
+    <string name="al_heat_safe">Bulbo úmido seguro por enquanto</string>
+    <!-- %1$s = temperature -->
+    <string name="al_heat_danger_now">Bulbo úmido perigoso agora: %1$s</string>
+    <!-- %1$s = time -->
+    <string name="al_heat_danger_from">Bulbo úmido perigoso a partir das %1$s</string>
+    <!-- %1$s = temperature, %2$s = cooling level (e.g. "Difficult"), %3$s = time, %4$s = guidance sentence -->
+    <string name="al_heat_text_at">Bulbo úmido de até %1$s (%2$s) por volta das %3$s. %4$s</string>
+    <!-- %1$s = temperature, %2$s = cooling level, %3$s = guidance sentence -->
+    <string name="al_heat_text">Bulbo úmido de até %1$s (%2$s). %3$s</string>
+
+    <!-- ============================================================ Status bar weather (ongoing notification) -->
+    <!-- %1$s = feels-like temperature -->
+    <string name="al_ongoing_feels">Sensação %1$s</string>
+    <!-- %1$s = feels-like temperature, %2$s = today's high, %3$s = today's low -->
+    <string name="al_ongoing_feels_high_low">Sensação %1$s · ↑%2$s ↓%3$s</string>
+    <!-- %1$s = wind speed, %2$s = compass direction -->
+    <string name="al_ongoing_wind">Vento %1$s %2$s</string>
+
+    <!-- ============================================================ Daily alerts -->
+    <string name="al_wardrobe_title_today">O que vestir hoje</string>
+    <string name="al_wardrobe_title_tomorrow">O que vestir amanhã</string>
+    <string name="al_frost_title">Alerta de geada esta noite</string>
+    <string name="al_frost_none_title">Sem previsão de geada esta noite</string>
+    <!-- %1$s = temperature -->
+    <string name="al_frost_low">Mínima de %1$s.</string>
+    <string name="al_frost_low_advice">Mínima de %1$s. Proteja suas plantas e canos e reserve tempo para descongelar o carro.</string>
+    <!-- %1$d = UV index, %2$s = UV level (e.g. "High") -->
+    <string name="al_uv_title">Índice UV: %1$d (%2$s)</string>
+    <!-- %1$s = time -->
+    <string name="al_uv_peaks">Pico por volta das %1$s.</string>
+    <!-- %1$s = peak time, %2$s = start time, %3$s = end time -->
+    <string name="al_uv_peaks_protect">Pico por volta das %1$s. Proteja a pele entre %2$s e %3$s.</string>
+    <!-- %1$s = air quality level, e.g. "Poor" -->
+    <string name="al_air_title">Qualidade do ar: %1$s</string>
+    <!-- %1$d = AQI value, %2$s = time -->
+    <string name="al_air_text">AQI europeu de até %1$d por volta das %2$s.</string>
+    <string name="al_air_text_advice">AQI europeu de até %1$d por volta das %2$s. Considere reduzir atividades intensas ao ar livre.</string>
+    <string name="al_tablet_title">Lembrete do antialérgico</string>
+    <string name="al_tablet_text">Hora da sua dose diária.</string>
+
+    <!-- Pollen categories as modifiers ("tree pollen", "grass pollen", "weed pollen") -->
+    <string name="al_pollen_tree">árvores</string>
+    <string name="al_pollen_grass">gramíneas</string>
+    <string name="al_pollen_weed">ervas daninhas</string>
+    <!-- Pollen categories as plural nouns (lists such as "trees, grass, weeds") -->
+    <string name="al_pollen_trees">árvores</string>
+    <string name="al_pollen_grasses">gramíneas</string>
+    <string name="al_pollen_weeds">ervas daninhas</string>
+    <string name="al_pollen_low_title">Pólen baixo hoje</string>
+    <!-- %1$s = list of pollen categories -->
+    <string name="al_pollen_low_text">Os níveis estão abaixo do seu limite para %1$s.</string>
+    <!-- %1$s = pollen category modifier (e.g. "tree") -->
+    <string name="al_pollen_one_very_high_title">Pólen de %1$s muito alto hoje</string>
+    <string name="al_pollen_one_high_title">Pólen de %1$s alto hoje</string>
+    <string name="al_pollen_one_elevated_title">Pólen de %1$s elevado hoje</string>
+    <!-- %1$s = pollen category modifier, capitalised (e.g. "Tree") -->
+    <string name="al_pollen_one_very_high_text">%1$s: níveis de pólen muito altos. Prepare-se antes de sair.</string>
+    <string name="al_pollen_one_high_text">%1$s: níveis de pólen altos. Considere manter as janelas fechadas.</string>
+    <string name="al_pollen_one_elevated_text">%1$s: pólen elevado hoje.</string>
+    <string name="al_pollen_many_very_high_title">Níveis de pólen muito altos hoje</string>
+    <string name="al_pollen_many_high_title">Níveis de pólen altos hoje</string>
+    <string name="al_pollen_many_elevated_title">Níveis de pólen elevados hoje</string>
+    <!-- %1$s = list of pollen categories (e.g. "tree, grass") -->
+    <string name="al_pollen_many_text">Elevados: %1$s. Considere manter as janelas fechadas.</string>
+
+    <!-- Results of "Send a test notification" -->
+    <string name="al_test_choose_place">Escolha um local primeiro</string>
+    <string name="al_test_load_failed">Não foi possível carregar a previsão</string>
+    <string name="al_test_no_wet_bulb">Sem dados de bulbo úmido para este local</string>
+    <string name="al_test_nothing_now">Nada a informar no momento</string>
+    <string name="al_test_nothing_title">Nada a informar</string>
+    <string name="al_test_nothing_text">As condições estão abaixo do seu limite para as próximas horas.</string>
+    <string name="al_test_sent">Enviada. Confira suas notificações.</string>
+
+    <!-- ============================================================ Briefings: comparison with yesterday (3 variants each) -->
+    <string name="al_cmp_same_1">Praticamente igual a ontem.</string>
+    <string name="al_cmp_same_2">Parecido com ontem.</string>
+    <string name="al_cmp_same_3">Bem parecido com ontem.</string>
+    <string name="al_cmp_warmer_slight_1">Um pouquinho mais quente que ontem.</string>
+    <string name="al_cmp_warmer_slight_2">Ligeiramente mais quente que ontem.</string>
+    <string name="al_cmp_warmer_slight_3">Um pouco mais ameno que ontem.</string>
+    <string name="al_cmp_cooler_slight_1">Um pouquinho mais fresco que ontem.</string>
+    <string name="al_cmp_cooler_slight_2">Ligeiramente mais fresco que ontem.</string>
+    <string name="al_cmp_cooler_slight_3">Um pouco mais fresco que ontem.</string>
+    <string name="al_cmp_warmer_1">Alguns graus mais quente que ontem.</string>
+    <string name="al_cmp_warmer_2">Visivelmente mais quente que ontem.</string>
+    <string name="al_cmp_warmer_3">Mais quente que ontem.</string>
+    <string name="al_cmp_cooler_1">Alguns graus mais fresco que ontem.</string>
+    <string name="al_cmp_cooler_2">Visivelmente mais fresco que ontem.</string>
+    <string name="al_cmp_cooler_3">Mais fresco que ontem.</string>
+    <string name="al_cmp_warmer_big_1">Bem mais quente que ontem.</string>
+    <string name="al_cmp_warmer_big_2">Muito mais quente que ontem.</string>
+    <string name="al_cmp_warmer_big_3">Um grande aumento de temperatura em relação a ontem.</string>
+    <string name="al_cmp_colder_big_1">Bem mais frio que ontem.</string>
+    <string name="al_cmp_colder_big_2">Muito mais frio que ontem.</string>
+    <string name="al_cmp_colder_big_3">Uma grande queda de temperatura em relação a ontem.</string>
+
+    <!-- Briefings: overall conditions of a day -->
+    <string name="al_cond_thunder">Tempestades possíveis.</string>
+    <string name="al_cond_snow">Neve provável.</string>
+    <string name="al_cond_freezing">Possível chuva congelante, cuidado onde pisa.</string>
+    <string name="al_cond_heavy_rain">Chuva forte prevista, leve um guarda-chuva.</string>
+    <string name="al_cond_rain">Chuva prevista, leve um guarda-chuva.</string>
+    <string name="al_cond_drizzle">Garoa fraca provável.</string>
+    <string name="al_cond_fog">Nevoeiro, então dirija com cuidado.</string>
+    <string name="al_cond_windy">Um dia de bastante vento, espere algumas rajadas.</string>
+    <string name="al_cond_cloudy">Encoberto durante a maior parte do dia.</string>
+    <string name="al_cond_partly">Sol predominante com algumas nuvens.</string>
+    <string name="al_cond_clear">Céu limpo previsto.</string>
+    <string name="al_cond_mixed">Condições variadas previstas.</string>
+
+    <!-- Briefings: rain timing. %1$s = start time, %2$s = end time, %3$d = chance in percent -->
+    <string name="al_timing_rain_until">Chuva provável das %1$s às %2$s (%3$d%%).</string>
+    <string name="al_timing_snow_until">Neve provável das %1$s às %2$s (%3$d%%).</string>
+    <string name="al_timing_thunder_until">Tempestades prováveis das %1$s às %2$s (%3$d%%).</string>
+    <string name="al_timing_drizzle_until">Garoa provável das %1$s às %2$s (%3$d%%).</string>
+    <!-- %1$s = start time, %2$d = chance in percent -->
+    <string name="al_timing_rain">Chuva provável a partir das %1$s (%2$d%%).</string>
+    <string name="al_timing_snow">Neve provável a partir das %1$s (%2$d%%).</string>
+    <string name="al_timing_thunder">Tempestades prováveis a partir das %1$s (%2$d%%).</string>
+    <string name="al_timing_drizzle">Garoa provável a partir das %1$s (%2$d%%).</string>
+
+    <!-- Briefings: morning / tomorrow -->
+    <!-- %1$s = wind speed -->
+    <string name="al_brief_gusts">Rajadas de até %1$s.</string>
+    <!-- %1$d = UV index, %2$s = UV level in lower case -->
+    <string name="al_brief_uv">UV %1$d (%2$s) por volta do meio-dia.</string>
+    <!-- %1$s = condition (e.g. "Partly cloudy"), %2$s = high, %3$s = low -->
+    <string name="al_brief_today_title">Hoje: %1$s, %2$s / %3$s</string>
+    <string name="al_brief_tomorrow_title">Amanhã: %1$s, %2$s / %3$s</string>
+    <string name="al_tmr_unknown">Confira a previsão completa no app.</string>
+    <string name="al_tmr_much_warmer">Amanhã será bem mais quente que hoje.</string>
+    <string name="al_tmr_warmer">Amanhã um pouco mais quente que hoje.</string>
+    <string name="al_tmr_much_colder">Amanhã será visivelmente mais frio.</string>
+    <string name="al_tmr_colder">Amanhã um pouco mais frio que hoje.</string>
+    <string name="al_tmr_similar">Temperaturas parecidas com as de hoje.</string>
+    <!-- %1$s = low temperature -->
+    <string name="al_tmr_snow">Agasalhe-se, mínimas em torno de %1$s.</string>
+    <string name="al_tmr_umbrella_must">Guarda-chuva é indispensável.</string>
+    <string name="al_tmr_umbrella_maybe">Um guarda-chuva pode ser útil.</string>
+    <string name="al_tmr_gusty">Segure o chapéu, vai ventar forte.</string>
+    <!-- %1$s = high, %2$s = low -->
+    <string name="al_tmr_highs">Máximas em torno de %1$s, caindo para %2$s durante a noite.</string>
+
+    <!-- Wet-bulb cooling levels (how well the body can cool itself) and guidance -->
+    <string name="al_cool_critical">Crítico</string>
+    <string name="al_cool_critical_text">Condições perigosas. Evite ficar muito tempo ao ar livre e procure ambientes com ar-condicionado.</string>
+    <string name="al_cool_very_difficult">Muito difícil</string>
+    <string name="al_cool_very_difficult_text">Esforço significativo para o corpo. Evite atividades extenuantes e descanse na sombra.</string>
+    <string name="al_cool_difficult">Difícil</string>
+    <string name="al_cool_difficult_text">Limite atividades extenuantes ao ar livre. Descanse em locais frescos e sombreados e beba bastante água.</string>
+    <string name="al_cool_reduced">Reduzido</string>
+    <string name="al_cool_reduced_text">Faça pausas regulares na sombra e mantenha-se hidratado nas horas mais quentes.</string>
+    <string name="al_cool_good">Bom</string>
+    <string name="al_cool_good_text">Confortável para atividades ao ar livre. Mantenha-se hidratado como de costume.</string>
+    <string name="al_cool_normal">Normal</string>
+    <string name="al_cool_normal_text">Nenhuma precaução necessária. Aproveite as atividades ao ar livre à vontade.</string>
+
+    <!-- European Air Quality Index levels -->
+    <string name="al_eaqi_good">Boa</string>
+    <string name="al_eaqi_fair">Razoável</string>
+    <string name="al_eaqi_moderate">Moderada</string>
+    <string name="al_eaqi_poor">Ruim</string>
+    <string name="al_eaqi_very_poor">Muito ruim</string>
+    <string name="al_eaqi_extremely_poor">Extremamente ruim</string>
+
+    <!-- ============================================================ What to wear: clothing items -->
+    <string name="al_wear_winter_coat">Casaco de inverno</string>
+    <string name="al_wear_hat_gloves">Gorro e luvas</string>
+    <string name="al_wear_thermal_layers">Roupas térmicas</string>
+    <string name="al_wear_warm_sweater">Blusa de frio</string>
+    <string name="al_wear_light_jacket">Jaqueta leve</string>
+    <string name="al_wear_long_sleeve">Manga comprida</string>
+    <string name="al_wear_light_top">Blusa leve</string>
+    <string name="al_wear_layers">Camadas</string>
+    <string name="al_wear_breathable_shoes">Calçado respirável</string>
+    <string name="al_wear_snow_boots">Botas de neve</string>
+    <string name="al_wear_raincoat">Capa de chuva</string>
+    <string name="al_wear_waterproof_shoes">Calçado impermeável</string>
+    <string name="al_wear_rain_jacket">Jaqueta de chuva</string>
+    <string name="al_wear_water_resistant_shoes">Calçado resistente à água</string>
+    <string name="al_wear_umbrella">Guarda-chuva</string>
+    <string name="al_wear_waterproof_hood">Capuz impermeável</string>
+    <string name="al_wear_windbreaker">Corta-vento</string>
+    <string name="al_wear_sun">Óculos de sol e protetor</string>
+    <!-- %1$s = high, %2$s = low -->
+    <string name="al_wear_summary">Máxima %1$s, mínima %2$s.</string>
+    <!-- Day choice on the "What to wear" card -->
+    <string name="al_day_today">Hoje</string>
+    <string name="al_day_tomorrow">Amanhã</string>
+
+    <!-- ============================================================ Alerts screen -->
+    <string name="al_screen_title">Alertas</string>
+    <string name="al_screen_subtitle">Notificações de alertas, chuva e dos seus planos diários</string>
+    <!-- Alert on/off state -->
+    <string name="al_on">Ativado</string>
+    <string name="al_off">Desativado</string>
+    <!-- Alert row status. %1$s = start time, %2$s = end time -->
+    <string name="al_status_all_day">O dia todo, %1$s–%2$s</string>
+    <!-- %1$s = time -->
+    <string name="al_status_daily_at">Diariamente às %1$s</string>
+    <string name="al_status_always_on">Sempre ativo</string>
+    <plurals name="al_status_checks_every">
+        <item quantity="one">Verifica a cada %1$d min</item>
+        <item quantity="many">Verifica a cada %1$d min</item>
+        <item quantity="other">Verifica a cada %1$d min</item>
+    </plurals>
+    <string name="al_banner_notif_title">As notificações estão desativadas</string>
+    <string name="al_banner_notif_body">Permita as notificações para que os alertas e avisos cheguem até você na hora certa.</string>
+    <string name="al_banner_notif_action">Permitir notificações</string>
+    <string name="al_banner_exact_title">Para horários precisos</string>
+    <string name="al_banner_exact_body">Conceda \"Alarmes e lembretes\" para que os alertas diários cheguem exatamente no horário definido (caso contrário, com até ~10 minutos de diferença).</string>
+    <string name="al_banner_exact_action">Conceder nas Configurações</string>
+    <string name="al_not_now">Agora não</string>
+    <string name="al_active_warnings">Alertas ativos</string>
+    <!-- %1$s = place name -->
+    <string name="al_active_warnings_place">Alertas ativos · %1$s</string>
+    <string name="al_no_warnings">Nenhum alerta em vigor</string>
+    <!-- %1$s = weather service name, e.g. "MeteoAlarm" -->
+    <string name="al_checked_with">Verificado com %1$s</string>
+    <string name="al_coverage">Os alertas oficiais cobrem os EUA, o Canadá e 37 países europeus</string>
+    <string name="al_recent">Notificações recentes</string>
+    <!-- Button: clear notification history -->
+    <string name="al_clear">Limpar</string>
+    <string name="al_quiet_hours">Horário silencioso</string>
+    <string name="al_quiet_hours_desc">Os alertas chegam sem som durante a noite. Alertas laranja e vermelhos continuam tocando.</string>
+    <!-- Time chips for the start/end of quiet hours -->
+    <string name="al_quiet_from">De</string>
+    <string name="al_quiet_until">Até</string>
+    <!-- Time picker dialog buttons -->
+    <string name="al_ok">OK</string>
+    <string name="al_cancel">Cancelar</string>
+
+    <!-- ============================================================ Alert detail screen -->
+    <string name="al_how_it_works">Como funciona</string>
+    <string name="al_active_hours">Horário ativo</string>
+    <string name="al_notification_time">Horário da notificação</string>
+    <!-- Choice: how often the rain alert checks -->
+    <string name="al_check">Verificar</string>
+    <string name="al_all_day">O dia todo</string>
+    <string name="al_once_daily">Uma vez por dia</string>
+    <!-- Time chips -->
+    <string name="al_start">Início</string>
+    <string name="al_end">Fim</string>
+    <string name="al_reminder_time">Horário do lembrete</string>
+    <string name="al_alert_time">Horário do alerta</string>
+    <string name="al_location">Local</string>
+    <string name="al_home_location">Local de casa</string>
+    <string name="al_work_location">Local de trabalho</string>
+    <string name="al_checking_forecast">Verificando a previsão…</string>
+    <string name="al_send_test">Enviar uma notificação de teste</string>
+
+    <!-- Location picker -->
+    <string name="al_loc_not_set">Não definido</string>
+    <string name="al_loc_not_set_sub">Usar o de casa o dia todo</string>
+    <string name="al_loc_auto">Seguir o app</string>
+    <string name="al_loc_auto_sub">O local que você estiver vendo</string>
+    <string name="al_loc_current">Local atual</string>
+    <string name="al_loc_current_sub">A localização do seu dispositivo</string>
+
+    <!-- Disclaimers at the bottom of the detail screen -->
+    <string name="al_disclaimer_warnings">Os alertas meteorológicos são apenas para orientação. Siga sempre as recomendações oficiais do serviço meteorológico nacional e das autoridades locais.</string>
+    <string name="al_disclaimer_pollen">Os dados de pólen são apenas para orientação e não substituem a recomendação de um profissional.</string>
+    <string name="al_disclaimer_health">Isto não é aconselhamento médico. Consulte um profissional de saúde em caso de dúvidas sobre a sua saúde.</string>
+    <string name="al_disclaimer_precip">As previsões de precipitação são estimativas e podem diferir das condições reais.</string>
+
+    <!-- Warning level legend -->
+    <string name="al_legend_yellow">Tempo severo possível. Fique atento e preparado.</string>
+    <string name="al_legend_amber">Tempo severo provável. Tome medidas para se manter seguro.</string>
+    <string name="al_legend_red">Tempo extremo. Risco de vida — tome medidas imediatamente.</string>
+
+    <!-- Options: warnings / friends -->
+    <string name="al_opt_alert_levels">Níveis de alerta</string>
+    <string name="al_opt_notify_from">Notificar a partir de</string>
+    <string name="al_opt_saved_locations">Locais salvos</string>
+    <string name="al_opt_saved_locations_sub">Também notificar sobre alertas na sua localização atual e em todos os locais salvos</string>
+    <string name="al_opt_manage_friends">Gerenciar família e amigos</string>
+    <!-- Options: nowcast -->
+    <string name="al_opt_sensitivity">Sensibilidade</string>
+    <string name="al_opt_intensity">Intensidade</string>
+    <!-- Rain intensity choice -->
+    <string name="al_opt_intensity_any">Qualquer</string>
+    <string name="al_opt_intensity_moderate">Moderada+</string>
+    <string name="al_opt_intensity_heavy">Forte</string>
+    <string name="al_opt_heads_up">Antecedência</string>
+    <plurals name="al_opt_min_before">
+        <item quantity="one">%1$d min antes</item>
+        <item quantity="many">%1$d min antes</item>
+        <item quantity="other">%1$d min antes</item>
+    </plurals>
+    <string name="al_opt_include_snow">Incluir neve</string>
+    <!-- Options: rain -->
+    <string name="al_opt_rain">Chuva</string>
+    <string name="al_opt_lookahead_window">Período de antecipação</string>
+    <!-- Number of hours, short form, e.g. "4 h" -->
+    <string name="al_opt_hours_short">%1$d h</string>
+    <string name="al_opt_chance_of_rain">Chance de chuva</string>
+    <!-- %1$d = percent -->
+    <string name="al_opt_percent_or_more">%1$d%% ou mais</string>
+    <!-- Options: storm / frost / UV / heat / air -->
+    <string name="al_opt_thresholds">Limites</string>
+    <string name="al_opt_threshold">Limite</string>
+    <string name="al_opt_gusts">Rajadas</string>
+    <string name="al_opt_look_ahead">Antecipação</string>
+    <string name="al_opt_frost_low">Mínima noturna igual ou abaixo de</string>
+    <string name="al_opt_uv_above">Índice UV acima de</string>
+    <string name="al_opt_uv_caption">Ajuste o controle deslizante para definir o nível mínimo de UV que dispara um alerta.</string>
+    <string name="al_opt_warn_from">Avisar a partir de</string>
+    <string name="al_opt_heat_caption">Por volta de 31° de bulbo úmido, o corpo não consegue mais se resfriar, mesmo em repouso na sombra.</string>
+    <string name="al_opt_alert_from">Alertar a partir de</string>
+    <!-- Options: pollen -->
+    <string name="al_opt_my_allergies">Minhas alergias</string>
+    <string name="al_opt_allergy_trees">Árvores (amieiro, bétula, oliveira)</string>
+    <string name="al_opt_allergy_grass">Gramíneas</string>
+    <string name="al_opt_allergy_weeds">Ervas daninhas (artemísia, ambrósia)</string>
+    <!-- Pollen sensitivity choice -->
+    <string name="al_opt_sens_low">Baixa</string>
+    <string name="al_opt_sens_moderate">Moderada</string>
+    <string name="al_opt_sens_high">Alta</string>
+    <!-- Options: tablet -->
+    <string name="al_opt_options">Opções</string>
+    <string name="al_opt_pollen_days">Só em dias de muito pólen</string>
+    <string name="al_opt_pollen_days_sub">Usa as alergias e a sensibilidade do seu alerta de pólen</string>
+    <!-- Options: pressure. %1$s = threshold number (hPa per 3 hours) -->
+    <string name="al_opt_drop_threshold">Limite de queda</string>
+    <string name="al_opt_drop_low">Baixo (%1$s hPa/3h)</string>
+    <string name="al_opt_drop_medium">Médio (%1$s hPa/3h)</string>
+    <string name="al_opt_drop_high">Alto (%1$s hPa/3h)</string>
+    <string name="al_opt_drop_sub">Alertas mais sensíveis para quedas menores</string>
+    <!-- Options: what to wear -->
+    <string name="al_opt_you">Você</string>
+    <string name="al_opt_commute">Trajeto diário</string>
+    <string name="al_opt_commute_walk">A pé e bicicleta</string>
+    <string name="al_opt_commute_transit">Transporte e carro</string>
+    <string name="al_opt_commute_mixed">Misto</string>
+    <string name="al_opt_commute_walk_sub">Trajeto ativo, com muita exposição a vento, respingos e frio</string>
+    <string name="al_opt_commute_transit_sub">Metrô, ônibus ou carro, quase sempre protegido do tempo</string>
+    <string name="al_opt_commute_mixed_sub">Caminhada até o transporte, trajeto misto ou dicas gerais</string>
+    <string name="al_opt_temp_sensitivity">Sensibilidade à temperatura</string>
+    <string name="al_opt_feel_cold">Sinto frio</string>
+    <string name="al_opt_feel_normal">Normal</string>
+    <string name="al_opt_feel_warm">Sinto calor</string>
+    <string name="al_opt_temp_sensitivity_sub">Ajusta as dicas à facilidade com que você sente frio ou calor</string>
+
+    <!-- "How it works" explanations. Times like %1$s are clock times. -->
+    <string name="al_how_warnings">A cada 30 minutos, aproximadamente, o app consulta o serviço meteorológico nacional para a sua localização. Você é notificado uma vez por alerta e de novo se ele for elevado. Alertas laranja e vermelhos tocam mesmo no horário silencioso.</string>
+    <string name="al_how_warnings_saved">A cada 30 minutos, aproximadamente, o app consulta o serviço meteorológico nacional para a sua localização e os seus locais salvos. Você é notificado uma vez por alerta e de novo se ele for elevado. Alertas laranja e vermelhos tocam mesmo no horário silencioso.</string>
+    <!-- What the nowcast watches for; used as %2$s in al_how_nowcast -->
+    <string name="al_how_nowcast_rain">chuva</string>
+    <string name="al_how_nowcast_rain_snow">chuva ou neve</string>
+    <string name="al_how_nowcast_moderate_rain">chuva moderada</string>
+    <string name="al_how_nowcast_moderate_rain_snow">chuva ou neve moderada</string>
+    <string name="al_how_nowcast_heavy_rain">chuva forte</string>
+    <string name="al_how_nowcast_heavy_rain_snow">chuva ou neve forte</string>
+    <!-- %1$d = minutes, %2$s = what is watched (e.g. "heavy rain or snow") -->
+    <plurals name="al_how_nowcast">
+        <item quantity="one">A cada 15 minutos, o app consulta a previsão imediata de precipitação de 15 minutos. Quando houver %2$s prevista para daqui a %1$d minuto, você recebe uma contagem regressiva ao vivo que se atualiza até começar e depois informa quando deve parar. No Android 16, ela aparece como um chip de Atualização ao vivo na barra de status.</item>
+        <item quantity="many">A cada 15 minutos, o app consulta a previsão imediata de precipitação de 15 minutos. Quando houver %2$s prevista para daqui a %1$d minutos, você recebe uma contagem regressiva ao vivo que se atualiza até começar e depois informa quando deve parar. No Android 16, ela aparece como um chip de Atualização ao vivo na barra de status.</item>
+        <item quantity="other">A cada 15 minutos, o app consulta a previsão imediata de precipitação de 15 minutos. Quando houver %2$s prevista para daqui a %1$d minutos, você recebe uma contagem regressiva ao vivo que se atualiza até começar e depois informa quando deve parar. No Android 16, ela aparece como um chip de Atualização ao vivo na barra de status.</item>
+    </plurals>
+    <!-- %1$d = hours, %2$s = start time, %3$s = end time, %4$d = percent -->
+    <plurals name="al_how_rain_all_day">
+        <item quantity="one">A cada 15 minutos, aproximadamente, entre %2$s e %3$s, o app olha %1$d hora à frente. Quando a chance de chuva chegar a %4$d%%, você recebe um aviso, no máximo uma vez a cada 3 horas.</item>
+        <item quantity="many">A cada 15 minutos, aproximadamente, entre %2$s e %3$s, o app olha %1$d horas à frente. Quando a chance de chuva chegar a %4$d%%, você recebe um aviso, no máximo uma vez a cada 3 horas.</item>
+        <item quantity="other">A cada 15 minutos, aproximadamente, entre %2$s e %3$s, o app olha %1$d horas à frente. Quando a chance de chuva chegar a %4$d%%, você recebe um aviso, no máximo uma vez a cada 3 horas.</item>
+    </plurals>
+    <!-- %1$d = hours, %2$s = time, %3$d = percent -->
+    <plurals name="al_how_rain_once">
+        <item quantity="one">Às %2$s, o app verifica a próxima hora. Se a chance de chuva chegar a %3$d%%, você recebe uma notificação com o horário previsto de início.</item>
+        <item quantity="many">Às %2$s, o app verifica as próximas %1$d horas. Se a chance de chuva chegar a %3$d%%, você recebe uma notificação com o horário previsto de início.</item>
+        <item quantity="other">Às %2$s, o app verifica as próximas %1$d horas. Se a chance de chuva chegar a %3$d%%, você recebe uma notificação com o horário previsto de início.</item>
+    </plurals>
+    <!-- %1$d = hours, %2$s = wind speed -->
+    <plurals name="al_how_storm">
+        <item quantity="one">A cada 30 minutos, o app olha %1$d hora à frente em busca de rajadas de %2$s ou mais, ou de tempestades. No máximo um alerta a cada 8 horas.</item>
+        <item quantity="many">A cada 30 minutos, o app olha %1$d horas à frente em busca de rajadas de %2$s ou mais, ou de tempestades. No máximo um alerta a cada 8 horas.</item>
+        <item quantity="other">A cada 30 minutos, o app olha %1$d horas à frente em busca de rajadas de %2$s ou mais, ou de tempestades. No máximo um alerta a cada 8 horas.</item>
+    </plurals>
+    <string name="al_how_today">Às %1$s você recebe um breve resumo: condições, máxima e mínima, quando a chuva é provável, vento ou UV relevantes e a comparação com ontem.</string>
+    <string name="al_how_tomorrow">Às %1$s o app analisa a previsão de amanhã e envia um resumo curto e fácil de ler sobre o que esperar e como será em comparação com hoje.</string>
+    <string name="al_how_wardrobe">Às %1$s (ou na noite anterior, se o horário for depois das 15:00), o app analisa as horas em que você estará fora, considera como você sente o frio e o seu trajeto e sugere o que vestir e levar.</string>
+    <string name="al_how_wardrobe_work">A previsão do seu local de trabalho é usada das 09:00 às 17:00.</string>
+    <!-- %1$s = time, %2$s = temperature -->
+    <string name="al_how_frost">Às %1$s o app verifica a temperatura mínima desta noite até as 10:00 de amanhã. Se chegar a %2$s ou menos, você recebe um alerta de geada.</string>
+    <!-- %1$s = time, %2$d = UV index -->
+    <string name="al_how_uv">Às %1$s o app verifica a previsão de UV de hoje. Se for passar de %2$d, você fica sabendo o horário de pico e quando proteger a pele.</string>
+    <!-- %1$d = hours, %2$s = temperature, %3$s = cooling level in lower case -->
+    <plurals name="al_how_heat">
+        <item quantity="one">A cada 30 minutos, o app verifica a temperatura de bulbo úmido agora e para a próxima hora. Quando ela chegar a %2$s (%3$s), você é avisado na hora, e de novo no mesmo dia só se piorar. Esses alertas tocam mesmo no horário silencioso.</item>
+        <item quantity="many">A cada 30 minutos, o app verifica a temperatura de bulbo úmido agora e para as próximas %1$d horas. Quando ela chegar a %2$s (%3$s), você é avisado na hora, e de novo no mesmo dia só se piorar. Esses alertas tocam mesmo no horário silencioso.</item>
+        <item quantity="other">A cada 30 minutos, o app verifica a temperatura de bulbo úmido agora e para as próximas %1$d horas. Quando ela chegar a %2$s (%3$s), você é avisado na hora, e de novo no mesmo dia só se piorar. Esses alertas tocam mesmo no horário silencioso.</item>
+    </plurals>
+    <!-- %1$s = time, %2$s = air quality level in lower case -->
+    <string name="al_how_air">Às %1$s o app verifica o Índice Europeu de Qualidade do Ar para as próximas 18 horas. Se atingir o nível %2$s ou pior, você recebe um alerta.</string>
+    <!-- %1$s = time, %2$s = list of allergens -->
+    <string name="al_how_pollen">Às %1$s o app verifica a previsão de pólen para %2$s.</string>
+    <string name="al_how_pollen_fallback">os seus alérgenos</string>
+    <string name="al_how_pollen_low">Com sensibilidade baixa, você é alertado a partir de níveis muito altos.</string>
+    <string name="al_how_pollen_moderate">Com sensibilidade moderada, você é alertado a partir de níveis altos.</string>
+    <string name="al_how_pollen_high">Com sensibilidade alta, você é alertado a partir de níveis moderados.</string>
+    <!-- %1$s = time -->
+    <string name="al_how_tablet">Um lembrete diário às %1$s.</string>
+    <string name="al_how_tablet_pollen">Um lembrete diário às %1$s, só nos dias em que o limite do seu alerta de pólen for atingido.</string>
+    <!-- %1$d = pressure drop in hPa -->
+    <string name="al_how_pressure">A cada 30 minutos, o app olha 12 horas à frente em busca de uma queda de pressão de %1$d hPa ou mais em 3 horas. No máximo um alerta a cada 18 horas.</string>
+    <!-- %1$s = warning colour level in lower case (e.g. "amber") -->
+    <string name="al_how_friends">A cada 40 minutos, aproximadamente, o app verifica os alertas oficiais em cada local de Família e amigos e avisa você sobre alertas de nível %1$s ou superior.</string>
+    <string name="al_how_ongoing">Uma notificação silenciosa mantém a temperatura atual na barra de status, com a máxima e a mínima de hoje, o horário da chuva e as próximas horas. Ela é atualizada em segundo plano a cada 15–30 minutos.</string>
+
+    <!-- ============================================================ Home cards & warnings screen -->
+    <plurals name="al_more_warnings">
+        <item quantity="one">+%1$d outro alerta</item>
+        <item quantity="many">+%1$d outros alertas</item>
+        <item quantity="other">+%1$d outros alertas</item>
+    </plurals>
+    <string name="al_warnings_title">Alertas meteorológicos</string>
+    <!-- Icon button description -->
+    <string name="al_warning_notifications">Notificações de alertas</string>
+    <string name="al_no_warnings_sentence">Nenhum alerta em vigor.</string>
+    <!-- %1$s = place name -->
+    <string name="al_no_warnings_for">Nenhum alerta em vigor para %1$s.</string>
+    <string name="al_warnings_sources">Os alertas vêm do serviço meteorológico nacional de cada local: NWS (EUA), Environment and Climate Change Canada, Deutscher Wetterdienst (via Bright Sky) e MeteoAlarm/EUMETNET para mais 36 países europeus. Eles servem apenas como orientação. Siga sempre as recomendações oficiais do serviço meteorológico nacional e das autoridades locais.</string>
+    <string name="al_wardrobe_card_title">O que vestir</string>
+    <!-- Icon button description -->
+    <string name="al_wardrobe_settings">Configurações de roupa</string>
+    <string name="al_wardrobe_no_data">Não há dados de previsão suficientes para as horas em que você estará fora.</string>
+</resources>

@@ -21,13 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.data.Forecast
 import dev.vis.weather.data.ForecastModels
 import dev.vis.weather.data.Observation
 import dev.vis.weather.ui.Fmt
 
 /** "Locally verified · EHAM 12 km" — shown when a nearby station observation corrected the forecast. */
-fun observationLabel(o: Observation, fmt: Fmt): String = "Locally verified · ${o.stationId} ${fmt.km(o.distanceKm).replace(".0 ", " ")}"
+fun observationLabel(o: Observation, fmt: Fmt): String =
+    L.s(R.string.dt_obs_label, o.stationId, fmt.km(o.distanceKm).replace(".0 ", " "))
 
 /** Tonal pill for the hero or header. Renders nothing when no correction was applied. */
 @Composable
@@ -45,18 +48,20 @@ fun ObservationBadge(f: Forecast, fmt: Fmt, modifier: Modifier = Modifier) {
 /** Longer explanation of the correction, e.g. for a tooltip or the data screen. */
 fun observationDetail(o: Observation, fmt: Fmt, now: Long): String {
     val mins = ((now - o.time) / 60).coerceAtLeast(0)
-    return "${o.name.ifBlank { o.stationId }} (${o.stationId}), ${fmt.km(o.distanceKm)} away, reported ${fmt.temp(o.temp)} " +
-        "$mins min ago. The next hours were adjusted by ${fmt.tempDelta(o.tempBias)} and blend back into the model over 6 hours."
+    return L.p(
+        R.plurals.dt_obs_detail, mins.toInt(),
+        o.name.ifBlank { o.stationId }, o.stationId, fmt.km(o.distanceKm), fmt.temp(o.temp), mins, fmt.tempDelta(o.tempBias),
+    )
 }
 
 /** "Forecast: ECMWF IFS · Open-Meteo · Locally verified · EHAM 12 km" — for the bottom of the main screen. */
 fun dataSourceText(f: Forecast, fmt: Fmt): String {
     val m = ForecastModels.byId(f.model)
-    val model = if (m.id == ForecastModels.AUTO) "Best regional model" else m.name
-    val parts = mutableListOf("Forecast: $model via Open-Meteo")
-    if (f.modelFilled && m.id != ForecastModels.AUTO) parts += "gaps filled automatically"
-    f.observation?.takeIf { it.applied }?.let { parts += "corrected with ${it.stationId} (${fmt.km(it.distanceKm)})" }
-    if (f.marine != null) parts += "sea: Open-Meteo Marine"
+    val model = if (m.id == ForecastModels.AUTO) L.s(R.string.dt_src_best_model) else m.name
+    val parts = mutableListOf(L.s(R.string.dt_src_forecast, model))
+    if (f.modelFilled && m.id != ForecastModels.AUTO) parts += L.s(R.string.dt_src_gaps)
+    f.observation?.takeIf { it.applied }?.let { parts += L.s(R.string.dt_src_corrected, it.stationId, fmt.km(it.distanceKm)) }
+    if (f.marine != null) parts += L.s(R.string.dt_src_sea)
     return parts.joinToString(" · ")
 }
 

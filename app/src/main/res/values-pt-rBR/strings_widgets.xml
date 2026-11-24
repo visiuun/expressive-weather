@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_shape_label">Forma do tempo</string>
+    <string name="widget_shape_desc">Temperatura e céu dentro de uma forma expressiva. Escolha a forma e as cores nas configurações do widget.</string>
+    <string name="widget_shape_config_title">Forma do tempo</string>
+    <string name="widget_stack_label">Pilha da previsão</string>
+    <string name="widget_stack_desc">Agora, as próximas horas e os próximos dias em painéis empilhados.</string>
+    <string name="widget_tile_label">Bloco de dados</string>
+    <string name="widget_tile_desc">Um número em destaque: vento, UV, qualidade do ar, umidade, pressão, chuva, sol, lua e mais. Escolha nas configurações do widget.</string>
+    <string name="widget_tile_config_title">Bloco de dados</string>
+
+    <!-- Home screen widgets: shared empty / loading states -->
+    <string name="w_pick_location">Escolha um local no app</string>
+    <!-- %1$s = place name -->
+    <string name="w_loading_place">Carregando %1$s…</string>
+    <!-- %1$s = place name -->
+    <string name="w_tap_to_load_place">Toque para carregar %1$s</string>
+    <!-- Short versions for the small "Weather shape" widget -->
+    <string name="w_pick_place">Escolha um local</string>
+    <string name="w_loading">Carregando…</string>
+    <string name="w_tap_to_load">Toque para carregar</string>
+
+    <!-- Home screen widgets: common labels -->
+    <!-- First column of an hourly forecast: the current hour -->
+    <string name="w_now">Agora</string>
+    <!-- Accessibility: tapping the pin icon switches the widget to the next saved place -->
+    <string name="w_switch_location">Trocar local</string>
+    <!-- Accessibility: arrow showing where the wind blows from -->
+    <string name="w_wind_direction">Direção do vento</string>
+    <!-- %1$s = feels-like temperature, e.g. "Feels 12°" -->
+    <string name="w_feels">Sensação %1$s</string>
+    <!-- %1$s = feels-like temperature, %2$s = today's high and low ("↑14°  ↓6°") -->
+    <string name="w_feels_hilo">Sensação %1$s · %2$s</string>
+    <!-- Accessibility: paging buttons in the hourly strip -->
+    <string name="w_earlier">Antes</string>
+    <string name="w_later">Depois</string>
+
+    <!-- Forecast widget tabs -->
+    <string name="w_tab_hourly">Por hora</string>
+    <string name="w_tab_daily">Diária</string>
+    <string name="w_tab_details">Detalhes</string>
+
+    <!-- Metric names (widget tile titles and the Data tile picker) -->
+    <string name="w_metric_wind">Vento</string>
+    <string name="w_metric_uv">Índice UV</string>
+    <string name="w_metric_air">Qualidade do ar</string>
+    <string name="w_metric_feels">Sensação térmica</string>
+    <string name="w_metric_humidity">Umidade</string>
+    <string name="w_metric_pressure">Pressão</string>
+    <string name="w_metric_rain">Chance de chuva</string>
+    <string name="w_metric_sun">Nascer e pôr do sol</string>
+    <string name="w_metric_moon">Lua</string>
+    <string name="w_metric_visibility">Visibilidade</string>
+    <string name="w_metric_cloud">Nebulosidade</string>
+    <string name="w_sunrise">Nascer do sol</string>
+    <string name="w_sunset">Pôr do sol</string>
+
+    <!-- Small notes under metric values. %1$s is a formatted value (temperature, time, amount) -->
+    <!-- %1$s = actual air temperature -->
+    <string name="w_note_actual">Real %1$s</string>
+    <!-- Short form of "dew point", space is tight -->
+    <string name="w_note_dew">Orvalho %1$s</string>
+    <string name="w_note_dew_point">Ponto de orvalho %1$s</string>
+    <!-- %1$s = compass direction, e.g. "From NW" -->
+    <string name="w_note_from">Do %1$s</string>
+    <!-- %1$s = today's total precipitation, e.g. "Today 3 mm" -->
+    <string name="w_note_today_precip">Hoje %1$s</string>
+    <!-- %1$s = sunset time, short for "sunset" -->
+    <string name="w_note_set">Pôr %1$s</string>
+    <!-- %1$s = sunrise time -->
+    <string name="w_note_sunrise_at">Nascer do sol %1$s</string>
+    <!-- %1$s = sunset time -->
+    <string name="w_note_sunset_at">Pôr do sol %1$s</string>
+
+    <!-- Data tile widget -->
+    <!-- %1$s = compass direction the wind comes from, e.g. "Wind from NW" -->
+    <string name="w_tile_wind_from">Vento do %1$s</string>
+    <!-- %1$s = gust speed with unit -->
+    <string name="w_tile_gusts">Rajadas %1$s</string>
+    <!-- %1$d = today's highest UV index -->
+    <string name="w_tile_uv_max">Máx. hoje %1$d</string>
+    <string name="w_unavailable_here">Indisponível aqui</string>
+    <string name="w_tile_feels_colder">Mais frio que o real</string>
+    <string name="w_tile_feels_warmer">Mais quente que o real</string>
+    <string name="w_tile_feels_close">Próxima da real</string>
+    <!-- Humidity comfort levels (based on dew point) -->
+    <string name="w_tile_humidity_dry">Seco</string>
+    <string name="w_tile_humidity_comfortable">Confortável</string>
+    <string name="w_tile_humidity_humid">Úmido</string>
+    <string name="w_tile_humidity_muggy">Abafado</string>
+    <!-- Pressure trend -->
+    <string name="w_tile_pressure_rising">Em alta</string>
+    <string name="w_tile_pressure_falling">Em queda</string>
+    <string name="w_tile_pressure_steady">Estável</string>
+    <string name="w_tile_pressure_note">Nas últimas 3 h</string>
+    <!-- Rain chance; %1$s = hour, e.g. "Likely at 3 PM" -->
+    <string name="w_tile_rain_likely_at">Provável às %1$s</string>
+    <string name="w_tile_rain_possible">Possível</string>
+    <string name="w_tile_rain_unlikely">Improvável</string>
+    <!-- %1$s = total precipitation over the next 12 hours -->
+    <string name="w_tile_rain_note">Próximas 12 h · %1$s</string>
+    <!-- %1$s = length of daylight, e.g. "12 h 5 min daylight" -->
+    <string name="w_tile_daylight">%1$s de luz do dia</string>
+    <!-- Moon -->
+    <string name="w_tile_moon_full_tonight">Cheia esta noite</string>
+    <!-- %1$d = days until full moon; "d" = days -->
+    <plurals name="w_tile_moon_full_in">
+        <item quantity="one">Cheia em %1$d d</item>
+        <item quantity="many">Cheia em %1$d d</item>
+        <item quantity="other">Cheia em %1$d d</item>
+    </plurals>
+    <!-- Shown under the moon's illuminated percentage -->
+    <string name="w_tile_moon_illuminated">Iluminada</string>
+
+    <!-- Rain widget -->
+    <!-- Under the biggest rain chance of the next 12 hours -->
+    <string name="w_rain_max_chance">chance máx.</string>
+    <string name="w_rain_next_2h">Chuva por pelo menos as próximas 2 horas</string>
+    <!-- %1$d = minutes -->
+    <plurals name="w_rain_stopping">
+        <item quantity="one">Chuva para em ~%1$d min</item>
+        <item quantity="many">Chuva para em ~%1$d min</item>
+        <item quantity="other">Chuva para em ~%1$d min</item>
+    </plurals>
+    <!-- %1$d = minutes -->
+    <plurals name="w_rain_starting">
+        <item quantity="one">Chuva começa em ~%1$d min</item>
+        <item quantity="many">Chuva começa em ~%1$d min</item>
+        <item quantity="other">Chuva começa em ~%1$d min</item>
+    </plurals>
+    <!-- %1$s = hour -->
+    <string name="w_rain_likely_around">Chuva provável por volta das %1$s</string>
+    <string name="w_rain_slight_chance">Pequena chance de chuva nas próximas 12 h</string>
+    <string name="w_rain_none">Sem previsão de chuva nas próximas 12 h</string>
+
+    <!-- Sun & moon widget -->
+    <!-- %1$s = length of daylight -->
+    <string name="w_sun_of_daylight">%1$s de luz do dia</string>
+    <!-- %1$d = illuminated percentage of the moon -->
+    <string name="w_moon_full_tonight">%1$d%% · cheia esta noite</string>
+    <!-- %1$d = illuminated percentage, %2$d = days until full moon ("d" = days) -->
+    <plurals name="w_moon_full_in">
+        <item quantity="one">%1$d%% · cheia em %2$d d</item>
+        <item quantity="many">%1$d%% · cheia em %2$d d</item>
+        <item quantity="other">%1$d%% · cheia em %2$d d</item>
+    </plurals>
+
+    <!-- Air quality widget -->
+    <!-- %1$s = pollen type (e.g. Grass), %2$s = level in lower case (e.g. high) -->
+    <string name="w_air_pollen">%1$s: %2$s</string>
+    <!-- Short US AQI levels that fit a pill -->
+    <string name="w_aqi_good">Boa</string>
+    <string name="w_aqi_moderate">Moderada</string>
+    <string name="w_aqi_sensitive">Ruim p/ sensíveis</string>
+    <string name="w_aqi_unhealthy">Ruim</string>
+    <string name="w_aqi_very_unhealthy">Muito ruim</string>
+    <string name="w_aqi_hazardous">Perigosa</string>
+
+    <!-- Widget settings screens (Data tile and Weather shape) -->
+    <string name="w_cfg_cancel">Cancelar</string>
+    <string name="w_cfg_save">Salvar</string>
+    <!-- Section header: what the widget shows -->
+    <string name="w_cfg_show">Mostrar</string>
+    <string name="w_cfg_location">Local</string>
+    <string name="w_cfg_follow_app">Seguir o app</string>
+    <string name="w_cfg_follow_app_desc">Mostra o local aberto no app</string>
+    <string name="w_cfg_your_location">Sua localização</string>
+    <!-- Weather shape settings -->
+    <string name="w_cfg_shape">Forma</string>
+    <string name="w_cfg_colours">Cores</string>
+    <string name="w_cfg_colour">Cor</string>
+    <!-- Colour mode name on Android 11 and older (no wallpaper colours) -->
+    <string name="w_cfg_app_colours">Cores do app</string>
+    <!-- Slider for the shape's background opacity -->
+    <string name="w_cfg_background_opacity">Fundo</string>
+    <string name="w_cfg_background_caption">Diminua para deixar o plano de fundo aparecer através da forma.</string>
+    <string name="w_cfg_hilo">Máxima e mínima</string>
+    <string name="w_cfg_hilo_desc">A variação de hoje, quando o widget é grande o suficiente</string>
+    <string name="w_cfg_place_name">Nome do local</string>
+    <string name="w_cfg_place_name_desc">Exibido em widgets maiores</string>
+    <!-- Caption under the preview, which shows the widget on a dark / light wallpaper -->
+    <string name="w_cfg_dark_home">Tela inicial escura</string>
+    <string name="w_cfg_light_home">Tela inicial clara</string>
+
+    <!-- Weather shape widget: shape names (Material 3 Expressive shapes). The number is the count of bumps / leaves. -->
+    <string name="w_shape_cookie_9">Biscoito 9</string>
+    <string name="w_shape_circle">Círculo</string>
+    <string name="w_shape_square">Quadrado</string>
+    <string name="w_shape_pill">Pílula</string>
+    <string name="w_shape_cookie_4">Biscoito 4</string>
+    <string name="w_shape_cookie_6">Biscoito 6</string>
+    <string name="w_shape_cookie_7">Biscoito 7</string>
+    <string name="w_shape_cookie_12">Biscoito 12</string>
+    <string name="w_shape_clover_4">Trevo 4</string>
+    <string name="w_shape_clover_8">Trevo 8</string>
+    <!-- Sun-like shape with rays -->
+    <string name="w_shape_sunny">Ensolarado</string>
+    <string name="w_shape_very_sunny">Muito ensolarado</string>
+    <string name="w_shape_soft_burst">Explosão suave</string>
+    <string name="w_shape_soft_boom">Estouro suave</string>
+    <string name="w_shape_flower">Flor</string>
+    <string name="w_shape_pixel_circle">Círculo pixelado</string>
+    <string name="w_shape_gem">Gema</string>
+    <string name="w_shape_pentagon">Pentágono</string>
+    <string name="w_shape_diamond">Losango</string>
+    <string name="w_shape_slanted">Inclinado</string>
+    <string name="w_shape_bun">Pãozinho</string>
+    <string name="w_shape_ghost">Fantasma</string>
+    <string name="w_shape_arch">Arco</string>
+    <string name="w_shape_clamshell">Concha</string>
+    <string name="w_shape_oval">Oval</string>
+    <string name="w_shape_heart">Coração</string>
+
+    <!-- Weather shape widget: colour choices -->
+    <!-- Colours taken from the wallpaper (Material You) -->
+    <string name="w_color_wallpaper">Plano de fundo</string>
+    <!-- A gradient following the current sky -->
+    <string name="w_color_sky">Céu</string>
+    <string name="w_color_black">Preto</string>
+    <string name="w_color_white">Branco</string>
+    <string name="w_color_coral">Coral</string>
+    <string name="w_color_amber">Âmbar</string>
+    <string name="w_color_mint">Menta</string>
+    <string name="w_color_sky_blue">Azul-celeste</string>
+    <string name="w_color_rose">Rosa</string>
+    <string name="w_color_slate">Ardósia</string>
+</resources>

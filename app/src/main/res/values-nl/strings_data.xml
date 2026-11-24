@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App icon picker (Settings > App icon): names of the launcher icon variants -->
+    <string name="d_icon_black">Zwart</string>
+    <string name="d_icon_white">Wit</string>
+    <string name="d_icon_color">Kleur</string>
+    <!-- Icon that changes with the current weather -->
+    <string name="d_icon_dynamic">Dynamisch</string>
+    <string name="d_icon_sunny">Zonnig</string>
+    <string name="d_icon_clear_night">Heldere nacht</string>
+    <string name="d_icon_partly">Half bewolkt</string>
+    <string name="d_icon_partly_night">Bewolkte nacht</string>
+    <string name="d_icon_cloudy">Bewolkt</string>
+    <string name="d_icon_foggy">Mistig</string>
+    <string name="d_icon_rainy">Regenachtig</string>
+    <string name="d_icon_snowy">Sneeuw</string>
+    <string name="d_icon_stormy">Stormachtig</string>
+
+    <!-- Astronomy: solstices/equinoxes by calendar month (hemisphere-neutral) -->
+    <string name="d_astro_march_equinox">Maart-equinox</string>
+    <string name="d_astro_june_solstice">Junizonnewende</string>
+    <string name="d_astro_september_equinox">September-equinox</string>
+    <string name="d_astro_december_solstice">Decemberzonnewende</string>
+    <!-- Astronomy: hemisphere-aware season event names -->
+    <string name="d_astro_spring_equinox">Lente-equinox</string>
+    <string name="d_astro_summer_solstice">Zomerzonnewende</string>
+    <string name="d_astro_autumn_equinox">Herfst-equinox</string>
+    <string name="d_astro_winter_solstice">Winterzonnewende</string>
+    <!-- Moon phase names -->
+    <string name="d_moon_new">Nieuwe maan</string>
+    <string name="d_moon_waxing_crescent">Wassende sikkel</string>
+    <string name="d_moon_first_quarter">Eerste kwartier</string>
+    <string name="d_moon_waxing_gibbous">Wassende maan</string>
+    <string name="d_moon_full">Volle maan</string>
+    <string name="d_moon_waning_gibbous">Afnemende maan</string>
+    <string name="d_moon_last_quarter">Laatste kwartier</string>
+    <string name="d_moon_waning_crescent">Afnemende sikkel</string>
+
+    <!-- Forecast model picker (Settings > Forecast model). Model and organisation names are brand names and stay untranslated. -->
+    <string name="d_model_auto_name">Automatisch (aanbevolen)</string>
+    <!-- Region where the automatic model choice applies -->
+    <string name="d_model_auto_region">Overal</string>
+    <string name="d_model_auto_detail">Kiest het beste nationale model met hoge resolutie voor je locatie en vult latere dagen aan met wereldwijde modellen.</string>
+    <!-- Forecast models: region = where each model is strongest; detail = resolution · forecast range -->
+    <string name="d_model_ecmwf_ifs_region">Wereldwijd · vaak het nauwkeurigste wereldwijde model</string>
+    <string name="d_model_ecmwf_ifs_detail">9 km · 15 dagen</string>
+    <string name="d_model_ecmwf_aifs025_single_region">Wereldwijd · AI-model</string>
+    <string name="d_model_ecmwf_aifs025_single_detail">25 km · 15 dagen · geen uv, zicht of regenkans</string>
+    <string name="d_model_dwd_icon_region">Centraal-Europa (2 km), Europa (7 km), wereldwijd</string>
+    <string name="d_model_dwd_icon_detail">2–13 km · 7,5 dag</string>
+    <string name="d_model_ncep_gfs_region">Verenigde Staten (HRRR 3 km), wereldwijd</string>
+    <string name="d_model_ncep_gfs_detail">3–25 km · 16 dagen</string>
+    <!-- Licence of the model's data -->
+    <string name="d_model_ncep_gfs_licence">Publiek domein (Amerikaanse overheid)</string>
+    <string name="d_model_meteofrance_region">Frankrijk (1,3 km), Europa, wereldwijd</string>
+    <string name="d_model_meteofrance_detail">1,3–25 km · 4 dagen</string>
+    <string name="d_model_ukmo_region">Verenigd Koninkrijk &amp; Ierland (2 km), wereldwijd</string>
+    <string name="d_model_ukmo_detail">2–10 km · 7 dagen</string>
+    <string name="d_model_knmi_region">Nederland &amp; België (2 km), West-Europa</string>
+    <string name="d_model_knmi_detail">2–5,5 km · 2,5 dag, daarna ECMWF</string>
+    <string name="d_model_dmi_region">Denemarken, Noord-Europa, IJsland, Groenland</string>
+    <string name="d_model_dmi_detail">2 km · 2,5 dag, daarna ECMWF</string>
+    <string name="d_model_metno_region">Noorwegen, Zweden, Finland, Denemarken, Baltische staten</string>
+    <string name="d_model_metno_detail">1 km · 2,5 dag, daarna ECMWF</string>
+    <string name="d_model_meteoswiss_icon_region">Zwitserland en de Alpen</string>
+    <string name="d_model_meteoswiss_icon_detail">1–2 km · 5 dagen, daarna ECMWF</string>
+    <string name="d_model_geosphere_region">Oostenrijk en de Oostelijke Alpen</string>
+    <string name="d_model_geosphere_detail">1–2,5 km · 2,5 dag, daarna ECMWF</string>
+    <string name="d_model_italia_meteo_arpae_icon_2i_region">Italië</string>
+    <string name="d_model_italia_meteo_arpae_icon_2i_detail">2,2 km · 3 dagen</string>
+    <string name="d_model_cmc_gem_region">Canada &amp; Noord-Amerika (2,5 km), wereldwijd</string>
+    <string name="d_model_cmc_gem_detail">2,5–15 km · 10 dagen</string>
+    <string name="d_model_jma_region">Japan &amp; Oost-Azië (5 km), wereldwijd</string>
+    <string name="d_model_jma_detail">5–55 km · 11 dagen</string>
+    <!-- Licence of the model's data -->
+    <string name="d_model_jma_licence">Voorwaarden JMA (naamsvermelding)</string>
+    <string name="d_model_cma_grapes_global_region">Wereldwijd · China</string>
+    <string name="d_model_cma_grapes_global_detail">15 km · 10 dagen</string>
+    <!-- Licence of the model's data -->
+    <string name="d_model_cma_grapes_global_licence">Voorwaarden open data CMA</string>
+
+    <!-- Location labels (widget/notification location pickers, place names) -->
+    <!-- Follows whichever place is selected in the app -->
+    <string name="d_loc_selected_place">Gekozen plaats</string>
+    <!-- The device's GPS location -->
+    <string name="d_loc_current_location">Huidige locatie</string>
+    <string name="d_loc_saved_place">Opgeslagen plaats</string>
+
+    <!-- Settings > Layout: names of the main-screen sections that can be reordered or hidden -->
+    <string name="d_card_warnings">Weerwaarschuwingen</string>
+    <string name="d_card_highlights">Hoogtepunten</string>
+    <string name="d_card_nowcast">Regen in de komende uren</string>
+    <string name="d_card_radar">Buienradar</string>
+    <string name="d_card_hourly">Uurverwachting</string>
+    <string name="d_card_daily">Dagverwachting</string>
+    <string name="d_card_wardrobe">Wat trek je aan</string>
+    <string name="d_card_friends">Familie &amp; vrienden</string>
+    <string name="d_card_details">Detailtegels</string>
+
+    <!-- App updater errors (shown after "Update failed: ") -->
+    <string name="d_update_http_error">GitHub gaf HTTP %1$d terug</string>
+    <string name="d_update_download_failed">Downloaden mislukt (HTTP %1$d)</string>
+
+    <!-- Weather condition names (WMO codes) -->
+    <string name="d_wx_sunny">Zonnig</string>
+    <string name="d_wx_clear">Helder</string>
+    <string name="d_wx_mostly_sunny">Overwegend zonnig</string>
+    <string name="d_wx_mostly_clear">Overwegend helder</string>
+    <string name="d_wx_partly_cloudy">Half bewolkt</string>
+    <string name="d_wx_overcast">Zwaar bewolkt</string>
+    <string name="d_wx_fog">Mist</string>
+    <string name="d_wx_freezing_fog">Aanvriezende mist</string>
+    <string name="d_wx_light_drizzle">Lichte motregen</string>
+    <string name="d_wx_drizzle">Motregen</string>
+    <string name="d_wx_heavy_drizzle">Dichte motregen</string>
+    <string name="d_wx_freezing_drizzle">Aanvriezende motregen</string>
+    <string name="d_wx_light_rain">Lichte regen</string>
+    <string name="d_wx_rain">Regen</string>
+    <string name="d_wx_heavy_rain">Zware regen</string>
+    <string name="d_wx_freezing_rain">IJzel</string>
+    <string name="d_wx_light_snow">Lichte sneeuw</string>
+    <string name="d_wx_snow">Sneeuw</string>
+    <string name="d_wx_heavy_snow">Zware sneeuw</string>
+    <string name="d_wx_snow_grains">Motsneeuw</string>
+    <string name="d_wx_light_showers">Lichte buien</string>
+    <string name="d_wx_showers">Buien</string>
+    <string name="d_wx_violent_showers">Zware buien</string>
+    <string name="d_wx_snow_showers">Sneeuwbuien</string>
+    <string name="d_wx_heavy_snow_showers">Zware sneeuwbuien</string>
+    <string name="d_wx_thunderstorm">Onweer</string>
+    <string name="d_wx_thunderstorm_with_hail">Onweer met hagel</string>
+    <string name="d_wx_unknown">Onbekend</string>
+
+    <!-- Beaufort wind force names -->
+    <string name="d_bft_calm">Windstil</string>
+    <string name="d_bft_light_air">Zwak</string>
+    <string name="d_bft_light_breeze">Zwak</string>
+    <string name="d_bft_gentle_breeze">Matig</string>
+    <string name="d_bft_moderate_breeze">Matig</string>
+    <string name="d_bft_fresh_breeze">Vrij krachtig</string>
+    <string name="d_bft_strong_breeze">Krachtig</string>
+    <string name="d_bft_near_gale">Hard</string>
+    <string name="d_bft_gale">Stormachtig</string>
+    <string name="d_bft_strong_gale">Storm</string>
+    <string name="d_bft_storm">Zware storm</string>
+    <string name="d_bft_violent_storm">Zeer zware storm</string>
+    <string name="d_bft_hurricane_force">Orkaan</string>
+
+    <!-- UV index levels -->
+    <string name="d_uv_low">Laag</string>
+    <string name="d_uv_moderate">Matig</string>
+    <string name="d_uv_high">Hoog</string>
+    <string name="d_uv_very_high">Zeer hoog</string>
+    <string name="d_uv_extreme">Extreem</string>
+
+    <!-- UV index advice -->
+    <string name="d_uv_advice_low">Geen bescherming nodig.</string>
+    <string name="d_uv_advice_moderate">Smeer je in als je lang buiten bent.</string>
+    <string name="d_uv_advice_high">Zonnebrand, hoed en schaduw rond het middaguur.</string>
+    <string name="d_uv_advice_very_high">Vermijd de zon rond het middaguur.</string>
+
+    <!-- Visibility levels -->
+    <string name="d_vis_fog_very_poor">Mist — zeer slecht</string>
+    <string name="d_vis_poor">Slecht</string>
+    <string name="d_vis_moderate">Matig</string>
+    <string name="d_vis_good">Goed</string>
+    <string name="d_vis_excellent">Uitstekend</string>
+
+    <!-- US air quality index (AQI) levels and advice -->
+    <string name="d_usaqi_good">Goed</string>
+    <string name="d_usaqi_good_advice">De luchtkwaliteit is prima voor activiteiten buiten.</string>
+    <string name="d_usaqi_moderate">Matig</string>
+    <string name="d_usaqi_moderate_advice">Zeer gevoelige mensen kunnen langdurige inspanning beter beperken.</string>
+    <string name="d_usaqi_sensitive">Ongezond voor gevoelige groepen</string>
+    <string name="d_usaqi_sensitive_advice">Gevoelige groepen kunnen inspanning buiten beter beperken.</string>
+    <string name="d_usaqi_unhealthy">Ongezond</string>
+    <string name="d_usaqi_unhealthy_advice">Iedereen kan langdurige inspanning buiten beter beperken.</string>
+    <string name="d_usaqi_very_unhealthy">Zeer ongezond</string>
+    <string name="d_usaqi_very_unhealthy_advice">Vermijd langdurige inspanning buiten.</string>
+    <string name="d_usaqi_hazardous">Gevaarlijk</string>
+    <string name="d_usaqi_hazardous_advice">Blijf binnen en doe rustig aan.</string>
+
+    <!-- European air quality index levels -->
+    <string name="d_euaqi_good">Goed</string>
+    <string name="d_euaqi_fair">Redelijk</string>
+    <string name="d_euaqi_moderate">Matig</string>
+    <string name="d_euaqi_poor">Slecht</string>
+    <string name="d_euaqi_very_poor">Zeer slecht</string>
+    <string name="d_euaqi_extremely_poor">Extreem slecht</string>
+
+    <!-- Pollen levels -->
+    <string name="d_pollen_none">Geen</string>
+    <string name="d_pollen_low">Laag</string>
+    <string name="d_pollen_moderate">Matig</string>
+    <string name="d_pollen_high">Hoog</string>
+    <string name="d_pollen_very_high">Zeer hoog</string>
+
+    <!-- 16-point compass direction abbreviations (wind direction) -->
+    <string name="d_dir_n">N</string>
+    <string name="d_dir_nne">NNO</string>
+    <string name="d_dir_ne">NO</string>
+    <string name="d_dir_ene">ONO</string>
+    <string name="d_dir_e">O</string>
+    <string name="d_dir_ese">OZO</string>
+    <string name="d_dir_se">ZO</string>
+    <string name="d_dir_sse">ZZO</string>
+    <string name="d_dir_s">Z</string>
+    <string name="d_dir_ssw">ZZW</string>
+    <string name="d_dir_sw">ZW</string>
+    <string name="d_dir_wsw">WZW</string>
+    <string name="d_dir_w">W</string>
+    <string name="d_dir_wnw">WNW</string>
+    <string name="d_dir_nw">NW</string>
+    <string name="d_dir_nnw">NNW</string>
+
+    <!-- Cooling comfort (how well sweat cools you, from wet-bulb temperature): level names and explanations -->
+    <string name="d_cool_normal">Normaal</string>
+    <string name="d_cool_normal_text">Niet warm genoeg om afkoeling belangrijk te maken.</string>
+    <string name="d_cool_good">Goed</string>
+    <string name="d_cool_good_text">Zweet verdampt makkelijk en je lichaam koelt goed af.</string>
+    <string name="d_cool_reduced">Verminderd</string>
+    <string name="d_cool_reduced_text">Zweten koelt minder goed. Doe rustiger aan bij het sporten en drink water.</string>
+    <string name="d_cool_difficult">Moeilijk</string>
+    <string name="d_cool_difficult_text">Afkoelen gaat moeizaam. Vermijd zware inspanning op het heetst van de dag, zoek schaduw en ventilatoren op.</string>
+    <string name="d_cool_very_difficult">Zeer moeilijk</string>
+    <string name="d_cool_very_difficult_text">Hittestress is waarschijnlijk, zelfs in rust voor kwetsbare mensen. Blijf op koele plekken.</string>
+    <string name="d_cool_critical">Kritiek</string>
+    <string name="d_cool_critical_text">Dicht bij de grens van wat het lichaam kan afkoelen. Blijf in de airco en kijk hoe het met anderen gaat.</string>
+
+    <!-- Humidity comfort (from dew point): level names and explanations -->
+    <string name="d_humid_dry">Droog</string>
+    <string name="d_humid_dry_text">Frisse lucht; huid en lippen kunnen droog aanvoelen.</string>
+    <string name="d_humid_comfortable">Aangenaam</string>
+    <string name="d_humid_comfortable_damp_text">Koele, vochtige lucht, maar de luchtvochtigheid voelt niet onaangenaam.</string>
+    <string name="d_humid_comfortable_text">Prettig, je merkt de luchtvochtigheid niet.</string>
+    <string name="d_humid_noticeable">Merkbaar</string>
+    <string name="d_humid_noticeable_text">Je begint het vocht in de lucht te voelen.</string>
+    <string name="d_humid_sticky">Klam</string>
+    <string name="d_humid_sticky_text">Plakkerig; inspanning voelt zwaarder.</string>
+    <string name="d_humid_muggy">Benauwd</string>
+    <string name="d_humid_muggy_text">Zware, onaangename lucht voor de meeste mensen.</string>
+    <string name="d_humid_oppressive">Drukkend</string>
+    <string name="d_humid_oppressive_text">Zeer onaangenaam; doe het rustig aan.</string>
+
+    <!-- Fire weather danger levels and advice -->
+    <string name="d_fire_low">Laag</string>
+    <string name="d_fire_low_text">Branden verspreiden zich waarschijnlijk niet snel.</string>
+    <string name="d_fire_moderate">Matig</string>
+    <string name="d_fire_moderate_text">Branden kunnen ontstaan en zich verspreiden in droge begroeiing. Wees voorzichtig met vuur buiten.</string>
+    <string name="d_fire_high">Hoog</string>
+    <string name="d_fire_high_text">Branden kunnen zich snel verspreiden. Vermijd open vuur en barbecues bij droog gras.</string>
+    <string name="d_fire_very_high">Zeer hoog</string>
+    <string name="d_fire_very_high_text">Branden zouden zich zeer snel verspreiden en moeilijk te beheersen zijn. Geen open vuur.</string>
+    <string name="d_fire_extreme">Extreem</string>
+    <string name="d_fire_extreme_text">Extreem brandgevaarlijk weer. Volg lokale stookverboden en wees klaar om te vertrekken als dat gevraagd wordt.</string>
+
+    <!-- Pollutant value compared to the WHO guideline limit -->
+    <string name="d_who_well_below_limit">Ruim onder de norm</string>
+    <string name="d_who_near_limit">Rond de norm</string>
+    <string name="d_who_above_limit">Boven de norm</string>
+    <string name="d_who_well_above_limit">Ruim boven de norm</string>
+
+    <!-- European air quality index: levels and health advice -->
+    <string name="d_euaqib_good">Goed</string>
+    <string name="d_euaqib_good_text">De luchtkwaliteit is goed. Geniet van je gebruikelijke activiteiten buiten.</string>
+    <string name="d_euaqib_fair">Redelijk</string>
+    <string name="d_euaqib_fair_text">Geniet van je gebruikelijke activiteiten buiten.</string>
+    <string name="d_euaqib_moderate">Matig</string>
+    <string name="d_euaqib_moderate_text">Gevoelige mensen met klachten kunnen overwegen intensieve activiteiten buiten te beperken.</string>
+    <string name="d_euaqib_poor">Slecht</string>
+    <string name="d_euaqib_poor_text">Overweeg intensieve activiteiten buiten te beperken als je klachten hebt, zoals branderige ogen, hoesten of keelpijn.</string>
+    <string name="d_euaqib_very_poor">Zeer slecht</string>
+    <string name="d_euaqib_very_poor_text">Beperk lichamelijke inspanning buiten, vooral als je klachten hebt.</string>
+    <string name="d_euaqib_extremely_poor">Extreem slecht</string>
+    <string name="d_euaqib_extremely_poor_text">Vermijd lichamelijke inspanning buiten; gevoelige groepen blijven beter binnen.</string>
+
+    <!-- US air quality index: levels and health advice -->
+    <string name="d_usaqib_good">Goed</string>
+    <string name="d_usaqib_good_text">De luchtkwaliteit is goed en vormt weinig of geen risico.</string>
+    <string name="d_usaqib_moderate">Matig</string>
+    <string name="d_usaqib_moderate_text">Aanvaardbaar. Zeer gevoelige mensen kunnen langdurige inspanning beter beperken.</string>
+    <string name="d_usaqib_unhealthy_for_sensitive_groups">Ongezond voor gevoelige groepen</string>
+    <string name="d_usaqib_unhealthy_for_sensitive_groups_text">Kinderen, ouderen en mensen met hart- of longziekten kunnen langdurige inspanning beter beperken.</string>
+    <string name="d_usaqib_unhealthy">Ongezond</string>
+    <string name="d_usaqib_unhealthy_text">Iedereen kan effecten gaan merken; gevoelige groepen vermijden langdurige inspanning beter.</string>
+    <string name="d_usaqib_very_unhealthy">Zeer ongezond</string>
+    <string name="d_usaqib_very_unhealthy_text">Gezondheidswaarschuwing: iedereen kan langdurige inspanning buiten beter vermijden.</string>
+    <string name="d_usaqib_hazardous">Gevaarlijk</string>
+    <string name="d_usaqib_hazardous_text">Noodsituatie: blijf binnen met de ramen dicht.</string>
+
+    <!-- Visibility rating: levels and descriptions -->
+    <string name="d_visr_dense_fog">Dichte mist</string>
+    <string name="d_visr_dense_fog_text">Rij met mistlampen en houd veel afstand.</string>
+    <string name="d_visr_fog">Mist</string>
+    <string name="d_visr_fog_text">Rij langzamer; herkenningspunten verdwijnen snel uit zicht.</string>
+    <string name="d_visr_poor">Slecht</string>
+    <string name="d_visr_poor_text">Nevel, heiigheid of zware neerslag.</string>
+    <string name="d_visr_moderate">Matig</string>
+    <string name="d_visr_moderate_text">Wat heiig; heuvels in de verte zien er vaag uit.</string>
+    <string name="d_visr_good">Goed</string>
+    <string name="d_visr_good_text">Helder zicht over de stad.</string>
+    <string name="d_visr_excellent">Uitstekend</string>
+    <string name="d_visr_excellent_text">Kristalhelder — de horizon is scherp.</string>
+
+    <!-- Explanations shown under the cooling comfort and fire weather details -->
+    <string name="d_cool_explainer">Je lichaam koelt af door te zweten. De natteboltemperatuur combineert hitte en luchtvochtigheid en laat zien hoe goed dat zweet kan verdampen: hoe dichter bij de huidtemperatuur (~35 °C), hoe minder verkoeling. Boven ~31 °C hebben zelfs gezonde mensen moeite om lang koel te blijven.</string>
+    <string name="d_fire_explainer">De Fosberg Fire Weather Index geeft aan hoe snel een brand zich alleen door het weer kan verspreiden: hitte en droge lucht drogen fijn brandbaar materiaal zoals gras uit, en wind wakkert de vlammen aan. De index weet niet hoe droog de grond de afgelopen weken was, dus volg altijd de officiële brandgevaarcodes en stookverboden.</string>
+
+    <!-- Pressure trend (change over the last 3 hours): label and explanation -->
+    <string name="d_press_dropping_fast">Daalt snel</string>
+    <string name="d_press_dropping_fast_text">De luchtdruk daalt snel — een teken van naderende storm of harde wind.</string>
+    <string name="d_press_falling">Dalend</string>
+    <string name="d_press_falling_text">Dalende luchtdruk gaat vaak vooraf aan bewolking, regen en wind.</string>
+    <string name="d_press_rising_fast">Stijgt snel</string>
+    <string name="d_press_rising_fast_text">De luchtdruk stijgt snel; het weer klaart op, maar het kan flink waaien.</string>
+    <string name="d_press_rising">Stijgend</string>
+    <string name="d_press_rising_text">Stijgende luchtdruk betekent meestal rustiger, droger weer.</string>
+    <string name="d_press_steady">Stabiel</string>
+    <string name="d_press_steady_text">Geen grote verandering op basis van de luchtdruk.</string>
+    <string name="d_press_headache_sharp">Kans op hoofdpijn: scherpe luchtdrukdalingen kunnen bij gevoelige mensen hoofdpijn en migraine uitlokken.</string>
+    <!-- %1$d = pressure drop in hPa (5 or more) -->
+    <string name="d_press_headache_fall">De luchtdruk daalt de komende dag %1$d hPa, wat sommige mensen merken als hoofdpijn of gewrichtspijn.</string>
+
+    <!-- Air pollutants: what each one is (chemical symbols like PM2.5, NO₂ stay as they are) -->
+    <!-- O₃ is the chemical symbol; translate only the word Ozone -->
+    <string name="d_pollutant_o3">O₃ Ozon</string>
+    <string name="d_pollutant_pm25_about">Fijne deeltjes van verbranding en verkeer; ze dringen diep door in de longen.</string>
+    <string name="d_pollutant_pm10_about">Grovere deeltjes: stof, pollen, bouwwerkzaamheden en zeezout.</string>
+    <string name="d_pollutant_o3_about">Ontstaat in zonlicht uit uitstoot van verkeer; piekt op hete middagen.</string>
+    <string name="d_pollutant_no2_about">Vooral uit uitlaatgassen; het hoogst bij drukke wegen.</string>
+    <string name="d_pollutant_so2_about">Door verbranding van zwavelhoudende brandstoffen en scheepvaart.</string>
+    <string name="d_pollutant_co_about">Koolmonoxide door onvolledige verbranding.</string>
+
+    <!-- Cloud cover guidance (Clouds detail) -->
+    <string name="d_cloud_full_sun">Volop zon — mooi licht, maar denk aan de uv.</string>
+    <string name="d_cloud_clear_night">Heldere lucht: goed voor sterren, en het koelt vannacht flink af.</string>
+    <string name="d_cloud_mostly_sunny">Overwegend zonnig met een paar wolken.</string>
+    <string name="d_cloud_mostly_clear_night">Overwegend heldere nacht.</string>
+    <string name="d_cloud_mixed">Zon en wolken wisselen elkaar af.</string>
+    <string name="d_cloud_mostly_grey">Overwegend grijs met af en toe opklaringen.</string>
+    <string name="d_cloud_mostly_cloudy_night">Overwegend bewolkt, waardoor de nacht zachter blijft.</string>
+    <string name="d_cloud_overcast">Zwaar bewolkt — vlak licht en geen directe zon.</string>
+    <string name="d_cloud_clearing">De lucht klaart de komende uren op.</string>
+    <string name="d_cloud_building">De bewolking neemt de komende uren toe.</string>
+
+    <!-- Temperature comparisons ("than yesterday" = today's high vs yesterday's; "than today" = tomorrow's high vs today's). Each group has 3 variants picked at random for variety; they may be translated the same. -->
+    <string name="d_cmp_yday_same_1">Vergelijkbaar met gisteren.</string>
+    <string name="d_cmp_yday_same_2">Ongeveer hetzelfde als gisteren.</string>
+    <string name="d_cmp_yday_same_3">Net als gisteren.</string>
+    <string name="d_cmp_yday_little_warmer_1">Een beetje warmer dan gisteren.</string>
+    <string name="d_cmp_yday_little_warmer_2">Iets warmer dan gisteren.</string>
+    <string name="d_cmp_yday_little_warmer_3">Een tikje warmer dan gisteren.</string>
+    <string name="d_cmp_yday_little_cooler_1">Een beetje koeler dan gisteren.</string>
+    <string name="d_cmp_yday_little_cooler_2">Iets koeler dan gisteren.</string>
+    <string name="d_cmp_yday_little_cooler_3">Een tikje koeler dan gisteren.</string>
+    <string name="d_cmp_yday_little_colder_1">Een beetje kouder dan gisteren.</string>
+    <string name="d_cmp_yday_little_colder_2">Iets kouder dan gisteren.</string>
+    <string name="d_cmp_yday_little_colder_3">Een tikje kouder dan gisteren.</string>
+    <string name="d_cmp_yday_few_warmer_1">Een paar graden warmer dan gisteren.</string>
+    <string name="d_cmp_yday_few_warmer_2">Merkbaar warmer dan gisteren.</string>
+    <string name="d_cmp_yday_few_warmer_3">Warmer dan gisteren.</string>
+    <string name="d_cmp_yday_few_cooler_1">Een paar graden koeler dan gisteren.</string>
+    <string name="d_cmp_yday_few_cooler_2">Merkbaar koeler dan gisteren.</string>
+    <string name="d_cmp_yday_few_cooler_3">Koeler dan gisteren.</string>
+    <string name="d_cmp_yday_few_colder_1">Een paar graden kouder dan gisteren.</string>
+    <string name="d_cmp_yday_few_colder_2">Merkbaar kouder dan gisteren.</string>
+    <string name="d_cmp_yday_few_colder_3">Kouder dan gisteren.</string>
+    <string name="d_cmp_yday_much_warmer_1">Veel warmer dan gisteren.</string>
+    <string name="d_cmp_yday_much_warmer_2">Een stuk warmer dan gisteren.</string>
+    <string name="d_cmp_yday_much_warmer_3">Flink warmer dan gisteren.</string>
+    <string name="d_cmp_yday_much_cooler_1">Veel koeler dan gisteren.</string>
+    <string name="d_cmp_yday_much_cooler_2">Een stuk koeler dan gisteren.</string>
+    <string name="d_cmp_yday_much_cooler_3">Flink koeler dan gisteren.</string>
+    <string name="d_cmp_yday_much_colder_1">Veel kouder dan gisteren.</string>
+    <string name="d_cmp_yday_much_colder_2">Een stuk kouder dan gisteren.</string>
+    <string name="d_cmp_yday_much_colder_3">Flink kouder dan gisteren.</string>
+    <string name="d_cmp_today_same_1">Vergelijkbaar met vandaag.</string>
+    <string name="d_cmp_today_same_2">Ongeveer hetzelfde als vandaag.</string>
+    <string name="d_cmp_today_same_3">Net als vandaag.</string>
+    <string name="d_cmp_today_little_warmer_1">Een beetje warmer dan vandaag.</string>
+    <string name="d_cmp_today_little_warmer_2">Iets warmer dan vandaag.</string>
+    <string name="d_cmp_today_little_warmer_3">Een tikje warmer dan vandaag.</string>
+    <string name="d_cmp_today_little_cooler_1">Een beetje koeler dan vandaag.</string>
+    <string name="d_cmp_today_little_cooler_2">Iets koeler dan vandaag.</string>
+    <string name="d_cmp_today_little_cooler_3">Een tikje koeler dan vandaag.</string>
+    <string name="d_cmp_today_little_colder_1">Een beetje kouder dan vandaag.</string>
+    <string name="d_cmp_today_little_colder_2">Iets kouder dan vandaag.</string>
+    <string name="d_cmp_today_little_colder_3">Een tikje kouder dan vandaag.</string>
+    <string name="d_cmp_today_few_warmer_1">Een paar graden warmer dan vandaag.</string>
+    <string name="d_cmp_today_few_warmer_2">Merkbaar warmer dan vandaag.</string>
+    <string name="d_cmp_today_few_warmer_3">Warmer dan vandaag.</string>
+    <string name="d_cmp_today_few_cooler_1">Een paar graden koeler dan vandaag.</string>
+    <string name="d_cmp_today_few_cooler_2">Merkbaar koeler dan vandaag.</string>
+    <string name="d_cmp_today_few_cooler_3">Koeler dan vandaag.</string>
+    <string name="d_cmp_today_few_colder_1">Een paar graden kouder dan vandaag.</string>
+    <string name="d_cmp_today_few_colder_2">Merkbaar kouder dan vandaag.</string>
+    <string name="d_cmp_today_few_colder_3">Kouder dan vandaag.</string>
+    <string name="d_cmp_today_much_warmer_1">Veel warmer dan vandaag.</string>
+    <string name="d_cmp_today_much_warmer_2">Een stuk warmer dan vandaag.</string>
+    <string name="d_cmp_today_much_warmer_3">Flink warmer dan vandaag.</string>
+    <string name="d_cmp_today_much_cooler_1">Veel koeler dan vandaag.</string>
+    <string name="d_cmp_today_much_cooler_2">Een stuk koeler dan vandaag.</string>
+    <string name="d_cmp_today_much_cooler_3">Flink koeler dan vandaag.</string>
+    <string name="d_cmp_today_much_colder_1">Veel kouder dan vandaag.</string>
+    <string name="d_cmp_today_much_colder_2">Een stuk kouder dan vandaag.</string>
+    <string name="d_cmp_today_much_colder_3">Flink kouder dan vandaag.</string>
+
+    <!-- Precipitation today (Precipitation tile/detail) -->
+    <string name="d_prec_snowing_now">Het sneeuwt nu</string>
+    <string name="d_prec_falling_now">Valt nu</string>
+    <string name="d_prec_fell_earlier">Eerder vandaag gevallen</string>
+    <string name="d_prec_none_so_far">Vandaag nog niets</string>
+    <string name="d_prec_drying_out">Droog voor de rest van de dag.</string>
+    <string name="d_prec_staying_dry">Blijft droog voor de rest van de dag.</string>
+    <string name="d_prec_more_overnight">Vannacht meer verwacht.</string>
+    <string name="d_prec_more_morning">Vanochtend meer verwacht.</string>
+    <string name="d_prec_more_afternoon">Vanmiddag meer verwacht.</string>
+    <string name="d_prec_more_evening">Vanavond meer verwacht.</string>
+
+    <!-- Precipitation guidance for the next hours -->
+    <string name="d_precg_freezing">Kans op ijzel — wegen en paden kunnen spiegelglad worden.</string>
+    <string name="d_precg_snow">Sneeuw op komst. Neem extra reistijd.</string>
+    <string name="d_precg_heavy">Zware regen in de komende uren. Reken op plassen en opspattend water op de weg.</string>
+    <string name="d_precg_umbrella">Neem een paraplu mee als je weggaat.</string>
+    <string name="d_precg_shower">Een bui is mogelijk; een lichte jas volstaat.</string>
+    <string name="d_precg_none">De komende uren geen paraplu nodig.</string>
+
+    <!-- Humidity through the day. %1$s = humidity level name (e.g. Sticky, Muggy), %2$s = another level name -->
+    <string name="d_humday_dry">De hele dag droog</string>
+    <string name="d_humday_dry_text">Weinig vocht in de lucht; huid en lippen kunnen droog aanvoelen.</string>
+    <string name="d_humday_comfortable">De hele dag aangenaam</string>
+    <string name="d_humday_comfortable_text">Je merkt de luchtvochtigheid niet.</string>
+    <!-- e.g. "Sticky all day" -->
+    <string name="d_humday_all_day">%1$s, de hele dag</string>
+    <!-- e.g. "Sticky morning" -->
+    <string name="d_humday_morning">%1$s in de ochtend</string>
+    <string name="d_humday_afternoon">%1$s in de middag</string>
+    <string name="d_humday_evening">%1$s in de avond</string>
+    <string name="d_humday_night">%1$s in de nacht</string>
+    <!-- %1$s = a full sentence describing the worst period, %2$s = level name for the rest of the day, e.g. "Clammy; exercise feels harder. Comfortable at other times." -->
+    <string name="d_humday_other_times">%1$s Op andere momenten: %2$s.</string>
+
+    <!-- Stargazing rating and forecast sentence -->
+    <string name="d_star_excellent">Uitstekend</string>
+    <string name="d_star_good">Goed</string>
+    <string name="d_star_fair">Redelijk</string>
+    <string name="d_star_poor">Slecht</string>
+    <string name="d_star_fog">Mist of laaghangende bewolking verbergt vannacht het grootste deel van de hemel.</string>
+    <string name="d_star_cloudy">Bewolking verbergt vannacht het grootste deel van de hemel.</string>
+    <string name="d_star_clear_dark">Heldere lucht en een donkere maan — een prachtige nacht voor zwakke sterren en de Melkweg.</string>
+    <string name="d_star_mostly_clear_dark">Overwegend heldere lucht en een donkere maan — een prachtige nacht voor zwakke sterren en de Melkweg.</string>
+    <string name="d_star_patchy_dark">Wisselende bewolking, maar een donkere maan: zoek naar gaten in de wolken.</string>
+    <string name="d_star_clear_bright">Heldere lucht, maar de felle maan overstraalt zwakkere sterren. Wel mooi om naar de maan te kijken.</string>
+    <string name="d_star_mostly_clear_bright">Overwegend heldere lucht, maar de felle maan overstraalt zwakkere sterren. Wel mooi om naar de maan te kijken.</string>
+    <string name="d_star_patchy_bright">Wisselende bewolking, en de felle maan overstraalt zwakkere sterren. Wel mooi om naar de maan te kijken.</string>
+    <string name="d_star_clear_partmoon">Heldere lucht, met de maan een deel van de nacht op — kies het moment dat hij onder is.</string>
+    <string name="d_star_mostly_clear_partmoon">Overwegend heldere lucht, met de maan een deel van de nacht op — kies het moment dat hij onder is.</string>
+    <string name="d_star_patchy_partmoon">Wisselende bewolking, met de maan een deel van de nacht op — kies het moment dat hij onder is.</string>
+    <string name="d_star_clear_some">Heldere lucht met wat maanlicht; heldere sterren en planeten zijn nog goed te zien.</string>
+    <string name="d_star_mostly_clear_some">Overwegend heldere lucht met wat maanlicht; heldere sterren en planeten zijn nog goed te zien.</string>
+    <string name="d_star_patchy_some">Wisselende bewolking met wat maanlicht; heldere sterren en planeten zijn nog goed te zien.</string>
+
+    <!-- Sea: activity picker -->
+    <string name="d_sea_act_general">Algemeen</string>
+    <string name="d_sea_act_swimming">Zwemmen</string>
+    <string name="d_sea_act_surfing">Surfen</string>
+    <string name="d_sea_act_sailing">Zeilen</string>
+
+    <!-- Sea state (Douglas scale from wave height): name and description -->
+    <string name="d_sea_state_calm">Kalm</string>
+    <string name="d_sea_state_calm_text">Spiegelglad water.</string>
+    <string name="d_sea_state_rippled">Rimpelig</string>
+    <string name="d_sea_state_rippled_text">Kleine golfjes zonder brekende kammen.</string>
+    <string name="d_sea_state_slight">Licht</string>
+    <string name="d_sea_state_slight_text">Kleine golven; hier en daar schuimkoppen.</string>
+    <string name="d_sea_state_moderate">Matig</string>
+    <string name="d_sea_state_moderate_text">Langere golven met veel schuimkoppen.</string>
+    <string name="d_sea_state_rough">Ruw</string>
+    <string name="d_sea_state_rough_text">Grote golven, veel schuim en opspattend water.</string>
+    <string name="d_sea_state_very_rough">Zeer ruw</string>
+    <string name="d_sea_state_very_rough_text">Opgezweepte zee met schuimstrepen.</string>
+    <string name="d_sea_state_high">Hoog</string>
+    <string name="d_sea_state_high_text">Hoge golven met dicht schuim; gevaarlijk.</string>
+    <string name="d_sea_state_very_high">Zeer hoog</string>
+    <string name="d_sea_state_very_high_text">Zeer hoge golven met lange brekende kammen.</string>
+    <string name="d_sea_state_phenomenal">Uitzonderlijk</string>
+    <string name="d_sea_state_phenomenal_text">Uitzonderlijke, extreem gevaarlijke zee.</string>
+
+    <!-- Swell quality (surfing) -->
+    <string name="d_swell_short">Korte, rommelige windswell</string>
+    <string name="d_swell_mixed">Gemengde swell van gemiddelde kwaliteit</string>
+    <string name="d_swell_clean">Schone grondswell</string>
+    <string name="d_swell_long">Grondswell met lange periode en echte kracht</string>
+
+    <!-- Wave period explanation. %1$d = seconds between waves -->
+    <string name="d_period_short">Golven komen elke %1$d s: kort en hobbelig, opgebouwd door lokale wind.</string>
+    <string name="d_period_mixed">Golven komen elke %1$d s: een mix van lokale golfslag en swell van verder weg.</string>
+    <string name="d_period_long">Golven komen elke %1$d s: ze hebben een lange weg afgelegd en hebben meer energie dan hun hoogte doet vermoeden.</string>
+
+    <!-- Wetsuit advice by sea temperature -->
+    <string name="d_wetsuit_none">Geen wetsuit nodig.</string>
+    <string name="d_wetsuit_rash">Rashguard of een dun topje van 0,5–2 mm.</string>
+    <string name="d_wetsuit_shorty">Shorty of springsuit van 2 mm.</string>
+    <string name="d_wetsuit_32">Fullsuit van 3/2 mm.</string>
+    <string name="d_wetsuit_43">Fullsuit van 4/3 mm; booties optioneel.</string>
+    <string name="d_wetsuit_54">Wetsuit van 5/4 mm met booties en handschoenen.</string>
+    <string name="d_wetsuit_65">Wetsuit van 5/4–6/5 mm met cap, booties en handschoenen.</string>
+
+    <!-- How sea water feels, by temperature (short label) -->
+    <string name="d_water_bath">Badwarm</string>
+    <string name="d_water_warm">Warm</string>
+    <string name="d_water_pleasant">Aangenaam</string>
+    <string name="d_water_fresh">Fris</string>
+    <string name="d_water_cold">Koud</string>
+    <string name="d_water_very_cold">Zeer koud</string>
+
+    <!-- Ocean current strength: label and advice -->
+    <string name="d_current_weak">Zwak</string>
+    <string name="d_current_weak_text">Nauwelijks merkbare drift.</string>
+    <string name="d_current_moderate">Matig</string>
+    <string name="d_current_moderate_text">Je drijft langzaam af; makkelijk tegenin te zwemmen.</string>
+    <string name="d_current_strong">Sterk</string>
+    <string name="d_current_strong_text">Let op als je zwemt: zo snel als veel mensen kunnen zwemmen. Blijf dicht bij de kust.</string>
+    <string name="d_current_very_strong">Zeer sterk</string>
+    <string name="d_current_very_strong_text">Gevaarlijk voor zwemmers: sneller dan de meeste mensen kunnen zwemmen.</string>
+
+    <!-- Sea guidance: general -->
+    <string name="d_seag_no_data">Geen golfgegevens voor deze plek.</string>
+    <string name="d_seag_calm">Kalm water — een goed moment om op of bij zee te zijn.</string>
+    <string name="d_seag_slight">Lichte zee. Prima voor de meeste activiteiten; kleine boten kunnen wat deinen.</string>
+    <string name="d_seag_moderate">Matige zee. Reken op opspattend water op het strand en een hobbelige tocht in kleine boten.</string>
+    <string name="d_seag_rough">Ruwe zee. Blijf ruim uit de buurt van golfbrekers en de waterlijn.</string>
+    <string name="d_seag_dangerous">Gevaarlijke zee. Blijf weg van open kusten, pieren en kliffen.</string>
+
+    <!-- Sea guidance: swimming -->
+    <string name="d_seag_swim_no_data">Geen golfgegevens.</string>
+    <string name="d_seag_swim_gentle">Rustig water om te zwemmen.</string>
+    <string name="d_seag_swim_some">Wat golven; blijf waar je kunt staan.</string>
+    <string name="d_seag_swim_choppy">Woelig. Zwem alleen op bewaakte stranden.</string>
+    <string name="d_seag_swim_rough">Te ruw om te zwemmen — sterke branding en muien waarschijnlijk.</string>
+    <string name="d_seag_swim_cold">Koud water: kans op koudeshock, ga langzaam het water in en zwem kort.</string>
+    <!-- Sentence about the water temperature feel -->
+    <string name="d_seag_water_bath">Water badwarm.</string>
+    <string name="d_seag_water_warm">Water warm.</string>
+    <string name="d_seag_water_pleasant">Water aangenaam.</string>
+    <string name="d_seag_water_fresh">Water fris.</string>
+    <string name="d_seag_water_cold">Water koud.</string>
+    <string name="d_seag_water_very_cold">Water zeer koud.</string>
+
+    <!-- Sea guidance: surfing -->
+    <string name="d_seag_surf_no_data">Geen swellgegevens.</string>
+    <string name="d_seag_surf_flat">Vlak. Weinig om op te surfen.</string>
+    <string name="d_seag_surf_small_weak">Klein en zwak — alleen voor longboards en beginners.</string>
+    <string name="d_seag_surf_small_clean">Klein maar schoon. Goed voor longboards en om te leren.</string>
+    <string name="d_seag_surf_good">Goede, krachtige swell voor gevorderde surfers.</string>
+    <string name="d_seag_surf_decent">Behoorlijke maat, maar korte periode en minder georganiseerd.</string>
+    <string name="d_seag_surf_big">Grote swell — alleen voor ervaren surfers.</string>
+    <string name="d_seag_surf_chop">Windgolfjes over de swell, dus reken op rommelige golven.</string>
+
+    <!-- Sea guidance: sailing -->
+    <string name="d_seag_sail_no_data">Geen windgegevens.</string>
+    <string name="d_seag_sail_light">Zeer weinig wind — langzaam varen, misschien dobberen.</string>
+    <string name="d_seag_sail_good">Goede zeilwind.</string>
+    <string name="d_seag_sail_fresh">Vrij krachtige tot krachtige wind. Reef op tijd; voor ervaren bemanningen.</string>
+    <string name="d_seag_sail_strong">Harde wind — kleine boten blijven beter in de haven.</string>
+    <string name="d_seag_sail_gusty">Vlagerig: reken op plotselinge windsprongen.</string>
+
+    <!-- Sea detail disclaimer -->
+    <string name="d_sea_disclaimer">Alleen modelverwachting, niet voor navigatie of veiligheidsbeslissingen. De omstandigheden op jouw strand kunnen afwijken — check altijd lokale waarschuwingen, vlaggen en strandwachten.</string>
+
+    <!-- Forecast download error. %1$d = HTTP status code, %2$s = server message (technical, may be empty) -->
+    <string name="d_api_http_error">Server gaf HTTP %1$d %2$s terug</string>
+    <!-- Pollen types (plants) -->
+    <string name="d_pollen_alder">Els</string>
+    <string name="d_pollen_birch">Berk</string>
+    <string name="d_pollen_grass">Grassen</string>
+    <string name="d_pollen_mugwort">Bijvoet</string>
+    <string name="d_pollen_olive">Olijf</string>
+    <string name="d_pollen_ragweed">Ambrosia</string>
+
+    <!-- Family & friends: main-screen card and screen -->
+    <string name="d_fr_title">Familie &amp; vrienden</string>
+    <!-- Label for the user themself in the friends list/avatar -->
+    <string name="d_fr_you">Jij</string>
+    <!-- The user's own row. %1$s = their place name -->
+    <string name="d_fr_you_at">Jij · %1$s</string>
+    <string name="d_fr_card_empty">Bekijk het weer waar je dierbaren wonen en ontvang hun waarschuwingen.</string>
+    <string name="d_fr_add_someone">Iemand toevoegen</string>
+    <string name="d_fr_similar">Vergelijkbaar weer voor iedereen</string>
+    <!-- %1$s = name(s) of who is warmest, %2$s = name(s) of who is coldest -->
+    <string name="d_fr_warmest_coldest">Warmst: %1$s · Koudst: %2$s</string>
+    <!-- Two first names joined, e.g. "Anna and Ben" -->
+    <string name="d_fr_two_names">%1$s &amp; %2$s</string>
+    <!-- Compare picker -->
+    <string name="d_fr_cmp_temp">Temperatuur</string>
+    <string name="d_fr_cmp_rain">Regenkans</string>
+    <string name="d_fr_cmp_uv">Uv-index</string>
+    <!-- Day picker -->
+    <string name="d_fr_now">Nu</string>
+    <string name="d_fr_today">Vandaag</string>
+    <string name="d_fr_tomorrow">Morgen</string>
+    <!-- Button / action: add a person -->
+    <string name="d_fr_add">Toevoegen</string>
+    <string name="d_fr_intro_title">Weer voor familie &amp; vrienden</string>
+    <string name="d_fr_intro_compare">Vergelijk temperatuur, regen en uv met je dierbaren</string>
+    <string name="d_fr_intro_warnings">Ontvang officiële weerwaarschuwingen voor hun woonplaats</string>
+    <string name="d_fr_intro_map">Zie iedereen op de weerkaart</string>
+    <string name="d_fr_privacy">Namen en foto\'s komen uit de contacten die je kiest en blijven op dit apparaat. Er wordt niets geüpload behalve de coördinaten van hun plaats naar de weerdienst.</string>
+    <string name="d_fr_see_on_map">Iedereen op de kaart bekijken</string>
+    <!-- Remove dialog. %1$s = person's name -->
+    <string name="d_fr_remove_title">%1$s verwijderen?</string>
+    <!-- %1$s = the person's place name -->
+    <string name="d_fr_remove_text">Deze persoon verschijnt niet meer in Familie &amp; vrienden en je krijgt geen waarschuwingen meer voor %1$s.</string>
+    <string name="d_fr_remove">Verwijderen</string>
+    <string name="d_fr_cancel">Annuleren</string>
+    <!-- Warning chip. %1$s = severity colour (e.g. Yellow), %2$s = hazard in lower case (e.g. wind) -->
+    <string name="d_fr_warning">Code %1$s voor %2$s</string>
+    <!-- Button: open the person's contact card -->
+    <string name="d_fr_contact">Contact</string>
+    <!-- Add dialog -->
+    <string name="d_fr_add_title">Familie of vriend toevoegen</string>
+    <string name="d_fr_name">Naam</string>
+    <string name="d_fr_pick_contact">Contact kiezen</string>
+    <string name="d_fr_where">Waar woont deze persoon?</string>
+</resources>

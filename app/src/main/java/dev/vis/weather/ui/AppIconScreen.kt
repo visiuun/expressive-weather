@@ -2,6 +2,8 @@
 
 package dev.vis.weather.ui
 
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -81,17 +83,17 @@ fun AppIconScreen(settings: Settings, update: ((Settings) -> Settings) -> Unit, 
     // The alias only switches once the app is in the background, so launchers don't close the app mid-tap.
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { runCatching { AppIcons.sync(context.applicationContext) } }
 
-    SubScreen("App icon", onBack) { w ->
+    SubScreen(stringResource(R.string.s_app_icon), onBack) { w ->
         item { HeroIcon(shown, dynamic, w) }
         item {
             SettingsGroup(null, w) {
                 SettingsSwitch(
-                    "Dynamic", "Changes with the weather", Icons.Rounded.AutoAwesome, MaterialShapes.SoftBurst, 0, 1, dynamic,
+                    stringResource(R.string.s_icon_dynamic), stringResource(R.string.s_icon_dynamic_sub), Icons.Rounded.AutoAwesome, MaterialShapes.SoftBurst, 0, 1, dynamic,
                 ) { on -> update { it.copy(appIcon = if (on) AppIcon.DYNAMIC else weatherNow) } }
             }
         }
         item {
-            SettingsGroup("Weather", w) {
+            SettingsGroup(stringResource(R.string.s_icon_group_weather), w) {
                 SettingsItemSurface(0, 1) {
                     IconGrid(AppIcons.weather, settings.appIcon, if (dynamic) weatherNow else null) { pick ->
                         update { it.copy(appIcon = pick) }
@@ -100,7 +102,7 @@ fun AppIconScreen(settings: Settings, update: ((Settings) -> Settings) -> Unit, 
             }
         }
         item {
-            SettingsGroup("Classic", w) {
+            SettingsGroup(stringResource(R.string.s_icon_group_classic), w) {
                 SettingsItemSurface(0, 1) {
                     IconGrid(AppIcons.classic, settings.appIcon, null) { pick -> update { it.copy(appIcon = pick) } }
                 }
@@ -108,7 +110,7 @@ fun AppIconScreen(settings: Settings, update: ((Settings) -> Settings) -> Unit, 
         }
         item {
             Text(
-                "Icon updates when you leave the app; some launchers take a moment.",
+                stringResource(R.string.s_icon_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -148,7 +150,7 @@ private fun HeroIcon(icon: AppIcon, dynamic: Boolean, modifier: Modifier) {
         Spacer(Modifier.height(12.dp))
         Text(AppIcons.label(icon), style = MaterialTheme.typography.titleLargeEmphasized)
         Text(
-            if (dynamic) "Dynamic · matches the weather right now" else "Fixed icon",
+            if (dynamic) stringResource(R.string.s_icon_hero_dynamic) else stringResource(R.string.s_icon_hero_fixed),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -201,7 +203,7 @@ private fun IconCell(icon: AppIcon, selected: Boolean, now: Boolean, modifier: M
                 Box(
                     Modifier.align(Alignment.TopEnd).size(22.dp).clip(MaterialShapes.Cookie6Sided.toShape()).background(cs.primary),
                     contentAlignment = Alignment.Center,
-                ) { Icon(Icons.Rounded.AutoAwesome, "Now", tint = cs.onPrimary, modifier = Modifier.size(13.dp)) }
+                ) { Icon(Icons.Rounded.AutoAwesome, stringResource(R.string.s_icon_now_cd), tint = cs.onPrimary, modifier = Modifier.size(13.dp)) }
             }
         }
         Spacer(Modifier.height(6.dp))

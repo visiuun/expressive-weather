@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.annotation.DrawableRes
+import dev.vis.weather.L
 import dev.vis.weather.R
 
 /**
@@ -23,19 +24,19 @@ object AppIcons {
     )
 
     fun label(icon: AppIcon): String = when (icon) {
-        AppIcon.OLED -> "Black"
-        AppIcon.LIGHT -> "White"
-        AppIcon.COLOR -> "Color"
-        AppIcon.DYNAMIC -> "Dynamic"
-        AppIcon.SUNNY -> "Sunny"
-        AppIcon.CLEAR_NIGHT -> "Clear night"
-        AppIcon.PARTLY -> "Partly cloudy"
-        AppIcon.PARTLY_NIGHT -> "Cloudy night"
-        AppIcon.CLOUDY -> "Cloudy"
-        AppIcon.FOGGY -> "Foggy"
-        AppIcon.RAINY -> "Rainy"
-        AppIcon.SNOWY -> "Snowy"
-        AppIcon.STORMY -> "Stormy"
+        AppIcon.OLED -> L.s(R.string.d_icon_black)
+        AppIcon.LIGHT -> L.s(R.string.d_icon_white)
+        AppIcon.COLOR -> L.s(R.string.d_icon_color)
+        AppIcon.DYNAMIC -> L.s(R.string.d_icon_dynamic)
+        AppIcon.SUNNY -> L.s(R.string.d_icon_sunny)
+        AppIcon.CLEAR_NIGHT -> L.s(R.string.d_icon_clear_night)
+        AppIcon.PARTLY -> L.s(R.string.d_icon_partly)
+        AppIcon.PARTLY_NIGHT -> L.s(R.string.d_icon_partly_night)
+        AppIcon.CLOUDY -> L.s(R.string.d_icon_cloudy)
+        AppIcon.FOGGY -> L.s(R.string.d_icon_foggy)
+        AppIcon.RAINY -> L.s(R.string.d_icon_rainy)
+        AppIcon.SNOWY -> L.s(R.string.d_icon_snowy)
+        AppIcon.STORMY -> L.s(R.string.d_icon_stormy)
     }
 
     fun layers(icon: AppIcon): Layers = when (icon) {

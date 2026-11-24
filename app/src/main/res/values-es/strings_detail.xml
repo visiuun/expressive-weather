@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ============================================================ Shared (detail screens) -->
+    <!-- Content description of the back button in the top bar -->
+    <string name="dt_back">Atrás</string>
+    <!-- Capitalised day words used as titles/labels -->
+    <string name="dt_today">Hoy</string>
+    <string name="dt_tomorrow">Mañana</string>
+    <string name="dt_tonight">Esta noche</string>
+    <!-- Label for the current hour in charts -->
+    <string name="dt_now">Ahora</string>
+    <!-- Lower-case day words used in the middle of a sentence, e.g. "Roughest tomorrow", "In 3 days" -->
+    <string name="dt_today_lc">hoy</string>
+    <string name="dt_tomorrow_lc">mañana</string>
+    <!-- Used mid-sentence: "Roughest on Monday". %1$s = full weekday name -->
+    <string name="dt_on_weekday">el %1$s</string>
+    <!-- Generic "A · B" join of two values -->
+    <string name="dt_dot_pair">%1$s · %2$s</string>
+    <!-- Generic "label: value" -->
+    <string name="dt_label_value">%1$s: %2$s</string>
+    <!-- "<level> around <time>", e.g. "High around 15:00" -->
+    <string name="dt_label_around">%1$s hacia las %2$s</string>
+    <!-- Wave period / seconds value, e.g. "8 s" -->
+    <string name="dt_seconds_short">%1$d s</string>
+    <!-- Direction something comes from, e.g. "from SW" -->
+    <string name="dt_from_dir">del %1$s</string>
+    <string name="dt_below_horizon">Bajo el horizonte</string>
+
+    <!-- ============================================================ Formatting helpers -->
+    <!-- "Today 14:20" etc. %1$s = time -->
+    <string name="dt_when_today">Hoy %1$s</string>
+    <string name="dt_when_tomorrow">Mañana %1$s</string>
+    <string name="dt_when_yesterday">Ayer %1$s</string>
+    <!-- %1$s = short weekday, %2$s = time -->
+    <string name="dt_when_day">%1$s %2$s</string>
+    <!-- Relative day count, lower case, used mid-sentence and capitalised at start -->
+    <plurals name="dt_in_days">
+        <item quantity="one">en %d día</item>
+        <item quantity="many">en %d días</item>
+        <item quantity="other">en %d días</item>
+    </plurals>
+    <!-- Signed durations, %1$s = sign (+ or −) -->
+    <string name="dt_signed_s">%1$s%2$d s</string>
+    <string name="dt_signed_h_min">%1$s%2$d h %3$d min</string>
+    <string name="dt_signed_min_s">%1$s%2$d min %3$d s</string>
+    <!-- Signed pressure change in 3 hours: %1$s = sign, %2$s = number, %3$s = unit -->
+    <string name="dt_pressure_delta">%1$s%2$s %3$s en 3 h</string>
+
+    <!-- ============================================================ Data source line / observation badge -->
+    <!-- %1$s = station code (e.g. EHAM), %2$s = distance -->
+    <string name="dt_obs_label">Verificado localmente · %1$s %2$s</string>
+    <!-- %1$s station name, %2$s station code, %3$s distance, %4$s temperature, %5$d minutes, %6$s temperature correction -->
+    <plurals name="dt_obs_detail">
+        <item quantity="one">%1$s (%2$s), a %3$s, registró %4$s hace %5$d min. Las próximas horas se ajustaron en %6$s y vuelven gradualmente al modelo en 6 horas.</item>
+        <item quantity="many">%1$s (%2$s), a %3$s, registró %4$s hace %5$d min. Las próximas horas se ajustaron en %6$s y vuelven gradualmente al modelo en 6 horas.</item>
+        <item quantity="other">%1$s (%2$s), a %3$s, registró %4$s hace %5$d min. Las próximas horas se ajustaron en %6$s y vuelven gradualmente al modelo en 6 horas.</item>
+    </plurals>
+    <!-- %1$s = forecast model name -->
+    <string name="dt_src_forecast">Previsión: %1$s vía Open-Meteo</string>
+    <string name="dt_src_best_model">Mejor modelo regional</string>
+    <string name="dt_src_gaps">huecos completados automáticamente</string>
+    <!-- %1$s = station code, %2$s = distance -->
+    <string name="dt_src_corrected">corregido con %1$s (%2$s)</string>
+    <string name="dt_src_sea">mar: Open-Meteo Marine</string>
+
+    <!-- ============================================================ Metric detail screen -->
+    <plurals name="dt_next_hours">
+        <item quantity="one">Próxima %d hora</item>
+        <item quantity="many">Próximas %d horas</item>
+        <item quantity="other">Próximas %d horas</item>
+    </plurals>
+    <plurals name="dt_next_days">
+        <item quantity="one">Próximo %d día</item>
+        <item quantity="many">Próximos %d días</item>
+        <item quantity="other">Próximos %d días</item>
+    </plurals>
+    <plurals name="dt_next_nights">
+        <item quantity="one">Próxima %d noche</item>
+        <item quantity="many">Próximas %d noches</item>
+        <item quantity="other">Próximas %d noches</item>
+    </plurals>
+    <!-- Section title, %1$s = metric name in lower case, e.g. "About humidity" -->
+    <string name="dt_about_metric">Acerca de: %1$s</string>
+    <!-- Chart legend for the second (dashed) line -->
+    <string name="dt_gusts">Rachas</string>
+    <!-- Chart legend: actual temperature (vs feels-like) -->
+    <string name="dt_actual">Real</string>
+
+    <!-- Wind hero. %1$s = compass direction, %2$s = Beaufort description -->
+    <string name="dt_wind_from">Del %1$s · %2$s</string>
+    <string name="dt_wind_gusts_up_to">Rachas de hasta %1$s.</string>
+    <string name="dt_wind_compass_note">La flecha apunta hacia donde sopla el viento; sigue la brújula de tu teléfono, así que coincide con el mundo real.</string>
+    <string name="dt_wind_no_compass">Este dispositivo no tiene brújula, así que el norte está arriba.</string>
+    <!-- Humidity hero -->
+    <string name="dt_hum_hero_sub">Punto de rocío %1$s. Inclina o agita el teléfono: el agua se mueve con él.</string>
+    <!-- Feels-like hero. %1$s = actual temperature -->
+    <string name="dt_feels_actual">Real %1$s</string>
+    <string name="dt_feels_wind_chill">El viento hace que se sienta más frío.</string>
+    <string name="dt_feels_colder">Se siente más frío de lo que marca el termómetro.</string>
+    <string name="dt_feels_humid">La humedad hace que se sienta más calor.</string>
+    <string name="dt_feels_warmer">El sol y el aire en calma hacen que se sienta más calor.</string>
+    <string name="dt_feels_close">Cercana a la temperatura real.</string>
+    <!-- Visibility hero -->
+    <string name="dt_vis_hero_sub">Hasta dónde puedes ver objetos con claridad. La niebla, la lluvia, la nieve y la calima la reducen.</string>
+    <!-- Precipitation hero -->
+    <string name="dt_precip_hero_caption">Previstos en las próximas 24 h</string>
+    <string name="dt_precip_hero_chance">Probabilidad horaria máxima: %1$d%%.</string>
+    <!-- Cloud hero -->
+    <string name="dt_cloud_hero_sub">Proporción del cielo cubierta por nubes.</string>
+    <!-- Sun hero. %1$s = daylight duration, %2$s = sunshine duration -->
+    <string name="dt_sun_hero_sub">%1$s de luz, %2$s de sol previstos.</string>
+    <!-- Air quality -->
+    <string name="dt_us_aqi">AQI de EE. UU.</string>
+    <string name="dt_eu_aqi">AQI europeo</string>
+    <!-- Appended after US AQI advice. %1$d = value, %2$s = level -->
+    <string name="dt_air_eu_suffix">AQI europeo %1$d (%2$s).</string>
+    <!-- Pollen -->
+    <string name="dt_pollen_unit">granos/m³</string>
+    <string name="dt_pollen_grains">%1$d granos/m³</string>
+    <string name="dt_pollen_none">Sin datos de polen</string>
+    <string name="dt_pollen_europe_only">Las previsiones de polen de Copernicus CAMS solo cubren Europa.</string>
+    <string name="dt_by_plant">Por planta</string>
+    <!-- Pollen plant names (only the first 5 letters are shown under the chart) -->
+    <string name="dt_pollen_alder">Aliso</string>
+    <string name="dt_pollen_birch">Abedul</string>
+    <string name="dt_pollen_grass">Gramíneas</string>
+    <string name="dt_pollen_mugwort">Artemisa</string>
+    <string name="dt_pollen_olive">Olivo</string>
+    <string name="dt_pollen_ragweed">Ambrosía</string>
+    <!-- Sun table -->
+    <string name="dt_sunrise_sunset">Amanecer y atardecer</string>
+    <!-- %1$s = sunshine duration -->
+    <string name="dt_sun_duration">%1$s de sol</string>
+
+    <!-- Cloud cover words (sky condition) -->
+    <string name="dt_cloud_clear">Despejado</string>
+    <string name="dt_cloud_mostly_clear">Mayormente despejado</string>
+    <string name="dt_cloud_partly">Parcialmente nublado</string>
+    <string name="dt_cloud_mostly_cloudy">Mayormente nublado</string>
+    <string name="dt_cloud_overcast">Cubierto</string>
+
+    <!-- "About ..." explanations on the metric screen -->
+    <string name="dt_about_wind">La velocidad del viento es la media de 10 minutos a 10 m sobre el suelo. Las rachas son ráfagas breves que pueden ser mucho más fuertes. La dirección indica DE DÓNDE viene el viento: un viento del norte sopla de norte a sur.</string>
+    <string name="dt_about_humidity">La humedad relativa es la cantidad de vapor de agua que contiene el aire en comparación con el máximo a esa temperatura. El punto de rocío mide mejor la sensación de bochorno: cuanto más alto, más pegajoso es el aire.</string>
+    <string name="dt_about_uv">El índice UV mide la intensidad de la radiación ultravioleta que causa quemaduras solares. Alcanza su máximo cerca del mediodía solar y es mayor en altitud y cerca del agua, la nieve y la arena. Las nubes lo reducen, aunque no siempre mucho.</string>
+    <string name="dt_about_feels">La sensación térmica (temperatura aparente) combina la temperatura del aire con el viento, la humedad y el sol para estimar cómo se siente el tiempo en la piel.</string>
+    <string name="dt_about_pressure">Presión atmosférica a nivel del mar. La presión estándar es de 1013 hPa. Las altas presiones suelen traer tiempo estable; las bajas, nubes, viento y lluvia. Un descenso rápido indica que se acerca una tormenta.</string>
+    <string name="dt_about_visibility">Distancia horizontal a la que se ven los objetos con claridad. Por debajo de 1 km hay niebla; por debajo de 10 km suele haber neblina, calima o precipitación.</string>
+    <string name="dt_about_precip">Total de lluvia, chubascos y nieve (como agua) por hora. El porcentaje es la probabilidad de que caigan al menos 0,1 mm en esa hora, combinando varios modelos meteorológicos.</string>
+    <string name="dt_about_cloud">Fracción del cielo cubierta por nubes a todas las alturas. Las nubes bajas son las que más sol bloquean; las nubes altas y finas aún pueden dejar pasar mucho sol.</string>
+    <string name="dt_about_sun">El amanecer y el atardecer son los momentos en que el borde superior del sol toca el horizonte. Las horas de luz son el tiempo entre ambos; las horas de sol, el tiempo con sol directo no tapado por nubes.</string>
+    <string name="dt_about_moon">La luna completa un ciclo de fases cada 29,5 días. Las fases se calculan en tu dispositivo, así que funcionan sin conexión.</string>
+    <string name="dt_about_air">El índice de calidad del aire convierte las concentraciones de contaminantes en un solo número. Se basa en el modelo del Servicio de Vigilancia Atmosférica de Copernicus (CAMS), no en un sensor local, por lo que puede que no refleje fuentes muy locales.</string>
+    <string name="dt_about_sea">La altura de ola es la altura significativa: la media del tercio de olas más altas, aproximadamente lo que estimaría un observador experimentado. Algunas olas pueden ser hasta el doble de altas. El mar de fondo lo generan tormentas lejanas; el mar de viento, el viento local. Datos: Open-Meteo Marine (modelos oceánicos y de oleaje de ECMWF, Météo-France, DWD y Copernicus Marine).</string>
+    <string name="dt_about_pollen">Concentración de polen en granos por metro cúbico de aire, según el modelo europeo de polen de CAMS. Las personas sensibles pueden notar síntomas a partir de unos 10–20 granos/m³ de gramíneas y abedul.</string>
+
+    <!-- Scale legends on the metric screen: label (range + level) and explanation -->
+    <!-- UV index scale -->
+    <string name="dt_scale_uv_low">0–2 Bajo</string>
+    <string name="dt_scale_uv_low_text">No se necesita protección.</string>
+    <string name="dt_scale_uv_moderate">3–5 Moderado</string>
+    <string name="dt_scale_uv_moderate_text">Busca sombra a mediodía y usa protector solar.</string>
+    <string name="dt_scale_uv_high">6–7 Alto</string>
+    <string name="dt_scale_uv_high_text">Protección imprescindible; reduce la exposición a mediodía.</string>
+    <string name="dt_scale_uv_very_high">8–10 Muy alto</string>
+    <string name="dt_scale_uv_very_high_text">Protección extra; evita el sol del mediodía.</string>
+    <string name="dt_scale_uv_extreme">11+ Extremo</string>
+    <string name="dt_scale_uv_extreme_text">Quédate en interiores a mediodía.</string>
+    <!-- US AQI scale -->
+    <string name="dt_scale_aqi_good">0–50 Buena</string>
+    <string name="dt_scale_aqi_good_text">La calidad del aire es satisfactoria.</string>
+    <string name="dt_scale_aqi_moderate">51–100 Moderada</string>
+    <string name="dt_scale_aqi_moderate_text">Aceptable; puede afectar a personas especialmente sensibles.</string>
+    <string name="dt_scale_aqi_sensitive">101–150 Dañina para grupos sensibles</string>
+    <string name="dt_scale_aqi_sensitive_text">Niños, mayores y personas con enfermedades pulmonares deben limitar el esfuerzo.</string>
+    <string name="dt_scale_aqi_unhealthy">151–200 Dañina</string>
+    <string name="dt_scale_aqi_unhealthy_text">Cualquiera puede empezar a notar efectos.</string>
+    <string name="dt_scale_aqi_very_unhealthy">201–300 Muy dañina</string>
+    <string name="dt_scale_aqi_very_unhealthy_text">Alerta sanitaria.</string>
+    <string name="dt_scale_aqi_hazardous">301+ Peligrosa</string>
+    <string name="dt_scale_aqi_hazardous_text">Condiciones de emergencia.</string>
+    <!-- Humidity (dew point) scale -->
+    <string name="dt_scale_hum_dry">Punto de rocío &lt; 10 °C · Seco</string>
+    <string name="dt_scale_hum_dry_text">Aire fresco y seco.</string>
+    <string name="dt_scale_hum_comfortable">10–15 °C · Agradable</string>
+    <string name="dt_scale_hum_comfortable_text">No notarás la humedad.</string>
+    <string name="dt_scale_hum_noticeable">15–18 °C · Perceptible</string>
+    <string name="dt_scale_hum_noticeable_text">La humedad empieza a notarse.</string>
+    <string name="dt_scale_hum_sticky">18–21 °C · Pegajoso</string>
+    <string name="dt_scale_hum_sticky_text">Ambiente húmedo; hacer ejercicio cuesta más.</string>
+    <string name="dt_scale_hum_muggy">21–24 °C · Bochornoso</string>
+    <string name="dt_scale_hum_muggy_text">Incómodo para la mayoría.</string>
+    <string name="dt_scale_hum_oppressive">24 °C+ · Agobiante</string>
+    <string name="dt_scale_hum_oppressive_text">Muy incómodo.</string>
+    <!-- Sea state scale (wave height) -->
+    <string name="dt_scale_sea_calm">&lt; 0,1 m · Calma</string>
+    <string name="dt_scale_sea_calm_text">Mar como un espejo.</string>
+    <string name="dt_scale_sea_rippled">0,1–0,5 m · Rizada</string>
+    <string name="dt_scale_sea_rippled_text">Pequeñas olas sin rompientes.</string>
+    <string name="dt_scale_sea_slight">0,5–1,25 m · Marejadilla</string>
+    <string name="dt_scale_sea_slight_text">Olas pequeñas, algunos borregos.</string>
+    <string name="dt_scale_sea_moderate">1,25–2,5 m · Marejada</string>
+    <string name="dt_scale_sea_moderate_text">Muchos borregos.</string>
+    <string name="dt_scale_sea_rough">2,5–4 m · Fuerte marejada</string>
+    <string name="dt_scale_sea_rough_text">Olas grandes, espuma y rociones.</string>
+    <string name="dt_scale_sea_very_rough">4–6 m · Mar gruesa</string>
+    <string name="dt_scale_sea_very_rough_text">Mar encrespada.</string>
+    <string name="dt_scale_sea_high">6 m+ · Mar muy gruesa</string>
+    <string name="dt_scale_sea_high_text">Mar peligrosa.</string>
+    <!-- Fire weather index scale -->
+    <string name="dt_scale_fire_low">0–14 Bajo</string>
+    <string name="dt_scale_fire_low_text">Es poco probable que los incendios se propaguen rápido.</string>
+    <string name="dt_scale_fire_moderate">15–29 Moderado</string>
+    <string name="dt_scale_fire_moderate_text">Cuidado con el fuego al aire libre.</string>
+    <string name="dt_scale_fire_high">30–49 Alto</string>
+    <string name="dt_scale_fire_high_text">Evita hogueras cerca de hierba seca.</string>
+    <string name="dt_scale_fire_very_high">50–74 Muy alto</string>
+    <string name="dt_scale_fire_very_high_text">Nada de fuego al aire libre.</string>
+    <string name="dt_scale_fire_extreme">75+ Extremo</string>
+    <string name="dt_scale_fire_extreme_text">Respeta las prohibiciones; prepárate para evacuar.</string>
+    <!-- Wind speed scale (labels are just km/h ranges) -->
+    <string name="dt_scale_wind_light_text">Flojo: las hojas susurran, las banderas ondean.</string>
+    <string name="dt_scale_wind_moderate_text">Moderado a fresco: se mueven las ramas pequeñas, se levanta polvo.</string>
+    <string name="dt_scale_wind_strong_text">Fuerte: se mueven las ramas grandes, cuesta caminar en contra.</string>
+    <string name="dt_scale_wind_gale_text">Temporal: se rompen ramitas, posibles daños estructurales.</string>
+
+    <!-- ============================================================ Humidity / cooling insight cards -->
+    <string name="dt_humidity_comfort">Confort por humedad</string>
+    <!-- Short labels under the 6-step humidity comfort scale (keep very short) -->
+    <string name="dt_hum_lvl_dry">Seco</string>
+    <string name="dt_hum_lvl_comfy">Cómodo</string>
+    <string name="dt_hum_lvl_noticed">Notable</string>
+    <string name="dt_hum_lvl_sticky">Pegajoso</string>
+    <string name="dt_hum_lvl_muggy">Bochorno</string>
+    <string name="dt_hum_lvl_heavy">Pesado</string>
+    <!-- %1$s = comfort level in lower case, %2$s = dew point -->
+    <string name="dt_hum_right_now">Ahora mismo: %1$s, con un punto de rocío de %2$s.</string>
+    <string name="dt_cooling_comfort">Confort térmico</string>
+    <!-- %1$s = explanation of current level, %2$s = peak level, %3$s = time -->
+    <string name="dt_cooling_body_peak">%1$s %2$s hacia las %3$s.</string>
+    <string name="dt_wetbulb_now">Bulbo húmedo ahora</string>
+    <string name="dt_todays_peak">Máximo de hoy</string>
+    <string name="dt_feels_like">Sensación térmica</string>
+
+    <!-- ============================================================ Pressure insight cards -->
+    <string name="dt_pressure_trend_title">Tendencia de 3 horas</string>
+    <string name="dt_week_ahead">Próxima semana</string>
+    <string name="dt_pressure_steady">Bastante estable</string>
+    <string name="dt_pressure_dip_rise">Bajando y luego subiendo</string>
+    <string name="dt_pressure_rise_dip">Subiendo y luego bajando</string>
+    <!-- %1$s = pressure unit -->
+    <string name="dt_pressure_steady_body">La presión varía solo unos pocos %1$s en toda la semana: sin grandes cambios debidos solo a la presión.</string>
+    <!-- %1$s lowest day (lower case), %2$s value, %3$s unit, %4$s highest day (lower case), %5$s value -->
+    <string name="dt_pressure_week_body">Mínima %1$s (%2$s %3$s): inestable. Máxima %4$s (%5$s): probablemente más tranquilo.</string>
+
+    <!-- ============================================================ Precipitation insight cards -->
+    <string name="dt_precip_so_far">%1$s hasta ahora.</string>
+    <string name="dt_precip_more">Se esperan %1$s más.</string>
+    <string name="dt_rain">Lluvia</string>
+    <string name="dt_rain_incl_showers">incl. chubascos</string>
+    <string name="dt_snow">Nieve</string>
+    <string name="dt_fresh_snow">nieve nueva</string>
+    <string name="dt_ice">Hielo</string>
+    <string name="dt_freezing_rain">lluvia helada</string>
+    <string name="dt_this_week">Esta semana</string>
+    <string name="dt_dry_week">Una semana seca</string>
+    <string name="dt_precip_in_7_days">%1$s en 7 días</string>
+    <string name="dt_precip_no_wet_day">No se espera ningún día con más de 1 mm.</string>
+    <string name="dt_precip_no_wet_day_in">No se espera ningún día con más de 1 mm (0,04 in).</string>
+    <!-- %1$d wet days, %2$s wettest day (lower case), %3$s amount -->
+    <plurals name="dt_precip_wet_days">
+        <item quantity="one">%1$d día con lluvia; el más lluvioso, %2$s, con %3$s.</item>
+        <item quantity="many">%1$d días con lluvia; el más lluvioso, %2$s, con %3$s.</item>
+        <item quantity="other">%1$d días con lluvia; el más lluvioso, %2$s, con %3$s.</item>
+    </plurals>
+    <string name="dt_precip_snow_total">Hasta %1$s de nieve en total.</string>
+
+    <!-- ============================================================ UV insight cards -->
+    <string name="dt_sun_protection">Protección solar</string>
+    <string name="dt_uv_no_data">Sin datos UV hoy</string>
+    <string name="dt_uv_no_protection">Hoy no se necesita protección</string>
+    <!-- %1$s start time, %2$s end time -->
+    <string name="dt_uv_protect">Protégete de %1$s a %2$s</string>
+    <string name="dt_uv_low_body">El UV se mantiene bajo. Aun así, las gafas de sol son buena idea en días luminosos o cerca de la nieve y el agua.</string>
+    <!-- %1$s start, %2$s end, %3$d peak UV index, %4$s peak time -->
+    <string name="dt_uv_window_body">Reduce el tiempo al sol entre las %1$s y las %2$s. UV máximo de %3$d hacia las %4$s.</string>
+    <string name="dt_peak_today">Máximo hoy</string>
+    <string name="dt_peak_tomorrow">Máximo mañana</string>
+
+    <!-- ============================================================ Air quality insight cards -->
+    <string name="dt_health">Salud</string>
+    <string name="dt_eu_guidance">Recomendación de la UE: %1$s</string>
+    <string name="dt_pollutants_who">Contaminantes frente a límites de la OMS</string>
+    <!-- %1$s = description of pollutant, %2$d = limit -->
+    <string name="dt_who_guideline">%1$s Valor guía de la OMS: %2$d µg/m³.</string>
+
+    <!-- ============================================================ Clouds & visibility insight cards -->
+    <string name="dt_sky_outlook">Previsión del cielo</string>
+    <string name="dt_visibility">Visibilidad</string>
+    <string name="dt_sunshine_today">Sol hoy</string>
+    <!-- Hour with the least cloud -->
+    <string name="dt_clearest">Más despejado</string>
+    <string name="dt_cloud_pct">%1$d%% nubes</string>
+    <string name="dt_visibility_rating">Nivel de visibilidad</string>
+    <!-- %1$s time, %2$s distance, %3$s unit, %4$s rating in lower case -->
+    <string name="dt_vis_lowest">Mínima hacia las %1$s: %2$s %3$s (%4$s).</string>
+
+    <!-- ============================================================ Feels-like insight card -->
+    <string name="dt_compared_yesterday">En comparación con ayer</string>
+    <string name="dt_tomorrow_prefix">Mañana: %1$s</string>
+
+    <!-- ============================================================ Fire weather insight cards -->
+    <!-- Short labels under the 5-step fire danger scale (keep very short) -->
+    <string name="dt_fire_lvl_low">Bajo</string>
+    <string name="dt_fire_lvl_moderate">Mod.</string>
+    <string name="dt_fire_lvl_high">Alto</string>
+    <string name="dt_fire_lvl_very_high">M. alto</string>
+    <string name="dt_fire_lvl_extreme">Extremo</string>
+    <string name="dt_temperature">Temperatura</string>
+    <string name="dt_humidity">Humedad</string>
+    <string name="dt_very_dry">muy seco</string>
+    <string name="dt_wind">Viento</string>
+    <string name="dt_gusts_lc">rachas %1$s</string>
+
+    <!-- ============================================================ Sea detail -->
+    <!-- Under the big wave height number. %1$s = unit (m or ft) -->
+    <string name="dt_sea_unit_waves">%1$s de olas</string>
+    <!-- %1$s = compass direction -->
+    <string name="dt_sea_waves_from">Olas del %1$s.</string>
+    <string name="dt_sea_water_temp">Agua %1$s.</string>
+    <string name="dt_swell">Mar de fondo</string>
+    <string name="dt_wind_waves">Mar de viento</string>
+    <string name="dt_wave_period">Periodo de ola</string>
+    <string name="dt_wave_similar">Similar toda la semana</string>
+    <!-- %1$s = "today", "tomorrow" or "on Monday" -->
+    <string name="dt_wave_roughest">Más agitado %1$s</string>
+    <string name="dt_wave_stay_around">Las olas rondarán los %1$s.</string>
+    <!-- %1$s max height, %2$s sea state (lower case), %3$s calmest day ("today"/"on Monday"), %4$s height -->
+    <string name="dt_wave_outlook_body">Hasta %1$s (%2$s). Más tranquilo %3$s, con %4$s.</string>
+    <string name="dt_wave_outlook">Previsión de oleaje</string>
+    <plurals name="dt_wave_reach">
+        <item quantity="one">Aquí la previsión de oleaje alcanza %d día.</item>
+        <item quantity="many">Aquí la previsión de oleaje alcanza %d días.</item>
+        <item quantity="other">Aquí la previsión de oleaje alcanza %d días.</item>
+    </plurals>
+    <string name="dt_sea_temperature">Temperatura del mar</string>
+    <!-- %1$s = wetsuit advice sentence -->
+    <string name="dt_sea_cold_shock">%1$s Puede producirse un choque por agua fría: entra despacio.</string>
+    <string name="dt_air_now">Aire ahora</string>
+    <string name="dt_water_now">Agua ahora</string>
+    <string name="dt_next_week">Próxima semana</string>
+    <!-- Sea temperature trend -->
+    <string name="dt_trend_steady">Estable</string>
+    <string name="dt_trend_warming">Calentándose</string>
+    <string name="dt_trend_cooling">Enfriándose</string>
+    <string name="dt_currents">Corrientes</string>
+    <string name="dt_current_flow">Fluye hacia el %1$s.</string>
+    <string name="dt_current_caution">Precaución para bañistas. Si te arrastra una corriente, no luches contra ella: nada en paralelo a la orilla y luego vuelve.</string>
+    <string name="dt_tides">Mareas</string>
+    <!-- %1$s = time -->
+    <string name="dt_high_tide">Pleamar %1$s</string>
+    <string name="dt_low_tide">Bajamar %1$s</string>
+    <string name="dt_tide_coming_in">La marea está subiendo.</string>
+    <string name="dt_tide_going_out">La marea está bajando.</string>
+    <string name="dt_tide_range">Amplitud de unos %1$s en los próximos dos días. Incluye la marea de tempestad del modelo; las tablas de mareas locales son más precisas.</string>
+    <!-- Tide chart labels. %1$s = height, e.g. "High +1.2 m" -->
+    <string name="dt_tide_high_short">Pleamar %1$s</string>
+    <string name="dt_tide_low_short">Bajamar %1$s</string>
+    <string name="dt_activities">Actividades</string>
+
+    <!-- ============================================================ Sun detail -->
+    <string name="dt_first_light">Primera luz</string>
+    <string name="dt_sunrise">Amanecer</string>
+    <string name="dt_sunset">Atardecer</string>
+    <string name="dt_last_light">Última luz</string>
+    <string name="dt_sun_today">Sol hoy</string>
+    <string name="dt_sunset_direction">Dirección del atardecer</string>
+    <!-- %1$s rise compass direction, %2$s rise bearing in degrees, %3$s set compass direction -->
+    <string name="dt_sun_rises_in">Sale por el %1$s (%2$s°). Mira al %3$s para ver la puesta de sol.</string>
+    <string name="dt_solar_noon">Mediodía solar</string>
+    <string name="dt_sun_highest">Sol en su punto más alto</string>
+    <string name="dt_max_elevation">Elevación máx.</string>
+    <string name="dt_golden_hour">Hora dorada</string>
+    <string name="dt_before_sunset">antes del atardecer</string>
+    <string name="dt_midnight_sun">Sol de medianoche: el sol permanece sobre el horizonte todo el día.</string>
+    <string name="dt_polar_night">Noche polar: hoy el sol permanece bajo el horizonte.</string>
+    <string name="dt_daylight">Horas de luz</string>
+    <string name="dt_daylight_same">Aproximadamente igual que ayer</string>
+    <!-- %1$s = signed change, e.g. "+2 min 10 s" -->
+    <string name="dt_daylight_vs_yesterday">%1$s respecto a ayer</string>
+    <!-- %1$s = duration -->
+    <string name="dt_daylight_today">%1$s de luz hoy.</string>
+    <string name="dt_daylight_barely">La duración del día apenas cambia esta semana.</string>
+    <string name="dt_daylight_longer">Los días se alargan: %1$s desde la semana pasada.</string>
+    <string name="dt_daylight_shorter">Los días se acortan: %1$s desde la semana pasada.</string>
+    <string name="dt_longest_day">Día más largo</string>
+    <string name="dt_shortest_day">Día más corto</string>
+    <string name="dt_seasonal_highlights">Momentos de la temporada</string>
+    <!-- %1$s = when (e.g. "Thu 14:20"), %2$s = daylight duration -->
+    <string name="dt_season_sub">%1$s · %2$s de luz</string>
+    <!-- Sun elevation at noon -->
+    <string name="dt_elev_very_low">Sol muy bajo</string>
+    <string name="dt_elev_low">Sol bajo</string>
+    <string name="dt_elev_mid">Altura media</string>
+    <string name="dt_elev_high">Muy alto</string>
+    <!-- One-letter compass points drawn on the small sun compass -->
+    <string name="dt_compass_n">N</string>
+    <string name="dt_compass_e">E</string>
+    <string name="dt_compass_s">S</string>
+    <string name="dt_compass_w">O</string>
+    <!-- 12-hour reference line on the daylight chart -->
+    <string name="dt_chart_12h">12 h</string>
+
+    <!-- ============================================================ Moon detail -->
+    <string name="dt_waxing">creciente</string>
+    <string name="dt_waning">menguante</string>
+    <!-- %1$s illumination %, %2$s waxing/waning, %3$d altitude degrees, %4$s compass direction -->
+    <string name="dt_moon_line_up">%1$s iluminada · %2$s · visible ahora, a %3$d° de altura hacia el %4$s</string>
+    <string name="dt_moon_line_down">%1$s iluminada · %2$s · bajo el horizonte</string>
+    <string name="dt_moonrise">Salida de la luna</string>
+    <string name="dt_moonset">Puesta de la luna</string>
+    <string name="dt_up_all_day">Visible todo el día</string>
+    <string name="dt_down_all_day">Oculta todo el día</string>
+    <string name="dt_stargazing_tonight">Observación de estrellas esta noche</string>
+    <!-- Short labels under the 4-step stargazing scale -->
+    <string name="dt_star_lvl_poor">Mala</string>
+    <string name="dt_star_lvl_fair">Regular</string>
+    <string name="dt_star_lvl_good">Buena</string>
+    <string name="dt_star_lvl_excellent">Excelente</string>
+    <string name="dt_clouds">Nubes</string>
+    <string name="dt_average_tonight">media esta noche</string>
+    <string name="dt_moonlight">Luz de luna</string>
+    <string name="dt_moon_down">luna oculta</string>
+    <string name="dt_moon_up_pct">visible el %1$d%% de la noche</string>
+    <string name="dt_best_time">Mejor momento</string>
+    <string name="dt_dark_from">oscuro desde las %1$s</string>
+    <string name="dt_moon_facts">Datos de la luna</string>
+    <string name="dt_next_full_moon">Próxima luna llena</string>
+    <string name="dt_next_new_moon">Próxima luna nueva</string>
+    <string name="dt_distance">Distancia</string>
+    <string name="dt_moon_perigee">Cerca del perigeo: la luna se ve un poco más grande</string>
+    <string name="dt_moon_perigee_super">Cerca del perigeo: la luna se ve un poco más grande. ¡Superluna!</string>
+    <string name="dt_moon_apogee">Cerca del apogeo: la luna se ve un poco más pequeña</string>
+    <string name="dt_moon_avg_distance">Distancia media: 384 400 km</string>
+    <string name="dt_position_now">Posición actual</string>
+    <string name="dt_alt_compass">Altura y dirección</string>
+
+    <!-- ============================================================ Day detail screen -->
+    <string name="dt_through_the_day">A lo largo del día</string>
+    <string name="dt_hour_by_hour">Hora a hora</string>
+    <string name="dt_hourly_source">Datos horarios del modelo · Open-Meteo.com</string>
+    <!-- %1$s max feels-like, %2$s min feels-like -->
+    <string name="dt_feels_like_range">Sensación %1$s / %2$s</string>
+    <!-- Day summary. %1$s from hour, %2$s to hour, %3$s total amount -->
+    <string name="dt_day_precip_likely_total">Precipitación más probable entre las %1$s y las %2$s, %3$s en total.</string>
+    <string name="dt_day_precip_likely">Precipitación más probable entre las %1$s y las %2$s.</string>
+    <string name="dt_day_dry">Se espera un día seco.</string>
+    <string name="dt_day_warmest">Más calor hacia las %1$s, más fresco hacia las %2$s.</string>
+    <!-- %1$s wind speed, %2$s compass direction, %3$s gust speed -->
+    <string name="dt_day_wind_gusts">Viento de hasta %1$s del %2$s, rachas de %3$s.</string>
+    <string name="dt_day_wind">Viento de hasta %1$s del %2$s.</string>
+    <!-- Stat tile titles -->
+    <string name="dt_precipitation">Precipitación</string>
+    <string name="dt_uv_max">UV máx.</string>
+    <string name="dt_sunshine">Sol</string>
+    <string name="dt_dew_point">Punto de rocío</string>
+    <string name="dt_pressure">Presión</string>
+    <string name="dt_cloud_cover">Nubosidad</string>
+    <string name="dt_fire_weather">Riesgo de incendio</string>
+    <!-- Stat tile captions -->
+    <string name="dt_pct_chance">%1$d%% de prob.</string>
+    <string name="dt_hours_of_rain">%1$d h de lluvia</string>
+    <string name="dt_amount_of_snow">%1$s de nieve</string>
+    <!-- Wind tile caption: %1$s gusts, %2$s compass direction, %3$s Beaufort description -->
+    <string name="dt_day_wind_caption_gusts">Rachas %1$s · %2$s\n%3$s</string>
+    <string name="dt_day_wind_caption">%1$s\n%2$s</string>
+    <!-- UV tile caption: %1$s UV level, %2$s advice / peak time -->
+    <string name="dt_day_uv_caption">%1$s. %2$s</string>
+    <string name="dt_day_uv_caption_peak">%1$s, máximo a las %2$s. %3$s</string>
+    <string name="dt_day_uv_caption_protect">%1$s, máximo a las %2$s. Protégete de %3$s a %4$s.</string>
+    <!-- %1$d percent, %2$s daylight duration -->
+    <string name="dt_day_sunshine_pct">%1$d%% de %2$s de luz</string>
+    <!-- %1$s min, %2$s max -->
+    <string name="dt_range">Rango %1$s–%2$s</string>
+    <string name="dt_lowest_of_day">Mínima del día · %1$s</string>
+    <string name="dt_average_over_day">Media del día</string>
+    <string name="dt_feels_warmer_afternoon">Por la tarde se siente más calor que %1$s</string>
+    <string name="dt_feels_colder_coldest">En el momento más frío se siente menos de %1$s</string>
+    <string name="dt_feels_close_actual">Cercana a la real, %1$s – %2$s</string>
+    <!-- %1$s fire level, %2$s time -->
+    <string name="dt_fire_peak">%1$s, máximo a las %2$s</string>
+    <!-- %1$s comfort level, %2$s time -->
+    <string name="dt_wetbulb_peak">%1$s · máximo de bulbo húmedo a las %2$s</string>
+    <string name="dt_sun_and_moon">Sol y luna</string>
+    <!-- %1$s first light, %2$s last light, %3$d elevation, %4$s solar noon time -->
+    <string name="dt_sun_line">Primera luz %1$s · última luz %2$s · sol a %3$d° de altura a las %4$s</string>
+    <string name="dt_pct_illuminated">%1$d%% iluminada</string>
+    <!-- Moon rise / set times -->
+    <string name="dt_moon_rise">Salida %1$s</string>
+    <string name="dt_moon_set">Puesta %1$s</string>
+    <!-- Hour row: %1$s wind speed, %2$s direction, %3$s relative humidity; RH = relative humidity -->
+    <string name="dt_hour_line">%1$s %2$s · %3$s HR</string>
+    <string name="dt_hour_line_snow">%1$s %2$s · %3$s HR · %4$s de nieve</string>
+    <string name="dt_hour_line_precip">%1$s %2$s · %3$s HR · %4$s</string>
+</resources>

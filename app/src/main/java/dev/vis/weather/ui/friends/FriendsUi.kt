@@ -2,6 +2,7 @@
 
 package dev.vis.weather.ui.friends
 
+import dev.vis.weather.inSentence
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -64,10 +65,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.annotation.StringRes
 import androidx.graphics.shapes.RoundedPolygon
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.alerts.WarningStore
 import dev.vis.weather.data.Forecast
 import dev.vis.weather.data.ForecastRepo
@@ -112,7 +117,7 @@ fun rememberFriendForecasts(friends: List<Friend>): Map<String, Forecast> {
 }
 
 @Composable
-fun Avatar(friend: Friend?, size: Dp, shape: RoundedPolygon, label: String = friend?.initials ?: "You") {
+fun Avatar(friend: Friend?, size: Dp, shape: RoundedPolygon, label: String = friend?.initials ?: stringResource(R.string.d_fr_you)) {
     val bmp = remember(friend?.photo) { friend?.photo?.let { p -> runCatching { BitmapFactory.decodeFile(p)?.asImageBitmap() }.getOrNull() } }
     Box(
         Modifier.size(size).clip(shape.toShape()).background(if (friend == null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiaryContainer),
@@ -138,36 +143,41 @@ fun FriendsCard(me: Forecast, settings: Settings, onOpen: () -> Unit, modifier: 
             Row(Modifier.padding(horizontal = 20.dp), verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Rounded.Groups, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                 Spacer(Modifier.width(8.dp))
-                Text("Family & friends", style = MaterialTheme.typography.titleMediumEmphasized, modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.d_fr_title), style = MaterialTheme.typography.titleMediumEmphasized, modifier = Modifier.weight(1f))
             }
             if (friends.isEmpty()) {
                 Text(
-                    "See the weather where the people you care about live, and get their warnings.",
+                    stringResource(R.string.d_fr_card_empty),
                     style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                 )
                 FilledTonalButton(onClick = onOpen, modifier = Modifier.padding(horizontal = 20.dp)) {
                     Icon(Icons.Rounded.Add, null)
                     Spacer(Modifier.width(8.dp))
-                    Text("Add someone")
+                    Text(stringResource(R.string.d_fr_add_someone))
                 }
                 return@Column
             }
-            val people = listOf<Pair<String, Forecast?>>("You" to me) + friends.map { it.name.substringBefore(' ') to forecasts[it.id] }
+            val you = stringResource(R.string.d_fr_you)
+            val twoNames = stringResource(R.string.d_fr_two_names)
+            val similar = stringResource(R.string.d_fr_similar)
+            val warmestColdest = stringResource(R.string.d_fr_warmest_coldest)
+            val people = listOf<Pair<String, Forecast?>>(you to me) + friends.map { it.name.substringBefore(' ') to forecasts[it.id] }
             val known = people.filter { it.second != null && !it.second!!.current.temp.isNaN() }
             if (known.size >= 2) {
                 val warm = known.maxOf { it.second!!.current.temp }
                 val cold = known.minOf { it.second!!.current.temp }
-                fun names(t: Double) = known.filter { kotlin.math.abs(it.second!!.current.temp - t) < 0.5 }.map { it.first }.take(2).joinToString(" & ")
+                fun names(t: Double) = known.filter { kotlin.math.abs(it.second!!.current.temp - t) < 0.5 }.map { it.first }.take(2)
+                    .let { n -> if (n.size == 2) twoNames.format(n[0], n[1]) else n.joinToString() }
                 Text(
-                    if (warm - cold < 1.5) "Similar weather for everyone" else "Warmest: ${names(warm)} · Coldest: ${names(cold)}",
+                    if (warm - cold < 1.5) similar else warmestColdest.format(names(warm), names(cold)),
                     style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
                 )
             }
             Spacer(Modifier.height(10.dp))
             LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                item { Person(null, "You", me, fmt, 0) }
+                item { Person(null, you, me, fmt, 0) }
                 items(friends.size) { i -> Person(friends[i], friends[i].name.substringBefore(' '), forecasts[friends[i].id], fmt, i + 1) }
             }
         }
@@ -199,7 +209,11 @@ private fun Person(friend: Friend?, name: String, f: Forecast?, fmt: Fmt, index:
     }
 }
 
-private enum class Compare(val label: String) { TEMP("Temperature"), RAIN("Rain chance"), UV("UV index") }
+private enum class Compare(@StringRes private val labelRes: Int) {
+    TEMP(R.string.d_fr_cmp_temp), RAIN(R.string.d_fr_cmp_rain), UV(R.string.d_fr_cmp_uv);
+
+    val label: String get() = L.s(labelRes)
+}
 
 @Composable
 fun FriendsScreen(me: Pair<Place, Forecast>?, settings: Settings, onBack: () -> Unit, onOpenOnMap: () -> Unit) {
@@ -213,17 +227,19 @@ fun FriendsScreen(me: Pair<Place, Forecast>?, settings: Settings, onBack: () -> 
     val zone = me?.second?.zone ?: java.time.ZoneId.systemDefault()
     val fmt = remember(settings, zone) { Fmt(settings, zone) }
 
-    SubScreen("Family & friends", onBack, actions = {
-        IconButton(onClick = { adding = true }) { Icon(Icons.Rounded.Add, "Add") }
+    val dayLabels = listOf(stringResource(R.string.d_fr_now), stringResource(R.string.d_fr_today), stringResource(R.string.d_fr_tomorrow))
+    val youAt = me?.let { stringResource(R.string.d_fr_you_at, it.first.name) }
+    SubScreen(stringResource(R.string.d_fr_title), onBack, actions = {
+        IconButton(onClick = { adding = true }) { Icon(Icons.Rounded.Add, stringResource(R.string.d_fr_add)) }
     }) { w ->
         item {
             Column(w, verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 ConnectedChoice(Compare.entries, metric, { it.label }, { metric = it }, Modifier.fillMaxWidth())
-                ConnectedChoice(listOf(0, 1, 2), day, { listOf("Now", "Today", "Tomorrow")[it] }, { day = it }, Modifier.fillMaxWidth())
+                ConnectedChoice(listOf(0, 1, 2), day, { dayLabels[it] }, { day = it }, Modifier.fillMaxWidth())
             }
         }
         val rows = buildList {
-            if (me != null) add(Triple<Friend?, String, Forecast?>(null, "You · ${me.first.name}", me.second))
+            if (me != null) add(Triple<Friend?, String, Forecast?>(null, youAt.orEmpty(), me.second))
             friends.forEach { add(Triple(it, it.name, forecasts[it.id])) }
         }
         if (friends.isEmpty()) {
@@ -235,18 +251,18 @@ fun FriendsScreen(me: Pair<Place, Forecast>?, settings: Settings, onBack: () -> 
                             container = MaterialTheme.colorScheme.primaryContainer, content = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                         Spacer(Modifier.height(12.dp))
-                        Text("Family & friends weather", style = MaterialTheme.typography.titleLargeEmphasized)
+                        Text(stringResource(R.string.d_fr_intro_title), style = MaterialTheme.typography.titleLargeEmphasized)
                         Spacer(Modifier.height(6.dp))
                         listOf(
-                            "Compare temperature, rain and UV with the people you care about",
-                            "Get official weather warnings for their places",
-                            "See everyone on the weather map",
+                            stringResource(R.string.d_fr_intro_compare),
+                            stringResource(R.string.d_fr_intro_warnings),
+                            stringResource(R.string.d_fr_intro_map),
                         ).forEach { Text("• $it", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                         Spacer(Modifier.height(14.dp))
-                        Button(onClick = { adding = true }) { Icon(Icons.Rounded.Add, null); Spacer(Modifier.width(8.dp)); Text("Add someone") }
+                        Button(onClick = { adding = true }) { Icon(Icons.Rounded.Add, null); Spacer(Modifier.width(8.dp)); Text(stringResource(R.string.d_fr_add_someone)) }
                         Spacer(Modifier.height(10.dp))
                         Text(
-                            "Names and photos come from contacts you pick and stay on this device. Nothing is uploaded except their place's coordinates to the weather service.",
+                            stringResource(R.string.d_fr_privacy),
                             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -265,7 +281,7 @@ fun FriendsScreen(me: Pair<Place, Forecast>?, settings: Settings, onBack: () -> 
                 }
             }
             item {
-                TextButton(onClick = onOpenOnMap, modifier = w) { Text("See everyone on the map") }
+                TextButton(onClick = onOpenOnMap, modifier = w) { Text(stringResource(R.string.d_fr_see_on_map)) }
             }
         }
     }
@@ -274,10 +290,10 @@ fun FriendsScreen(me: Pair<Place, Forecast>?, settings: Settings, onBack: () -> 
     removing?.let { f ->
         AlertDialog(
             onDismissRequest = { removing = null },
-            title = { Text("Remove ${f.name}?") },
-            text = { Text("They'll no longer appear in Family & friends and you won't get warnings for ${f.place.name}.") },
-            confirmButton = { TextButton(onClick = { Friends.remove(context, f); removing = null }) { Text("Remove") } },
-            dismissButton = { TextButton(onClick = { removing = null }) { Text("Cancel") } },
+            title = { Text(stringResource(R.string.d_fr_remove_title, f.name)) },
+            text = { Text(stringResource(R.string.d_fr_remove_text, f.place.name)) },
+            confirmButton = { TextButton(onClick = { Friends.remove(context, f); removing = null }) { Text(stringResource(R.string.d_fr_remove)) } },
+            dismissButton = { TextButton(onClick = { removing = null }) { Text(stringResource(R.string.d_fr_cancel)) } },
         )
     }
 }
@@ -346,7 +362,7 @@ private fun FriendRow(
                         Icon(warning.hazard.icon, null, Modifier.size(16.dp), tint = androidx.compose.ui.graphics.Color(warning.severity.onArgb))
                         Spacer(Modifier.width(6.dp))
                         Text(
-                            "${warning.severity.colorName} ${warning.hazard.label.lowercase()} warning",
+                            stringResource(R.string.d_fr_warning, warning.severity.colorName, warning.hazard.label.inSentence()),
                             style = MaterialTheme.typography.labelLarge, color = androidx.compose.ui.graphics.Color(warning.severity.onArgb),
                         )
                     }
@@ -357,9 +373,9 @@ private fun FriendRow(
                     friend.contactUri?.let { uri ->
                         TextButton(onClick = {
                             runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
-                        }) { Icon(Icons.Rounded.OpenInNew, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Contact") }
+                        }) { Icon(Icons.Rounded.OpenInNew, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.d_fr_contact)) }
                     }
-                    TextButton(onClick = onRemove) { Icon(Icons.Rounded.Delete, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Remove") }
+                    TextButton(onClick = onRemove) { Icon(Icons.Rounded.Delete, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.d_fr_remove)) }
                 }
             }
         }
@@ -396,18 +412,18 @@ private fun AddFriendDialog(onDismiss: () -> Unit) {
     }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add family or friend") },
+        title = { Text(stringResource(R.string.d_fr_add_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    OutlinedTextField(name, { name = it }, label = { Text("Name") }, singleLine = true, modifier = Modifier.weight(1f))
+                    OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.d_fr_name)) }, singleLine = true, modifier = Modifier.weight(1f))
                     Spacer(Modifier.width(6.dp))
                     IconButton(onClick = { picker.launch(Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)) }) {
-                        Icon(Icons.Rounded.Contacts, "Pick a contact")
+                        Icon(Icons.Rounded.Contacts, stringResource(R.string.d_fr_pick_contact))
                     }
                 }
                 OutlinedTextField(
-                    query, { query = it; place = null }, label = { Text("Where do they live?") }, singleLine = true,
+                    query, { query = it; place = null }, label = { Text(stringResource(R.string.d_fr_where)) }, singleLine = true,
                     leadingIcon = { Icon(Icons.Rounded.Search, null) }, modifier = Modifier.fillMaxWidth(),
                 )
                 if (searching) LoadingIndicator(Modifier.size(32.dp).align(Alignment.CenterHorizontally))
@@ -442,10 +458,10 @@ private fun AddFriendDialog(onDismiss: () -> Unit) {
                     scope.launch { runCatching { WarningStore.refresh(context, p, 0) } }
                     onDismiss()
                 },
-            ) { Text("Add") }
+            ) { Text(stringResource(R.string.d_fr_add)) }
         },
         dismissButton = {
-            TextButton(onClick = { photo?.let { runCatching { File(it).delete() } }; onDismiss() }) { Text("Cancel") }
+            TextButton(onClick = { photo?.let { runCatching { File(it).delete() } }; onDismiss() }) { Text(stringResource(R.string.d_fr_cancel)) }
         },
     )
 }

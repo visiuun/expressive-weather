@@ -68,10 +68,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.graphics.shapes.RoundedPolygon
+import dev.vis.weather.R
 import dev.vis.weather.alerts.AlertType
 import dev.vis.weather.alerts.Severity
 import dev.vis.weather.alerts.Warning
@@ -158,8 +160,8 @@ fun TimeDialog(initial: Int, use24h: Boolean, onDismiss: () -> Unit, onPick: (In
     val state = rememberTimePickerState(initial / 60, initial % 60, use24h)
     AlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = { TextButton(onClick = { onPick(state.hour * 60 + state.minute) }) { Text("OK") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        confirmButton = { TextButton(onClick = { onPick(state.hour * 60 + state.minute) }) { Text(stringResource(R.string.al_ok)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.al_cancel)) } },
         text = { Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { TimePicker(state) } },
     )
 }
@@ -220,7 +222,7 @@ fun WarningCard(w: Warning, fmt: Fmt?, modifier: Modifier = Modifier, expanded: 
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
                     Text(
-                        "${w.severity.colorName} warning · ${w.hazard.label}",
+                        stringResource(R.string.al_warning_card_label, w.severity.colorName, w.hazard.label),
                         style = MaterialTheme.typography.labelLarge, color = fg.copy(alpha = 0.85f),
                     )
                     Text(w.title, style = MaterialTheme.typography.titleMediumEmphasized, color = fg, fontWeight = FontWeight.SemiBold)
@@ -228,8 +230,8 @@ fun WarningCard(w: Warning, fmt: Fmt?, modifier: Modifier = Modifier, expanded: 
             }
             val window = when {
                 fmt == null -> ""
-                w.onset > System.currentTimeMillis() / 1000 && w.expires > 0 -> "From ${fmt.dayTime(w.onset)} until ${fmt.dayTime(w.expires)}"
-                w.expires > 0 -> "Until ${fmt.dayTime(w.expires)}"
+                w.onset > System.currentTimeMillis() / 1000 && w.expires > 0 -> stringResource(R.string.al_warning_from_until, fmt.dayTime(w.onset), fmt.dayTime(w.expires))
+                w.expires > 0 -> stringResource(R.string.al_warning_until, fmt.dayTime(w.expires))
                 else -> ""
             }
             if (window.isNotBlank()) {
@@ -247,11 +249,11 @@ fun WarningCard(w: Warning, fmt: Fmt?, modifier: Modifier = Modifier, expanded: 
                 }
                 if (w.instruction.isNotBlank()) {
                     Spacer(Modifier.height(10.dp))
-                    Text("What to do", style = MaterialTheme.typography.titleSmall, color = fg)
+                    Text(stringResource(R.string.al_warning_what_to_do), style = MaterialTheme.typography.titleSmall, color = fg)
                     Text(w.instruction, style = MaterialTheme.typography.bodyMedium, color = fg)
                 }
                 Spacer(Modifier.height(10.dp))
-                Text("Issued by ${w.sender} · via ${w.source}", style = MaterialTheme.typography.labelMedium, color = fg.copy(alpha = 0.8f))
+                Text(stringResource(R.string.al_warning_issued_by_via, w.sender, w.source), style = MaterialTheme.typography.labelMedium, color = fg.copy(alpha = 0.8f))
             }
         }
     }

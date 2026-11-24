@@ -2,6 +2,8 @@
 
 package dev.vis.weather.ui.components
 
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -71,7 +73,7 @@ fun SubScreen(
 ) {
     Column(Modifier.fillMaxSize().statusBarsPadding()) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") }
+            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.m_back)) }
             Spacer(Modifier.width(4.dp))
             Text(title, style = MaterialTheme.typography.headlineMediumEmphasized, modifier = Modifier.weight(1f))
             actions()

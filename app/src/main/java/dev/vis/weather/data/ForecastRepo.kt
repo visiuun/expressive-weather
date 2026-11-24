@@ -1,6 +1,7 @@
 package dev.vis.weather.data
 
 import android.content.Context
+import dev.vis.weather.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -82,8 +83,8 @@ object ForecastRepo {
     }
 
     fun label(context: Context, location: String): String = when (location) {
-        "auto" -> "Selected place"
-        "current" -> "Current location"
-        else -> resolve(context, location)?.name ?: "Saved place"
+        "auto" -> context.getString(R.string.d_loc_selected_place)
+        "current" -> context.getString(R.string.d_loc_current_location)
+        else -> resolve(context, location)?.name ?: context.getString(R.string.d_loc_saved_place)
     }
 }

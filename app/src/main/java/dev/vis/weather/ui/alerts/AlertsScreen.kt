@@ -43,9 +43,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.alerts.AlertConfig
 import dev.vis.weather.alerts.AlertGroup
 import dev.vis.weather.alerts.AlertPrefs
@@ -69,12 +72,12 @@ import java.util.Locale
 
 /** One-line status for an alert row: "07:00", "All day 07:00–19:00", "Every 15 min"… */
 fun AlertType.status(c: AlertConfig, use24h: Boolean): String = when {
-    !c.enabled -> "Off"
-    this == AlertType.RAIN && c.allDay -> "All day, ${timeLabel(c.time, use24h)}–${timeLabel(c.endTime, use24h)}"
-    trigger == Trigger.DAILY -> "Daily at ${timeLabel(c.time, use24h)}"
-    trigger == Trigger.PERSISTENT -> "Always on"
-    this == AlertType.NOWCAST -> "Checks every 15 min"
-    else -> "Checks every 30 min"
+    !c.enabled -> L.s(R.string.al_off)
+    this == AlertType.RAIN && c.allDay -> L.s(R.string.al_status_all_day, timeLabel(c.time, use24h), timeLabel(c.endTime, use24h))
+    trigger == Trigger.DAILY -> L.s(R.string.al_status_daily_at, timeLabel(c.time, use24h))
+    trigger == Trigger.PERSISTENT -> L.s(R.string.al_status_always_on)
+    this == AlertType.NOWCAST -> L.p(R.plurals.al_status_checks_every, 15)
+    else -> L.p(R.plurals.al_status_checks_every, 30)
 }
 
 @Composable
@@ -123,9 +126,9 @@ fun AlertsScreen(
         val w = Modifier.widthIn(max = 720.dp).fillMaxWidth()
         item {
             Column(w.statusBarsPadding().padding(top = 16.dp, start = 4.dp)) {
-                Text("Alerts", style = MaterialTheme.typography.displaySmallEmphasized)
+                Text(stringResource(R.string.al_screen_title), style = MaterialTheme.typography.displaySmallEmphasized)
                 Text(
-                    "Notifications for warnings, rain and your daily plans",
+                    stringResource(R.string.al_screen_subtitle),
                     style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -133,21 +136,21 @@ fun AlertsScreen(
         if (!granted) {
             item {
                 Banner(
-                    w, Icons.Rounded.NotificationsOff, "Notifications are off",
-                    "Allow notifications so warnings and alerts can reach you on time.", "Allow notifications",
+                    w, Icons.Rounded.NotificationsOff, stringResource(R.string.al_banner_notif_title),
+                    stringResource(R.string.al_banner_notif_body), stringResource(R.string.al_banner_notif_action),
                 ) { askPermission() }
             }
         } else if (anyDaily && !exact && !exactDismissed) {
             item {
                 Banner(
-                    w, Icons.Rounded.Alarm, "For accurate timing",
-                    "Grant \"Alarms & reminders\" so daily alerts arrive at exactly the time you've set (otherwise within ~10 minutes).",
-                    "Grant in Settings", onDismiss = { prefs.exactBannerDismissed = true; exactDismissed = true },
+                    w, Icons.Rounded.Alarm, stringResource(R.string.al_banner_exact_title),
+                    stringResource(R.string.al_banner_exact_body),
+                    stringResource(R.string.al_banner_exact_action), onDismiss = { prefs.exactBannerDismissed = true; exactDismissed = true },
                 ) { openExactAlarmSettings(context) }
             }
         }
         item {
-            SettingsGroup(if (place != null) "Active warnings · ${place.name}" else "Active warnings", w) {
+            SettingsGroup(if (place != null) stringResource(R.string.al_active_warnings_place, place.name) else stringResource(R.string.al_active_warnings), w) {
                 if (warnings.isEmpty()) {
                     SettingsItemSurface(0, 1, onClick = onOpenWarnings) {
                         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -157,9 +160,9 @@ fun AlertsScreen(
                             )
                             Spacer(Modifier.width(14.dp))
                             Column {
-                                Text("No warnings in effect", style = MaterialTheme.typography.titleMedium)
+                                Text(stringResource(R.string.al_no_warnings), style = MaterialTheme.typography.titleMedium)
                                 Text(
-                                    coverage?.let { "Checked with $it" } ?: "Official warnings cover the US, Canada and 37 European countries",
+                                    coverage?.let { stringResource(R.string.al_checked_with, it) } ?: stringResource(R.string.al_coverage),
                                     style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }
@@ -200,8 +203,8 @@ fun AlertsScreen(
                 Row(w.padding(start = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Rounded.History, null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(6.dp))
-                    Text("Recent notifications", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
-                    TextButton(onClick = { prefs.clearHistory() }) { Text("Clear") }
+                    Text(stringResource(R.string.al_recent), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
+                    TextButton(onClick = { prefs.clearHistory() }) { Text(stringResource(R.string.al_clear)) }
                 }
             }
             val shown = history.take(12)
@@ -266,15 +269,15 @@ private fun QuietHours(prefs: AlertPrefs, settings: Settings, modifier: Modifier
     var start by remember { mutableIntStateOf(prefs.quietStart) }
     var end by remember { mutableIntStateOf(prefs.quietEnd) }
     var picking by remember { mutableIntStateOf(0) }
-    SettingsGroup("Quiet hours", modifier) {
+    SettingsGroup(stringResource(R.string.al_quiet_hours), modifier) {
         SettingsItemSurface(0, if (on) 2 else 1, onClick = { on = !on; prefs.quietHours = on }) {
             Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 ShapeBadge(Icons.Rounded.Bedtime, MaterialShapes.Cookie12Sided, size = 40.dp)
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Quiet hours", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.al_quiet_hours), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "Alerts arrive silently overnight. Amber and red warnings still sound.",
+                        stringResource(R.string.al_quiet_hours_desc),
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
@@ -285,8 +288,8 @@ private fun QuietHours(prefs: AlertPrefs, settings: Settings, modifier: Modifier
         if (on) {
             SettingsItemSurface(1, 2) {
                 Row(Modifier.padding(12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TimeChip("From", timeLabel(start, settings.use24h), Modifier.weight(1f)) { picking = 1 }
-                    TimeChip("Until", timeLabel(end, settings.use24h), Modifier.weight(1f)) { picking = 2 }
+                    TimeChip(stringResource(R.string.al_quiet_from), timeLabel(start, settings.use24h), Modifier.weight(1f)) { picking = 1 }
+                    TimeChip(stringResource(R.string.al_quiet_until), timeLabel(end, settings.use24h), Modifier.weight(1f)) { picking = 2 }
                 }
             }
         }
@@ -331,7 +334,7 @@ private fun Banner(
             Spacer(Modifier.height(12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(onClick = onAction) { Text(action) }
-                if (onDismiss != null) TextButton(onClick = onDismiss) { Text("Not now") }
+                if (onDismiss != null) TextButton(onClick = onDismiss) { Text(stringResource(R.string.al_not_now)) }
             }
         }
     }

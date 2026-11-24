@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Customize home (Settings → Layout, and the button at the bottom of the main screen) -->
+    <string name="h_customize_home">Startseite anpassen</string>
+    <string name="h_sections_hint">Ziehe an den Griffen, um die Bereiche zu sortieren. Schalte aus, was du nicht brauchst, und tippe auf einen Bereich, um ihn anzupassen.</string>
+    <string name="h_customize_sub">Bereiche und Kacheln sortieren, Unnötiges ausblenden</string>
+    <string name="h_drag_handle">Zum Neuanordnen ziehen</string>
+    <string name="h_options">Optionen</string>
+    <!-- Subtitle of the weather warnings section, which can't be hidden -->
+    <string name="h_warnings_always">Wird angezeigt, sobald eine Warnung gilt</string>
+    <!-- Subtitle of the detail tiles section: "12 of 16 tiles" -->
+    <string name="h_tiles_shown">%1$d von %2$d Kacheln</string>
+    <string name="h_tiles_hint">Wähle und sortiere die Kacheln. Manche erscheinen nur, wenn es etwas zu sagen gibt, etwa Waldbrandgefahr, Abkühlungskomfort, Meer und Pollen.</string>
+    <!-- Marks a tile that spans the full width -->
+    <string name="h_tile_wide">Breit</string>
+    <!-- Detail tile: today\'s total precipitation -->
+    <string name="h_tile_today_precip">Niederschlag heute</string>
+</resources>

@@ -9,6 +9,8 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings as AndroidSettings
 import dev.vis.weather.BuildConfig
+import dev.vis.weather.L
+import dev.vis.weather.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
@@ -43,7 +45,7 @@ object Updater {
         conn.setRequestProperty("Accept", "application/vnd.github+json")
         try {
             if (conn.responseCode == 404) return@withContext null
-            if (conn.responseCode !in 200..299) throw IOException("GitHub returned HTTP ${conn.responseCode}")
+            if (conn.responseCode !in 200..299) throw IOException(L.s(R.string.d_update_http_error, conn.responseCode))
             val json = JSONObject(conn.inputStream.bufferedReader().use { it.readText() })
             val version = json.optString("tag_name").removePrefix("v").removePrefix("V")
             val assets = json.optJSONArray("assets") ?: return@withContext null
@@ -96,7 +98,7 @@ object Updater {
         val conn = open(release.apkUrl)
         try {
             conn.instanceFollowRedirects = true
-            if (conn.responseCode !in 200..299) throw IOException("Download failed (HTTP ${conn.responseCode})")
+            if (conn.responseCode !in 200..299) throw IOException(L.s(R.string.d_update_download_failed, conn.responseCode))
             val total = conn.contentLengthLong.takeIf { it > 0 } ?: release.size
             conn.inputStream.use { input ->
                 file.outputStream().use { out ->

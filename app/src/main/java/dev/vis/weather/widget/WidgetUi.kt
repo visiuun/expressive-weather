@@ -1,6 +1,7 @@
 package dev.vis.weather.widget
 
 import android.content.Context
+import androidx.annotation.StringRes
 import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -53,6 +54,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import dev.vis.weather.L
 import dev.vis.weather.R
 import dev.vis.weather.data.ColorSource
 import dev.vis.weather.data.Day
@@ -127,8 +129,8 @@ abstract class WeatherWidget(private val previewSize: DpSize = PreviewSizes.SMAL
             WidgetTheme(model?.settings ?: Prefs(context).settings.value) {
                 val f = model?.forecast
                 when {
-                    model == null -> Empty("Pick a location in the app", actionStartActivity(WidgetLinks.open(context, null)))
-                    f == null -> Empty(if (busy) "Loading ${model.place.name}…" else "Tap to load ${model.place.name}", actionRunCallback<RefreshAction>(), busy)
+                    model == null -> Empty(context.getString(R.string.w_pick_location), actionStartActivity(WidgetLinks.open(context, null)))
+                    f == null -> Empty(context.getString(if (busy) R.string.w_loading_place else R.string.w_tap_to_load_place, model.place.name), actionRunCallback<RefreshAction>(), busy)
                     else -> Body { Content(WData(model, f, busy, st[WidgetKeys.TAB] ?: 0, st[WidgetKeys.PAGE] ?: 0, st)) }
                 }
             }
@@ -220,6 +222,10 @@ fun Txt(
     align: TextAlign = TextAlign.Start,
     maxLines: Int = 1,
 ) = Text(text, modifier, TextStyle(color = color, fontSize = size, fontWeight = weight, textAlign = align), maxLines)
+
+/** A string resource resolved with the widget's Glance context. */
+@Composable
+fun wStr(@StringRes id: Int, vararg args: Any): String = LocalContext.current.getString(id, *args)
 
 @Composable
 fun dp2px(dp: Dp): Int = (dp.value * LocalContext.current.resources.displayMetrics.density).toInt()
@@ -367,7 +373,7 @@ fun PlaceLabel(d: WData, size: TextUnit = 14.sp, modifier: GlanceModifier = Glan
     Row(modifier.clickable(actionRunCallback<NextPlaceAction>()), verticalAlignment = Alignment.CenterVertically) {
         val icon = (size.value + 3).dp
         if (d.busy) CircularProgressIndicator(GlanceModifier.size(icon - 2.dp), color = color)
-        else Glyph(if (d.model.isCurrent) R.drawable.ic_w_near_me else R.drawable.ic_w_place, icon, color, "Switch location")
+        else Glyph(if (d.model.isCurrent) R.drawable.ic_w_near_me else R.drawable.ic_w_place, icon, color, wStr(R.string.w_switch_location))
         Spacer(GlanceModifier.width(4.dp))
         Txt(d.model.place.name, size, color, FontWeight.Medium)
         if (d.stale) {
@@ -389,7 +395,7 @@ fun openApp(d: WData, metric: String? = null, day: Int = -1): Action =
 fun HourTile(d: WData, h: Hour, modifier: GlanceModifier, iconSize: Dp = 26.dp, numSize: Dp = 20.dp, rain: Boolean = true, maxNum: Dp = 0.dp) {
     Tile(modifier, radius = 22.dp, padding = 0.dp, align = Alignment.Center) {
         Column(GlanceModifier.fillMaxWidth().padding(vertical = 6.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            val label = if (h === d.hours.firstOrNull()) "Now" else d.fmt.hour(h.time)
+            val label = if (h === d.hours.firstOrNull()) wStr(R.string.w_now) else d.fmt.hour(h.time)
             Txt(label, 11.sp, GlanceTheme.colors.onSurfaceVariant, align = TextAlign.Center)
             Spacer(GlanceModifier.height(4.dp))
             WIcon(h.code, h.isDay, iconSize, d.s.monoIcons)
@@ -523,12 +529,12 @@ fun aqiColor(v: Double): Long = when {
 
 /** Short AQI band names that fit a pill. */
 fun aqiShort(v: Double): String = when {
-    v <= 50 -> "Good"
-    v <= 100 -> "Moderate"
-    v <= 150 -> "Unhealthy for some"
-    v <= 200 -> "Unhealthy"
-    v <= 300 -> "Very unhealthy"
-    else -> "Hazardous"
+    v <= 50 -> L.s(R.string.w_aqi_good)
+    v <= 100 -> L.s(R.string.w_aqi_moderate)
+    v <= 150 -> L.s(R.string.w_aqi_sensitive)
+    v <= 200 -> L.s(R.string.w_aqi_unhealthy)
+    v <= 300 -> L.s(R.string.w_aqi_very_unhealthy)
+    else -> L.s(R.string.w_aqi_hazardous)
 }
 
 fun uvColor(uv: Double): Long = when {

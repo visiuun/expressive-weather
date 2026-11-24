@@ -2,6 +2,8 @@
 
 package dev.vis.weather.ui
 
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,10 +34,10 @@ fun UpdateDialog(u: UpdateUi, onUpdate: () -> Unit, onLater: () -> Unit) {
     AlertDialog(
         onDismissRequest = { if (!busy) onLater() },
         icon = { Icon(Icons.Rounded.SystemUpdate, null) },
-        title = { Text("Update available") },
+        title = { Text(stringResource(R.string.s_upd_title)) },
         text = {
             Column {
-                Text("Version ${r.version} is out (you have ${Updater.currentVersion}).", style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.s_upd_body, r.version, Updater.currentVersion), style = MaterialTheme.typography.bodyMedium)
                 if (r.notes.isNotBlank()) {
                     Spacer(Modifier.height(12.dp))
                     Text(
@@ -50,7 +52,8 @@ fun UpdateDialog(u: UpdateUi, onUpdate: () -> Unit, onLater: () -> Unit) {
                     LinearWavyProgressIndicator(progress = { p }, modifier = Modifier.fillMaxWidth())
                 }
                 val msg = u.message
-                if (!busy && msg != null && msg != "Version ${r.version} is available") {
+                val availableMsg = stringResource(R.string.m_update_available, r.version)
+                if (!busy && msg != null && msg != availableMsg) {
                     Spacer(Modifier.height(12.dp))
                     Text(msg, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                 }
@@ -58,9 +61,9 @@ fun UpdateDialog(u: UpdateUi, onUpdate: () -> Unit, onLater: () -> Unit) {
         },
         confirmButton = {
             Button(onClick = onUpdate, enabled = !busy) {
-                Text(if (busy) "Downloading ${((u.progress ?: 0f) * 100).toInt()}%" else "Update")
+                Text(if (busy) stringResource(R.string.s_upd_downloading, ((u.progress ?: 0f) * 100).toInt()) else stringResource(R.string.s_upd_update))
             }
         },
-        dismissButton = { TextButton(onClick = onLater, enabled = !busy) { Text("Later") } },
+        dismissButton = { TextButton(onClick = onLater, enabled = !busy) { Text(stringResource(R.string.s_upd_later)) } },
     )
 }

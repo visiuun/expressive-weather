@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Expressive Weather</string>
+
+    <string name="widget_now_label">Nu</string>
+    <string name="widget_now_desc">Huidige omstandigheden. Verklein tot een pil of vergroot voor de uurverwachting.</string>
+    <string name="widget_hourly_label">Per uur</string>
+    <string name="widget_hourly_desc">Komende 48 uur, blader door de pagina\'s met de pijlen.</string>
+    <string name="widget_daily_label">16-daagse verwachting</string>
+    <string name="widget_daily_desc">Scrollbare dagverwachting met temperatuurbalken.</string>
+    <string name="widget_forecast_label">Verwachtingshub</string>
+    <string name="widget_forecast_desc">Interactief: wissel tussen de tabbladen per uur, per dag en details.</string>
+    <string name="widget_clock_label">Klok &amp; weer</string>
+    <string name="widget_clock_desc">Grote klok en datum met het huidige weer. Tik op de tijd voor wekkers.</string>
+    <string name="widget_details_label">Details</string>
+    <string name="widget_details_desc">Gevoelstemperatuur, wind, luchtvochtigheid, uv, luchtkwaliteit en meer. Tik op een tegel voor details.</string>
+    <string name="widget_rain_label">Regen</string>
+    <string name="widget_rain_desc">Regenverwachting op korte termijn en neerslagkans voor de komende uren.</string>
+    <string name="widget_sunmoon_label">Zon &amp; maan</string>
+    <string name="widget_sunmoon_desc">Zonnestand, zonsopkomst, zonsondergang en de maanfase.</string>
+    <string name="widget_air_label">Luchtkwaliteit</string>
+    <string name="widget_air_desc">US AQI met niveau, fijnstof en pollen.</string>
+
+    <string name="shortcut_map">Kaart</string>
+    <string name="shortcut_map_long">Weerkaart &amp; radar</string>
+    <string name="shortcut_alerts">Meldingen</string>
+    <string name="shortcut_alerts_long">Meldingen &amp; waarschuwingen</string>
+    <string name="shortcut_friends">Vrienden</string>
+    <string name="shortcut_friends_long">Familie &amp; vrienden</string>
+
+    <string name="radar_title">Buienradar</string>
+    <string name="radar_open_map">Kaart</string>
+    <string name="radar_forecast">Verwachting</string>
+    <string name="radar_unavailable">Radar is nu niet beschikbaar</string>
+    <string name="radar_credit">Radar © RainViewer · Kaart © OpenStreetMap-bijdragers, © CARTO</string>
+    <string name="graph_wind_legend">Wind (%1$s)</string>
+    <string name="graph_gust_legend">Windstoten</string>
+</resources>

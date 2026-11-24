@@ -1,5 +1,7 @@
 package dev.vis.weather.ui
 
+import dev.vis.weather.R
+import dev.vis.weather.L
 import dev.vis.weather.data.PrecipUnit
 import dev.vis.weather.data.PressureUnit
 import dev.vis.weather.data.Settings
@@ -79,8 +81,8 @@ class Fmt(val s: Settings, val zone: ZoneId) {
     fun hour(epoch: Long): String = hourFmt.format(Instant.ofEpochSecond(epoch).atZone(zone))
 
     fun dayName(date: LocalDate, today: LocalDate): String = when (date) {
-        today -> "Today"
-        today.plusDays(1) -> "Tomorrow"
+        today -> L.s(R.string.m_today)
+        today.plusDays(1) -> L.s(R.string.m_tomorrow)
         else -> date.dayOfWeek.getDisplayName(TextStyle.SHORT, locale)
     }
 
@@ -89,7 +91,7 @@ class Fmt(val s: Settings, val zone: ZoneId) {
     fun duration(seconds: Double): String {
         if (seconds.isNaN()) return "–"
         val total = (seconds / 60).roundToInt()
-        return "${total / 60}h ${total % 60}m"
+        return L.s(R.string.m_duration_hm, total / 60, total % 60)
     }
 
     fun localDate(epoch: Long): LocalDate = Instant.ofEpochSecond(epoch).atZone(zone).toLocalDate()

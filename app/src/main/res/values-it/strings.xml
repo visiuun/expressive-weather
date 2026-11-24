@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Expressive Weather</string>
+
+    <string name="widget_now_label">Ora</string>
+    <string name="widget_now_desc">Condizioni attuali. Rimpicciolisci fino a una pillola o ingrandisci per aggiungere le previsioni orarie.</string>
+    <string name="widget_hourly_label">Orarie</string>
+    <string name="widget_hourly_desc">Prossime 48 ore, sfoglia le pagine con le frecce.</string>
+    <string name="widget_daily_label">Previsioni a 16 giorni</string>
+    <string name="widget_daily_desc">Previsioni giornaliere scorrevoli con barre dell\'intervallo di temperatura.</string>
+    <string name="widget_forecast_label">Hub previsioni</string>
+    <string name="widget_forecast_desc">Interattivo: passa tra le schede orarie, giornaliere e dettagli.</string>
+    <string name="widget_clock_label">Orologio e meteo</string>
+    <string name="widget_clock_desc">Orologio grande e data con il meteo attuale. Tocca l\'ora per le sveglie.</string>
+    <string name="widget_details_label">Dettagli</string>
+    <string name="widget_details_desc">Temperatura percepita, vento, umidità, UV, qualità dell\'aria e altro. Tocca un riquadro per i dettagli.</string>
+    <string name="widget_rain_label">Pioggia</string>
+    <string name="widget_rain_desc">Nowcast della pioggia e probabilità di precipitazioni per le prossime ore.</string>
+    <string name="widget_sunmoon_label">Sole e luna</string>
+    <string name="widget_sunmoon_desc">Posizione del sole, alba, tramonto e fase lunare.</string>
+    <string name="widget_air_label">Qualità dell\'aria</string>
+    <string name="widget_air_desc">AQI USA con il relativo livello, particolato e pollini.</string>
+
+    <string name="shortcut_map">Mappa</string>
+    <string name="shortcut_map_long">Mappa meteo e radar</string>
+    <string name="shortcut_alerts">Allerte</string>
+    <string name="shortcut_alerts_long">Allerte e avvisi</string>
+    <string name="shortcut_friends">Amici</string>
+    <string name="shortcut_friends_long">Famiglia e amici</string>
+
+    <string name="radar_title">Radar pioggia</string>
+    <string name="radar_open_map">Mappa</string>
+    <string name="radar_forecast">Previsioni</string>
+    <string name="radar_unavailable">Radar al momento non disponibile</string>
+    <string name="radar_credit">Radar © RainViewer · Mappa © collaboratori di OpenStreetMap, © CARTO</string>
+    <string name="graph_wind_legend">Vento (%1$s)</string>
+    <string name="graph_gust_legend">Raffiche</string>
+</resources>

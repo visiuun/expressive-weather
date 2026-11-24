@@ -73,18 +73,20 @@ Twelve home screen widgets with big, chunky numbers and rounded tiles nested ins
 
 - **A sky that changes with the weather**: the theme shifts with the conditions (golden on a clear afternoon, slate under cloud, charcoal in a storm, deep blue at night), with **live effects** behind the forecast: rain angled by the wind, snow, hail, fog, lightning, sun rays and twinkling stars. Subtle **haptics** match the weather
 - **Current conditions** with a plain-language summary, compared with yesterday, and a **"Locally verified" correction** from the nearest airport weather station (METAR). Optionally show the **wet-bulb temperature** next to "feels like"
-- **48-hour forecast** as a graph, compact list or cards, and up to **16 days**. Tap any day for its hour-by-hour breakdown
+- **48-hour forecast** as a graph, compact list or cards (the wind graph shows **gusts** too), and up to **16 days**. Tap any day for its hour-by-hour breakdown
 - **Choose your forecast model** or let Auto pick the best high-resolution regional model (ICON, AROME, HARMONIE, HRRR, UKMO, MET Nordic, GEM, JMA…)
 - **A detail screen for every stat**: wind (a compass that turns with your phone), humidity (water that sloshes when you tilt the phone) with **cooling comfort** (wet bulb), UV with the hours you need protection, pressure trend with a headache note, visibility, precipitation (today's total, rain/snow/ice), cloud cover, **fire weather index**, sun (first and last light, solar noon, daylight change, solstices), moon (rise, set, next full moon, **stargazing tonight**), air quality (US and European AQI against WHO limits) and pollen
 - **Sea conditions** on the coast: waves, swell, wave period, sea temperature with wetsuit advice, currents and tides, with guidance for swimming, surfing and sailing
+- **Rain radar on the main screen**: a live, looping radar preview around your place; tap it for the full map
 - **Weather map**: animated rain radar plus temperature, wind, cloud, pressure and precipitation layers with a 48-hour time slider, and active hurricanes and tropical storms
 - **Official weather warnings** (yellow, amber, red) for the US, Canada, Germany and 36 more European countries, on the main screen and as notifications
 - **What to wear**: clothing and carry-item advice for your day, based on your commute and how easily you feel the cold
 - **Family & friends**: see the weather where your people live, compare temperature, rain and UV, and get their warnings. Pick them from your contacts without giving the app contacts access
 - **15-minute rain nowcast**, **air quality** and **pollen** for six plant types
 - **Several locations**, and **works offline**: the last forecast for each place is cached
-- **Make it yours**: weather, wallpaper (Material You) or any custom colour in three palette styles; system, light, dark and **OLED black**; fonts in Default, Chunky or Tall with sharp or rounded edges, plus **Lexend** and **OpenDyslexic** for readability; reorder or hide every section of the main screen
+- **Make it yours**: weather, wallpaper (Material You) or any custom colour in three palette styles; system, light, dark and **OLED black**; fonts in Default, Chunky or Tall with sharp or rounded edges, plus **Lexend** and **OpenDyslexic** for readability; **customize the home screen**: drag sections and detail tiles into your own order and hide what you don't need
 - **A minimal app icon** (the Material 3 Expressive sun shape in white on black), or one that **changes with the weather**, or any of 12 icons; plus app shortcuts for the map, alerts and friends
+- **Speaks your language**: English, German, French, Spanish, Italian, Dutch, Polish and Brazilian Portuguese, following your phone's language (or a per-app language on Android 13+)
 - **Units**: °C/°F, km/h, m/s, mph, knots, mm/in, hPa, inHg, mmHg, km/mi, 12/24-hour clock
 - **Your activity**: check-in streaks, the hottest and coldest weather you've seen and the conditions you've collected, kept only on your phone
 - **Automatic updates** straight from this repository's releases

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Expressive Weather</string>
+
+    <string name="widget_now_label">Teraz</string>
+    <string name="widget_now_desc">Bieżące warunki. Zmniejsz do pigułki lub powiększ, by dodać prognozę godzinową.</string>
+    <string name="widget_hourly_label">Godzinowa</string>
+    <string name="widget_hourly_desc">Najbliższe 48 godzin, przełączaj strony strzałkami.</string>
+    <string name="widget_daily_label">Prognoza 16-dniowa</string>
+    <string name="widget_daily_desc">Przewijana prognoza dzienna z paskami zakresu temperatur.</string>
+    <string name="widget_forecast_label">Centrum prognozy</string>
+    <string name="widget_forecast_desc">Interaktywny: przełączaj karty godzinowej, dziennej i szczegółów.</string>
+    <string name="widget_clock_label">Zegar i pogoda</string>
+    <string name="widget_clock_desc">Duży zegar i data z bieżącą pogodą. Kliknij godzinę, by otworzyć alarmy.</string>
+    <string name="widget_details_label">Szczegóły</string>
+    <string name="widget_details_desc">Odczuwalna, wiatr, wilgotność, UV, jakość powietrza i więcej. Kliknij kafelek, by zobaczyć szczegóły.</string>
+    <string name="widget_rain_label">Deszcz</string>
+    <string name="widget_rain_desc">Krótkoterminowa prognoza deszczu i szansa opadów na najbliższe godziny.</string>
+    <string name="widget_sunmoon_label">Słońce i księżyc</string>
+    <string name="widget_sunmoon_desc">Pozycja słońca, wschód, zachód i faza księżyca.</string>
+    <string name="widget_air_label">Jakość powietrza</string>
+    <string name="widget_air_desc">US AQI z poziomem, pyłami zawieszonymi i pyłkami.</string>
+
+    <string name="shortcut_map">Mapa</string>
+    <string name="shortcut_map_long">Mapa pogody i radar</string>
+    <string name="shortcut_alerts">Alerty</string>
+    <string name="shortcut_alerts_long">Alerty i ostrzeżenia</string>
+    <string name="shortcut_friends">Znajomi</string>
+    <string name="shortcut_friends_long">Rodzina i znajomi</string>
+
+    <string name="radar_title">Radar opadów</string>
+    <string name="radar_open_map">Mapa</string>
+    <string name="radar_forecast">Prognoza</string>
+    <string name="radar_unavailable">Radar jest teraz niedostępny</string>
+    <string name="radar_credit">Radar © RainViewer · Mapa © współtwórcy OpenStreetMap, © CARTO</string>
+    <string name="graph_wind_legend">Wiatr (%1$s)</string>
+    <string name="graph_gust_legend">Porywy</string>
+</resources>

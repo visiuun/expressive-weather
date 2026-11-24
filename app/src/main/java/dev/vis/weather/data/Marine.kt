@@ -1,5 +1,8 @@
 package dev.vis.weather.data
 
+import androidx.annotation.StringRes
+import dev.vis.weather.L
+import dev.vis.weather.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -113,7 +116,11 @@ data class Marine(val hourly: List<MarineHour>, val daily: List<MarineDay>) {
     }
 }
 
-enum class SeaActivity(val label: String) { GENERAL("General"), SWIMMING("Swimming"), SURFING("Surfing"), SAILING("Sailing") }
+enum class SeaActivity(@StringRes private val labelRes: Int) {
+    GENERAL(R.string.d_sea_act_general), SWIMMING(R.string.d_sea_act_swimming), SURFING(R.string.d_sea_act_surfing), SAILING(R.string.d_sea_act_sailing);
+
+    val label: String get() = L.s(labelRes)
+}
 
 /** Plain-language interpretation of sea conditions. */
 object MarineInfo {
@@ -122,15 +129,15 @@ object MarineInfo {
     /** Douglas sea scale from significant wave height (m). */
     fun seaState(h: Double): SeaState = when {
         h.isNaN() -> SeaState("–", -1, "")
-        h < 0.1 -> SeaState("Calm", 0, "Glassy, mirror-like water.")
-        h < 0.5 -> SeaState("Rippled", 1, "Small wavelets with no breaking crests.")
-        h < 1.25 -> SeaState("Slight", 2, "Small waves; a few white horses.")
-        h < 2.5 -> SeaState("Moderate", 3, "Longer waves with many white horses.")
-        h < 4.0 -> SeaState("Rough", 4, "Large waves, extensive foam and spray.")
-        h < 6.0 -> SeaState("Very rough", 5, "Heaped-up sea with streaks of foam.")
-        h < 9.0 -> SeaState("High", 6, "High waves with dense foam; dangerous.")
-        h < 14.0 -> SeaState("Very high", 7, "Very high waves with long breaking crests.")
-        else -> SeaState("Phenomenal", 8, "Exceptional, extremely dangerous seas.")
+        h < 0.1 -> SeaState(L.s(R.string.d_sea_state_calm), 0, L.s(R.string.d_sea_state_calm_text))
+        h < 0.5 -> SeaState(L.s(R.string.d_sea_state_rippled), 1, L.s(R.string.d_sea_state_rippled_text))
+        h < 1.25 -> SeaState(L.s(R.string.d_sea_state_slight), 2, L.s(R.string.d_sea_state_slight_text))
+        h < 2.5 -> SeaState(L.s(R.string.d_sea_state_moderate), 3, L.s(R.string.d_sea_state_moderate_text))
+        h < 4.0 -> SeaState(L.s(R.string.d_sea_state_rough), 4, L.s(R.string.d_sea_state_rough_text))
+        h < 6.0 -> SeaState(L.s(R.string.d_sea_state_very_rough), 5, L.s(R.string.d_sea_state_very_rough_text))
+        h < 9.0 -> SeaState(L.s(R.string.d_sea_state_high), 6, L.s(R.string.d_sea_state_high_text))
+        h < 14.0 -> SeaState(L.s(R.string.d_sea_state_very_high), 7, L.s(R.string.d_sea_state_very_high_text))
+        else -> SeaState(L.s(R.string.d_sea_state_phenomenal), 8, L.s(R.string.d_sea_state_phenomenal_text))
     }
 
     /** Colour per sea-state level, calm green → high red/purple. */
@@ -145,38 +152,47 @@ object MarineInfo {
 
     fun swellQuality(period: Double): String = when {
         period.isNaN() -> ""
-        period < 6 -> "Short, choppy wind swell"
-        period < 9 -> "Mixed swell of average quality"
-        period < 12 -> "Clean groundswell"
-        else -> "Long-period groundswell with real power"
+        period < 6 -> L.s(R.string.d_swell_short)
+        period < 9 -> L.s(R.string.d_swell_mixed)
+        period < 12 -> L.s(R.string.d_swell_clean)
+        else -> L.s(R.string.d_swell_long)
     }
 
     fun periodExplainer(period: Double): String = when {
         period.isNaN() -> ""
-        period < 6 -> "Waves arrive every ${period.toInt()} s: short and bumpy, built by local wind."
-        period < 9 -> "Waves arrive every ${period.toInt()} s: a mix of local chop and swell from further away."
-        else -> "Waves arrive every ${period.toInt()} s: they travelled a long way and carry more energy than their height suggests."
+        period < 6 -> L.s(R.string.d_period_short, period.toInt())
+        period < 9 -> L.s(R.string.d_period_mixed, period.toInt())
+        else -> L.s(R.string.d_period_long, period.toInt())
     }
 
     fun wetsuit(sst: Double): String = when {
         sst.isNaN() -> ""
-        sst >= 25 -> "No wetsuit needed."
-        sst >= 22 -> "Rash vest or a thin 0.5–2 mm top."
-        sst >= 19 -> "2 mm shorty or spring suit."
-        sst >= 16 -> "3/2 mm full suit."
-        sst >= 13 -> "4/3 mm full suit; booties optional."
-        sst >= 10 -> "5/4 mm suit with booties and gloves."
-        else -> "5/4–6/5 mm suit with hood, booties and gloves."
+        sst >= 25 -> L.s(R.string.d_wetsuit_none)
+        sst >= 22 -> L.s(R.string.d_wetsuit_rash)
+        sst >= 19 -> L.s(R.string.d_wetsuit_shorty)
+        sst >= 16 -> L.s(R.string.d_wetsuit_32)
+        sst >= 13 -> L.s(R.string.d_wetsuit_43)
+        sst >= 10 -> L.s(R.string.d_wetsuit_54)
+        else -> L.s(R.string.d_wetsuit_65)
     }
 
     fun waterFeel(sst: Double): String = when {
         sst.isNaN() -> ""
-        sst >= 26 -> "Bath-warm"
-        sst >= 22 -> "Warm"
-        sst >= 19 -> "Pleasant"
-        sst >= 16 -> "Fresh"
-        sst >= 12 -> "Cold"
-        else -> "Very cold"
+        sst >= 26 -> L.s(R.string.d_water_bath)
+        sst >= 22 -> L.s(R.string.d_water_warm)
+        sst >= 19 -> L.s(R.string.d_water_pleasant)
+        sst >= 16 -> L.s(R.string.d_water_fresh)
+        sst >= 12 -> L.s(R.string.d_water_cold)
+        else -> L.s(R.string.d_water_very_cold)
+    }
+
+    private fun waterSentence(sst: Double): Int = when {
+        sst >= 26 -> R.string.d_seag_water_bath
+        sst >= 22 -> R.string.d_seag_water_warm
+        sst >= 19 -> R.string.d_seag_water_pleasant
+        sst >= 16 -> R.string.d_seag_water_fresh
+        sst >= 12 -> R.string.d_seag_water_cold
+        else -> R.string.d_seag_water_very_cold
     }
 
     data class CurrentInfo(val label: String, val caution: Boolean, val text: String)
@@ -184,10 +200,10 @@ object MarineInfo {
     /** [kmh] ocean current speed. An average swimmer manages roughly 2 km/h. */
     fun current(kmh: Double): CurrentInfo = when {
         kmh.isNaN() -> CurrentInfo("–", false, "")
-        kmh < 0.5 -> CurrentInfo("Weak", false, "Barely noticeable drift.")
-        kmh < 1.5 -> CurrentInfo("Moderate", false, "You'll drift slowly; easy to swim against.")
-        kmh < 3.0 -> CurrentInfo("Strong", true, "Caution for swimmers: as fast as many people can swim. Stay close to shore.")
-        else -> CurrentInfo("Very strong", true, "Dangerous for swimmers: faster than most people can swim.")
+        kmh < 0.5 -> CurrentInfo(L.s(R.string.d_current_weak), false, L.s(R.string.d_current_weak_text))
+        kmh < 1.5 -> CurrentInfo(L.s(R.string.d_current_moderate), false, L.s(R.string.d_current_moderate_text))
+        kmh < 3.0 -> CurrentInfo(L.s(R.string.d_current_strong), true, L.s(R.string.d_current_strong_text))
+        else -> CurrentInfo(L.s(R.string.d_current_very_strong), true, L.s(R.string.d_current_very_strong_text))
     }
 
     fun tideRange(hours: List<MarineHour>): Double {
@@ -232,55 +248,53 @@ object MarineInfo {
         val cur = current(h.currentSpeed)
         return when (activity) {
             SeaActivity.GENERAL -> when {
-                wave.isNaN() -> "No wave data for this spot."
-                state.level <= 1 -> "Calm water — a good time to be on or by the sea."
-                state.level == 2 -> "Slight sea. Fine for most activities; small boats may feel some motion."
-                state.level == 3 -> "Moderate sea. Expect spray on the beach and a bumpy ride in small boats."
-                state.level == 4 -> "Rough sea. Stay well back from breakwaters and the waterline."
-                else -> "Dangerous seas. Keep away from exposed coasts, piers and cliff edges."
+                wave.isNaN() -> L.s(R.string.d_seag_no_data)
+                state.level <= 1 -> L.s(R.string.d_seag_calm)
+                state.level == 2 -> L.s(R.string.d_seag_slight)
+                state.level == 3 -> L.s(R.string.d_seag_moderate)
+                state.level == 4 -> L.s(R.string.d_seag_rough)
+                else -> L.s(R.string.d_seag_dangerous)
             }
             SeaActivity.SWIMMING -> buildString {
                 append(
                     when {
-                        wave.isNaN() -> "No wave data."
-                        wave < 0.5 -> "Gentle water for swimming."
-                        wave < 1.0 -> "Some waves; stay within your depth."
-                        wave < 1.5 -> "Choppy. Swim only at lifeguarded beaches."
-                        else -> "Too rough for swimming — strong surf and rip currents likely."
+                        wave.isNaN() -> L.s(R.string.d_seag_swim_no_data)
+                        wave < 0.5 -> L.s(R.string.d_seag_swim_gentle)
+                        wave < 1.0 -> L.s(R.string.d_seag_swim_some)
+                        wave < 1.5 -> L.s(R.string.d_seag_swim_choppy)
+                        else -> L.s(R.string.d_seag_swim_rough)
                     }
                 )
-                if (cur.caution) append(" ${cur.text}")
-                if (!h.seaTemp.isNaN() && h.seaTemp < 15) append(" Cold water: risk of cold shock, enter slowly and keep swims short.")
-                else if (!h.seaTemp.isNaN()) append(" Water ${waterFeel(h.seaTemp).lowercase()}.")
+                if (cur.caution) append(" ").append(cur.text)
+                if (!h.seaTemp.isNaN() && h.seaTemp < 15) append(" ").append(L.s(R.string.d_seag_swim_cold))
+                else if (!h.seaTemp.isNaN()) append(" ").append(L.s(waterSentence(h.seaTemp)))
             }
             SeaActivity.SURFING -> {
                 val sw = if (h.swellHeight.isNaN()) wave else h.swellHeight
                 val p = if (h.swellPeriod.isNaN()) h.wavePeriod else h.swellPeriod
                 val choppy = !h.windWaveHeight.isNaN() && !sw.isNaN() && h.windWaveHeight > sw
                 when {
-                    sw.isNaN() -> "No swell data."
-                    sw < 0.4 -> "Flat. Not much to ride."
-                    sw < 1.0 && (p.isNaN() || p < 8) -> "Small and weak — longboards and beginners only."
-                    sw < 1.0 -> "Small but clean. Good for longboards and learning."
-                    sw < 2.5 && !p.isNaN() && p >= 9 -> "Good, powerful swell for intermediate surfers."
-                    sw < 2.5 -> "Decent size, but short-period and less organised."
-                    else -> "Big swell — experienced surfers only."
-                } + if (choppy) " Wind chop is on top of the swell, so expect messy faces." else ""
+                    sw.isNaN() -> L.s(R.string.d_seag_surf_no_data)
+                    sw < 0.4 -> L.s(R.string.d_seag_surf_flat)
+                    sw < 1.0 && (p.isNaN() || p < 8) -> L.s(R.string.d_seag_surf_small_weak)
+                    sw < 1.0 -> L.s(R.string.d_seag_surf_small_clean)
+                    sw < 2.5 && !p.isNaN() && p >= 9 -> L.s(R.string.d_seag_surf_good)
+                    sw < 2.5 -> L.s(R.string.d_seag_surf_decent)
+                    else -> L.s(R.string.d_seag_surf_big)
+                }.let { if (choppy) it + " " + L.s(R.string.d_seag_surf_chop) else it }
             }
             SeaActivity.SAILING -> {
                 val w = windKmh
                 when {
-                    w.isNaN() -> "No wind data."
-                    w < 9 -> "Very light wind — slow going, maybe drifting."
-                    w < 29 && state.level <= 3 -> "Good sailing breeze."
-                    w < 39 -> "Fresh to strong breeze. Reef early; for experienced crews."
-                    else -> "Strong winds — small craft should stay in harbour."
-                } + if (!gustKmh.isNaN() && !w.isNaN() && gustKmh > w * 1.6 && gustKmh > 30) " Gusty: expect sudden shifts." else ""
+                    w.isNaN() -> L.s(R.string.d_seag_sail_no_data)
+                    w < 9 -> L.s(R.string.d_seag_sail_light)
+                    w < 29 && state.level <= 3 -> L.s(R.string.d_seag_sail_good)
+                    w < 39 -> L.s(R.string.d_seag_sail_fresh)
+                    else -> L.s(R.string.d_seag_sail_strong)
+                }.let { if (!gustKmh.isNaN() && !w.isNaN() && gustKmh > w * 1.6 && gustKmh > 30) it + " " + L.s(R.string.d_seag_sail_gusty) else it }
             }
         }
     }
 
-    const val DISCLAIMER =
-        "Model guidance only, not for navigation or safety decisions. Conditions at your beach can differ — " +
-            "always check local warnings, flags and lifeguards."
+    val DISCLAIMER: String get() = L.s(R.string.d_sea_disclaimer)
 }

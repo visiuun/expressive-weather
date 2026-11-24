@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Customize home (Settings → Layout, and the button at the bottom of the main screen) -->
+    <string name="h_customize_home">Customize home</string>
+    <string name="h_sections_hint">Drag the handles to sort the sections. Switch off what you don\'t need, and tap a section to adjust it.</string>
+    <string name="h_customize_sub">Sort sections and tiles, hide what you don\'t need</string>
+    <string name="h_drag_handle">Drag to reorder</string>
+    <string name="h_options">Options</string>
+    <!-- Subtitle of the weather warnings section, which can't be hidden -->
+    <string name="h_warnings_always">Shown whenever a warning is in force</string>
+    <!-- Subtitle of the detail tiles section: "12 of 16 tiles" -->
+    <string name="h_tiles_shown">%1$d of %2$d tiles</string>
+    <string name="h_tiles_hint">Pick and sort the tiles. Some only appear when they have something to say, like fire weather, cooling comfort, sea and pollen.</string>
+    <!-- Marks a tile that spans the full width -->
+    <string name="h_tile_wide">Wide</string>
+    <!-- Detail tile: today\'s total precipitation -->
+    <string name="h_tile_today_precip">Today\'s precipitation</string>
+</resources>

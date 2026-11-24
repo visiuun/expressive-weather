@@ -2,6 +2,8 @@
 
 package dev.vis.weather.ui
 
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material.icons.rounded.AutoAwesome
@@ -55,13 +57,12 @@ fun DataScreen(settings: Settings, update: ((Settings) -> Settings) -> Unit, onB
     val open: (String) -> Unit = { runCatching { uri.openUri(it) } }
     val selected = ForecastModels.byId(settings.forecastModel)
 
-    SubScreen("Data", onBack) { w ->
+    SubScreen(stringResource(R.string.s_data_title), onBack) { w ->
         item(key = "intro") {
             SettingsGroup(null, w) {
                 SettingsInfo(
-                    "Where your forecast comes from",
-                    "Expressive Weather uses free, open data from national weather services. No account, no API key, no tracking: " +
-                        "only the location you're viewing is sent to the services below.",
+                    stringResource(R.string.s_data_intro),
+                    stringResource(R.string.s_data_intro_body),
                     0, 1, Icons.Rounded.Source,
                 )
             }
@@ -69,7 +70,7 @@ fun DataScreen(settings: Settings, update: ((Settings) -> Settings) -> Unit, onB
 
         item(key = "model") {
             val models = ForecastModels.all
-            SettingsGroup("Forecast model", w) {
+            SettingsGroup(stringResource(R.string.s_data_group_model), w) {
                 models.forEachIndexed { i, m ->
                     val isSel = m.id == selected.id
                     SettingsAction(
@@ -89,28 +90,23 @@ fun DataScreen(settings: Settings, update: ((Settings) -> Settings) -> Unit, onB
         item(key = "modelnote") {
             SettingsGroup(null, w) {
                 SettingsInfo(
-                    "About models",
-                    "Auto picks the sharpest model for your area — for example ICON-D2 in Germany, AROME in France, HRRR in the US or " +
-                        "Harmonie in the Netherlands — and blends in ECMWF and GFS for later days. Picking a model yourself is great " +
-                        "for comparing; when it has no data for something (UV, visibility, rain chance or later days), the Auto " +
-                        "forecast fills the gap.",
+                    stringResource(R.string.s_data_about_models),
+                    stringResource(R.string.s_data_about_models_body),
                     0, 1,
                 )
             }
         }
 
         item(key = "accuracy") {
-            SettingsGroup("Accuracy", w) {
+            SettingsGroup(stringResource(R.string.s_data_group_accuracy), w) {
                 SettingsSwitch(
-                    "Local correction",
-                    "Compares the forecast with the nearest airport weather station (METAR, within ${Observations.RADIUS_KM.toInt()} km) and " +
-                        "nudges the next 6 hours toward what's actually measured. Privacy: only a rough area around you " +
-                        "(a ~70 km box, rounded) is sent to NOAA's aviationweather.gov — never your exact location.",
+                    stringResource(R.string.s_data_local_correction),
+                    stringResource(R.string.s_data_local_correction_sub, Observations.RADIUS_KM.toInt()),
                     Icons.Rounded.Verified, MaterialShapes.Cookie9Sided, 0, 2, settings.localCorrection,
                 ) { v -> update { it.copy(localCorrection = v) } }
                 SettingsSwitch(
-                    "Show data source",
-                    "Show which model and station were used at the bottom of the forecast.",
+                    stringResource(R.string.s_data_show_source),
+                    stringResource(R.string.s_data_show_source_sub),
                     Icons.Rounded.Hub, MaterialShapes.Gem, 1, 2, settings.showDataSource,
                 ) { v -> update { it.copy(showDataSource = v) } }
             }
@@ -118,31 +114,31 @@ fun DataScreen(settings: Settings, update: ((Settings) -> Settings) -> Unit, onB
 
         item(key = "sources") {
             val sources = buildList {
-                add(Source("Open-Meteo", "Forecasts, air quality (Copernicus CAMS), marine and place search", "CC BY 4.0", "https://open-meteo.com", Icons.Rounded.Cloud, MaterialShapes.Cookie6Sided))
+                add(Source("Open-Meteo", stringResource(R.string.s_src_openmeteo_use), "CC BY 4.0", "https://open-meteo.com", Icons.Rounded.Cloud, MaterialShapes.Cookie6Sided))
                 if (selected.id == ForecastModels.AUTO) {
                     add(
                         Source(
-                            "National weather services", "Models used by Auto: DWD, NOAA, ECMWF, Météo-France, Met Office, KNMI, DMI, MET Norway, MeteoSwiss, ECCC, JMA and more",
-                            "Open data, mostly CC BY 4.0", "https://open-meteo.com/en/docs", Icons.Rounded.Public, MaterialShapes.Clover4Leaf,
+                            stringResource(R.string.s_src_national), stringResource(R.string.s_src_national_use),
+                            stringResource(R.string.s_src_national_licence), "https://open-meteo.com/en/docs", Icons.Rounded.Public, MaterialShapes.Clover4Leaf,
                         )
                     )
                 } else {
-                    add(Source(selected.provider, "Forecast model: ${selected.name}", selected.licence, selected.url, Icons.Rounded.Public, MaterialShapes.Clover4Leaf))
+                    add(Source(selected.provider, stringResource(R.string.s_src_model_use, selected.name), selected.licence, selected.url, Icons.Rounded.Public, MaterialShapes.Clover4Leaf))
                 }
-                add(Source("Copernicus Atmosphere Monitoring Service", "Air quality and pollen model (via Open-Meteo)", "Copernicus licence", "https://atmosphere.copernicus.eu", Icons.Rounded.Masks, MaterialShapes.Flower))
-                add(Source("Open-Meteo Marine", "Waves, swell, sea temperature, currents and tides", "CC BY 4.0", "https://open-meteo.com/en/docs/marine-weather-api", Icons.Rounded.Waves, MaterialShapes.Clover8Leaf))
-                add(Source("NOAA Aviation Weather Center", "Live airport observations (METAR) for local correction", "Public domain", "https://aviationweather.gov", Icons.Rounded.Flight, MaterialShapes.Cookie9Sided))
-                add(Source("OpenStreetMap Nominatim", "Names for your current location", "ODbL, © OpenStreetMap contributors", "https://www.openstreetmap.org/copyright", Icons.Rounded.Place, MaterialShapes.Pill))
-                add(Source("RainViewer", "Rain radar images", "Free API, attribution", "https://www.rainviewer.com", Icons.Rounded.Radar, MaterialShapes.Circle))
-                add(Source("CARTO", "Map tiles under the radar", "© CARTO, © OpenStreetMap contributors", "https://carto.com/attributions", Icons.Rounded.Map, MaterialShapes.Square))
-                add(Source("NOAA National Hurricane Center", "Tropical storm and hurricane tracks", "Public domain", "https://www.nhc.noaa.gov", Icons.Rounded.Thunderstorm, MaterialShapes.SoftBurst))
-                add(Source("National Weather Service", "Weather alerts in the United States", "Public domain", "https://www.weather.gov", Icons.Rounded.Warning, MaterialShapes.Arch))
-                add(Source("MeteoAlarm (EUMETNET)", "Weather warnings across Europe", "CC BY 4.0", "https://meteoalarm.org", Icons.Rounded.Warning, MaterialShapes.Arch))
-                add(Source("DWD via Bright Sky", "Weather warnings in Germany", "DWD open data, CC BY 4.0", "https://brightsky.dev", Icons.Rounded.Warning, MaterialShapes.Arch))
-                add(Source("Environment and Climate Change Canada", "Weather alerts in Canada", "ECCC Open Data Licence", "https://weather.gc.ca", Icons.Rounded.Warning, MaterialShapes.Arch))
-                add(Source("GitHub", "App updates", "GitHub terms", Updater.REPO_URL, Icons.Rounded.SystemUpdate, MaterialShapes.Gem))
+                add(Source("Copernicus Atmosphere Monitoring Service", stringResource(R.string.s_src_cams_use), stringResource(R.string.s_src_cams_licence), "https://atmosphere.copernicus.eu", Icons.Rounded.Masks, MaterialShapes.Flower))
+                add(Source("Open-Meteo Marine", stringResource(R.string.s_src_marine_use), "CC BY 4.0", "https://open-meteo.com/en/docs/marine-weather-api", Icons.Rounded.Waves, MaterialShapes.Clover8Leaf))
+                add(Source("NOAA Aviation Weather Center", stringResource(R.string.s_src_awc_use), stringResource(R.string.s_src_public_domain), "https://aviationweather.gov", Icons.Rounded.Flight, MaterialShapes.Cookie9Sided))
+                add(Source("OpenStreetMap Nominatim", stringResource(R.string.s_src_nominatim_use), stringResource(R.string.s_src_nominatim_licence), "https://www.openstreetmap.org/copyright", Icons.Rounded.Place, MaterialShapes.Pill))
+                add(Source("RainViewer", stringResource(R.string.s_src_rainviewer_use), stringResource(R.string.s_src_rainviewer_licence), "https://www.rainviewer.com", Icons.Rounded.Radar, MaterialShapes.Circle))
+                add(Source("CARTO", stringResource(R.string.s_src_carto_use), stringResource(R.string.s_src_carto_licence), "https://carto.com/attributions", Icons.Rounded.Map, MaterialShapes.Square))
+                add(Source("NOAA National Hurricane Center", stringResource(R.string.s_src_nhc_use), stringResource(R.string.s_src_public_domain), "https://www.nhc.noaa.gov", Icons.Rounded.Thunderstorm, MaterialShapes.SoftBurst))
+                add(Source("National Weather Service", stringResource(R.string.s_src_nws_use), stringResource(R.string.s_src_public_domain), "https://www.weather.gov", Icons.Rounded.Warning, MaterialShapes.Arch))
+                add(Source("MeteoAlarm (EUMETNET)", stringResource(R.string.s_src_meteoalarm_use), "CC BY 4.0", "https://meteoalarm.org", Icons.Rounded.Warning, MaterialShapes.Arch))
+                add(Source("DWD via Bright Sky", stringResource(R.string.s_src_dwd_use), stringResource(R.string.s_src_dwd_licence), "https://brightsky.dev", Icons.Rounded.Warning, MaterialShapes.Arch))
+                add(Source("Environment and Climate Change Canada", stringResource(R.string.s_src_eccc_use), stringResource(R.string.s_src_eccc_licence), "https://weather.gc.ca", Icons.Rounded.Warning, MaterialShapes.Arch))
+                add(Source("GitHub", stringResource(R.string.s_src_github_use), stringResource(R.string.s_src_github_licence), Updater.REPO_URL, Icons.Rounded.SystemUpdate, MaterialShapes.Gem))
             }
-            SettingsGroup("Data sources", w) {
+            SettingsGroup(stringResource(R.string.s_data_group_sources), w) {
                 sources.forEachIndexed { i, s ->
                     SettingsAction(
                         title = s.name,
@@ -153,7 +149,7 @@ fun DataScreen(settings: Settings, update: ((Settings) -> Settings) -> Unit, onB
                         count = sources.size,
                         trailing = {
                             Icon(
-                                Icons.AutoMirrored.Rounded.OpenInNew, "Open website",
+                                Icons.AutoMirrored.Rounded.OpenInNew, stringResource(R.string.s_open_website),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         },

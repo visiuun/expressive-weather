@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ============================================================ Alert groups (section headers on the Alerts screen) -->
+    <string name="al_group_safety">Waarschuwingen &amp; regen</string>
+    <string name="al_group_daily">Dagelijkse overzichten</string>
+    <string name="al_group_health">Gezondheid &amp; comfort</string>
+    <string name="al_group_more">Meer</string>
+
+    <!-- ============================================================ Alert types: title, one-line subtitle, long description -->
+    <string name="al_type_warnings_title">Weerwaarschuwingen</string>
+    <string name="al_type_warnings_subtitle">Officiële codes geel, oranje &amp; rood</string>
+    <string name="al_type_warnings_desc">Krijg een melding zodra een nationale weerdienst een waarschuwing voor je locatie afgeeft, en wanneer die wordt verhoogd. Voor de VS (NWS), Canada (ECCC), Duitsland (DWD) en 36 andere Europese landen (MeteoAlarm).</string>
+
+    <string name="al_type_nowcast_title">Regen &amp; sneeuw op komst</string>
+    <string name="al_type_nowcast_subtitle">Minuten voordat regen of sneeuw begint</string>
+    <string name="al_type_nowcast_desc">Een seintje kort voordat regen of sneeuw begint, met een live aftelling die wordt bijgewerkt tot het begint en je vertelt wanneer het stopt. Gebruikt de 15-minutenverwachting, die in Europa en Noord-Amerika gebaseerd is op radargegevens met hoge resolutie.</string>
+
+    <string name="al_type_rain_title">Regenmelding</string>
+    <string name="al_type_rain_subtitle">Regen verwacht in de komende uren</string>
+    <string name="al_type_rain_desc">Pak een paraplu: krijg een melding als er in de komende uren waarschijnlijk regen valt. Controleer één keer op een vast tijdstip, of de hele dag tijdens de uren die je kiest.</string>
+
+    <string name="al_type_storm_title">Wind- &amp; stormmelding</string>
+    <string name="al_type_storm_subtitle">Zware windstoten of onweer op komst</string>
+    <string name="al_type_storm_desc">Krijg een melding als er in de komende 12 uur windstoten boven je limiet of onweer worden verwacht, ook als er geen officiële waarschuwing is afgegeven.</string>
+
+    <string name="al_type_today_title">Ochtendoverzicht</string>
+    <string name="al_type_today_subtitle">Het weer van je dag in één oogopslag</string>
+    <string name="al_type_today_desc">Elke ochtend een korte samenvatting: omstandigheden, hoogste en laagste temperatuur, wanneer het regent, wind en andere bijzonderheden, vergeleken met gisteren.</string>
+
+    <string name="al_type_tomorrow_title">Het weer voor morgen</string>
+    <string name="al_type_tomorrow_subtitle">Avondoverzicht van morgen</string>
+    <string name="al_type_tomorrow_desc">Elke avond een leesbare samenvatting van morgen, zodat je vooruit kunt plannen: hoe het zich verhoudt tot vandaag, regen, wind en sneeuw.</string>
+
+    <string name="al_type_wardrobe_title">Wat trek je aan</string>
+    <string name="al_type_wardrobe_subtitle">Kledingadvies en wat je meeneemt</string>
+    <string name="al_type_wardrobe_desc">Dagelijks advies over wat je aantrekt en meeneemt, afgestemd op je woon-werkverkeer, hoe snel je het koud hebt en het weer thuis en op je werk.</string>
+
+    <string name="al_type_frost_title">Vorstmelding</string>
+    <string name="al_type_frost_subtitle">Nachttemperatuur rond of onder het vriespunt</string>
+    <string name="al_type_frost_desc">Krijg de avond ervoor een melding als de nachttemperatuur naar verwachting tot je drempel daalt, zodat je planten, leidingen en huisdieren kunt beschermen en tijd hebt om de auto te ontdooien.</string>
+
+    <string name="al_type_uv_title">Uv-melding</string>
+    <string name="al_type_uv_subtitle">Uv-index boven je drempel</string>
+    <string name="al_type_uv_desc">Elke ochtend een herinnering om je huid te beschermen als de uv-index boven je drempel komt, met de uren waarin bescherming nodig is.</string>
+
+    <string name="al_type_heat_title">Gevaarlijke natteboltemperatuur</string>
+    <string name="al_type_heat_subtitle">Als hitte en vocht gevaarlijk worden</string>
+    <string name="al_type_heat_desc">De natteboltemperatuur combineert hitte en luchtvochtigheid tot hoe goed zweet je kan afkoelen. Krijg een waarschuwing zodra die naar verwachting een gevaarlijk niveau bereikt, zodat je inspanning kunt beperken, schaduw of koele lucht kunt zoeken en genoeg kunt drinken.</string>
+
+    <string name="al_type_air_title">Luchtkwaliteitsmelding</string>
+    <string name="al_type_air_subtitle">Luchtkwaliteit op of onder je drempel</string>
+    <string name="al_type_air_desc">Op je meldingstijd wordt de verwachting van de Europese luchtkwaliteitsindex gecontroleerd. Als die je drempel of slechter bereikt, krijg je een seintje om inspanning buiten te beperken.</string>
+
+    <string name="al_type_pollen_title">Pollenmelding</string>
+    <string name="al_type_pollen_subtitle">Verhoogde pollen voor je allergieën</string>
+    <string name="al_type_pollen_desc">Elke ochtend wordt de pollenverwachting gecontroleerd voor de allergenen die je kiest, en krijg je een melding als de niveaus je gevoeligheid overschrijden. Pollenverwachtingen zijn beschikbaar voor Europa.</string>
+
+    <string name="al_type_tablet_title">Herinnering hooikoortstablet</string>
+    <string name="al_type_tablet_subtitle">Een dagelijkse herinnering om je tablet te nemen</string>
+    <string name="al_type_tablet_desc">Een eenvoudige dagelijkse herinnering op het tijdstip dat je kiest. Optioneel alleen op dagen waarop de drempel van je pollenmelding wordt bereikt.</string>
+
+    <string name="al_type_pressure_title">Luchtdrukdaling</string>
+    <string name="al_type_pressure_subtitle">Snelle dalingen van de luchtdruk</string>
+    <string name="al_type_pressure_desc">Snelle luchtdrukdalingen gaan vaak vooraf aan stormachtig weer en kunnen bij sommige mensen hoofdpijn of migraine uitlokken. Krijg een melding als de luchtdruk naar verwachting binnen 3 uur snel daalt.</string>
+
+    <string name="al_type_friends_title">Familie &amp; vrienden</string>
+    <string name="al_type_friends_subtitle">Waarschuwingen waar je dierbaren zijn</string>
+    <string name="al_type_friends_desc">Krijg een melding als er een officiële waarschuwing wordt afgegeven voor de plaats van iemand in je lijst Familie &amp; vrienden.</string>
+
+    <string name="al_type_ongoing_title">Weer in statusbalk</string>
+    <string name="al_type_ongoing_subtitle">Huidige temperatuur altijd in beeld</string>
+    <string name="al_type_ongoing_desc">Toont de huidige temperatuur in de statusbalk en een stille melding met de verwachting voor vandaag, op de achtergrond vernieuwd.</string>
+
+    <!-- ============================================================ Notification channels (shown in Android system settings) -->
+    <string name="al_channel_warnings_title">Weerwaarschuwingen</string>
+    <string name="al_channel_warnings_desc">Officiële waarschuwingen voor zwaar weer</string>
+    <string name="al_channel_nowcast_title">Regen &amp; sneeuw op komst</string>
+    <string name="al_channel_nowcast_desc">Regen of sneeuw binnen het uur</string>
+    <string name="al_channel_alerts_title">Weermeldingen</string>
+    <string name="al_channel_alerts_desc">Meldingen voor regen, wind, vorst, uv, luchtkwaliteit, pollen en luchtdruk</string>
+    <string name="al_channel_daily_title">Dagelijkse overzichten</string>
+    <string name="al_channel_daily_desc">Ochtendoverzicht, het weer voor morgen en wat je aantrekt</string>
+    <string name="al_channel_reminders_title">Herinneringen</string>
+    <string name="al_channel_reminders_desc">Herinnering hooikoortstablet</string>
+    <string name="al_channel_friends_title">Familie &amp; vrienden</string>
+    <string name="al_channel_friends_desc">Waarschuwingen op de plaatsen van je familie en vrienden</string>
+    <string name="al_channel_ongoing_title">Weer in statusbalk</string>
+    <string name="al_channel_ongoing_desc">Huidige omstandigheden, altijd zichtbaar</string>
+
+    <!-- Silent notification shown while a daily alert is being prepared (older Android versions) -->
+    <string name="al_checking_weather">Weer controleren…</string>
+
+    <!-- ============================================================ Official warnings -->
+    <!-- CAP severity labels -->
+    <string name="al_severity_minor">Gering</string>
+    <string name="al_severity_moderate">Matig</string>
+    <string name="al_severity_severe">Zwaar</string>
+    <string name="al_severity_extreme">Extreem</string>
+    <!-- Warning colour levels (Yellow / Amber / Red warning) -->
+    <string name="al_level_blue">Blauw</string>
+    <string name="al_level_yellow">Geel</string>
+    <string name="al_level_amber">Oranje</string>
+    <string name="al_level_red">Rood</string>
+    <!-- Hazard types of an official warning -->
+    <string name="al_hazard_thunderstorm">Onweer</string>
+    <string name="al_hazard_wind">Wind</string>
+    <string name="al_hazard_rain">Regen</string>
+    <string name="al_hazard_flood">Overstroming</string>
+    <string name="al_hazard_snow_ice">Sneeuw &amp; ijzel</string>
+    <string name="al_hazard_fog">Mist</string>
+    <string name="al_hazard_heat">Hitte</string>
+    <string name="al_hazard_cold">Kou</string>
+    <string name="al_hazard_coastal">Kust</string>
+    <string name="al_hazard_fire">Brand</string>
+    <string name="al_hazard_avalanche">Lawine</string>
+    <string name="al_hazard_tornado">Tornado</string>
+    <string name="al_hazard_hurricane">Orkaan</string>
+    <string name="al_hazard_dust">Stof</string>
+    <string name="al_hazard_weather">Weer</string>
+
+    <!-- Warning notification title. %1$s = colour level (e.g. "Yellow"), %2$s = hazard in lower case (e.g. "wind") -->
+    <string name="al_warning_title">Code %1$s voor %2$s</string>
+    <!-- Friend's warning notification title. %1$s = friend's name, %2$s = colour level (lower case), %3$s = hazard (lower case) -->
+    <string name="al_warning_title_friend">%1$s: code %2$s voor %3$s</string>
+    <!-- Time window of a warning. %1$s / %2$s = day and time, e.g. "Tue 14:00" -->
+    <string name="al_warning_from_until">Van %1$s tot %2$s</string>
+    <string name="al_warning_until">Tot %1$s</string>
+    <!-- %1$s = issuing weather service -->
+    <string name="al_warning_issued_by">Afgegeven door %1$s</string>
+    <!-- %1$s = issuing weather service, %2$s = data source (e.g. "MeteoAlarm") -->
+    <string name="al_warning_issued_by_via">Afgegeven door %1$s · via %2$s</string>
+    <!-- Label on a warning card. %1$s = colour level ("Yellow"), %2$s = hazard ("Wind") -->
+    <string name="al_warning_card_label">Code %1$s · %2$s</string>
+    <string name="al_warning_what_to_do">Wat te doen</string>
+
+    <!-- Test warning notification (sent by "Send a test notification") -->
+    <string name="al_test_warning_event">Code geel voor wind</string>
+    <string name="al_test_warning_headline">Dit is een test van meldingen voor weerwaarschuwingen.</string>
+    <!-- %1$s = place name -->
+    <string name="al_test_warning_desc">Er is nu geen waarschuwing van kracht voor %1$s. Echte waarschuwingen zien er zo uit.</string>
+    <string name="al_test_source">Test</string>
+
+    <!-- ============================================================ Imminent rain & snow (nowcast) notifications -->
+    <!-- Short status bar chip text while it is raining / snowing -->
+    <string name="al_nowcast_chip_rain">Regen</string>
+    <string name="al_nowcast_chip_snow">Sneeuw</string>
+    <!-- Short status bar chip: minutes until rain starts, e.g. "20m" -->
+    <string name="al_nowcast_chip_minutes">%1$d min</string>
+    <string name="al_nowcast_raining_now">Het regent nu</string>
+    <string name="al_nowcast_snowing_now">Het sneeuwt nu</string>
+    <!-- %1$s = place name -->
+    <string name="al_nowcast_raining_now_in">Het regent nu in %1$s</string>
+    <string name="al_nowcast_snowing_now_in">Het sneeuwt nu in %1$s</string>
+    <plurals name="al_nowcast_ending_in">
+        <item quantity="one">Stopt over ~%1$d min</item>
+        <item quantity="other">Stopt over ~%1$d min</item>
+    </plurals>
+    <string name="al_nowcast_continuing">Houdt nog een tijdje aan</string>
+    <!-- Kind of precipitation approaching; used as %1$s in al_nowcast_approaching -->
+    <string name="al_nowcast_kind_light_rain">Lichte regen</string>
+    <string name="al_nowcast_kind_rain">Regen</string>
+    <string name="al_nowcast_kind_heavy_rain">Zware regen</string>
+    <string name="al_nowcast_kind_light_snow">Lichte sneeuw</string>
+    <string name="al_nowcast_kind_snow">Sneeuw</string>
+    <string name="al_nowcast_kind_heavy_snow">Zware sneeuw</string>
+    <!-- %1$s = kind, e.g. "Heavy rain" -->
+    <string name="al_nowcast_approaching">%1$s op komst</string>
+    <!-- %1$s = kind, e.g. "Heavy rain", %2$s = place name -->
+    <string name="al_nowcast_approaching_place">%1$s op komst in %2$s</string>
+    <string name="al_nowcast_rain_any_moment">Regen kan elk moment beginnen</string>
+    <string name="al_nowcast_snow_any_moment">Sneeuw kan elk moment beginnen</string>
+    <plurals name="al_nowcast_starting_in">
+        <item quantity="one">Begint over ~%1$d min</item>
+        <item quantity="other">Begint over ~%1$d min</item>
+    </plurals>
+    <string name="al_nowcast_test_title">Regen op komst (test)</string>
+
+    <!-- ============================================================ Rain alert notification -->
+    <!-- %1$s = time -->
+    <string name="al_rain_expected_at">Regen verwacht om %1$s</string>
+    <string name="al_snow_expected_at">Sneeuw verwacht om %1$s</string>
+    <string name="al_rain_advice">Neem een paraplu mee als je weggaat.</string>
+    <string name="al_snow_advice">Kleed je warm aan en neem extra reistijd.</string>
+    <!-- %1$s = advice sentence above, %2$d = chance in percent, %3$s = amount (e.g. "3 mm"), %4$d = hours -->
+    <string name="al_rain_big_amount">%1$s %2$d%% kans, ongeveer %3$s in de komende %4$d uur.</string>
+    <!-- %1$s = advice sentence above, %2$d = chance in percent -->
+    <string name="al_rain_big">%1$s %2$d%% kans.</string>
+    <string name="al_no_rain_title">Geen regen verwacht</string>
+    <plurals name="al_no_rain_text">
+        <item quantity="one">Het komende uur droog. Je krijgt hier een melding als regen waarschijnlijk wordt.</item>
+        <item quantity="other">De komende %1$d uur droog. Je krijgt hier een melding als regen waarschijnlijk wordt.</item>
+    </plurals>
+
+    <!-- ============================================================ Wind & storm notification -->
+    <!-- %1$s = time -->
+    <string name="al_storm_thunder_title">Kans op onweer vanaf %1$s</string>
+    <string name="al_storm_thunder_text">Bliksem, zware buien en harde windstoten zijn mogelijk. Zorg dat je binnen bent.</string>
+    <!-- %1$s = wind speed, %2$s = time -->
+    <string name="al_storm_gust_title">Windstoten tot %1$s rond %2$s</string>
+    <!-- %1$s = time -->
+    <string name="al_storm_gust_text">Winderig vanaf %1$s. Zet losse spullen vast en wees voorzichtig op de fiets en met hoge voertuigen.</string>
+
+    <!-- ============================================================ Pressure drop notification -->
+    <!-- %1$s = amount with unit, e.g. "5 hPa" -->
+    <string name="al_pressure_rapid">Snelle luchtdrukdaling (−%1$s)</string>
+    <string name="al_pressure_significant">Flinke luchtdrukdaling (−%1$s)</string>
+    <string name="al_pressure_moderate">Matige luchtdrukdaling (−%1$s)</string>
+    <!-- %1$s = amount with unit, %2$s = time -->
+    <string name="al_pressure_text">De luchtdruk daalt naar verwachting %1$s in 3 uur vanaf %2$s. Misschien wil je je dag daarop afstemmen.</string>
+
+    <!-- ============================================================ Dangerous wet bulb notification -->
+    <string name="al_heat_safe">Natteboltemperatuur is voorlopig veilig</string>
+    <!-- %1$s = temperature -->
+    <string name="al_heat_danger_now">Gevaarlijke natteboltemperatuur nu: %1$s</string>
+    <!-- %1$s = time -->
+    <string name="al_heat_danger_from">Gevaarlijke natteboltemperatuur vanaf %1$s</string>
+    <!-- %1$s = temperature, %2$s = cooling level (e.g. "Difficult"), %3$s = time, %4$s = guidance sentence -->
+    <string name="al_heat_text_at">Natteboltemperatuur tot %1$s (%2$s) rond %3$s. %4$s</string>
+    <!-- %1$s = temperature, %2$s = cooling level, %3$s = guidance sentence -->
+    <string name="al_heat_text">Natteboltemperatuur tot %1$s (%2$s). %3$s</string>
+
+    <!-- ============================================================ Status bar weather (ongoing notification) -->
+    <!-- %1$s = feels-like temperature -->
+    <string name="al_ongoing_feels">Voelt als %1$s</string>
+    <!-- %1$s = feels-like temperature, %2$s = today's high, %3$s = today's low -->
+    <string name="al_ongoing_feels_high_low">Voelt als %1$s · ↑%2$s ↓%3$s</string>
+    <!-- %1$s = wind speed, %2$s = compass direction -->
+    <string name="al_ongoing_wind">Wind %1$s %2$s</string>
+
+    <!-- ============================================================ Daily alerts -->
+    <string name="al_wardrobe_title_today">Wat trek je vandaag aan</string>
+    <string name="al_wardrobe_title_tomorrow">Wat trek je morgen aan</string>
+    <string name="al_frost_title">Vorstwaarschuwing voor vannacht</string>
+    <string name="al_frost_none_title">Vannacht geen vorst verwacht</string>
+    <!-- %1$s = temperature -->
+    <string name="al_frost_low">Minimum %1$s.</string>
+    <string name="al_frost_low_advice">Minimum %1$s. Bescherm je planten en leidingen en neem tijd om de auto te ontdooien.</string>
+    <!-- %1$d = UV index, %2$s = UV level (e.g. "High") -->
+    <string name="al_uv_title">Uv-index: %1$d (%2$s)</string>
+    <!-- %1$s = time -->
+    <string name="al_uv_peaks">Piek rond %1$s.</string>
+    <!-- %1$s = peak time, %2$s = start time, %3$s = end time -->
+    <string name="al_uv_peaks_protect">Piek rond %1$s. Bescherm je huid tussen %2$s en %3$s.</string>
+    <!-- %1$s = air quality level, e.g. "Poor" -->
+    <string name="al_air_title">Luchtkwaliteit: %1$s</string>
+    <!-- %1$d = AQI value, %2$s = time -->
+    <string name="al_air_text">Europese AQI tot %1$d rond %2$s.</string>
+    <string name="al_air_text_advice">Europese AQI tot %1$d rond %2$s. Overweeg zware inspanning buiten te beperken.</string>
+    <string name="al_tablet_title">Herinnering hooikoorts</string>
+    <string name="al_tablet_text">Tijd voor je dagelijkse dosis.</string>
+
+    <!-- Pollen categories as modifiers ("tree pollen", "grass pollen", "weed pollen") -->
+    <!-- Dutch: used as a compound prefix, e.g. "boom" + "pollen" = "boompollen" -->
+    <string name="al_pollen_tree">boom</string>
+    <string name="al_pollen_grass">gras</string>
+    <string name="al_pollen_weed">kruiden</string>
+    <!-- Pollen categories as plural nouns (lists such as "trees, grass, weeds") -->
+    <string name="al_pollen_trees">bomen</string>
+    <string name="al_pollen_grasses">grassen</string>
+    <string name="al_pollen_weeds">kruiden</string>
+    <string name="al_pollen_low_title">Weinig pollen vandaag</string>
+    <!-- %1$s = list of pollen categories -->
+    <string name="al_pollen_low_text">De niveaus liggen onder je drempel voor %1$s.</string>
+    <!-- %1$s = pollen category modifier (e.g. "tree") -->
+    <string name="al_pollen_one_very_high_title">Zeer veel %1$spollen vandaag</string>
+    <string name="al_pollen_one_high_title">Veel %1$spollen vandaag</string>
+    <string name="al_pollen_one_elevated_title">Verhoogde %1$spollen vandaag</string>
+    <!-- %1$s = pollen category modifier, capitalised (e.g. "Tree") -->
+    <string name="al_pollen_one_very_high_text">%1$spollen zijn zeer hoog. Wees voorbereid voordat je naar buiten gaat.</string>
+    <string name="al_pollen_one_high_text">%1$spollen zijn hoog. Overweeg de ramen dicht te houden.</string>
+    <string name="al_pollen_one_elevated_text">%1$spollen zijn vandaag verhoogd.</string>
+    <string name="al_pollen_many_very_high_title">Zeer veel pollen vandaag</string>
+    <string name="al_pollen_many_high_title">Veel pollen vandaag</string>
+    <string name="al_pollen_many_elevated_title">Verhoogde pollenniveaus vandaag</string>
+    <!-- %1$s = list of pollen categories (e.g. "tree, grass") -->
+    <string name="al_pollen_many_text">Verhoogd: %1$s. Overweeg de ramen dicht te houden.</string>
+
+    <!-- Results of "Send a test notification" -->
+    <string name="al_test_choose_place">Kies eerst een plaats</string>
+    <string name="al_test_load_failed">Kan de verwachting niet laden</string>
+    <string name="al_test_no_wet_bulb">Geen natteboltemperatuur voor deze plaats</string>
+    <string name="al_test_nothing_now">Op dit moment niets te melden</string>
+    <string name="al_test_nothing_title">Niets te melden</string>
+    <string name="al_test_nothing_text">De omstandigheden blijven de komende uren onder je drempel.</string>
+    <string name="al_test_sent">Verzonden. Bekijk je meldingen.</string>
+
+    <!-- ============================================================ Briefings: comparison with yesterday (3 variants each) -->
+    <string name="al_cmp_same_1">Ongeveer hetzelfde als gisteren.</string>
+    <string name="al_cmp_same_2">Vergelijkbaar met gisteren.</string>
+    <string name="al_cmp_same_3">Grotendeels hetzelfde als gisteren.</string>
+    <string name="al_cmp_warmer_slight_1">Een tikje warmer dan gisteren.</string>
+    <string name="al_cmp_warmer_slight_2">Iets warmer dan gisteren.</string>
+    <string name="al_cmp_warmer_slight_3">Een beetje zachter dan gisteren.</string>
+    <string name="al_cmp_cooler_slight_1">Een tikje koeler dan gisteren.</string>
+    <string name="al_cmp_cooler_slight_2">Iets koeler dan gisteren.</string>
+    <string name="al_cmp_cooler_slight_3">Een beetje koeler dan gisteren.</string>
+    <string name="al_cmp_warmer_1">Een paar graden warmer dan gisteren.</string>
+    <string name="al_cmp_warmer_2">Merkbaar warmer dan gisteren.</string>
+    <string name="al_cmp_warmer_3">Warmer dan gisteren.</string>
+    <string name="al_cmp_cooler_1">Een paar graden koeler dan gisteren.</string>
+    <string name="al_cmp_cooler_2">Merkbaar koeler dan gisteren.</string>
+    <string name="al_cmp_cooler_3">Koeler dan gisteren.</string>
+    <string name="al_cmp_warmer_big_1">Flink warmer dan gisteren.</string>
+    <string name="al_cmp_warmer_big_2">Veel warmer dan gisteren.</string>
+    <string name="al_cmp_warmer_big_3">Een grote temperatuursprong ten opzichte van gisteren.</string>
+    <string name="al_cmp_colder_big_1">Flink kouder dan gisteren.</string>
+    <string name="al_cmp_colder_big_2">Veel kouder dan gisteren.</string>
+    <string name="al_cmp_colder_big_3">Een flinke temperatuurdaling ten opzichte van gisteren.</string>
+
+    <!-- Briefings: overall conditions of a day -->
+    <string name="al_cond_thunder">Kans op onweer.</string>
+    <string name="al_cond_snow">Waarschijnlijk sneeuw.</string>
+    <string name="al_cond_freezing">Kans op ijzel, kijk uit waar je loopt.</string>
+    <string name="al_cond_heavy_rain">Zware regen verwacht, neem een paraplu mee.</string>
+    <string name="al_cond_rain">Regen verwacht, neem een paraplu mee.</string>
+    <string name="al_cond_drizzle">Waarschijnlijk lichte motregen.</string>
+    <string name="al_cond_fog">Mistig, dus rij voorzichtig.</string>
+    <string name="al_cond_windy">Een opvallend winderige dag, reken op windstoten.</string>
+    <string name="al_cond_cloudy">Het grootste deel van de dag bewolkt.</string>
+    <string name="al_cond_partly">Overwegend zonnig met wat bewolking.</string>
+    <string name="al_cond_clear">Heldere lucht verwacht.</string>
+    <string name="al_cond_mixed">Wisselend weer verwacht.</string>
+
+    <!-- Briefings: rain timing. %1$s = start time, %2$s = end time, %3$d = chance in percent -->
+    <string name="al_timing_rain_until">Waarschijnlijk regen van %1$s tot %2$s (%3$d%%).</string>
+    <string name="al_timing_snow_until">Waarschijnlijk sneeuw van %1$s tot %2$s (%3$d%%).</string>
+    <string name="al_timing_thunder_until">Waarschijnlijk onweer van %1$s tot %2$s (%3$d%%).</string>
+    <string name="al_timing_drizzle_until">Waarschijnlijk motregen van %1$s tot %2$s (%3$d%%).</string>
+    <!-- %1$s = start time, %2$d = chance in percent -->
+    <string name="al_timing_rain">Waarschijnlijk regen vanaf %1$s (%2$d%%).</string>
+    <string name="al_timing_snow">Waarschijnlijk sneeuw vanaf %1$s (%2$d%%).</string>
+    <string name="al_timing_thunder">Waarschijnlijk onweer vanaf %1$s (%2$d%%).</string>
+    <string name="al_timing_drizzle">Waarschijnlijk motregen vanaf %1$s (%2$d%%).</string>
+
+    <!-- Briefings: morning / tomorrow -->
+    <!-- %1$s = wind speed -->
+    <string name="al_brief_gusts">Windstoten tot %1$s.</string>
+    <!-- %1$d = UV index, %2$s = UV level in lower case -->
+    <string name="al_brief_uv">Uv %1$d (%2$s) rond het middaguur.</string>
+    <!-- %1$s = condition (e.g. "Partly cloudy"), %2$s = high, %3$s = low -->
+    <string name="al_brief_today_title">Vandaag: %1$s, %2$s / %3$s</string>
+    <string name="al_brief_tomorrow_title">Morgen: %1$s, %2$s / %3$s</string>
+    <string name="al_tmr_unknown">Bekijk de app voor de volledige verwachting.</string>
+    <string name="al_tmr_much_warmer">Morgen een stuk warmer dan vandaag.</string>
+    <string name="al_tmr_warmer">Morgen iets warmer dan vandaag.</string>
+    <string name="al_tmr_much_colder">Morgen een merkbaar koudere dag.</string>
+    <string name="al_tmr_colder">Morgen iets kouder dan vandaag.</string>
+    <string name="al_tmr_similar">Vergelijkbare temperaturen als vandaag.</string>
+    <!-- %1$s = low temperature -->
+    <string name="al_tmr_snow">Kleed je warm aan, minima rond %1$s.</string>
+    <string name="al_tmr_umbrella_must">Een paraplu is een must.</string>
+    <string name="al_tmr_umbrella_maybe">Een paraplu kan van pas komen.</string>
+    <string name="al_tmr_gusty">Houd je hoed vast, het wordt stormachtig.</string>
+    <!-- %1$s = high, %2$s = low -->
+    <string name="al_tmr_highs">Maxima rond %1$s, \'s nachts dalend tot %2$s.</string>
+
+    <!-- Wet-bulb cooling levels (how well the body can cool itself) and guidance -->
+    <string name="al_cool_critical">Kritiek</string>
+    <string name="al_cool_critical_text">Gevaarlijke omstandigheden. Blijf niet lang buiten en zoek ruimtes met airco op.</string>
+    <string name="al_cool_very_difficult">Zeer moeilijk</string>
+    <string name="al_cool_very_difficult_text">Flinke belasting voor je lichaam. Vermijd zware inspanning en rust in de schaduw.</string>
+    <string name="al_cool_difficult">Moeilijk</string>
+    <string name="al_cool_difficult_text">Beperk zware inspanning buiten. Rust op koele, schaduwrijke plekken en drink veel water.</string>
+    <string name="al_cool_reduced">Verminderd</string>
+    <string name="al_cool_reduced_text">Neem regelmatig pauze in de schaduw en drink genoeg tijdens de warmste uren.</string>
+    <string name="al_cool_good">Goed</string>
+    <string name="al_cool_good_text">Prettig voor activiteiten buiten. Drink zoals gewoonlijk genoeg.</string>
+    <string name="al_cool_normal">Normaal</string>
+    <string name="al_cool_normal_text">Geen voorzorgsmaatregelen nodig. Geniet vrij van activiteiten buiten.</string>
+
+    <!-- European Air Quality Index levels -->
+    <string name="al_eaqi_good">Goed</string>
+    <string name="al_eaqi_fair">Redelijk</string>
+    <string name="al_eaqi_moderate">Matig</string>
+    <string name="al_eaqi_poor">Slecht</string>
+    <string name="al_eaqi_very_poor">Zeer slecht</string>
+    <string name="al_eaqi_extremely_poor">Extreem slecht</string>
+
+    <!-- ============================================================ What to wear: clothing items -->
+    <string name="al_wear_winter_coat">Winterjas</string>
+    <string name="al_wear_hat_gloves">Muts &amp; handschoenen</string>
+    <string name="al_wear_thermal_layers">Thermokleding</string>
+    <string name="al_wear_warm_sweater">Warme trui</string>
+    <string name="al_wear_light_jacket">Lichte jas</string>
+    <string name="al_wear_long_sleeve">Lange mouwen</string>
+    <string name="al_wear_light_top">Luchtig shirt</string>
+    <string name="al_wear_layers">Laagjes</string>
+    <string name="al_wear_breathable_shoes">Ademende schoenen</string>
+    <string name="al_wear_snow_boots">Snowboots</string>
+    <string name="al_wear_raincoat">Regenjas</string>
+    <string name="al_wear_waterproof_shoes">Waterdichte schoenen</string>
+    <string name="al_wear_rain_jacket">Regenjack</string>
+    <string name="al_wear_water_resistant_shoes">Waterafstotende schoenen</string>
+    <string name="al_wear_umbrella">Paraplu</string>
+    <string name="al_wear_waterproof_hood">Waterdichte capuchon</string>
+    <string name="al_wear_windbreaker">Windjack</string>
+    <string name="al_wear_sun">Zonnebril &amp; zonnebrand</string>
+    <!-- %1$s = high, %2$s = low -->
+    <string name="al_wear_summary">Max. %1$s, min. %2$s.</string>
+    <!-- Day choice on the "What to wear" card -->
+    <string name="al_day_today">Vandaag</string>
+    <string name="al_day_tomorrow">Morgen</string>
+
+    <!-- ============================================================ Alerts screen -->
+    <string name="al_screen_title">Meldingen</string>
+    <string name="al_screen_subtitle">Meldingen voor waarschuwingen, regen en je dagplanning</string>
+    <!-- Alert on/off state -->
+    <string name="al_on">Aan</string>
+    <string name="al_off">Uit</string>
+    <!-- Alert row status. %1$s = start time, %2$s = end time -->
+    <string name="al_status_all_day">Hele dag, %1$s–%2$s</string>
+    <!-- %1$s = time -->
+    <string name="al_status_daily_at">Dagelijks om %1$s</string>
+    <string name="al_status_always_on">Altijd aan</string>
+    <plurals name="al_status_checks_every">
+        <item quantity="one">Controleert elke %1$d min</item>
+        <item quantity="other">Controleert elke %1$d min</item>
+    </plurals>
+    <string name="al_banner_notif_title">Meldingen staan uit</string>
+    <string name="al_banner_notif_body">Sta meldingen toe zodat waarschuwingen en meldingen je op tijd bereiken.</string>
+    <string name="al_banner_notif_action">Meldingen toestaan</string>
+    <string name="al_banner_exact_title">Voor precieze timing</string>
+    <string name="al_banner_exact_body">Geef toegang tot \"Wekkers en herinneringen\" zodat dagelijkse meldingen precies op de ingestelde tijd binnenkomen (anders binnen ~10 minuten).</string>
+    <string name="al_banner_exact_action">Toestaan in Instellingen</string>
+    <string name="al_not_now">Niet nu</string>
+    <string name="al_active_warnings">Actieve waarschuwingen</string>
+    <!-- %1$s = place name -->
+    <string name="al_active_warnings_place">Actieve waarschuwingen · %1$s</string>
+    <string name="al_no_warnings">Geen waarschuwingen van kracht</string>
+    <!-- %1$s = weather service name, e.g. "MeteoAlarm" -->
+    <string name="al_checked_with">Gecontroleerd bij %1$s</string>
+    <string name="al_coverage">Officiële waarschuwingen voor de VS, Canada en 37 Europese landen</string>
+    <string name="al_recent">Recente meldingen</string>
+    <!-- Button: clear notification history -->
+    <string name="al_clear">Wissen</string>
+    <string name="al_quiet_hours">Stille uren</string>
+    <string name="al_quiet_hours_desc">Meldingen komen \'s nachts stil binnen. Codes oranje en rood maken nog wel geluid.</string>
+    <!-- Time chips for the start/end of quiet hours -->
+    <string name="al_quiet_from">Van</string>
+    <string name="al_quiet_until">Tot</string>
+    <!-- Time picker dialog buttons -->
+    <string name="al_ok">OK</string>
+    <string name="al_cancel">Annuleren</string>
+
+    <!-- ============================================================ Alert detail screen -->
+    <string name="al_how_it_works">Hoe het werkt</string>
+    <string name="al_active_hours">Actieve uren</string>
+    <string name="al_notification_time">Meldingstijd</string>
+    <!-- Choice: how often the rain alert checks -->
+    <string name="al_check">Controleren</string>
+    <string name="al_all_day">Hele dag</string>
+    <string name="al_once_daily">Eén keer per dag</string>
+    <!-- Time chips -->
+    <string name="al_start">Begin</string>
+    <string name="al_end">Einde</string>
+    <string name="al_reminder_time">Herinneringstijd</string>
+    <string name="al_alert_time">Meldingstijd</string>
+    <string name="al_location">Locatie</string>
+    <string name="al_home_location">Thuislocatie</string>
+    <string name="al_work_location">Werklocatie</string>
+    <string name="al_checking_forecast">Verwachting controleren…</string>
+    <string name="al_send_test">Testmelding versturen</string>
+
+    <!-- Location picker -->
+    <string name="al_loc_not_set">Niet ingesteld</string>
+    <string name="al_loc_not_set_sub">Thuis gebruiken voor de hele dag</string>
+    <string name="al_loc_auto">De app volgen</string>
+    <string name="al_loc_auto_sub">De plaats die je op dat moment bekijkt</string>
+    <string name="al_loc_current">Huidige locatie</string>
+    <string name="al_loc_current_sub">De locatie van je apparaat</string>
+
+    <!-- Disclaimers at the bottom of the detail screen -->
+    <string name="al_disclaimer_warnings">Weerwaarschuwingen zijn alleen ter informatie. Volg altijd het officiële advies van je nationale weerdienst en de lokale overheid.</string>
+    <string name="al_disclaimer_pollen">Pollengegevens zijn alleen ter informatie en vervangen geen professioneel advies.</string>
+    <string name="al_disclaimer_health">Dit is geen medisch advies. Raadpleeg een zorgverlener bij gezondheidsklachten.</string>
+    <string name="al_disclaimer_precip">Neerslagverwachtingen zijn schattingen en kunnen afwijken van het werkelijke weer.</string>
+
+    <!-- Warning level legend -->
+    <string name="al_legend_yellow">Kans op gevaarlijk weer. Wees alert en voorbereid.</string>
+    <string name="al_legend_amber">Gevaarlijk weer waarschijnlijk. Neem maatregelen om veilig te blijven.</string>
+    <string name="al_legend_red">Extreem weer. Levensgevaar — onderneem direct actie.</string>
+
+    <!-- Options: warnings / friends -->
+    <string name="al_opt_alert_levels">Waarschuwingsniveaus</string>
+    <string name="al_opt_notify_from">Melden vanaf</string>
+    <string name="al_opt_saved_locations">Opgeslagen locaties</string>
+    <string name="al_opt_saved_locations_sub">Ook melden bij waarschuwingen op je huidige locatie en elke opgeslagen plaats</string>
+    <string name="al_opt_manage_friends">Familie &amp; vrienden beheren</string>
+    <!-- Options: nowcast -->
+    <string name="al_opt_sensitivity">Gevoeligheid</string>
+    <string name="al_opt_intensity">Intensiteit</string>
+    <!-- Rain intensity choice -->
+    <string name="al_opt_intensity_any">Alle</string>
+    <string name="al_opt_intensity_moderate">Matig+</string>
+    <string name="al_opt_intensity_heavy">Zwaar</string>
+    <string name="al_opt_heads_up">Vooraf melden</string>
+    <plurals name="al_opt_min_before">
+        <item quantity="one">%1$d min van tevoren</item>
+        <item quantity="other">%1$d min van tevoren</item>
+    </plurals>
+    <string name="al_opt_include_snow">Ook sneeuw</string>
+    <!-- Options: rain -->
+    <string name="al_opt_rain">Regen</string>
+    <string name="al_opt_lookahead_window">Vooruitkijkperiode</string>
+    <!-- Number of hours, short form, e.g. "4 h" -->
+    <string name="al_opt_hours_short">%1$d u</string>
+    <string name="al_opt_chance_of_rain">Kans op regen</string>
+    <!-- %1$d = percent -->
+    <string name="al_opt_percent_or_more">%1$d%% of meer</string>
+    <!-- Options: storm / frost / UV / heat / air -->
+    <string name="al_opt_thresholds">Drempels</string>
+    <string name="al_opt_threshold">Drempel</string>
+    <string name="al_opt_gusts">Windstoten</string>
+    <string name="al_opt_look_ahead">Vooruitkijken</string>
+    <string name="al_opt_frost_low">Nachtminimum op of onder</string>
+    <string name="al_opt_uv_above">Uv-index boven</string>
+    <string name="al_opt_uv_caption">Stel met de schuifregelaar het minimale uv-niveau in dat een melding activeert.</string>
+    <string name="al_opt_warn_from">Waarschuw me vanaf</string>
+    <string name="al_opt_heat_caption">Rond 31° natteboltemperatuur kan het lichaam zichzelf niet meer afkoelen, zelfs niet in rust in de schaduw.</string>
+    <string name="al_opt_alert_from">Melden vanaf</string>
+    <!-- Options: pollen -->
+    <string name="al_opt_my_allergies">Mijn allergieën</string>
+    <string name="al_opt_allergy_trees">Bomen (els, berk, olijf)</string>
+    <string name="al_opt_allergy_grass">Grassen</string>
+    <string name="al_opt_allergy_weeds">Kruiden (bijvoet, ambrosia)</string>
+    <!-- Pollen sensitivity choice -->
+    <string name="al_opt_sens_low">Laag</string>
+    <string name="al_opt_sens_moderate">Gemiddeld</string>
+    <string name="al_opt_sens_high">Hoog</string>
+    <!-- Options: tablet -->
+    <string name="al_opt_options">Opties</string>
+    <string name="al_opt_pollen_days">Alleen op dagen met veel pollen</string>
+    <string name="al_opt_pollen_days_sub">Gebruikt de allergieën en gevoeligheid van je pollenmelding</string>
+    <!-- Options: pressure. %1$s = threshold number (hPa per 3 hours) -->
+    <string name="al_opt_drop_threshold">Dalingsdrempel</string>
+    <string name="al_opt_drop_low">Laag (%1$s hPa/3u)</string>
+    <string name="al_opt_drop_medium">Gemiddeld (%1$s hPa/3u)</string>
+    <string name="al_opt_drop_high">Hoog (%1$s hPa/3u)</string>
+    <string name="al_opt_drop_sub">Gevoeligere meldingen bij kleinere dalingen</string>
+    <!-- Options: what to wear -->
+    <string name="al_opt_you">Jij</string>
+    <string name="al_opt_commute">Woon-werkverkeer</string>
+    <string name="al_opt_commute_walk">Lopen &amp; fietsen</string>
+    <string name="al_opt_commute_transit">OV &amp; auto</string>
+    <string name="al_opt_commute_mixed">Gemengd</string>
+    <string name="al_opt_commute_walk_sub">Actief reizen, veel blootgesteld aan wind, opspattend water en kou</string>
+    <string name="al_opt_commute_transit_sub">Metro, bus of auto, grotendeels beschut tegen het weer</string>
+    <string name="al_opt_commute_mixed_sub">Lopen naar het OV, gemengd reizen of algemeen advies</string>
+    <string name="al_opt_temp_sensitivity">Temperatuurgevoeligheid</string>
+    <string name="al_opt_feel_cold">Snel koud</string>
+    <string name="al_opt_feel_normal">Normaal</string>
+    <string name="al_opt_feel_warm">Snel warm</string>
+    <string name="al_opt_temp_sensitivity_sub">Past het advies aan op hoe snel je het koud of warm hebt</string>
+
+    <!-- "How it works" explanations. Times like %1$s are clock times. -->
+    <string name="al_how_warnings">Ongeveer elke 30 minuten controleert de app de nationale weerdienst voor je locatie. Je krijgt één melding per waarschuwing, en nog een als die wordt verhoogd. Codes oranje en rood komen ook tijdens stille uren door.</string>
+    <string name="al_how_warnings_saved">Ongeveer elke 30 minuten controleert de app de nationale weerdienst voor je locatie en je opgeslagen plaatsen. Je krijgt één melding per waarschuwing, en nog een als die wordt verhoogd. Codes oranje en rood komen ook tijdens stille uren door.</string>
+    <!-- What the nowcast watches for; used as %2$s in al_how_nowcast -->
+    <string name="al_how_nowcast_rain">regen</string>
+    <string name="al_how_nowcast_rain_snow">regen of sneeuw</string>
+    <string name="al_how_nowcast_moderate_rain">matige regen</string>
+    <string name="al_how_nowcast_moderate_rain_snow">matige regen of sneeuw</string>
+    <string name="al_how_nowcast_heavy_rain">zware regen</string>
+    <string name="al_how_nowcast_heavy_rain_snow">zware regen of sneeuw</string>
+    <!-- %1$d = minutes, %2$s = what is watched (e.g. "heavy rain or snow") -->
+    <plurals name="al_how_nowcast">
+        <item quantity="one">Elke 15 minuten controleert de app de neerslagverwachting per 15 minuten. Wordt er binnen %1$d minuut %2$s verwacht, dan krijg je een live aftelling die wordt bijgewerkt tot het begint en je daarna vertelt wanneer het zou moeten stoppen. Op Android 16 verschijnt dit als Live Update-chip in de statusbalk.</item>
+        <item quantity="other">Elke 15 minuten controleert de app de neerslagverwachting per 15 minuten. Wordt er binnen %1$d minuten %2$s verwacht, dan krijg je een live aftelling die wordt bijgewerkt tot het begint en je daarna vertelt wanneer het zou moeten stoppen. Op Android 16 verschijnt dit als Live Update-chip in de statusbalk.</item>
+    </plurals>
+    <!-- %1$d = hours, %2$s = start time, %3$s = end time, %4$d = percent -->
+    <plurals name="al_how_rain_all_day">
+        <item quantity="one">Tussen %2$s en %3$s kijkt de app ongeveer elke 15 minuten %1$d uur vooruit. Als de kans op regen %4$d%% bereikt, krijg je een seintje, hooguit eens per 3 uur.</item>
+        <item quantity="other">Tussen %2$s en %3$s kijkt de app ongeveer elke 15 minuten %1$d uur vooruit. Als de kans op regen %4$d%% bereikt, krijg je een seintje, hooguit eens per 3 uur.</item>
+    </plurals>
+    <!-- %1$d = hours, %2$s = time, %3$d = percent -->
+    <plurals name="al_how_rain_once">
+        <item quantity="one">Om %2$s controleert de app het komende uur. Als de kans op regen %3$d%% bereikt, krijg je een melding met de verwachte begintijd.</item>
+        <item quantity="other">Om %2$s controleert de app de komende %1$d uur. Als de kans op regen %3$d%% bereikt, krijg je een melding met de verwachte begintijd.</item>
+    </plurals>
+    <!-- %1$d = hours, %2$s = wind speed -->
+    <plurals name="al_how_storm">
+        <item quantity="one">Elke 30 minuten kijkt de app %1$d uur vooruit naar windstoten van %2$s of meer, of onweer. Hooguit één melding per 8 uur.</item>
+        <item quantity="other">Elke 30 minuten kijkt de app %1$d uur vooruit naar windstoten van %2$s of meer, of onweer. Hooguit één melding per 8 uur.</item>
+    </plurals>
+    <string name="al_how_today">Om %1$s krijg je een kort overzicht: omstandigheden, hoogste en laagste temperatuur, wanneer regen waarschijnlijk is, opvallende wind of uv, en hoe het zich verhoudt tot gisteren.</string>
+    <string name="al_how_tomorrow">Om %1$s bekijkt de app de verwachting voor morgen en stuurt een korte, leesbare samenvatting van wat je kunt verwachten en hoe het zich verhoudt tot vandaag.</string>
+    <string name="al_how_wardrobe">Om %1$s (of de avond ervoor als het na 15:00 is ingesteld) bekijkt de app de uren dat je buiten bent, houdt rekening met hoe snel je het koud hebt en met je woon-werkverkeer, en stelt voor wat je aantrekt en meeneemt.</string>
+    <string name="al_how_wardrobe_work">Voor 09:00–17:00 wordt de verwachting van je werklocatie gebruikt.</string>
+    <!-- %1$s = time, %2$s = temperature -->
+    <string name="al_how_frost">Om %1$s controleert de app de laagste temperatuur van vannacht tot morgen 10:00. Als die %2$s of lager wordt, krijg je een vorstwaarschuwing.</string>
+    <!-- %1$s = time, %2$d = UV index -->
+    <string name="al_how_uv">Om %1$s controleert de app de uv-verwachting van vandaag. Als die boven %2$d komt, hoor je wanneer de piek is en wanneer je je huid moet beschermen.</string>
+    <!-- %1$d = hours, %2$s = temperature, %3$s = cooling level in lower case -->
+    <plurals name="al_how_heat">
+        <item quantity="one">Elke 30 minuten controleert de app de natteboltemperatuur nu en voor het komende uur. Als die %2$s (%3$s) bereikt, word je direct gewaarschuwd, en dezelfde dag alleen opnieuw als het erger wordt. Deze meldingen maken ook tijdens stille uren geluid.</item>
+        <item quantity="other">Elke 30 minuten controleert de app de natteboltemperatuur nu en voor de komende %1$d uur. Als die %2$s (%3$s) bereikt, word je direct gewaarschuwd, en dezelfde dag alleen opnieuw als het erger wordt. Deze meldingen maken ook tijdens stille uren geluid.</item>
+    </plurals>
+    <!-- %1$s = time, %2$s = air quality level in lower case -->
+    <string name="al_how_air">Om %1$s controleert de app de Europese luchtkwaliteitsindex voor de komende 18 uur. Als die %2$s of slechter wordt, krijg je een melding.</string>
+    <!-- %1$s = time, %2$s = list of allergens -->
+    <string name="al_how_pollen">Om %1$s controleert de app de pollenverwachting voor %2$s.</string>
+    <string name="al_how_pollen_fallback">je allergenen</string>
+    <string name="al_how_pollen_low">Bij lage gevoeligheid krijg je een melding vanaf zeer hoge niveaus.</string>
+    <string name="al_how_pollen_moderate">Bij gemiddelde gevoeligheid krijg je een melding vanaf hoge niveaus.</string>
+    <string name="al_how_pollen_high">Bij hoge gevoeligheid krijg je een melding vanaf matige niveaus.</string>
+    <!-- %1$s = time -->
+    <string name="al_how_tablet">Een dagelijkse herinnering om %1$s.</string>
+    <string name="al_how_tablet_pollen">Een dagelijkse herinnering om %1$s, alleen op dagen waarop de drempel van je pollenmelding wordt bereikt.</string>
+    <!-- %1$d = pressure drop in hPa -->
+    <string name="al_how_pressure">Elke 30 minuten kijkt de app 12 uur vooruit naar een luchtdrukdaling van %1$d hPa of meer binnen 3 uur. Hooguit één melding per 18 uur.</string>
+    <!-- %1$s = warning colour level in lower case (e.g. "amber") -->
+    <string name="al_how_friends">Ongeveer elke 40 minuten controleert de app officiële waarschuwingen op elke plaats in Familie &amp; vrienden en laat je weten bij code %1$s of hoger.</string>
+    <string name="al_how_ongoing">Een stille melding houdt de huidige temperatuur in je statusbalk, met de hoogste en laagste temperatuur van vandaag, wanneer het regent en de komende uren. Wordt elke 15–30 minuten op de achtergrond vernieuwd.</string>
+
+    <!-- ============================================================ Home cards & warnings screen -->
+    <plurals name="al_more_warnings">
+        <item quantity="one">+%1$d andere waarschuwing</item>
+        <item quantity="other">+%1$d andere waarschuwingen</item>
+    </plurals>
+    <string name="al_warnings_title">Weerwaarschuwingen</string>
+    <!-- Icon button description -->
+    <string name="al_warning_notifications">Meldingen voor waarschuwingen</string>
+    <string name="al_no_warnings_sentence">Geen waarschuwingen van kracht.</string>
+    <!-- %1$s = place name -->
+    <string name="al_no_warnings_for">Geen waarschuwingen van kracht voor %1$s.</string>
+    <string name="al_warnings_sources">Waarschuwingen komen van de nationale weerdienst van elke plaats: NWS (VS), Environment and Climate Change Canada, Deutscher Wetterdienst (via Bright Sky) en MeteoAlarm/EUMETNET voor 36 andere Europese landen. Ze zijn alleen ter informatie. Volg altijd het officiële advies van je nationale weerdienst en de lokale overheid.</string>
+    <string name="al_wardrobe_card_title">Wat trek je aan</string>
+    <!-- Icon button description -->
+    <string name="al_wardrobe_settings">Kledinginstellingen</string>
+    <string name="al_wardrobe_no_data">Niet genoeg verwachtingsgegevens voor de uren dat je buiten bent.</string>
+</resources>

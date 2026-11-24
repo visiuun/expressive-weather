@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shared settings words -->
+    <string name="s_back">Wstecz</string>
+    <string name="s_apply">Zastosuj</string>
+    <string name="s_cancel">Anuluj</string>
+    <!-- Accessibility label for the tick on the selected item -->
+    <string name="s_selected">Wybrano</string>
+    <string name="s_move_up">Przenieś w górę</string>
+    <string name="s_move_down">Przenieś w dół</string>
+    <!-- Accessibility label for the "open in browser" icon next to a data source -->
+    <string name="s_open_website">Otwórz stronę</string>
+
+    <!-- Settings main screen -->
+    <string name="s_settings_title">Ustawienia</string>
+    <string name="s_group_look">Wygląd i działanie</string>
+    <string name="s_appearance">Wygląd</string>
+    <string name="s_appearance_sub">Kolory, motyw, czcionki i efekty pogodowe</string>
+    <!-- Settings page title: arrangement of the forecast screen -->
+    <string name="s_layout">Układ</string>
+    <string name="s_app_icon">Ikona aplikacji</string>
+    <string name="s_app_icon_sub">Stała lub zmienna z pogodą</string>
+    <string name="s_widgets">Widżety</string>
+    <string name="s_widgets_sub">Dodaj widżety do ekranu głównego</string>
+    <!-- Row that opens the system per-app language page -->
+    <string name="s_language">Język</string>
+    <!-- %1$s = name of the current app language, e.g. "English (United Kingdom)" -->
+    <string name="s_language_sub">%1$s · Zgodnie z językiem telefonu</string>
+    <!-- Settings group header: weather-related settings -->
+    <string name="s_group_weather">Pogoda</string>
+    <string name="s_alerts">Alerty i powiadomienia</string>
+    <string name="s_alerts_sub">Ostrzeżenia, deszcz, codzienne podsumowania i więcej</string>
+    <string name="s_friends">Rodzina i znajomi</string>
+    <string name="s_friends_sub">Pogoda tam, gdzie są twoi bliscy</string>
+    <string name="s_units">Jednostki</string>
+    <string name="s_units_sub">Metryczne, imperialne i zegar</string>
+    <string name="s_data">Dane i dokładność</string>
+    <string name="s_data_sub">Model prognozy, lokalna korekta i źródła</string>
+    <string name="s_activity">Twoja aktywność</string>
+    <string name="s_activity_sub">Serie, rekordy i zaobserwowane warunki</string>
+    <string name="s_group_updates">Aktualizacje</string>
+    <string name="s_auto_update">Automatycznie sprawdzaj aktualizacje</string>
+    <string name="s_auto_update_sub">Szuka nowych wydań na GitHubie przy starcie aplikacji</string>
+    <!-- %1$d = download progress in percent -->
+    <string name="s_update_downloading">Pobieranie… %1$d%%</string>
+    <string name="s_update_checking">Sprawdzam…</string>
+    <!-- %1$s = version number -->
+    <string name="s_update_installed">Zainstalowana wersja %1$s</string>
+    <!-- %1$s = version number -->
+    <string name="s_update_install">Zainstaluj wersję %1$s</string>
+    <string name="s_update_check">Sprawdź aktualizacje</string>
+    <string name="s_group_about">Informacje</string>
+    <string name="s_about_open_data">Otwarte dane, bez śledzenia</string>
+    <string name="s_about_open_data_body">Bez kont, reklam, analityki i Usług Google Play. Prognozy od Open-Meteo.com (CC BY 4.0) z krajowych służb meteorologicznych; ostrzeżenia z NWS, ECCC, DWD i MeteoAlarm; radar od RainViewer; mapy © współtwórcy OpenStreetMap © CARTO. Wszystkie źródła znajdziesz w sekcji Dane i dokładność.</string>
+    <!-- %1$s = app version number -->
+    <string name="s_about_version">Wersja %1$s · Material 3 Expressive</string>
+    <string name="s_source_code">Kod źródłowy</string>
+    <string name="s_report_bug">Zgłoś błąd</string>
+    <string name="s_report_bug_sub">Otwiera nowe zgłoszenie na GitHubie</string>
+
+    <!-- Settings > Widgets: list of home screen widgets with a short description each -->
+    <string name="s_widgets_tap_to_add">Kliknij, by dodać do ekranu głównego</string>
+    <string name="s_widgets_add_from_picker">Dodaj z listy widżetów na ekranie głównym</string>
+    <string name="s_widgets_hint">Przytrzymaj widżet i przeciągnij uchwyty, by zmienić jego rozmiar. Kliknij nazwę miejsca na widżecie, by przełączyć go na kolejne zapisane miejsce.</string>
+    <!-- Widget name: current conditions -->
+    <string name="s_widget_now">Teraz</string>
+    <string name="s_widget_now_desc">Bieżące warunki, od wąskiej pigułki po pełny panel</string>
+    <string name="s_widget_hourly">Godzinowa</string>
+    <string name="s_widget_hourly_desc">Najbliższe 48 godzin, ze stronami</string>
+    <string name="s_widget_daily">Prognoza 16-dniowa</string>
+    <string name="s_widget_daily_desc">Przewijana lista dni z paskami zakresu</string>
+    <string name="s_widget_hub">Centrum prognozy</string>
+    <string name="s_widget_hub_desc">Karty: godzinowa, dzienna i szczegóły</string>
+    <string name="s_widget_clock">Zegar i pogoda</string>
+    <string name="s_widget_clock_desc">Duży zegar i data obok pogody</string>
+    <string name="s_widget_details">Szczegóły</string>
+    <string name="s_widget_details_desc">Odczuwalna, wiatr, wilgotność, UV, powietrze i więcej</string>
+    <string name="s_widget_rain">Deszcz</string>
+    <string name="s_widget_rain_desc">Prognoza krótkoterminowa i wykres szansy deszczu</string>
+    <string name="s_widget_sunmoon">Słońce i księżyc</string>
+    <string name="s_widget_sunmoon_desc">Pozycja słońca i faza księżyca</string>
+    <string name="s_widget_air">Jakość powietrza</string>
+    <string name="s_widget_air_desc">Duży AQI, poziom, pyły i pyłki</string>
+    <string name="s_widget_shape">Kształt pogody</string>
+    <string name="s_widget_shape_desc">Temperatura w wybranym ekspresyjnym kształcie</string>
+    <string name="s_widget_stack">Stos prognoz</string>
+    <string name="s_widget_stack_desc">Teraz, godziny i dni jako ułożone panele</string>
+    <string name="s_widget_tile">Kafelek danych</string>
+    <string name="s_widget_tile_desc">Jeden duży parametr: wiatr, UV, powietrze, słońce, księżyc i więcej</string>
+
+    <!-- Settings > Layout -->
+    <!-- Hourly forecast style option: a temperature graph -->
+    <string name="s_layout_hourly_graph">Wykres</string>
+    <string name="s_layout_hourly_compact">Kompakt</string>
+    <string name="s_layout_hourly_cards">Karty</string>
+    <!-- Number of days shown in the daily forecast -->
+    <plurals name="s_layout_days">
+        <item quantity="one">%1$d dzień</item>
+        <item quantity="few">%1$d dni</item>
+        <item quantity="many">%1$d dni</item>
+        <item quantity="other">%1$d dnia</item>
+    </plurals>
+    <!-- "Wet bulb" temperature: a heat-stress measure combining heat and humidity -->
+    <string name="s_wetbulb_group">Termometr mokry</string>
+    <string name="s_wetbulb_show">Pokazuj temperaturę termometru mokrego</string>
+    <string name="s_wetbulb_show_sub">Obok temperatury odczuwalnej: jak dobrze pot może cię schłodzić przy tym upale i wilgotności</string>
+    <string name="s_wetbulb_warn">Ostrzegaj, gdy robi się niebezpiecznie</string>
+    <string name="s_wetbulb_warn_sub">Powiadomienie, gdy tylko prognoza termometru mokrego osiągnie niebezpieczny poziom</string>
+    <string name="s_layout_group_screen">Ekran pogody</string>
+    <string name="s_layout_reset_order">Przywróć kolejność</string>
+
+    <!-- Settings > Units -->
+    <string name="s_units_temperature">Temperatura</string>
+    <string name="s_units_wind">Prędkość wiatru</string>
+    <string name="s_units_precip">Opady</string>
+    <string name="s_units_pressure">Ciśnienie</string>
+    <string name="s_units_distance">Odległość</string>
+    <string name="s_units_24h">Zegar 24-godzinny</string>
+    <string name="s_units_presets">Szybkie ustawienia</string>
+    <string name="s_units_preset_metric">Metryczne</string>
+    <string name="s_units_preset_imperial">Imperialne</string>
+    <!-- Unit preset as used in the United Kingdom (°C, mph, miles) -->
+    <string name="s_units_preset_uk">UK</string>
+
+    <!-- Settings > Appearance -->
+    <string name="s_ap_group_theme">Motyw</string>
+    <string name="s_ap_theme">Motyw</string>
+    <!-- Theme mode: follow the system light/dark setting -->
+    <string name="s_ap_theme_system">Systemowy</string>
+    <!-- Theme mode: light (not dark) colours -->
+    <string name="s_ap_theme_light">Jasny</string>
+    <!-- Theme mode: dark colours -->
+    <string name="s_ap_theme_dark">Ciemny</string>
+    <!-- %1$s = secret theme name -->
+    <string name="s_ap_secret_dark_only">%1$s: tylko ciemny</string>
+    <!-- %1$s = secret theme name -->
+    <string name="s_ap_secret_light_only">%1$s: tylko jasny</string>
+    <string name="s_ap_oled">Czerń OLED</string>
+    <string name="s_ap_oled_sub">Czysto czarne tło w ciemnym motywie, oszczędza baterię na ekranach OLED</string>
+    <string name="s_ap_group_colour">Kolor</string>
+    <string name="s_ap_colour_source">Źródło koloru</string>
+    <!-- Colour source option: colours follow the current weather -->
+    <string name="s_ap_source_weather">Pogoda</string>
+    <!-- Colour source option: Material You colours from the wallpaper -->
+    <string name="s_ap_source_wallpaper">Tapeta</string>
+    <!-- Colour source option: a colour the user picks -->
+    <string name="s_ap_source_custom">Własny</string>
+    <!-- %1$s = secret theme name -->
+    <string name="s_ap_source_overridden">Zastąpione przez sekretny motyw %1$s</string>
+    <string name="s_ap_source_weather_sub">Zmienia się z niebem: złote słońce, łupkowe chmury, głęboki granat nocy</string>
+    <string name="s_ap_source_wallpaper_sub">Material You: kolory z twojej tapety</string>
+    <string name="s_ap_source_custom_sub">Twój własny kolor, poniżej</string>
+    <string name="s_ap_custom_colour_action">Własny kolor…</string>
+    <string name="s_ap_palette">Styl palety</string>
+    <string name="s_ap_palette_balanced">Wyważony</string>
+    <string name="s_ap_palette_vibrant">Żywy</string>
+    <string name="s_ap_palette_expressive">Ekspresyjny</string>
+    <string name="s_ap_palette_sub">Jak kolorowe są motywy pogodowe i własne</string>
+    <string name="s_ap_group_secret">Sekretne motywy</string>
+    <!-- %1$d = themes found, %2$d = total number of secret themes -->
+    <string name="s_ap_secret_found">Znaleziono %1$d z %2$d</string>
+    <string name="s_ap_secret_hint">Więcej jest ukrytych. Spróbuj wpisać ciekawe słowa w wyszukiwarkę miast.</string>
+    <!-- The normal (non-secret) theme -->
+    <string name="s_ap_secret_default">Domyślny</string>
+    <string name="s_ap_group_text">Tekst</string>
+    <string name="s_ap_font_style">Styl czcionki</string>
+    <!-- Font style option: the standard font -->
+    <string name="s_ap_font_default">Domyślny</string>
+    <!-- Font style option: wide and heavy letters -->
+    <string name="s_ap_font_chunky">Masywny</string>
+    <!-- Font style option: narrow, tall letters -->
+    <string name="s_ap_font_tall">Wysoki</string>
+    <string name="s_ap_font_replaced">Zastąpiony czcionką do czytania</string>
+    <!-- Letter corner style -->
+    <string name="s_ap_edges">Krawędzie</string>
+    <string name="s_ap_edges_sharp">Ostre</string>
+    <string name="s_ap_edges_rounded">Zaokrąglone</string>
+    <string name="s_ap_reading_font">Czcionka do czytania</string>
+    <!-- Reading font option: no special reading font -->
+    <string name="s_ap_reading_none">Brak</string>
+    <!-- Reading font option: short for the OpenDyslexic font -->
+    <string name="s_ap_reading_dyslexic">Dysleksja</string>
+    <string name="s_ap_reading_sub">Lexend i OpenDyslexic ułatwiają czytanie</string>
+    <string name="s_ap_hero">Tło nagłówka</string>
+    <string name="s_ap_hero_sub">Kolorowa karta za bieżącymi warunkami</string>
+    <string name="s_ap_card_style">Styl kart</string>
+    <string name="s_ap_card_filled">Wypełnione</string>
+    <string name="s_ap_card_outlined">Z obramowaniem</string>
+    <!-- Card style option: no card background -->
+    <string name="s_ap_card_none">Brak</string>
+    <string name="s_ap_icons">Ikony pogody</string>
+    <string name="s_ap_icons_mono">Czarno-białe</string>
+    <!-- Weather icon option: coloured icons -->
+    <string name="s_ap_icons_colour">Kolorowe</string>
+    <string name="s_ap_group_effects">Efekty pogodowe</string>
+    <string name="s_ap_animations">Animacje</string>
+    <string name="s_ap_animations_sub">Żywy deszcz, śnieg, mgła, gwiazdy i błyskawice za prognozą</string>
+    <string name="s_ap_battery_saver">Wstrzymuj w oszczędzaniu baterii</string>
+    <string name="s_ap_battery_saver_sub">Pokazuj nieruchome niebo, gdy włączone jest oszczędzanie baterii</string>
+    <string name="s_ap_haptics">Wibracje</string>
+    <string name="s_ap_haptics_sub">Poczuj dudnienie grzmotów i stukanie kropli</string>
+    <!-- Live preview chip, %1$s = sample temperature like "21°" -->
+    <string name="s_ap_preview_feels">Odczuwalna %1$s</string>
+    <string name="s_ap_weather_map">Mapa motywów pogody</string>
+    <string name="s_ap_weather_map_sub">Kliknij niebo, by zobaczyć podgląd powyżej</string>
+    <string name="s_ap_presets">Gotowe kolory</string>
+    <!-- Font sample: example weather condition -->
+    <string name="s_ap_sample_condition">Częściowe zachmurzenie</string>
+    <!-- Font sample: %1$s = sample temperature like "21°" -->
+    <string name="s_ap_sample_detail">Odczuwalna %1$s · Lekki wiatr</string>
+    <!-- Custom colour dialog -->
+    <string name="s_ap_custom_colour">Własny kolor</string>
+    <!-- Preview chip: sunny weather -->
+    <string name="s_ap_sample_sunny">Słonecznie</string>
+    <string name="s_ap_sample_wind">Wiatr</string>
+    <string name="s_ap_hue">Odcień</string>
+    <string name="s_ap_saturation">Nasycenie</string>
+    <string name="s_ap_brightness">Jasność</string>
+    <!-- Hexadecimal colour code field -->
+    <string name="s_ap_hex">Hex</string>
+
+    <!-- Sky looks used for theme previews (Appearance > Theme weather map) -->
+    <string name="s_sky_clear_day">Słonecznie</string>
+    <string name="s_sky_clear_night">Pogodna noc</string>
+    <string name="s_sky_partly_day">Częściowe zachmurzenie</string>
+    <string name="s_sky_partly_night">Pochmurna noc</string>
+    <string name="s_sky_cloudy_day">Całkowite zachmurzenie</string>
+    <string name="s_sky_cloudy_night">Zachmurzona noc</string>
+    <string name="s_sky_fog_day">Mgła</string>
+    <string name="s_sky_fog_night">Nocna mgła</string>
+    <string name="s_sky_drizzle_day">Mżawka</string>
+    <string name="s_sky_drizzle_night">Nocna mżawka</string>
+    <string name="s_sky_rain_day">Deszcz</string>
+    <string name="s_sky_rain_night">Nocny deszcz</string>
+    <string name="s_sky_freezing_day">Marznący deszcz</string>
+    <string name="s_sky_freezing_night">Nocny lód</string>
+    <string name="s_sky_snow_day">Śnieg</string>
+    <string name="s_sky_snow_night">Nocny śnieg</string>
+    <string name="s_sky_thunder_day">Burza</string>
+    <string name="s_sky_thunder_night">Nocna burza</string>
+
+    <!-- Secret themes: hidden colour themes. Names and descriptions only; the unlock words are not translated. -->
+    <string name="s_secret_terminal">Terminal</string>
+    <string name="s_secret_terminal_blurb">Fosforowa zieleń na czystej czerni. Dla roota, który w tobie siedzi.</string>
+    <string name="s_secret_ember">Żar</string>
+    <string name="s_secret_ember_blurb">Matowa czerń i jeden rozżarzony czerwony węgielek.</string>
+    <string name="s_secret_glacier">Lodowiec</string>
+    <string name="s_secret_glacier_blurb">Niebieski lód, białe światło i bardzo zimne powietrze.</string>
+    <string name="s_secret_sakura">Sakura</string>
+    <string name="s_secret_sakura_blurb">Róż kwitnącej wiśni ze świeżymi wiosennymi liśćmi.</string>
+    <string name="s_secret_neon_dusk">Neonowy zmierzch</string>
+    <string name="s_secret_neon_dusk_blurb">Gorący róż i elektryczny cyjan nad miastem o północy.</string>
+    <string name="s_secret_brass">Mosiądz</string>
+    <string name="s_secret_brass_blurb">Polerowany mosiądz, zielona patyna i światło lamp gazowych.</string>
+    <string name="s_secret_moss">Mech</string>
+    <string name="s_secret_moss_blurb">Zielenie leśnego runa i złoto późnego popołudnia.</string>
+    <string name="s_secret_paper">Papier</string>
+    <string name="s_secret_paper_blurb">Atrament na papierze. Bez koloru, bez rozpraszaczy.</string>
+    <string name="s_secret_lagoon">Laguna</string>
+    <string name="s_secret_lagoon_blurb">Turkusowe płycizny i rafy koralowe.</string>
+
+    <!-- Settings > App icon -->
+    <!-- Icon mode that changes with the current weather -->
+    <string name="s_icon_dynamic">Dynamiczna</string>
+    <string name="s_icon_dynamic_sub">Zmienia się z pogodą</string>
+    <!-- Group of weather-themed app icons -->
+    <string name="s_icon_group_weather">Pogoda</string>
+    <!-- Group of the classic app icons -->
+    <string name="s_icon_group_classic">Klasyczne</string>
+    <string name="s_icon_hint">Ikona zmieni się po wyjściu z aplikacji; niektóre launchery potrzebują chwili.</string>
+    <string name="s_icon_hero_dynamic">Dynamiczna · pasuje do bieżącej pogody</string>
+    <string name="s_icon_hero_fixed">Stała ikona</string>
+    <!-- Accessibility label: badge marking the icon the dynamic mode shows right now -->
+    <string name="s_icon_now_cd">Teraz</string>
+
+    <!-- Settings > Data & accuracy -->
+    <string name="s_data_title">Dane</string>
+    <string name="s_data_intro">Skąd pochodzi twoja prognoza</string>
+    <string name="s_data_intro_body">Expressive Weather korzysta z darmowych, otwartych danych krajowych służb meteorologicznych. Bez konta, bez klucza API, bez śledzenia: do poniższych serwisów wysyłana jest tylko oglądana lokalizacja.</string>
+    <string name="s_data_group_model">Model prognozy</string>
+    <string name="s_data_about_models">O modelach</string>
+    <string name="s_data_about_models_body">Tryb Auto wybiera najdokładniejszy model dla twojego obszaru — np. ICON-D2 w Niemczech, AROME we Francji, HRRR w USA czy Harmonie w Holandii — a dla dalszych dni dołącza ECMWF i GFS. Ręczny wybór modelu świetnie sprawdza się do porównań; gdy model nie ma danych o czymś (UV, widoczność, szansa opadów lub dalsze dni), lukę wypełnia prognoza Auto.</string>
+    <string name="s_data_group_accuracy">Dokładność</string>
+    <string name="s_data_local_correction">Lokalna korekta</string>
+    <!-- %1$d = search radius in km -->
+    <string name="s_data_local_correction_sub">Porównuje prognozę z najbliższą lotniskową stacją pogodową (METAR, w promieniu %1$d km) i koryguje najbliższe 6 godzin w stronę faktycznych pomiarów. Prywatność: do aviationweather.gov (NOAA) wysyłany jest tylko przybliżony obszar wokół ciebie (zaokrąglony kwadrat ~70 km) — nigdy dokładna lokalizacja.</string>
+    <string name="s_data_show_source">Pokazuj źródło danych</string>
+    <string name="s_data_show_source_sub">Pokazuj na dole prognozy, jakiego modelu i stacji użyto.</string>
+    <string name="s_data_group_sources">Źródła danych</string>
+    <!-- Data sources list: what each provider is used for, and its licence -->
+    <string name="s_src_openmeteo_use">Prognozy, jakość powietrza (Copernicus CAMS), dane morskie i wyszukiwanie miejsc</string>
+    <string name="s_src_national">Krajowe służby meteorologiczne</string>
+    <string name="s_src_national_use">Modele używane przez Auto: DWD, NOAA, ECMWF, Météo-France, Met Office, KNMI, DMI, MET Norway, MeteoSwiss, ECCC, JMA i inne</string>
+    <string name="s_src_national_licence">Otwarte dane, głównie CC BY 4.0</string>
+    <!-- %1$s = forecast model name -->
+    <string name="s_src_model_use">Model prognozy: %1$s</string>
+    <string name="s_src_cams_use">Model jakości powietrza i pyłków (przez Open-Meteo)</string>
+    <string name="s_src_cams_licence">Licencja Copernicus</string>
+    <string name="s_src_marine_use">Fale, fala martwa, temperatura morza, prądy i pływy</string>
+    <string name="s_src_awc_use">Bieżące obserwacje lotniskowe (METAR) do lokalnej korekty</string>
+    <string name="s_src_public_domain">Domena publiczna</string>
+    <string name="s_src_nominatim_use">Nazwy twojej bieżącej lokalizacji</string>
+    <string name="s_src_nominatim_licence">ODbL, © współtwórcy OpenStreetMap</string>
+    <string name="s_src_rainviewer_use">Obrazy radaru opadów</string>
+    <string name="s_src_rainviewer_licence">Darmowe API, z podaniem źródła</string>
+    <string name="s_src_carto_use">Kafelki mapy pod radarem</string>
+    <string name="s_src_carto_licence">© CARTO, © współtwórcy OpenStreetMap</string>
+    <string name="s_src_nhc_use">Tory burz tropikalnych i huraganów</string>
+    <string name="s_src_nws_use">Alerty pogodowe w Stanach Zjednoczonych</string>
+    <string name="s_src_meteoalarm_use">Ostrzeżenia pogodowe w całej Europie</string>
+    <string name="s_src_dwd_use">Ostrzeżenia pogodowe w Niemczech</string>
+    <string name="s_src_dwd_licence">Otwarte dane DWD, CC BY 4.0</string>
+    <string name="s_src_eccc_use">Alerty pogodowe w Kanadzie</string>
+    <string name="s_src_eccc_licence">ECCC Open Data Licence</string>
+    <string name="s_src_github_use">Aktualizacje aplikacji</string>
+    <string name="s_src_github_licence">Warunki GitHub</string>
+
+    <!-- Settings > Your activity (usage stats) -->
+    <string name="s_stats_streak">Obecna seria</string>
+    <string name="s_stats_best_streak">Najlepsza seria</string>
+    <!-- Unit shown under a streak number (the number itself is shown separately above) -->
+    <plurals name="s_stats_days_unit">
+        <item quantity="one">dzień</item>
+        <item quantity="few">dni</item>
+        <item quantity="many">dni</item>
+        <item quantity="other">dnia</item>
+    </plurals>
+    <string name="s_stats_hottest">Najcieplej</string>
+    <string name="s_stats_coldest">Najzimniej</string>
+    <string name="s_stats_days_checked_in">Dni z wizytą</string>
+    <!-- %1$s = date, e.g. "3 Mar 2026" -->
+    <string name="s_stats_since">od %1$s</string>
+    <string name="s_stats_places">Odkryte miejsca</string>
+    <!-- %1$d = conditions seen, %2$d = total number of conditions -->
+    <string name="s_stats_conditions">Zaobserwowane warunki · %1$d z %2$d</string>
+    <string name="s_stats_privacy">Przechowywane tylko na tym urządzeniu. Nic stąd nie jest nigdzie wysyłane.</string>
+    <!-- Weather conditions collected in "Your activity" -->
+    <string name="s_stats_sky_clear">Pogodnie</string>
+    <string name="s_stats_sky_partly">Częściowo</string>
+    <string name="s_stats_sky_cloudy">Pochmurno</string>
+    <string name="s_stats_sky_fog">Mgła</string>
+    <string name="s_stats_sky_drizzle">Mżawka</string>
+    <string name="s_stats_sky_rain">Deszcz</string>
+    <string name="s_stats_sky_freezing">Marznące</string>
+    <string name="s_stats_sky_snow">Śnieg</string>
+    <string name="s_stats_sky_thunder">Burza</string>
+
+    <!-- Places screen (search and saved places) -->
+    <string name="s_loc_search_hint">Szukaj miast i miejsc</string>
+    <!-- Accessibility label: clear the search field -->
+    <string name="s_loc_clear">Wyczyść</string>
+    <!-- %1$s = what the user typed -->
+    <string name="s_loc_no_results">Nie znaleziono miejsc dla „%1$s”</string>
+    <string name="s_loc_your_location">Twoja lokalizacja</string>
+    <string name="s_loc_current">Bieżąca lokalizacja</string>
+    <string name="s_loc_current_sub">Użyj lokalizacji GPS / sieci</string>
+    <string name="s_loc_saved">Zapisane miejsca</string>
+    <string name="s_loc_empty">Wyszukaj powyżej, by dodać miejsca.</string>
+    <!-- Accessibility label, %1$s = place name -->
+    <string name="s_loc_remove">Usuń: %1$s</string>
+
+    <!-- App update dialog -->
+    <string name="s_upd_title">Dostępna aktualizacja</string>
+    <!-- %1$s = new version, %2$s = installed version -->
+    <string name="s_upd_body">Wyszła wersja %1$s (masz %2$s).</string>
+    <!-- Button while downloading, %1$d = percent -->
+    <string name="s_upd_downloading">Pobieranie %1$d%%</string>
+    <!-- Button: install the update -->
+    <string name="s_upd_update">Aktualizuj</string>
+    <string name="s_upd_later">Później</string>
+
+    <!-- Drop Dash: hidden mini game (you steer a raindrop) -->
+    <string name="s_game_exit">Wyjdź</string>
+    <!-- %1$d = current score, %2$d = best score -->
+    <string name="s_game_score_best">%1$d   ·   Rekord %2$d</string>
+    <!-- Shown when the raindrop is lost (game over) -->
+    <string name="s_game_over">Wyparowała!</string>
+    <string name="s_game_title">Drop Dash</string>
+    <!-- %1$d = final score -->
+    <string name="s_game_score">Wynik %1$d</string>
+    <!-- %1$d = final score, which is a new personal best -->
+    <string name="s_game_score_new_best">Wynik %1$d · nowy rekord!</string>
+    <string name="s_game_intro">Przeciągaj, by sterować kroplą.\nZbieraj kropelki, unikaj rozbłysków słońca i piorunów.</string>
+    <string name="s_game_play_again">Zagraj ponownie</string>
+    <string name="s_game_start">Start</string>
+</resources>

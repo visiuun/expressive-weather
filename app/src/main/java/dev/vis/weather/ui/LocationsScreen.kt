@@ -2,6 +2,8 @@
 
 package dev.vis.weather.ui
 
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -91,16 +93,16 @@ fun LocationsScreen(
             Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") }
+            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.s_back)) }
             TextField(
                 value = search.query,
                 onValueChange = onQuery,
                 modifier = Modifier.weight(1f).padding(end = 8.dp),
-                placeholder = { Text("Search cities and places") },
+                placeholder = { Text(stringResource(R.string.s_loc_search_hint)) },
                 leadingIcon = { Icon(Icons.Rounded.Search, null) },
                 trailingIcon = {
                     if (search.query.isNotEmpty()) {
-                        IconButton(onClick = { onQuery("") }) { Icon(Icons.Rounded.Close, "Clear") }
+                        IconButton(onClick = { onQuery("") }) { Icon(Icons.Rounded.Close, stringResource(R.string.s_loc_clear)) }
                     }
                 },
                 singleLine = true,
@@ -135,7 +137,7 @@ fun LocationsScreen(
                 } else if (search.error != null) {
                     item { Hint(search.error, w) }
                 } else if (search.results.isEmpty()) {
-                    item { Hint("No places found for “${search.query}”", w) }
+                    item { Hint(stringResource(R.string.s_loc_no_results, search.query), w) }
                 }
                 itemsIndexed(search.results, key = { i, p -> "r$i${p.key}" }) { i, p ->
                     PlaceRow(
@@ -151,12 +153,12 @@ fun LocationsScreen(
                     )
                 }
             } else {
-                item { SectionLabel("Your location", w) }
+                item { SectionLabel(stringResource(R.string.s_loc_your_location), w) }
                 item {
                     PlaceRow(
-                        title = "Current location",
+                        title = stringResource(R.string.s_loc_current),
                         subtitle = state.currentPlace?.let { listOf(it.name, it.region).filter { s -> s.isNotBlank() }.joinToString(", ") }
-                            ?: "Use GPS / network location",
+                            ?: stringResource(R.string.s_loc_current_sub),
                         icon = Icons.Rounded.MyLocation,
                         shape = MaterialShapes.Cookie7Sided,
                         index = 0, count = 1,
@@ -165,9 +167,9 @@ fun LocationsScreen(
                         onClick = onUseCurrent,
                     )
                 }
-                item { SectionLabel("Saved places", w.padding(top = 18.dp)) }
+                item { SectionLabel(stringResource(R.string.s_loc_saved), w.padding(top = 18.dp)) }
                 if (state.places.isEmpty()) {
-                    item { Hint("Search above to add places.", w) }
+                    item { Hint(stringResource(R.string.s_loc_empty), w) }
                 }
                 itemsIndexed(state.places, key = { _, p -> p.key }) { i, p ->
                     PlaceRow(
@@ -181,7 +183,7 @@ fun LocationsScreen(
                         modifier = w.animateItem(),
                         onClick = { onSelect(p) },
                         trailing = {
-                            IconButton(onClick = { onRemove(p) }) { Icon(Icons.Rounded.DeleteOutline, "Remove ${p.name}") }
+                            IconButton(onClick = { onRemove(p) }) { Icon(Icons.Rounded.DeleteOutline, stringResource(R.string.s_loc_remove, p.name)) }
                         },
                     )
                 }
@@ -248,7 +250,7 @@ private fun PlaceRow(
                     )
                 }
             }
-            if (selected) Icon(Icons.Rounded.Check, "Selected", Modifier.padding(horizontal = 8.dp).size(20.dp), tint = MaterialTheme.colorScheme.primary)
+            if (selected) Icon(Icons.Rounded.Check, stringResource(R.string.s_selected), Modifier.padding(horizontal = 8.dp).size(20.dp), tint = MaterialTheme.colorScheme.primary)
             trailing?.invoke()
         }
     }

@@ -21,8 +21,8 @@ android {
         applicationId = "dev.vis.weather"
         minSdk = 24
         targetSdk = 36
-        versionCode = 8
-        versionName = "1.5.2"
+        versionCode = 9
+        versionName = "1.6.0"
     }
 
     signingConfigs {
@@ -50,6 +50,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
         // java.time on Android 7
         isCoreLibraryDesugaringEnabled = true
+    }
+
+    // Lists the translated languages for Android 13+'s per-app language setting.
+    androidResources {
+        generateLocaleConfig = true
     }
 
     buildFeatures {

@@ -2,6 +2,9 @@
 
 package dev.vis.weather.ui
 
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,29 +47,29 @@ fun StatsScreen(settings: Settings, onBack: () -> Unit) {
     val context = LocalContext.current
     val s = remember { Stats.read(context) }
     val fmt = remember(settings) { Fmt(settings, ZoneId.systemDefault()) }
-    SubScreen("Your activity", onBack) { w ->
+    SubScreen(stringResource(R.string.s_activity), onBack) { w ->
         item {
             Row(w, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Big("${s.streak}", "Current streak", if (s.streak == 1) "day" else "days", MaterialShapes.Sunny, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.onPrimaryContainer, Modifier.weight(1f))
-                Big("${s.bestStreak}", "Best streak", if (s.bestStreak == 1) "day" else "days", MaterialShapes.Cookie9Sided, MaterialTheme.colorScheme.tertiaryContainer, MaterialTheme.colorScheme.onTertiaryContainer, Modifier.weight(1f))
+                Big("${s.streak}", stringResource(R.string.s_stats_streak), pluralStringResource(R.plurals.s_stats_days_unit, s.streak), MaterialShapes.Sunny, MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.onPrimaryContainer, Modifier.weight(1f))
+                Big("${s.bestStreak}", stringResource(R.string.s_stats_best_streak), pluralStringResource(R.plurals.s_stats_days_unit, s.bestStreak), MaterialShapes.Cookie9Sided, MaterialTheme.colorScheme.tertiaryContainer, MaterialTheme.colorScheme.onTertiaryContainer, Modifier.weight(1f))
             }
         }
         item {
             Row(w, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Big(fmt.temp(s.hottest), "Hottest seen", s.hottestWhere, MaterialShapes.SoftBurst, Color(0xFFFFB59A), Color(0xFF3A0B00), Modifier.weight(1f))
-                Big(fmt.temp(s.coldest), "Coldest seen", s.coldestWhere, MaterialShapes.Flower, Color(0xFFB7DCFF), Color(0xFF00213D), Modifier.weight(1f))
+                Big(fmt.temp(s.hottest), stringResource(R.string.s_stats_hottest), s.hottestWhere, MaterialShapes.SoftBurst, Color(0xFFFFB59A), Color(0xFF3A0B00), Modifier.weight(1f))
+                Big(fmt.temp(s.coldest), stringResource(R.string.s_stats_coldest), s.coldestWhere, MaterialShapes.Flower, Color(0xFFB7DCFF), Color(0xFF00213D), Modifier.weight(1f))
             }
         }
         item {
             Row(w, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Big("${s.daysCheckedIn}", "Days checked in", s.installedSince?.let { "since " + it.format(DateTimeFormatter.ofPattern("d MMM yyyy", Locale.getDefault())) } ?: "", MaterialShapes.Cookie12Sided, MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.onSecondaryContainer, Modifier.weight(1f))
-                Big("${s.places.size}", "Places explored", "", MaterialShapes.Clover8Leaf, MaterialTheme.colorScheme.surfaceContainerHighest, MaterialTheme.colorScheme.onSurface, Modifier.weight(1f))
+                Big("${s.daysCheckedIn}", stringResource(R.string.s_stats_days_checked_in), s.installedSince?.let { stringResource(R.string.s_stats_since, it.format(DateTimeFormatter.ofPattern("d MMM yyyy", Locale.getDefault()))) } ?: "", MaterialShapes.Cookie12Sided, MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.onSecondaryContainer, Modifier.weight(1f))
+                Big("${s.places.size}", stringResource(R.string.s_stats_places), "", MaterialShapes.Clover8Leaf, MaterialTheme.colorScheme.surfaceContainerHighest, MaterialTheme.colorScheme.onSurface, Modifier.weight(1f))
             }
         }
         item {
             AppCard(w) {
                 Column(Modifier.padding(18.dp)) {
-                    Text("Conditions observed · ${s.conditions.size} of ${Sky.entries.size}", style = MaterialTheme.typography.titleMediumEmphasized)
+                    Text(stringResource(R.string.s_stats_conditions, s.conditions.size, Sky.entries.size), style = MaterialTheme.typography.titleMediumEmphasized)
                     Spacer(Modifier.height(12.dp))
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Sky.entries.forEach { sky ->
@@ -80,7 +83,7 @@ fun StatsScreen(settings: Settings, onBack: () -> Unit) {
                                     if (seen) WeatherIcon(codeFor(sky), true, Modifier.size(34.dp)) else Text("?", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 }
                                 Text(
-                                    sky.name.lowercase().replaceFirstChar { it.uppercase() }, style = MaterialTheme.typography.labelSmall,
+                                    stringResource(skyLabel(sky)), style = MaterialTheme.typography.labelSmall,
                                     textAlign = TextAlign.Center, maxLines = 1,
                                     color = if (seen) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -92,11 +95,17 @@ fun StatsScreen(settings: Settings, onBack: () -> Unit) {
         }
         item {
             Text(
-                "Kept only on this device. Nothing here is uploaded anywhere.",
+                stringResource(R.string.s_stats_privacy),
                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = w.padding(horizontal = 8.dp),
             )
         }
     }
+}
+
+private fun skyLabel(sky: Sky): Int = when (sky) {
+    Sky.CLEAR -> R.string.s_stats_sky_clear; Sky.PARTLY -> R.string.s_stats_sky_partly; Sky.CLOUDY -> R.string.s_stats_sky_cloudy
+    Sky.FOG -> R.string.s_stats_sky_fog; Sky.DRIZZLE -> R.string.s_stats_sky_drizzle; Sky.RAIN -> R.string.s_stats_sky_rain
+    Sky.FREEZING -> R.string.s_stats_sky_freezing; Sky.SNOW -> R.string.s_stats_sky_snow; Sky.THUNDER -> R.string.s_stats_sky_thunder
 }
 
 private fun codeFor(sky: Sky) = when (sky) {

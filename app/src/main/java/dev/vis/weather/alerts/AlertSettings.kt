@@ -1,7 +1,10 @@
 package dev.vis.weather.alerts
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.core.content.edit
+import dev.vis.weather.L
+import dev.vis.weather.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,116 +21,108 @@ enum class Trigger {
     PERSISTENT,
 }
 
-enum class AlertGroup(val title: String) {
-    SAFETY("Warnings & rain"),
-    DAILY("Daily briefings"),
-    HEALTH("Health & comfort"),
-    MORE("More"),
+enum class AlertGroup(@StringRes private val titleRes: Int) {
+    SAFETY(R.string.al_group_safety),
+    DAILY(R.string.al_group_daily),
+    HEALTH(R.string.al_group_health),
+    MORE(R.string.al_group_more);
+
+    val title: String get() = L.s(titleRes)
 }
 
 /** Everything the app can notify about. Order = order on the Alerts screen. */
 enum class AlertType(
-    val title: String,
-    val subtitle: String,
-    val description: String,
+    @StringRes private val titleRes: Int,
+    @StringRes private val subtitleRes: Int,
+    @StringRes private val descriptionRes: Int,
     val trigger: Trigger,
     val group: AlertGroup,
     val channel: Channel,
     val defaultTime: Int = 7 * 60,
 ) {
     WARNINGS(
-        "Weather warnings", "Official yellow, amber & red warnings",
-        "Get notified as soon as a national weather service issues a warning for your location, and when it is upgraded. " +
-            "Covers the US (NWS), Canada (ECCC), Germany (DWD) and 36 more European countries (MeteoAlarm).",
+        R.string.al_type_warnings_title, R.string.al_type_warnings_subtitle, R.string.al_type_warnings_desc,
         Trigger.WATCH, AlertGroup.SAFETY, Channel.WARNINGS,
     ),
     NOWCAST(
-        "Imminent rain & snow", "Minutes before rain or snow starts",
-        "A heads-up shortly before rain or snow arrives, with a live countdown that updates until it starts and tells you when it will stop. " +
-            "Uses the 15-minute nowcast, which is high-resolution radar-driven data in Europe and North America.",
+        R.string.al_type_nowcast_title, R.string.al_type_nowcast_subtitle, R.string.al_type_nowcast_desc,
         Trigger.WATCH, AlertGroup.SAFETY, Channel.NOWCAST,
     ),
     RAIN(
-        "Rain alert", "Rain forecast in the next few hours",
-        "Grab an umbrella: get notified when rain is likely in the hours ahead. Check once at a set time, or all day during the hours you choose.",
+        R.string.al_type_rain_title, R.string.al_type_rain_subtitle, R.string.al_type_rain_desc,
         Trigger.DAILY, AlertGroup.SAFETY, Channel.ALERTS, defaultTime = 7 * 60 + 30,
     ),
     STORM(
-        "Wind & storm alert", "Strong gusts or thunderstorms ahead",
-        "Get notified when gusts above your limit or thunderstorms are forecast in the next 12 hours, even when no official warning has been issued.",
+        R.string.al_type_storm_title, R.string.al_type_storm_subtitle, R.string.al_type_storm_desc,
         Trigger.WATCH, AlertGroup.SAFETY, Channel.ALERTS,
     ),
     TODAY(
-        "Morning briefing", "Your day's weather at a glance",
-        "A short summary each morning: conditions, high and low, rain timing, wind and anything notable, compared with yesterday.",
+        R.string.al_type_today_title, R.string.al_type_today_subtitle, R.string.al_type_today_desc,
         Trigger.DAILY, AlertGroup.DAILY, Channel.DAILY, defaultTime = 7 * 60,
     ),
     TOMORROW(
-        "Weather for tomorrow", "Evening summary of tomorrow",
-        "Each evening, a readable summary of tomorrow so you can plan ahead: how it compares with today, rain, wind and snow.",
+        R.string.al_type_tomorrow_title, R.string.al_type_tomorrow_subtitle, R.string.al_type_tomorrow_desc,
         Trigger.DAILY, AlertGroup.DAILY, Channel.DAILY, defaultTime = 19 * 60,
     ),
     WARDROBE(
-        "What to wear", "Clothing and carry-item advice",
-        "Daily advice on what to wear and bring, tailored to your commute, how you feel the cold, and the weather at home and at work.",
+        R.string.al_type_wardrobe_title, R.string.al_type_wardrobe_subtitle, R.string.al_type_wardrobe_desc,
         Trigger.DAILY, AlertGroup.DAILY, Channel.DAILY, defaultTime = 7 * 60,
     ),
     FROST(
-        "Frost alert", "Overnight temperatures at or below freezing",
-        "Get notified the evening before when the overnight temperature is forecast to drop to your threshold, so you can protect plants, pipes and pets and allow time to de-ice the car.",
+        R.string.al_type_frost_title, R.string.al_type_frost_subtitle, R.string.al_type_frost_desc,
         Trigger.DAILY, AlertGroup.HEALTH, Channel.ALERTS, defaultTime = 19 * 60 + 30,
     ),
     UV(
-        "UV alert", "UV index above your threshold",
-        "Each morning, a reminder to protect your skin when the UV index will exceed your threshold, with the hours when protection is needed.",
+        R.string.al_type_uv_title, R.string.al_type_uv_subtitle, R.string.al_type_uv_desc,
         Trigger.DAILY, AlertGroup.HEALTH, Channel.ALERTS, defaultTime = 8 * 60,
     ),
     HEAT(
-        "Dangerous wet bulb", "When heat and humidity get dangerous",
-        "The wet-bulb temperature combines heat and humidity into how well sweat can cool you. Get warned as soon as it's forecast to reach a dangerous level, so you can limit exertion, find shade or cool air and stay hydrated.",
+        R.string.al_type_heat_title, R.string.al_type_heat_subtitle, R.string.al_type_heat_desc,
         Trigger.WATCH, AlertGroup.HEALTH, Channel.WARNINGS,
     ),
     AIR(
-        "Air quality alert", "Air quality at or below your threshold",
-        "At your alert time, checks the European Air Quality Index forecast. If it reaches your threshold or worse, you'll get a heads-up to limit outdoor exertion.",
+        R.string.al_type_air_title, R.string.al_type_air_subtitle, R.string.al_type_air_desc,
         Trigger.DAILY, AlertGroup.HEALTH, Channel.ALERTS, defaultTime = 8 * 60,
     ),
     POLLEN(
-        "Pollen alert", "Elevated pollen for your allergies",
-        "Each morning, checks the pollen forecast for the allergens you choose and lets you know when levels exceed your sensitivity. Pollen forecasts cover Europe.",
+        R.string.al_type_pollen_title, R.string.al_type_pollen_subtitle, R.string.al_type_pollen_desc,
         Trigger.DAILY, AlertGroup.HEALTH, Channel.ALERTS, defaultTime = 7 * 60 + 15,
     ),
     TABLET(
-        "Hay fever tablet reminder", "A daily reminder to take your tablet",
-        "A simple daily reminder at the time you choose. Optionally only on days when your pollen alert threshold is reached.",
+        R.string.al_type_tablet_title, R.string.al_type_tablet_subtitle, R.string.al_type_tablet_desc,
         Trigger.DAILY, AlertGroup.HEALTH, Channel.REMINDERS, defaultTime = 7 * 60,
     ),
     PRESSURE(
-        "Pressure drop alert", "Rapid falls in barometric pressure",
-        "Rapid pressure drops often come before stormy weather and can trigger headaches or migraines for some people. Get notified when pressure is forecast to fall quickly over 3 hours.",
+        R.string.al_type_pressure_title, R.string.al_type_pressure_subtitle, R.string.al_type_pressure_desc,
         Trigger.WATCH, AlertGroup.HEALTH, Channel.ALERTS,
     ),
     FRIENDS(
-        "Family & friends", "Warnings where your people are",
-        "Get notified when an official warning is issued at the place of someone in your Family & friends list.",
+        R.string.al_type_friends_title, R.string.al_type_friends_subtitle, R.string.al_type_friends_desc,
         Trigger.WATCH, AlertGroup.MORE, Channel.FRIENDS,
     ),
     ONGOING(
-        "Status bar weather", "Current temperature always in view",
-        "Shows the current temperature in the status bar and a silent notification with today's forecast, refreshed in the background.",
+        R.string.al_type_ongoing_title, R.string.al_type_ongoing_subtitle, R.string.al_type_ongoing_desc,
         Trigger.PERSISTENT, AlertGroup.MORE, Channel.ONGOING,
     ),
+    ;
+
+    val title: String get() = L.s(titleRes)
+    val subtitle: String get() = L.s(subtitleRes)
+    val description: String get() = L.s(descriptionRes)
 }
 
 /** Notification channels (user can fine-tune sound/vibration per channel in system settings). */
-enum class Channel(val id: String, val title: String, val description: String, val importance: Int) {
-    WARNINGS("warnings", "Weather warnings", "Official severe weather warnings", 4),
-    NOWCAST("nowcast", "Imminent rain & snow", "Rain or snow starting within the hour", 4),
-    ALERTS("alerts", "Weather alerts", "Rain, wind, frost, UV, air quality, pollen and pressure alerts", 3),
-    DAILY("daily", "Daily briefings", "Morning briefing, tomorrow's weather and what to wear", 3),
-    REMINDERS("reminders", "Reminders", "Hay fever tablet reminder", 3),
-    FRIENDS("friends", "Family & friends", "Warnings at your family and friends' places", 3),
-    ONGOING("ongoing", "Status bar weather", "Current conditions, always visible", 2),
+enum class Channel(val id: String, @StringRes private val titleRes: Int, @StringRes private val descriptionRes: Int, val importance: Int) {
+    WARNINGS("warnings", R.string.al_channel_warnings_title, R.string.al_channel_warnings_desc, 4),
+    NOWCAST("nowcast", R.string.al_channel_nowcast_title, R.string.al_channel_nowcast_desc, 4),
+    ALERTS("alerts", R.string.al_channel_alerts_title, R.string.al_channel_alerts_desc, 3),
+    DAILY("daily", R.string.al_channel_daily_title, R.string.al_channel_daily_desc, 3),
+    REMINDERS("reminders", R.string.al_channel_reminders_title, R.string.al_channel_reminders_desc, 3),
+    FRIENDS("friends", R.string.al_channel_friends_title, R.string.al_channel_friends_desc, 3),
+    ONGOING("ongoing", R.string.al_channel_ongoing_title, R.string.al_channel_ongoing_desc, 2);
+
+    val title: String get() = L.s(titleRes)
+    val description: String get() = L.s(descriptionRes)
 }
 
 /**

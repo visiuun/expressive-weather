@@ -70,9 +70,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.data.Astro
 import dev.vis.weather.data.Day
 import dev.vis.weather.data.Indices
@@ -116,15 +119,15 @@ fun DayScreen(
 
     Column(Modifier.fillMaxSize().statusBarsPadding()) {
         Row(Modifier.padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            FilledTonalIconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") }
+            FilledTonalIconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.dt_back)) }
             Spacer(Modifier.width(10.dp))
             AnimatedContent(i, transitionSpec = { fadeIn() togetherWith fadeOut() }, label = "title") { di ->
                 val d = days[di]
                 Column {
                     Text(
                         when (d.date) {
-                            today -> "Today"
-                            today.plusDays(1) -> "Tomorrow"
+                            today -> stringResource(R.string.dt_today)
+                            today.plusDays(1) -> stringResource(R.string.dt_tomorrow)
                             else -> d.date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
                         },
                         style = MaterialTheme.typography.headlineSmallEmphasized,
@@ -179,7 +182,7 @@ private fun DayStrip(days: List<Day>, selected: Int, fmt: Fmt, onSelect: (Int) -
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        if (d.date == today) "Today" else d.date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                        if (d.date == today) stringResource(R.string.dt_today) else d.date.dayOfWeek.getDisplayName(TextStyle.SHORT, androidx.compose.ui.platform.LocalConfiguration.current.locales[0]),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 1,
@@ -222,7 +225,7 @@ private fun DayContent(f: Forecast, d: Day, fmt: Fmt) {
         if (hours.isNotEmpty()) {
             item(key = "graph") {
                 Box(w) {
-                    SectionCard("Through the day", Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
+                    SectionCard(stringResource(R.string.dt_through_the_day), Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
                         ConnectedChoice(
                             options = HourlyMetric.entries,
                             selected = metric,
@@ -244,7 +247,7 @@ private fun DayContent(f: Forecast, d: Day, fmt: Fmt) {
                 Row(w.padding(top = 6.dp, start = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                     ShapeBadge(Icons.Rounded.ViewTimeline, MaterialShapes.Pill, size = 32.dp)
                     Spacer(Modifier.width(10.dp))
-                    Text("Hour by hour", style = MaterialTheme.typography.titleMediumEmphasized)
+                    Text(stringResource(R.string.dt_hour_by_hour), style = MaterialTheme.typography.titleMediumEmphasized)
                 }
             }
             itemsIndexed(hours, key = { _, h -> "h${h.time}" }) { idx, h ->
@@ -253,7 +256,7 @@ private fun DayContent(f: Forecast, d: Day, fmt: Fmt) {
         }
         item(key = "src") {
             Text(
-                "Hourly model data · Open-Meteo.com",
+                stringResource(R.string.dt_hourly_source),
                 style = MaterialTheme.typography.labelSmall,
                 color = cs.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp),
@@ -287,7 +290,7 @@ private fun DayHero(d: Day, hours: List<Hour>, fmt: Fmt, modifier: Modifier) {
                     )
                 }
                 Text(
-                    "Feels like ${fmt.temp(d.feelsMax)} / ${fmt.temp(d.feelsMin)}",
+                    stringResource(R.string.dt_feels_like_range, fmt.temp(d.feelsMax), fmt.temp(d.feelsMin)),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -306,19 +309,21 @@ private fun daySummary(d: Day, hours: List<Hour>, fmt: Fmt): String {
     val parts = mutableListOf<String>()
     val wet = hours.filter { !it.precipProb.isNaN() && it.precipProb >= 40 }
     if (wet.isNotEmpty()) {
-        parts += "Precipitation most likely ${fmt.hour(wet.first().time)}–${fmt.hour(wet.last().time + 3600)}" +
-            (if (!d.precipSum.isNaN() && d.precipSum > 0) ", ${fmt.precip(d.precipSum)} in total." else ".")
+        val from = fmt.hour(wet.first().time)
+        val to = fmt.hour(wet.last().time + 3600)
+        parts += if (!d.precipSum.isNaN() && d.precipSum > 0) L.s(R.string.dt_day_precip_likely_total, from, to, fmt.precip(d.precipSum))
+        else L.s(R.string.dt_day_precip_likely, from, to)
     } else if (!d.precipProbMax.isNaN() && d.precipProbMax < 20) {
-        parts += "Dry day expected."
+        parts += L.s(R.string.dt_day_dry)
     }
     val warmest = hours.filter { !it.temp.isNaN() }.maxByOrNull { it.temp }
     val coldest = hours.filter { !it.temp.isNaN() }.minByOrNull { it.temp }
     if (warmest != null && coldest != null) {
-        parts += "Warmest around ${fmt.hour(warmest.time)}, coolest around ${fmt.hour(coldest.time)}."
+        parts += L.s(R.string.dt_day_warmest, fmt.hour(warmest.time), fmt.hour(coldest.time))
     }
     if (!d.windMax.isNaN()) {
-        parts += "Wind up to ${fmt.wind(d.windMax)} from the ${WeatherInfo.compass(d.windDir)}" +
-            (if (!d.gustMax.isNaN() && d.gustMax > d.windMax) ", gusts ${fmt.wind(d.gustMax)}." else ".")
+        parts += if (!d.gustMax.isNaN() && d.gustMax > d.windMax) L.s(R.string.dt_day_wind_gusts, fmt.wind(d.windMax), WeatherInfo.compass(d.windDir), fmt.wind(d.gustMax))
+        else L.s(R.string.dt_day_wind, fmt.wind(d.windMax), WeatherInfo.compass(d.windDir))
     }
     return parts.joinToString(" ")
 }
@@ -389,20 +394,21 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
             {
                 val (v, u) = split(fmt.precip(d.precipSum))
                 Stat(
-                    "Precipitation", Icons.Rounded.Grain, MaterialShapes.Clover8Leaf, v, u,
+                    stringResource(R.string.dt_precipitation), Icons.Rounded.Grain, MaterialShapes.Clover8Leaf, v, u,
                     listOfNotNull(
-                        d.precipProbMax.takeIf { !it.isNaN() }?.let { "${it.roundToInt()}% chance" },
-                        d.precipHours.takeIf { !it.isNaN() && it > 0 }?.let { "${it.roundToInt()} h of rain" },
-                        d.snowfallSum.takeIf { !it.isNaN() && it >= 0.1 }?.let { "${fmt.snow(it)} of snow" },
+                        d.precipProbMax.takeIf { !it.isNaN() }?.let { stringResource(R.string.dt_pct_chance, it.roundToInt()) },
+                        d.precipHours.takeIf { !it.isNaN() && it > 0 }?.let { stringResource(R.string.dt_hours_of_rain, it.roundToInt()) },
+                        d.snowfallSum.takeIf { !it.isNaN() && it >= 0.1 }?.let { stringResource(R.string.dt_amount_of_snow, fmt.snow(it)) },
                     ).joinToString(" · "),
                     it,
                 )
             },
             {
                 Stat(
-                    "Wind", Icons.Rounded.Air, MaterialShapes.Cookie6Sided, fmt.windNum(d.windMax), fmt.windUnit,
-                    (if (!d.gustMax.isNaN() && d.gustMax > d.windMax) "Gusts ${fmt.wind(d.gustMax)} · " else "") +
-                        "${WeatherInfo.compass(d.windDir)}\n${WeatherInfo.beaufort(d.windMax)}",
+                    stringResource(R.string.dt_wind), Icons.Rounded.Air, MaterialShapes.Cookie6Sided, fmt.windNum(d.windMax), fmt.windUnit,
+                    if (!d.gustMax.isNaN() && d.gustMax > d.windMax)
+                        stringResource(R.string.dt_day_wind_caption_gusts, fmt.wind(d.gustMax), WeatherInfo.compass(d.windDir), WeatherInfo.beaufort(d.windMax))
+                    else stringResource(R.string.dt_day_wind_caption, WeatherInfo.compass(d.windDir), WeatherInfo.beaufort(d.windMax)),
                     it,
                 )
             },
@@ -411,12 +417,12 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
             {
                 val uw = remember(f, d) { Indices.uvWindow(f, d.date) }
                 Stat(
-                    "UV max", Icons.Rounded.WbSunny, MaterialShapes.Sunny,
+                    stringResource(R.string.dt_uv_max), Icons.Rounded.WbSunny, MaterialShapes.Sunny,
                     if (d.uvMax.isNaN()) dash else d.uvMax.roundToInt().toString(), "",
-                    "${WeatherInfo.uvLevel(d.uvMax)}" + when {
-                        uw == null -> ". ${WeatherInfo.uvAdvice(d.uvMax)}"
-                        uw.start == 0L -> ", peak ${fmt.time(uw.peakTime)}. ${WeatherInfo.uvAdvice(d.uvMax)}"
-                        else -> ", peak ${fmt.time(uw.peakTime)}. Protect ${fmt.time(uw.start)}–${fmt.time(uw.end)}."
+                    when {
+                        uw == null -> stringResource(R.string.dt_day_uv_caption, WeatherInfo.uvLevel(d.uvMax), WeatherInfo.uvAdvice(d.uvMax))
+                        uw.start == 0L -> stringResource(R.string.dt_day_uv_caption_peak, WeatherInfo.uvLevel(d.uvMax), fmt.time(uw.peakTime), WeatherInfo.uvAdvice(d.uvMax))
+                        else -> stringResource(R.string.dt_day_uv_caption_protect, WeatherInfo.uvLevel(d.uvMax), fmt.time(uw.peakTime), fmt.time(uw.start), fmt.time(uw.end))
                     },
                     it,
                 )
@@ -424,9 +430,9 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
             {
                 val (v, u) = split(fmt.duration(d.sunshine))
                 Stat(
-                    "Sunshine", Icons.Rounded.WbTwilight, MaterialShapes.SoftBurst, v, u,
+                    stringResource(R.string.dt_sunshine), Icons.Rounded.WbTwilight, MaterialShapes.SoftBurst, v, u,
                     if (!d.daylight.isNaN() && !d.sunshine.isNaN() && d.daylight > 0)
-                        "${(d.sunshine / d.daylight * 100).roundToInt()}% of ${fmt.duration(d.daylight)} daylight" else "",
+                        stringResource(R.string.dt_day_sunshine_pct, (d.sunshine / d.daylight * 100).roundToInt(), fmt.duration(d.daylight)) else "",
                     it,
                 )
             },
@@ -435,9 +441,9 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
             {
                 val a = avg(hum)
                 Stat(
-                    "Humidity", Icons.Rounded.WaterDrop, MaterialShapes.Cookie7Sided,
+                    stringResource(R.string.dt_humidity), Icons.Rounded.WaterDrop, MaterialShapes.Cookie7Sided,
                     if (a.isNaN()) dash else a.roundToInt().toString(), "%",
-                    "Range ${fmt.pct(minOf(hum))}–${fmt.pct(maxOf(hum))}",
+                    stringResource(R.string.dt_range, fmt.pct(minOf(hum)), fmt.pct(maxOf(hum))),
                     it,
                 )
             },
@@ -445,7 +451,7 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
                 val a = avg(dew)
                 val hd = remember(f, d) { Insights.humidityDay(f, d.date) }
                 Stat(
-                    "Dew point", Icons.Rounded.DeviceThermostat, MaterialShapes.Arch, fmt.temp(a), "",
+                    stringResource(R.string.dt_dew_point), Icons.Rounded.DeviceThermostat, MaterialShapes.Arch, fmt.temp(a), "",
                     hd?.first ?: Indices.humidityComfort(a, avg(hum)).label,
                     it,
                 )
@@ -454,16 +460,16 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
         Pair2(
             {
                 Stat(
-                    "Pressure", Icons.Rounded.Compress, MaterialShapes.Gem, fmt.pressureNum(avg(pres)), fmt.pressureUnit,
-                    "Range ${fmt.pressureNum(minOf(pres))}–${fmt.pressureNum(maxOf(pres))}",
+                    stringResource(R.string.dt_pressure), Icons.Rounded.Compress, MaterialShapes.Gem, fmt.pressureNum(avg(pres)), fmt.pressureUnit,
+                    stringResource(R.string.dt_range, fmt.pressureNum(minOf(pres)), fmt.pressureNum(maxOf(pres))),
                     it,
                 )
             },
             {
                 val m = minOf(vis)
                 Stat(
-                    "Visibility", Icons.Rounded.Visibility, MaterialShapes.Oval, fmt.distanceNum(m), fmt.distanceUnit,
-                    "Lowest of the day · ${WeatherInfo.visibilityLevel(m)}",
+                    stringResource(R.string.dt_visibility), Icons.Rounded.Visibility, MaterialShapes.Oval, fmt.distanceNum(m), fmt.distanceUnit,
+                    stringResource(R.string.dt_lowest_of_day, WeatherInfo.visibilityLevel(m)),
                     it,
                 )
             },
@@ -472,21 +478,21 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
             {
                 val a = avg(cloud)
                 Stat(
-                    "Cloud cover", Icons.Rounded.Cloud, MaterialShapes.Bun,
+                    stringResource(R.string.dt_cloud_cover), Icons.Rounded.Cloud, MaterialShapes.Bun,
                     if (a.isNaN()) dash else a.roundToInt().toString(), "%",
-                    "Average over the day",
+                    stringResource(R.string.dt_average_over_day),
                     it,
                 )
             },
             {
                 Stat(
-                    "Feels like", Icons.Rounded.Thermostat, MaterialShapes.Cookie4Sided,
+                    stringResource(R.string.dt_feels_like), Icons.Rounded.Thermostat, MaterialShapes.Cookie4Sided,
                     "${fmt.temp(d.feelsMin)} – ${fmt.temp(d.feelsMax)}", "",
                     when {
                         d.feelsMax.isNaN() || d.max.isNaN() -> ""
-                        d.feelsMax - d.max > 2 -> "Feels warmer than ${fmt.temp(d.max)} in the afternoon"
-                        d.feelsMin - d.min < -2 -> "Feels colder than ${fmt.temp(d.min)} at the coldest"
-                        else -> "Close to the actual ${fmt.temp(d.min)} – ${fmt.temp(d.max)}"
+                        d.feelsMax - d.max > 2 -> stringResource(R.string.dt_feels_warmer_afternoon, fmt.temp(d.max))
+                        d.feelsMin - d.min < -2 -> stringResource(R.string.dt_feels_colder_coldest, fmt.temp(d.min))
+                        else -> stringResource(R.string.dt_feels_close_actual, fmt.temp(d.min), fmt.temp(d.max))
                     },
                     it,
                 )
@@ -498,9 +504,9 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
                 val v = peak?.let { h -> Indices.fireIndex(h) } ?: Double.NaN
                 val b = Indices.fireBand(v)
                 Stat(
-                    "Fire weather", Icons.Rounded.LocalFireDepartment, MaterialShapes.SoftBurst,
+                    stringResource(R.string.dt_fire_weather), Icons.Rounded.LocalFireDepartment, MaterialShapes.SoftBurst,
                     if (v.isNaN()) dash else v.roundToInt().toString(), "",
-                    if (peak == null || v.isNaN()) "" else "${b.label}, peak ${fmt.hour(peak.time)}",
+                    if (peak == null || v.isNaN()) "" else stringResource(R.string.dt_fire_peak, b.label, fmt.hour(peak.time)),
                     it,
                 )
             },
@@ -508,9 +514,9 @@ private fun DayStats(f: Forecast, d: Day, hours: List<Hour>, fmt: Fmt) {
                 val peak = hours.filter { h -> !h.wetBulb.isNaN() }.maxByOrNull { h -> h.wetBulb }
                 val b = Indices.coolingComfort(peak?.wetBulb ?: Double.NaN, d.max)
                 Stat(
-                    "Cooling comfort", Icons.Rounded.WaterDrop, MaterialShapes.Cookie7Sided,
+                    stringResource(R.string.dt_cooling_comfort), Icons.Rounded.WaterDrop, MaterialShapes.Cookie7Sided,
                     fmt.temp(peak?.wetBulb ?: Double.NaN), "",
-                    if (peak == null) "" else "${b.label} · wet-bulb peak ${fmt.hour(peak.time)}",
+                    if (peak == null) "" else stringResource(R.string.dt_wetbulb_peak, b.label, fmt.hour(peak.time)),
                     it,
                 )
             },
@@ -531,26 +537,26 @@ private fun SunMoon(f: Forecast, d: Day, fmt: Fmt) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 ShapeBadge(Icons.Rounded.WbTwilight, MaterialShapes.SoftBurst, size = 28.dp)
                 Spacer(Modifier.width(8.dp))
-                Text("Sun & moon", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.dt_sun_and_moon), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Spacer(Modifier.height(12.dp))
             Row(Modifier.fillMaxWidth()) {
                 Column(Modifier.weight(1f)) {
-                    Text("Sunrise", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.dt_sunrise), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(fmt.time(d.sunrise), style = MaterialTheme.typography.titleLargeEmphasized)
                 }
                 Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Daylight", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.dt_daylight), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(fmt.duration(d.daylight), style = MaterialTheme.typography.titleMedium)
                 }
                 Column(Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                    Text("Sunset", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.dt_sunset), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(fmt.time(d.sunset), style = MaterialTheme.typography.titleLargeEmphasized)
                 }
             }
             Spacer(Modifier.height(6.dp))
             Text(
-                "First light ${fmt.time(sun.firstLight)} · last light ${fmt.time(sun.lastLight)} · sun ${sun.noonElevation.roundToInt()}° high at ${fmt.time(sun.solarNoon)}",
+                stringResource(R.string.dt_sun_line, fmt.time(sun.firstLight), fmt.time(sun.lastLight), sun.noonElevation.roundToInt(), fmt.time(sun.solarNoon)),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -561,7 +567,7 @@ private fun SunMoon(f: Forecast, d: Day, fmt: Fmt) {
                 Column {
                     Text(moon.name, style = MaterialTheme.typography.titleMediumEmphasized)
                     Text(
-                        "${(moon.illumination * 100).roundToInt()}% illuminated",
+                        stringResource(R.string.dt_pct_illuminated, (moon.illumination * 100).roundToInt()),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -569,11 +575,11 @@ private fun SunMoon(f: Forecast, d: Day, fmt: Fmt) {
                 Spacer(Modifier.weight(1f))
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        "Rise ${if (moonDay.rise != 0L) fmt.time(moonDay.rise) else "–"}",
+                        stringResource(R.string.dt_moon_rise, if (moonDay.rise != 0L) fmt.time(moonDay.rise) else "–"),
                         style = MaterialTheme.typography.labelLarge,
                     )
                     Text(
-                        "Set ${if (moonDay.set != 0L) fmt.time(moonDay.set) else "–"}",
+                        stringResource(R.string.dt_moon_set, if (moonDay.set != 0L) fmt.time(moonDay.set) else "–"),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -614,8 +620,13 @@ private fun HourRow(h: Hour, fmt: Fmt, index: Int, count: Int, modifier: Modifie
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    "${fmt.wind(h.windSpeed)} ${WeatherInfo.compass(h.windDir)} · ${fmt.pct(h.humidity)} RH" +
-                        (if (!h.snowfall.isNaN() && h.snowfall >= 0.1) " · ${fmt.snow(h.snowfall)} snow" else if (!h.precip.isNaN() && h.precip >= 0.1) " · ${fmt.precip(h.precip)}" else ""),
+                    when {
+                        !h.snowfall.isNaN() && h.snowfall >= 0.1 ->
+                            stringResource(R.string.dt_hour_line_snow, fmt.wind(h.windSpeed), WeatherInfo.compass(h.windDir), fmt.pct(h.humidity), fmt.snow(h.snowfall))
+                        !h.precip.isNaN() && h.precip >= 0.1 ->
+                            stringResource(R.string.dt_hour_line_precip, fmt.wind(h.windSpeed), WeatherInfo.compass(h.windDir), fmt.pct(h.humidity), fmt.precip(h.precip))
+                        else -> stringResource(R.string.dt_hour_line, fmt.wind(h.windSpeed), WeatherInfo.compass(h.windDir), fmt.pct(h.humidity))
+                    },
                     style = MaterialTheme.typography.labelSmall,
                     color = cs.onSurfaceVariant,
                     maxLines = 1,

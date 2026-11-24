@@ -1,5 +1,7 @@
 package dev.vis.weather.data
 
+import dev.vis.weather.L
+import dev.vis.weather.R
 import java.time.Instant
 
 enum class Sky { CLEAR, PARTLY, CLOUDY, FOG, DRIZZLE, RAIN, FREEZING, SNOW, THUNDER }
@@ -19,108 +21,114 @@ object WeatherInfo {
     }
 
     fun describe(code: Int, isDay: Boolean = true): String = when (code) {
-        0 -> if (isDay) "Sunny" else "Clear"
-        1 -> if (isDay) "Mostly sunny" else "Mostly clear"
-        2 -> "Partly cloudy"
-        3 -> "Overcast"
-        45 -> "Fog"
-        48 -> "Freezing fog"
-        51 -> "Light drizzle"
-        53 -> "Drizzle"
-        55 -> "Heavy drizzle"
-        56, 57 -> "Freezing drizzle"
-        61 -> "Light rain"
-        63 -> "Rain"
-        65 -> "Heavy rain"
-        66, 67 -> "Freezing rain"
-        71 -> "Light snow"
-        73 -> "Snow"
-        75 -> "Heavy snow"
-        77 -> "Snow grains"
-        80 -> "Light showers"
-        81 -> "Showers"
-        82 -> "Violent showers"
-        85 -> "Snow showers"
-        86 -> "Heavy snow showers"
-        95 -> "Thunderstorm"
-        96, 99 -> "Thunderstorm with hail"
-        else -> "Unknown"
+        0 -> if (isDay) L.s(R.string.d_wx_sunny) else L.s(R.string.d_wx_clear)
+        1 -> if (isDay) L.s(R.string.d_wx_mostly_sunny) else L.s(R.string.d_wx_mostly_clear)
+        2 -> L.s(R.string.d_wx_partly_cloudy)
+        3 -> L.s(R.string.d_wx_overcast)
+        45 -> L.s(R.string.d_wx_fog)
+        48 -> L.s(R.string.d_wx_freezing_fog)
+        51 -> L.s(R.string.d_wx_light_drizzle)
+        53 -> L.s(R.string.d_wx_drizzle)
+        55 -> L.s(R.string.d_wx_heavy_drizzle)
+        56, 57 -> L.s(R.string.d_wx_freezing_drizzle)
+        61 -> L.s(R.string.d_wx_light_rain)
+        63 -> L.s(R.string.d_wx_rain)
+        65 -> L.s(R.string.d_wx_heavy_rain)
+        66, 67 -> L.s(R.string.d_wx_freezing_rain)
+        71 -> L.s(R.string.d_wx_light_snow)
+        73 -> L.s(R.string.d_wx_snow)
+        75 -> L.s(R.string.d_wx_heavy_snow)
+        77 -> L.s(R.string.d_wx_snow_grains)
+        80 -> L.s(R.string.d_wx_light_showers)
+        81 -> L.s(R.string.d_wx_showers)
+        82 -> L.s(R.string.d_wx_violent_showers)
+        85 -> L.s(R.string.d_wx_snow_showers)
+        86 -> L.s(R.string.d_wx_heavy_snow_showers)
+        95 -> L.s(R.string.d_wx_thunderstorm)
+        96, 99 -> L.s(R.string.d_wx_thunderstorm_with_hail)
+        else -> L.s(R.string.d_wx_unknown)
     }
 
     fun beaufort(kmh: Double): String = when {
-        kmh < 1 -> "Calm"
-        kmh < 6 -> "Light air"
-        kmh < 12 -> "Light breeze"
-        kmh < 20 -> "Gentle breeze"
-        kmh < 29 -> "Moderate breeze"
-        kmh < 39 -> "Fresh breeze"
-        kmh < 50 -> "Strong breeze"
-        kmh < 62 -> "Near gale"
-        kmh < 75 -> "Gale"
-        kmh < 89 -> "Strong gale"
-        kmh < 103 -> "Storm"
-        kmh < 118 -> "Violent storm"
-        else -> "Hurricane force"
+        kmh < 1 -> L.s(R.string.d_bft_calm)
+        kmh < 6 -> L.s(R.string.d_bft_light_air)
+        kmh < 12 -> L.s(R.string.d_bft_light_breeze)
+        kmh < 20 -> L.s(R.string.d_bft_gentle_breeze)
+        kmh < 29 -> L.s(R.string.d_bft_moderate_breeze)
+        kmh < 39 -> L.s(R.string.d_bft_fresh_breeze)
+        kmh < 50 -> L.s(R.string.d_bft_strong_breeze)
+        kmh < 62 -> L.s(R.string.d_bft_near_gale)
+        kmh < 75 -> L.s(R.string.d_bft_gale)
+        kmh < 89 -> L.s(R.string.d_bft_strong_gale)
+        kmh < 103 -> L.s(R.string.d_bft_storm)
+        kmh < 118 -> L.s(R.string.d_bft_violent_storm)
+        else -> L.s(R.string.d_bft_hurricane_force)
     }
 
     fun compass(deg: Double): String {
         if (deg.isNaN()) return "–"
-        val dirs = listOf("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
-        return dirs[(((deg % 360) + 360) % 360 / 22.5 + 0.5).toInt() % 16]
+        return L.s(dirs[(((deg % 360) + 360) % 360 / 22.5 + 0.5).toInt() % 16])
     }
+
+    private val dirs = intArrayOf(
+        R.string.d_dir_n, R.string.d_dir_nne, R.string.d_dir_ne, R.string.d_dir_ene,
+        R.string.d_dir_e, R.string.d_dir_ese, R.string.d_dir_se, R.string.d_dir_sse,
+        R.string.d_dir_s, R.string.d_dir_ssw, R.string.d_dir_sw, R.string.d_dir_wsw,
+        R.string.d_dir_w, R.string.d_dir_wnw, R.string.d_dir_nw, R.string.d_dir_nnw,
+    )
 
     fun uvLevel(uv: Double): String = when {
         uv.isNaN() -> "–"
-        uv < 3 -> "Low"
-        uv < 6 -> "Moderate"
-        uv < 8 -> "High"
-        uv < 11 -> "Very high"
-        else -> "Extreme"
+        uv < 3 -> L.s(R.string.d_uv_low)
+        uv < 6 -> L.s(R.string.d_uv_moderate)
+        uv < 8 -> L.s(R.string.d_uv_high)
+        uv < 11 -> L.s(R.string.d_uv_very_high)
+        else -> L.s(R.string.d_uv_extreme)
     }
 
     fun uvAdvice(uv: Double): String = when {
         uv.isNaN() -> ""
-        uv < 3 -> "No protection needed."
-        uv < 6 -> "Wear sunscreen if outside for long."
-        uv < 8 -> "Sunscreen, hat and shade at midday."
-        else -> "Avoid the sun around midday."
+        uv < 3 -> L.s(R.string.d_uv_advice_low)
+        uv < 6 -> L.s(R.string.d_uv_advice_moderate)
+        uv < 8 -> L.s(R.string.d_uv_advice_high)
+        else -> L.s(R.string.d_uv_advice_very_high)
     }
 
     fun visibilityLevel(m: Double): String = when {
         m.isNaN() -> "–"
-        m < 1000 -> "Fog — very poor"
-        m < 4000 -> "Poor"
-        m < 10000 -> "Moderate"
-        m < 20000 -> "Good"
-        else -> "Excellent"
+        m < 1000 -> L.s(R.string.d_vis_fog_very_poor)
+        m < 4000 -> L.s(R.string.d_vis_poor)
+        m < 10000 -> L.s(R.string.d_vis_moderate)
+        m < 20000 -> L.s(R.string.d_vis_good)
+        else -> L.s(R.string.d_vis_excellent)
     }
 
     data class AqiBand(val label: String, val color: Long, val advice: String)
 
     fun usAqi(v: Double): AqiBand = when {
-        v <= 50 -> AqiBand("Good", 0xFF4CAF50, "Air quality is great for outdoor activities.")
-        v <= 100 -> AqiBand("Moderate", 0xFFFFC107, "Unusually sensitive people should limit long exertion.")
-        v <= 150 -> AqiBand("Unhealthy for sensitive groups", 0xFFFF9800, "Sensitive groups should reduce outdoor exertion.")
-        v <= 200 -> AqiBand("Unhealthy", 0xFFF44336, "Everyone should reduce prolonged outdoor exertion.")
-        v <= 300 -> AqiBand("Very unhealthy", 0xFF9C27B0, "Avoid prolonged outdoor exertion.")
-        else -> AqiBand("Hazardous", 0xFF7E0023, "Stay indoors and keep activity low.")
+        v <= 50 -> AqiBand(L.s(R.string.d_usaqi_good), 0xFF4CAF50, L.s(R.string.d_usaqi_good_advice))
+        v <= 100 -> AqiBand(L.s(R.string.d_usaqi_moderate), 0xFFFFC107, L.s(R.string.d_usaqi_moderate_advice))
+        v <= 150 -> AqiBand(L.s(R.string.d_usaqi_sensitive), 0xFFFF9800, L.s(R.string.d_usaqi_sensitive_advice))
+        v <= 200 -> AqiBand(L.s(R.string.d_usaqi_unhealthy), 0xFFF44336, L.s(R.string.d_usaqi_unhealthy_advice))
+        v <= 300 -> AqiBand(L.s(R.string.d_usaqi_very_unhealthy), 0xFF9C27B0, L.s(R.string.d_usaqi_very_unhealthy_advice))
+        else -> AqiBand(L.s(R.string.d_usaqi_hazardous), 0xFF7E0023, L.s(R.string.d_usaqi_hazardous_advice))
     }
 
     fun euAqi(v: Double): String = when {
-        v <= 20 -> "Good"
-        v <= 40 -> "Fair"
-        v <= 60 -> "Moderate"
-        v <= 80 -> "Poor"
-        v <= 100 -> "Very poor"
-        else -> "Extremely poor"
+        v <= 20 -> L.s(R.string.d_euaqi_good)
+        v <= 40 -> L.s(R.string.d_euaqi_fair)
+        v <= 60 -> L.s(R.string.d_euaqi_moderate)
+        v <= 80 -> L.s(R.string.d_euaqi_poor)
+        v <= 100 -> L.s(R.string.d_euaqi_very_poor)
+        else -> L.s(R.string.d_euaqi_extremely_poor)
     }
 
     fun pollenLevel(v: Double): Pair<String, Float> = when {
-        v < 1 -> "None" to 0f
-        v < 20 -> "Low" to 0.25f
-        v < 50 -> "Moderate" to 0.5f
-        v < 200 -> "High" to 0.75f
-        else -> "Very high" to 1f
+        v < 1 -> L.s(R.string.d_pollen_none) to 0f
+        v < 20 -> L.s(R.string.d_pollen_low) to 0.25f
+        v < 50 -> L.s(R.string.d_pollen_moderate) to 0.5f
+        v < 200 -> L.s(R.string.d_pollen_high) to 0.75f
+        else -> L.s(R.string.d_pollen_very_high) to 1f
     }
 
     // ---- Moon

@@ -1,5 +1,8 @@
 package dev.vis.weather.ui.map
 
+import androidx.annotation.StringRes
+import dev.vis.weather.L
+import dev.vis.weather.R
 import kotlin.math.PI
 import kotlin.math.atan
 import kotlin.math.exp
@@ -22,15 +25,18 @@ data class MapMarker(
 enum class MarkerKind { SELF, SAVED, FRIEND }
 
 /** Weather overlays. Only one is shown at a time. */
-enum class MapLayer(val title: String, val short: String) {
-    NONE("Map", "Map"),
-    RADAR("Radar", "Radar"),
-    TEMPERATURE("Temperature", "Temp"),
-    WIND("Wind", "Wind"),
-    CLOUDS("Cloud cover", "Clouds"),
-    PRESSURE("Pressure", "Pressure"),
-    PRECIPITATION("Precipitation", "Rain"),
-    STORMS("Tropical storms", "Storms");
+enum class MapLayer(@StringRes private val titleRes: Int, @StringRes private val shortRes: Int) {
+    NONE(R.string.map_layer_none_title, R.string.map_layer_none_short),
+    RADAR(R.string.map_layer_radar_title, R.string.map_layer_radar_short),
+    TEMPERATURE(R.string.map_layer_temperature_title, R.string.map_layer_temperature_short),
+    WIND(R.string.map_layer_wind_title, R.string.map_layer_wind_short),
+    CLOUDS(R.string.map_layer_clouds_title, R.string.map_layer_clouds_short),
+    PRESSURE(R.string.map_layer_pressure_title, R.string.map_layer_pressure_short),
+    PRECIPITATION(R.string.map_layer_precipitation_title, R.string.map_layer_precipitation_short),
+    STORMS(R.string.map_layer_storms_title, R.string.map_layer_storms_short);
+
+    val title: String get() = L.s(titleRes)
+    val short: String get() = L.s(shortRes)
 
     /** Layers sampled from the Open-Meteo forecast grid. */
     val isModel: Boolean get() = this == TEMPERATURE || this == WIND || this == CLOUDS || this == PRESSURE || this == PRECIPITATION

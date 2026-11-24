@@ -64,8 +64,8 @@ class ShapeWidget : GlanceAppWidget() {
             WidgetTheme(settings) {
                 val f = model?.forecast
                 when {
-                    model == null -> ShapeEmpty(cfg, "Pick a place", actionStartActivity(WidgetLinks.open(context, null)))
-                    f == null -> ShapeEmpty(cfg, if (busy) "Loading…" else "Tap to load", actionRunCallback<RefreshAction>(), busy)
+                    model == null -> ShapeEmpty(cfg, context.getString(R.string.w_pick_place), actionStartActivity(WidgetLinks.open(context, null)))
+                    f == null -> ShapeEmpty(cfg, context.getString(if (busy) R.string.w_loading else R.string.w_tap_to_load), actionRunCallback<RefreshAction>(), busy)
                     else -> ShapeContent(WData(model, f, busy, 0, 0), cfg)
                 }
             }

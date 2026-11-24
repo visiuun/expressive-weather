@@ -1,5 +1,9 @@
 package dev.vis.weather.data
 
+import androidx.annotation.StringRes
+import dev.vis.weather.L
+import dev.vis.weather.R
+
 enum class ThemeMode { SYSTEM, LIGHT, DARK }
 enum class TempUnit { C, F }
 enum class WindUnit { KMH, MS, MPH, KN }
@@ -51,15 +55,40 @@ enum class AppIcon(val alias: String, val weather: Boolean = false) {
 }
 
 /** Sections of the main screen that can be reordered or hidden (Settings → Layout). */
-enum class HomeCard(val title: String, val removable: Boolean = true) {
-    WARNINGS("Weather warnings", removable = false),
-    HIGHLIGHTS("Highlights"),
-    NOWCAST("Rain in the next hours"),
-    HOURLY("Hourly forecast"),
-    DAILY("Daily forecast"),
-    WARDROBE("What to wear"),
-    FRIENDS("Family & friends"),
-    DETAILS("Detail tiles"),
+enum class HomeCard(@StringRes private val titleRes: Int, val removable: Boolean = true) {
+    WARNINGS(R.string.d_card_warnings, removable = false),
+    HIGHLIGHTS(R.string.d_card_highlights),
+    NOWCAST(R.string.d_card_nowcast),
+    RADAR(R.string.d_card_radar),
+    HOURLY(R.string.d_card_hourly),
+    DAILY(R.string.d_card_daily),
+    WARDROBE(R.string.d_card_wardrobe),
+    FRIENDS(R.string.d_card_friends),
+    DETAILS(R.string.d_card_details);
+
+    val title: String get() = L.s(titleRes)
+}
+
+/** Tiles in the main screen's detail grid, in their default order. [wide] tiles span the full width. */
+enum class DetailTile(@StringRes private val titleRes: Int, val wide: Boolean = false) {
+    WIND(R.string.m_metric_wind),
+    HUMIDITY(R.string.m_metric_humidity),
+    UV(R.string.m_metric_uv),
+    FEELS(R.string.m_metric_feels),
+    PRESSURE(R.string.m_metric_pressure),
+    VISIBILITY(R.string.m_metric_visibility),
+    PRECIP(R.string.m_metric_precip),
+    CLOUD(R.string.m_metric_cloud),
+    TODAY_PRECIP(R.string.h_tile_today_precip),
+    FIRE(R.string.m_metric_fire),
+    COOLING(R.string.m_tile_cooling),
+    SUN(R.string.m_metric_sun, wide = true),
+    MOON(R.string.m_metric_moon, wide = true),
+    SEA(R.string.m_metric_sea, wide = true),
+    AIR(R.string.m_metric_air, wide = true),
+    POLLEN(R.string.m_metric_pollen, wide = true);
+
+    val title: String get() = L.s(titleRes)
 }
 
 data class Settings(
@@ -90,6 +119,8 @@ data class Settings(
     val dailyDays: Int = 16,
     val cardOrder: List<HomeCard> = HomeCard.entries,
     val hiddenCards: Set<HomeCard> = emptySet(),
+    val tileOrder: List<DetailTile> = DetailTile.entries,
+    val hiddenTiles: Set<DetailTile> = emptySet(),
     // Units
     val tempUnit: TempUnit = TempUnit.C,
     val windUnit: WindUnit = WindUnit.KMH,

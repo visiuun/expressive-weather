@@ -61,6 +61,7 @@ import androidx.glance.layout.size
 import androidx.glance.layout.width
 import androidx.glance.text.FontWeight
 import androidx.glance.text.TextAlign
+import dev.vis.weather.L
 import dev.vis.weather.R
 import dev.vis.weather.data.WeatherInfo
 import dev.vis.weather.ui.components.Metric
@@ -104,7 +105,7 @@ class NowWidget : WeatherWidget() {
                         Spacer(GlanceModifier.width(12.dp))
                         Column(GlanceModifier.defaultWeight()) {
                             Txt(d.desc, 15.sp, weight = FontWeight.Bold, maxLines = 2)
-                            Txt("Feels ${d.fmt.temp(d.feels)} · ${d.hiLo}", 12.sp, GlanceTheme.colors.onSurfaceVariant)
+                            Txt(wStr(R.string.w_feels_hilo, d.fmt.temp(d.feels), d.hiLo), 12.sp, GlanceTheme.colors.onSurfaceVariant)
                         }
                     } else {
                         Fill()
@@ -113,7 +114,7 @@ class NowWidget : WeatherWidget() {
                 }
                 if (!wide) {
                     Spacer(GlanceModifier.height(4.dp))
-                    if (size.height >= 150.dp) Txt("Feels ${d.fmt.temp(d.feels)}  ${d.hiLo}", 12.sp, GlanceTheme.colors.onSurfaceVariant)
+                    if (size.height >= 150.dp) Txt(wStr(R.string.w_feels, d.fmt.temp(d.feels)) + "  " + d.hiLo, 12.sp, GlanceTheme.colors.onSurfaceVariant)
                     Txt(d.desc, 14.sp, weight = FontWeight.Bold)
                 }
                 Fill()
@@ -151,7 +152,7 @@ fun NowTile(d: WData, modifier: GlanceModifier, width: Dp) {
                 WIcon(d.code, d.isDay, icon, d.s.monoIcons)
             }
             Fill()
-            Txt("Feels ${d.fmt.temp(d.feels)}", 12.sp, GlanceTheme.colors.onSurfaceVariant)
+            Txt(wStr(R.string.w_feels, d.fmt.temp(d.feels)), 12.sp, GlanceTheme.colors.onSurfaceVariant)
             Txt(d.desc, 14.sp, weight = FontWeight.Bold, maxLines = 2)
         }
     }
@@ -187,9 +188,9 @@ class HourlyWidget : WeatherWidget(PreviewSizes.WIDE) {
                     Txt(d.fmt.dayName(d.fmt.localDate(slice.first().time), d.today), 12.sp, GlanceTheme.colors.onSurfaceVariant, FontWeight.Medium)
                     Spacer(GlanceModifier.width(8.dp))
                 }
-                RoundButton(R.drawable.ic_w_chevron_left, "Earlier", page > 0, actionRunCallback<SetPageAction>(actionParametersOf(PageParam to page - 1)), 28.dp)
+                RoundButton(R.drawable.ic_w_chevron_left, wStr(R.string.w_earlier), page > 0, actionRunCallback<SetPageAction>(actionParametersOf(PageParam to page - 1)), 28.dp)
                 Spacer(GlanceModifier.width(4.dp))
-                RoundButton(R.drawable.ic_w_chevron_right, "Later", page < pages - 1, actionRunCallback<SetPageAction>(actionParametersOf(PageParam to page + 1)), 28.dp)
+                RoundButton(R.drawable.ic_w_chevron_right, wStr(R.string.w_later), page < pages - 1, actionRunCallback<SetPageAction>(actionParametersOf(PageParam to page + 1)), 28.dp)
             }
             Spacer(GlanceModifier.height(8.dp))
             HourTiles(
@@ -232,7 +233,7 @@ fun dayBarWidth(width: Dp): Dp = (width - 24.dp - 300.dp).coerceAtMost(110.dp).l
 // ---- Forecast hub: tabbed, interactive
 
 class ForecastWidget : WeatherWidget(PreviewSizes.LARGE) {
-    private val tabs = listOf("Hourly", "Daily", "Details")
+    private val tabs = listOf(R.string.w_tab_hourly, R.string.w_tab_daily, R.string.w_tab_details)
 
     @Composable
     override fun Content(d: WData) {
@@ -248,11 +249,11 @@ class ForecastWidget : WeatherWidget(PreviewSizes.LARGE) {
                 Spacer(GlanceModifier.width(10.dp))
                 Column(GlanceModifier.defaultWeight()) {
                     Txt(d.desc, 15.sp, weight = FontWeight.Bold, maxLines = 2)
-                    Txt("Feels ${d.fmt.temp(d.feels)} · ${d.hiLo}", 12.sp, GlanceTheme.colors.onSurfaceVariant)
+                    Txt(wStr(R.string.w_feels_hilo, d.fmt.temp(d.feels), d.hiLo), 12.sp, GlanceTheme.colors.onSurfaceVariant)
                 }
             }
             Spacer(GlanceModifier.height(10.dp))
-            Tabs(tabs, tab, { i -> actionRunCallback<SetTabAction>(actionParametersOf(TabParam to i)) }, GlanceModifier.fillMaxWidth())
+            Tabs(tabs.map { wStr(it) }, tab, { i -> actionRunCallback<SetTabAction>(actionParametersOf(TabParam to i)) }, GlanceModifier.fillMaxWidth())
             Spacer(GlanceModifier.height(8.dp))
             val m = GlanceModifier.fillMaxWidth().defaultWeight()
             when (tab) {
@@ -291,7 +292,7 @@ class ForecastWidget : WeatherWidget(PreviewSizes.LARGE) {
         Box(GlanceModifier.fillMaxWidth().padding(bottom = 4.dp)) {
             Tile(GlanceModifier.fillMaxWidth().height(42.dp).clickable(openApp(d)), radius = 21.dp, padding = 0.dp, align = Alignment.CenterStart) {
                 Row(GlanceModifier.fillMaxSize().padding(horizontal = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Txt(if (i == 0) "Now" else d.fmt.hour(h.time), 13.sp, weight = FontWeight.Medium, modifier = GlanceModifier.width(58.dp))
+                    Txt(if (i == 0) wStr(R.string.w_now) else d.fmt.hour(h.time), 13.sp, weight = FontWeight.Medium, modifier = GlanceModifier.width(58.dp))
                     WIcon(h.code, h.isDay, 24.dp, d.s.monoIcons)
                     Spacer(GlanceModifier.width(10.dp))
                     Txt(WeatherInfo.describe(h.code, h.isDay), 12.sp, GlanceTheme.colors.onSurfaceVariant, modifier = GlanceModifier.defaultWeight())
@@ -448,20 +449,20 @@ fun detailTiles(d: WData): List<Stat> {
     val air = d.f.air
     val moon = WeatherInfo.moon()
     return buildList {
-        add(Stat("Feels like", f.temp(d.feels), "", "Actual ${f.temp(d.temp)}", Metric.FEELS, Icons.Rounded.Thermostat))
-        add(Stat("Wind", f.windNum(c.windSpeed), f.windUnit, "From ${WeatherInfo.compass(c.windDir)}", Metric.WIND, Icons.Rounded.Air, c.windDir))
-        add(Stat("Humidity", f.pct(c.humidity), "", "Dew ${f.temp(c.dewPoint)}", Metric.HUMIDITY, Icons.Rounded.WaterDrop))
-        add(Stat("UV index", if (c.uv.isNaN()) "–" else c.uv.roundToInt().toString(), "", WeatherInfo.uvLevel(c.uv), Metric.UV, Icons.Rounded.WbSunny))
-        if (air != null && !air.usAqi.isNaN()) add(Stat("Air quality", air.usAqi.roundToInt().toString(), "", aqiShort(air.usAqi), Metric.AIR, Icons.Rounded.Masks))
-        add(Stat("Rain chance", f.pct(h?.precipProb ?: Double.NaN), "", d.day?.let { "Today ${f.precip(it.precipSum)}" } ?: "", Metric.PRECIP, Icons.Rounded.Umbrella))
-        add(Stat("Pressure", f.pressureNum(c.pressure), f.pressureUnit, "", Metric.PRESSURE, Icons.Rounded.Compress))
-        add(Stat("Visibility", f.distanceNum(c.visibility), f.distanceUnit, WeatherInfo.visibilityLevel(c.visibility), Metric.VISIBILITY, Icons.Rounded.Visibility))
+        add(Stat(L.s(R.string.w_metric_feels), f.temp(d.feels), "", L.s(R.string.w_note_actual, f.temp(d.temp)), Metric.FEELS, Icons.Rounded.Thermostat))
+        add(Stat(L.s(R.string.w_metric_wind), f.windNum(c.windSpeed), f.windUnit, L.s(R.string.w_note_from, WeatherInfo.compass(c.windDir)), Metric.WIND, Icons.Rounded.Air, c.windDir))
+        add(Stat(L.s(R.string.w_metric_humidity), f.pct(c.humidity), "", L.s(R.string.w_note_dew, f.temp(c.dewPoint)), Metric.HUMIDITY, Icons.Rounded.WaterDrop))
+        add(Stat(L.s(R.string.w_metric_uv), if (c.uv.isNaN()) "–" else c.uv.roundToInt().toString(), "", WeatherInfo.uvLevel(c.uv), Metric.UV, Icons.Rounded.WbSunny))
+        if (air != null && !air.usAqi.isNaN()) add(Stat(L.s(R.string.w_metric_air), air.usAqi.roundToInt().toString(), "", aqiShort(air.usAqi), Metric.AIR, Icons.Rounded.Masks))
+        add(Stat(L.s(R.string.w_metric_rain), f.pct(h?.precipProb ?: Double.NaN), "", d.day?.let { L.s(R.string.w_note_today_precip, f.precip(it.precipSum)) } ?: "", Metric.PRECIP, Icons.Rounded.Umbrella))
+        add(Stat(L.s(R.string.w_metric_pressure), f.pressureNum(c.pressure), f.pressureUnit, "", Metric.PRESSURE, Icons.Rounded.Compress))
+        add(Stat(L.s(R.string.w_metric_visibility), f.distanceNum(c.visibility), f.distanceUnit, WeatherInfo.visibilityLevel(c.visibility), Metric.VISIBILITY, Icons.Rounded.Visibility))
         d.day?.let {
             val t = f.time(it.sunrise)
-            add(Stat("Sunrise", t.substringBefore(' '), t.substringAfter(' ', ""), "Set ${f.time(it.sunset)}", Metric.SUN, Icons.Rounded.WbTwilight))
+            add(Stat(L.s(R.string.w_sunrise), t.substringBefore(' '), t.substringAfter(' ', ""), L.s(R.string.w_note_set, f.time(it.sunset)), Metric.SUN, Icons.Rounded.WbTwilight))
         }
-        add(Stat("Cloud cover", f.pct(c.cloudCover), "", "", Metric.CLOUD, Icons.Rounded.Cloud))
-        add(Stat("Moon", "${(moon.illumination * 100).roundToInt()}%", "", moon.name, Metric.MOON, Icons.Rounded.DarkMode))
+        add(Stat(L.s(R.string.w_metric_cloud), f.pct(c.cloudCover), "", "", Metric.CLOUD, Icons.Rounded.Cloud))
+        add(Stat(L.s(R.string.w_metric_moon), "${(moon.illumination * 100).roundToInt()}%", "", moon.name, Metric.MOON, Icons.Rounded.DarkMode))
     }
 }
 
@@ -479,7 +480,7 @@ fun DetailTile(d: WData, t: Stat, modifier: GlanceModifier, valueSize: Dp = 26.d
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (!t.windDir.isNaN()) {
                     Image(
-                        ImageProvider(WidgetArt.windArrow(t.windDir, dp2px(16.dp))), "Wind direction",
+                        ImageProvider(WidgetArt.windArrow(t.windDir, dp2px(16.dp))), wStr(R.string.w_wind_direction),
                         GlanceModifier.size(16.dp), colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
                     )
                     Spacer(GlanceModifier.width(3.dp))
@@ -534,12 +535,12 @@ class RainWidget : WeatherWidget(PreviewSizes.WIDE) {
             Row(GlanceModifier.fillMaxWidth().padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column {
                     Num(d.fmt.pct(peak), if (size.height >= 150.dp) 40.dp else 30.dp)
-                    Txt("max chance", 11.sp, GlanceTheme.colors.onSurfaceVariant)
+                    Txt(wStr(R.string.w_rain_max_chance), 11.sp, GlanceTheme.colors.onSurfaceVariant)
                 }
                 Spacer(GlanceModifier.width(14.dp))
                 Column(GlanceModifier.defaultWeight()) {
                     Txt(rainSummary(d), 14.sp, weight = FontWeight.Bold, maxLines = 2)
-                    d.day?.let { Txt("Today ${d.fmt.precip(it.precipSum)}", 12.sp, GlanceTheme.colors.onSurfaceVariant) }
+                    d.day?.let { Txt(wStr(R.string.w_note_today_precip, d.fmt.precip(it.precipSum)), 12.sp, GlanceTheme.colors.onSurfaceVariant) }
                 }
             }
             if (size.height >= 140.dp && hours.isNotEmpty()) {
@@ -556,7 +557,7 @@ class RainWidget : WeatherWidget(PreviewSizes.WIDE) {
                         Row(GlanceModifier.fillMaxWidth()) {
                             hours.chunked(if (n == 24) 6 else 3).forEach { g ->
                                 Txt(
-                                    if (g.first() === d.hours.first()) "Now" else d.fmt.hour(g.first().time), 10.sp,
+                                    if (g.first() === d.hours.first()) wStr(R.string.w_now) else d.fmt.hour(g.first().time), 10.sp,
                                     GlanceTheme.colors.onSurfaceVariant, modifier = GlanceModifier.defaultWeight(),
                                 )
                             }
@@ -573,16 +574,16 @@ class RainWidget : WeatherWidget(PreviewSizes.WIDE) {
         if (slots.any { wet(it.precip) }) {
             return if (wet(slots.first().precip)) {
                 val stop = slots.indexOfFirst { !wet(it.precip) }
-                if (stop < 0) "Rain for at least the next 2 hours" else "Rain stopping in ~${stop * 15} min"
+                if (stop < 0) L.s(R.string.w_rain_next_2h) else L.p(R.plurals.w_rain_stopping, stop * 15)
             } else {
-                "Rain starting in ~${slots.indexOfFirst { wet(it.precip) } * 15} min"
+                L.p(R.plurals.w_rain_starting, slots.indexOfFirst { wet(it.precip) } * 15)
             }
         }
         val next = d.hours.take(12).firstOrNull { it.precipProb >= 50 }
         return when {
-            next != null -> "Rain likely around ${d.fmt.hour(next.time)}"
-            d.hours.take(12).any { it.precipProb >= 25 } -> "Slight chance of rain in the next 12 h"
-            else -> "No rain expected in the next 12 h"
+            next != null -> L.s(R.string.w_rain_likely_around, d.fmt.hour(next.time))
+            d.hours.take(12).any { it.precipProb >= 25 } -> L.s(R.string.w_rain_slight_chance)
+            else -> L.s(R.string.w_rain_none)
         }
     }
 }
@@ -622,7 +623,7 @@ class SunMoonWidget : WeatherWidget(PreviewSizes.WIDE) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Sym(Icons.Rounded.WbTwilight, 16.dp)
                     Spacer(GlanceModifier.width(6.dp))
-                    Txt("${d.fmt.duration(day.daylight)} of daylight", 12.sp, GlanceTheme.colors.onSurfaceVariant, FontWeight.Medium)
+                    Txt(wStr(R.string.w_sun_of_daylight, d.fmt.duration(day.daylight)), 12.sp, GlanceTheme.colors.onSurfaceVariant, FontWeight.Medium)
                 }
                 if (size.height >= 130.dp) {
                     val arcH = min((width - 24.dp) / 2, size.height - 130.dp).coerceAtLeast(24.dp)
@@ -657,7 +658,8 @@ class SunMoonWidget : WeatherWidget(PreviewSizes.WIDE) {
                 Txt(moon.name, 12.sp, weight = FontWeight.Bold, align = TextAlign.Center, maxLines = 2)
                 val full = moon.daysToFull.roundToInt()
                 Txt(
-                    "${(moon.illumination * 100).roundToInt()}% · " + if (full == 0 || full >= 29) "full tonight" else "full in $full d",
+                    if (full == 0 || full >= 29) wStr(R.string.w_moon_full_tonight, (moon.illumination * 100).roundToInt())
+                    else LocalContext.current.resources.getQuantityString(R.plurals.w_moon_full_in, full, (moon.illumination * 100).roundToInt(), full),
                     11.sp, GlanceTheme.colors.onSurfaceVariant, align = TextAlign.Center,
                 )
             }
@@ -676,11 +678,11 @@ class AirWidget : WeatherWidget() {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Sym(Icons.Rounded.Masks, 16.dp, GlanceTheme.colors.onSurfaceVariant)
                 Spacer(GlanceModifier.width(6.dp))
-                Txt("Air quality", 13.sp, GlanceTheme.colors.onSurfaceVariant, FontWeight.Medium)
+                Txt(wStr(R.string.w_metric_air), 13.sp, GlanceTheme.colors.onSurfaceVariant, FontWeight.Medium)
             }
             if (air == null || air.usAqi.isNaN()) {
                 Box(GlanceModifier.fillMaxWidth().defaultWeight(), contentAlignment = Alignment.Center) {
-                    Txt("Unavailable here", 13.sp, GlanceTheme.colors.onSurfaceVariant)
+                    Txt(wStr(R.string.w_unavailable_here), 13.sp, GlanceTheme.colors.onSurfaceVariant)
                 }
                 PlaceLabel(d, 13.sp)
                 return@Column
@@ -702,7 +704,7 @@ class AirWidget : WeatherWidget() {
                 val parts = listOfNotNull(
                     "PM2.5 ${air.pm25.roundToInt()}",
                     if (wide) "PM10 ${air.pm10.roundToInt()}" else null,
-                    pollen?.let { "${it.first} ${WeatherInfo.pollenLevel(it.second).first.lowercase()}" },
+                    pollen?.let { wStr(R.string.w_air_pollen, it.first, WeatherInfo.pollenLevel(it.second).first.lowercase()) },
                 )
                 Txt(parts.joinToString(" · "), 11.sp, GlanceTheme.colors.onSurfaceVariant)
                 if (wide && size.height >= 170.dp) Txt(WeatherInfo.usAqi(air.usAqi).advice, 11.sp, GlanceTheme.colors.onSurfaceVariant, maxLines = 2)

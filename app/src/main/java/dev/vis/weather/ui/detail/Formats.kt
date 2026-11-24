@@ -1,5 +1,7 @@
 package dev.vis.weather.ui.detail
 
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.data.DistanceUnit
 import dev.vis.weather.data.PrecipUnit
 import dev.vis.weather.ui.Fmt
@@ -59,9 +61,9 @@ fun signedMinutes(seconds: Double): String {
     val m = a / 60
     val s = a % 60
     return when {
-        m == 0 -> "$sign$s s"
-        m >= 60 -> "$sign${m / 60} h ${m % 60} min"
-        else -> "$sign$m min $s s"
+        m == 0 -> L.s(R.string.dt_signed_s, sign, s)
+        m >= 60 -> L.s(R.string.dt_signed_h_min, sign, m / 60, m % 60)
+        else -> L.s(R.string.dt_signed_min_s, sign, m, s)
     }
 }
 
@@ -76,22 +78,22 @@ fun Fmt.whenText(epoch: Long, now: Long): String {
     if (epoch == 0L) return "–"
     val d = localDate(epoch)
     val today = localDate(now)
-    val day = when (d) {
-        today -> "Today"
-        today.plusDays(1) -> "Tomorrow"
-        today.minusDays(1) -> "Yesterday"
-        else -> weekday(epoch)
+    val t = time(epoch)
+    return when (d) {
+        today -> L.s(R.string.dt_when_today, t)
+        today.plusDays(1) -> L.s(R.string.dt_when_tomorrow, t)
+        today.minusDays(1) -> L.s(R.string.dt_when_yesterday, t)
+        else -> L.s(R.string.dt_when_day, weekday(epoch), t)
     }
-    return "$day ${time(epoch)}"
 }
 
 /** Relative day count: "in 3 days", "tomorrow", "today". */
 fun Fmt.inDays(epoch: Long, now: Long): String {
     val days = java.time.temporal.ChronoUnit.DAYS.between(localDate(now), localDate(epoch))
     return when (days) {
-        0L -> "today"
-        1L -> "tomorrow"
-        else -> "in $days days"
+        0L -> L.s(R.string.dt_today_lc)
+        1L -> L.s(R.string.dt_tomorrow_lc)
+        else -> L.p(R.plurals.dt_in_days, days.toInt())
     }
 }
 

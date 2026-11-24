@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_shape_label">Weervorm</string>
+    <string name="widget_shape_desc">Temperatuur en lucht in een expressieve vorm. Kies de vorm en kleuren in de instellingen.</string>
+    <string name="widget_shape_config_title">Weervorm</string>
+    <string name="widget_stack_label">Verwachtingsstapel</string>
+    <string name="widget_stack_desc">Nu, de komende uren en de komende dagen als gestapelde panelen.</string>
+    <string name="widget_tile_label">Gegevenstegel</string>
+    <string name="widget_tile_desc">Eén getal, groot: wind, uv, luchtkwaliteit, vochtigheid, luchtdruk, regen, zon, maan en meer. Kies het in de widgetinstellingen.</string>
+    <string name="widget_tile_config_title">Gegevenstegel</string>
+
+    <!-- Home screen widgets: shared empty / loading states -->
+    <string name="w_pick_location">Kies een locatie in de app</string>
+    <!-- %1$s = place name -->
+    <string name="w_loading_place">%1$s laden…</string>
+    <!-- %1$s = place name -->
+    <string name="w_tap_to_load_place">Tik om %1$s te laden</string>
+    <!-- Short versions for the small "Weather shape" widget -->
+    <string name="w_pick_place">Kies een plaats</string>
+    <string name="w_loading">Laden…</string>
+    <string name="w_tap_to_load">Tik om te laden</string>
+
+    <!-- Home screen widgets: common labels -->
+    <!-- First column of an hourly forecast: the current hour -->
+    <string name="w_now">Nu</string>
+    <!-- Accessibility: tapping the pin icon switches the widget to the next saved place -->
+    <string name="w_switch_location">Locatie wisselen</string>
+    <!-- Accessibility: arrow showing where the wind blows from -->
+    <string name="w_wind_direction">Windrichting</string>
+    <!-- %1$s = feels-like temperature, e.g. "Feels 12°" -->
+    <string name="w_feels">Voelt als %1$s</string>
+    <!-- %1$s = feels-like temperature, %2$s = today's high and low ("↑14°  ↓6°") -->
+    <string name="w_feels_hilo">Voelt als %1$s · %2$s</string>
+    <!-- Accessibility: paging buttons in the hourly strip -->
+    <string name="w_earlier">Eerder</string>
+    <string name="w_later">Later</string>
+
+    <!-- Forecast widget tabs -->
+    <string name="w_tab_hourly">Per uur</string>
+    <string name="w_tab_daily">Per dag</string>
+    <string name="w_tab_details">Details</string>
+
+    <!-- Metric names (widget tile titles and the Data tile picker) -->
+    <string name="w_metric_wind">Wind</string>
+    <string name="w_metric_uv">Uv-index</string>
+    <string name="w_metric_air">Luchtkwaliteit</string>
+    <string name="w_metric_feels">Gevoelstemp.</string>
+    <string name="w_metric_humidity">Vochtigheid</string>
+    <string name="w_metric_pressure">Luchtdruk</string>
+    <string name="w_metric_rain">Regenkans</string>
+    <string name="w_metric_sun">Zonsopkomst &amp; -ondergang</string>
+    <string name="w_metric_moon">Maan</string>
+    <string name="w_metric_visibility">Zicht</string>
+    <string name="w_metric_cloud">Bewolking</string>
+    <string name="w_sunrise">Zonsopkomst</string>
+    <string name="w_sunset">Zonsondergang</string>
+
+    <!-- Small notes under metric values. %1$s is a formatted value (temperature, time, amount) -->
+    <!-- %1$s = actual air temperature -->
+    <string name="w_note_actual">Werkelijk %1$s</string>
+    <!-- Short form of "dew point", space is tight -->
+    <string name="w_note_dew">Dauwp. %1$s</string>
+    <string name="w_note_dew_point">Dauwpunt %1$s</string>
+    <!-- %1$s = compass direction, e.g. "From NW" -->
+    <string name="w_note_from">Uit %1$s</string>
+    <!-- %1$s = today's total precipitation, e.g. "Today 3 mm" -->
+    <string name="w_note_today_precip">Vandaag %1$s</string>
+    <!-- %1$s = sunset time, short for "sunset" -->
+    <string name="w_note_set">Onder %1$s</string>
+    <!-- %1$s = sunrise time -->
+    <string name="w_note_sunrise_at">Zonsopkomst %1$s</string>
+    <!-- %1$s = sunset time -->
+    <string name="w_note_sunset_at">Zonsondergang %1$s</string>
+
+    <!-- Data tile widget -->
+    <!-- %1$s = compass direction the wind comes from, e.g. "Wind from NW" -->
+    <string name="w_tile_wind_from">Wind uit %1$s</string>
+    <!-- %1$s = gust speed with unit -->
+    <string name="w_tile_gusts">Windstoten %1$s</string>
+    <!-- %1$d = today's highest UV index -->
+    <string name="w_tile_uv_max">Vandaag max. %1$d</string>
+    <string name="w_unavailable_here">Hier niet beschikbaar</string>
+    <string name="w_tile_feels_colder">Kouder dan werkelijk</string>
+    <string name="w_tile_feels_warmer">Warmer dan werkelijk</string>
+    <string name="w_tile_feels_close">Bijna als werkelijk</string>
+    <!-- Humidity comfort levels (based on dew point) -->
+    <string name="w_tile_humidity_dry">Droog</string>
+    <string name="w_tile_humidity_comfortable">Aangenaam</string>
+    <string name="w_tile_humidity_humid">Vochtig</string>
+    <string name="w_tile_humidity_muggy">Benauwd</string>
+    <!-- Pressure trend -->
+    <string name="w_tile_pressure_rising">Stijgend</string>
+    <string name="w_tile_pressure_falling">Dalend</string>
+    <string name="w_tile_pressure_steady">Stabiel</string>
+    <string name="w_tile_pressure_note">Afgelopen 3 u</string>
+    <!-- Rain chance; %1$s = hour, e.g. "Likely at 3 PM" -->
+    <string name="w_tile_rain_likely_at">Waarschijnlijk om %1$s</string>
+    <string name="w_tile_rain_possible">Mogelijk</string>
+    <string name="w_tile_rain_unlikely">Onwaarschijnlijk</string>
+    <!-- %1$s = total precipitation over the next 12 hours -->
+    <string name="w_tile_rain_note">Komende 12 u · %1$s</string>
+    <!-- %1$s = length of daylight, e.g. "12 h 5 min daylight" -->
+    <string name="w_tile_daylight">%1$s daglicht</string>
+    <!-- Moon -->
+    <string name="w_tile_moon_full_tonight">Vannacht vol</string>
+    <!-- %1$d = days until full moon; "d" = days -->
+    <plurals name="w_tile_moon_full_in">
+        <item quantity="one">Vol over %1$d d</item>
+        <item quantity="other">Vol over %1$d d</item>
+    </plurals>
+    <!-- Shown under the moon's illuminated percentage -->
+    <string name="w_tile_moon_illuminated">Verlicht</string>
+
+    <!-- Rain widget -->
+    <!-- Under the biggest rain chance of the next 12 hours -->
+    <string name="w_rain_max_chance">max. kans</string>
+    <string name="w_rain_next_2h">Minstens de komende 2 uur regen</string>
+    <!-- %1$d = minutes -->
+    <plurals name="w_rain_stopping">
+        <item quantity="one">Regen stopt over ~%1$d min</item>
+        <item quantity="other">Regen stopt over ~%1$d min</item>
+    </plurals>
+    <!-- %1$d = minutes -->
+    <plurals name="w_rain_starting">
+        <item quantity="one">Regen begint over ~%1$d min</item>
+        <item quantity="other">Regen begint over ~%1$d min</item>
+    </plurals>
+    <!-- %1$s = hour -->
+    <string name="w_rain_likely_around">Waarschijnlijk regen rond %1$s</string>
+    <string name="w_rain_slight_chance">Kleine kans op regen in de komende 12 u</string>
+    <string name="w_rain_none">Geen regen verwacht in de komende 12 u</string>
+
+    <!-- Sun & moon widget -->
+    <!-- %1$s = length of daylight -->
+    <string name="w_sun_of_daylight">%1$s daglicht</string>
+    <!-- %1$d = illuminated percentage of the moon -->
+    <string name="w_moon_full_tonight">%1$d%% · vannacht vol</string>
+    <!-- %1$d = illuminated percentage, %2$d = days until full moon ("d" = days) -->
+    <plurals name="w_moon_full_in">
+        <item quantity="one">%1$d%% · vol over %2$d d</item>
+        <item quantity="other">%1$d%% · vol over %2$d d</item>
+    </plurals>
+
+    <!-- Air quality widget -->
+    <!-- %1$s = pollen type (e.g. Grass), %2$s = level in lower case (e.g. high) -->
+    <string name="w_air_pollen">%1$s %2$s</string>
+    <!-- Short US AQI levels that fit a pill -->
+    <string name="w_aqi_good">Goed</string>
+    <string name="w_aqi_moderate">Matig</string>
+    <string name="w_aqi_sensitive">Ongezond voor sommigen</string>
+    <string name="w_aqi_unhealthy">Ongezond</string>
+    <string name="w_aqi_very_unhealthy">Zeer ongezond</string>
+    <string name="w_aqi_hazardous">Gevaarlijk</string>
+
+    <!-- Widget settings screens (Data tile and Weather shape) -->
+    <string name="w_cfg_cancel">Annuleren</string>
+    <string name="w_cfg_save">Opslaan</string>
+    <!-- Section header: what the widget shows -->
+    <string name="w_cfg_show">Tonen</string>
+    <string name="w_cfg_location">Locatie</string>
+    <string name="w_cfg_follow_app">De app volgen</string>
+    <string name="w_cfg_follow_app_desc">Toont de plaats die in de app open is</string>
+    <string name="w_cfg_your_location">Je locatie</string>
+    <!-- Weather shape settings -->
+    <string name="w_cfg_shape">Vorm</string>
+    <string name="w_cfg_colours">Kleuren</string>
+    <string name="w_cfg_colour">Kleur</string>
+    <!-- Colour mode name on Android 11 and older (no wallpaper colours) -->
+    <string name="w_cfg_app_colours">App-kleuren</string>
+    <!-- Slider for the shape's background opacity -->
+    <string name="w_cfg_background_opacity">Achtergrond</string>
+    <string name="w_cfg_background_caption">Verlaag dit om de achtergrond door de vorm heen te laten schijnen.</string>
+    <string name="w_cfg_hilo">Max. &amp; min.</string>
+    <string name="w_cfg_hilo_desc">Het bereik van vandaag, als de widget groot genoeg is</string>
+    <string name="w_cfg_place_name">Plaatsnaam</string>
+    <string name="w_cfg_place_name_desc">Getoond op grotere widgets</string>
+    <!-- Caption under the preview, which shows the widget on a dark / light wallpaper -->
+    <string name="w_cfg_dark_home">Donker startscherm</string>
+    <string name="w_cfg_light_home">Licht startscherm</string>
+
+    <!-- Weather shape widget: shape names (Material 3 Expressive shapes). The number is the count of bumps / leaves. -->
+    <string name="w_shape_cookie_9">Koekje 9</string>
+    <string name="w_shape_circle">Cirkel</string>
+    <string name="w_shape_square">Vierkant</string>
+    <string name="w_shape_pill">Pil</string>
+    <string name="w_shape_cookie_4">Koekje 4</string>
+    <string name="w_shape_cookie_6">Koekje 6</string>
+    <string name="w_shape_cookie_7">Koekje 7</string>
+    <string name="w_shape_cookie_12">Koekje 12</string>
+    <string name="w_shape_clover_4">Klaver 4</string>
+    <string name="w_shape_clover_8">Klaver 8</string>
+    <!-- Sun-like shape with rays -->
+    <string name="w_shape_sunny">Zonnig</string>
+    <string name="w_shape_very_sunny">Zeer zonnig</string>
+    <string name="w_shape_soft_burst">Zachte ster</string>
+    <string name="w_shape_soft_boom">Zachte knal</string>
+    <string name="w_shape_flower">Bloem</string>
+    <string name="w_shape_pixel_circle">Pixelcirkel</string>
+    <string name="w_shape_gem">Edelsteen</string>
+    <string name="w_shape_pentagon">Vijfhoek</string>
+    <string name="w_shape_diamond">Ruit</string>
+    <string name="w_shape_slanted">Schuin</string>
+    <string name="w_shape_bun">Broodje</string>
+    <string name="w_shape_ghost">Spookje</string>
+    <string name="w_shape_arch">Boog</string>
+    <string name="w_shape_clamshell">Schelp</string>
+    <string name="w_shape_oval">Ovaal</string>
+    <string name="w_shape_heart">Hart</string>
+
+    <!-- Weather shape widget: colour choices -->
+    <!-- Colours taken from the wallpaper (Material You) -->
+    <string name="w_color_wallpaper">Achtergrond</string>
+    <!-- A gradient following the current sky -->
+    <string name="w_color_sky">Lucht</string>
+    <string name="w_color_black">Zwart</string>
+    <string name="w_color_white">Wit</string>
+    <string name="w_color_coral">Koraal</string>
+    <string name="w_color_amber">Amber</string>
+    <string name="w_color_mint">Mint</string>
+    <string name="w_color_sky_blue">Hemelsblauw</string>
+    <string name="w_color_rose">Roze</string>
+    <string name="w_color_slate">Leisteen</string>
+</resources>

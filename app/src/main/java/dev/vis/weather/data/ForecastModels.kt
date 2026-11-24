@@ -1,5 +1,8 @@
 package dev.vis.weather.data
 
+import dev.vis.weather.L
+import dev.vis.weather.R
+
 /**
  * A numerical weather model served by Open-Meteo.
  * Ids verified against https://open-meteo.com/en/docs (Nov 2026). Retired models (BOM ACCESS, KMA) are left out.
@@ -23,89 +26,90 @@ data class ForecastModel(
 object ForecastModels {
     const val AUTO = "best_match"
 
-    val auto = ForecastModel(
-        AUTO, "Auto (recommended)", "Open-Meteo",
-        "Everywhere",
-        "Picks the best high-resolution national model for your location and blends in global models for later days.",
+    val auto: ForecastModel get() = ForecastModel(
+        AUTO, L.s(R.string.d_model_auto_name), "Open-Meteo",
+        L.s(R.string.d_model_auto_region),
+        L.s(R.string.d_model_auto_detail),
         "https://open-meteo.com", "CC BY 4.0",
     )
 
-    val all: List<ForecastModel> = listOf(
+    // Getters so the texts follow a language change.
+    val all: List<ForecastModel> get() = listOf(
         auto,
         ForecastModel(
             "ecmwf_ifs", "ECMWF IFS", "European Centre for Medium-Range Weather Forecasts",
-            "Global · often the most accurate global model",
-            "9 km · 15 days", "https://www.ecmwf.int", "CC BY 4.0",
+            L.s(R.string.d_model_ecmwf_ifs_region),
+            L.s(R.string.d_model_ecmwf_ifs_detail), "https://www.ecmwf.int", "CC BY 4.0",
         ),
         ForecastModel(
             "ecmwf_aifs025_single", "ECMWF AIFS", "European Centre for Medium-Range Weather Forecasts",
-            "Global · AI-driven model",
-            "25 km · 15 days · no UV, visibility or rain chance", "https://www.ecmwf.int", "CC BY 4.0",
+            L.s(R.string.d_model_ecmwf_aifs025_single_region),
+            L.s(R.string.d_model_ecmwf_aifs025_single_detail), "https://www.ecmwf.int", "CC BY 4.0",
         ),
         ForecastModel(
             "dwd_icon_seamless", "DWD ICON", "Deutscher Wetterdienst",
-            "Central Europe (2 km), Europe (7 km), global",
-            "2–13 km · 7.5 days", "https://www.dwd.de", "CC BY 4.0 (DWD Open Data)",
+            L.s(R.string.d_model_dwd_icon_region),
+            L.s(R.string.d_model_dwd_icon_detail), "https://www.dwd.de", "CC BY 4.0 (DWD Open Data)",
         ),
         ForecastModel(
             "ncep_gfs_seamless", "GFS & HRRR", "NOAA / NCEP",
-            "United States (HRRR 3 km), global",
-            "3–25 km · 16 days", "https://www.weather.gov", "Public domain (US Government)",
+            L.s(R.string.d_model_ncep_gfs_region),
+            L.s(R.string.d_model_ncep_gfs_detail), "https://www.weather.gov", L.s(R.string.d_model_ncep_gfs_licence),
         ),
         ForecastModel(
             "meteofrance_seamless", "Météo-France AROME & ARPEGE", "Météo-France",
-            "France (1.3 km), Europe, global",
-            "1.3–25 km · 4 days", "https://meteofrance.com", "Etalab Open Licence 2.0",
+            L.s(R.string.d_model_meteofrance_region),
+            L.s(R.string.d_model_meteofrance_detail), "https://meteofrance.com", "Etalab Open Licence 2.0",
         ),
         ForecastModel(
             "ukmo_seamless", "UK Met Office", "Met Office",
-            "United Kingdom & Ireland (2 km), global",
-            "2–10 km · 7 days", "https://www.metoffice.gov.uk", "CC BY-SA 4.0",
+            L.s(R.string.d_model_ukmo_region),
+            L.s(R.string.d_model_ukmo_detail), "https://www.metoffice.gov.uk", "CC BY-SA 4.0",
         ),
         ForecastModel(
             "knmi_seamless", "KNMI Harmonie", "Royal Netherlands Meteorological Institute",
-            "Netherlands & Belgium (2 km), Western Europe",
-            "2–5.5 km · 2.5 days, then ECMWF", "https://www.knmi.nl", "CC BY 4.0",
+            L.s(R.string.d_model_knmi_region),
+            L.s(R.string.d_model_knmi_detail), "https://www.knmi.nl", "CC BY 4.0",
         ),
         ForecastModel(
             "dmi_seamless", "DMI Harmonie", "Danish Meteorological Institute",
-            "Denmark, Northern Europe, Iceland, Greenland",
-            "2 km · 2.5 days, then ECMWF", "https://www.dmi.dk", "CC BY 4.0",
+            L.s(R.string.d_model_dmi_region),
+            L.s(R.string.d_model_dmi_detail), "https://www.dmi.dk", "CC BY 4.0",
         ),
         ForecastModel(
             "metno_seamless", "MET Norway Nordic", "Norwegian Meteorological Institute",
-            "Norway, Sweden, Finland, Denmark, Baltics",
-            "1 km · 2.5 days, then ECMWF", "https://www.met.no", "CC BY 4.0 / NLOD",
+            L.s(R.string.d_model_metno_region),
+            L.s(R.string.d_model_metno_detail), "https://www.met.no", "CC BY 4.0 / NLOD",
         ),
         ForecastModel(
             "meteoswiss_icon_seamless", "MeteoSwiss ICON", "MeteoSwiss",
-            "Switzerland and the Alps",
-            "1–2 km · 5 days, then ECMWF", "https://www.meteoswiss.admin.ch", "CC BY 4.0",
+            L.s(R.string.d_model_meteoswiss_icon_region),
+            L.s(R.string.d_model_meteoswiss_icon_detail), "https://www.meteoswiss.admin.ch", "CC BY 4.0",
         ),
         ForecastModel(
             "geosphere_seamless", "GeoSphere Austria", "GeoSphere Austria",
-            "Austria and the Eastern Alps",
-            "1–2.5 km · 2.5 days, then ECMWF", "https://www.geosphere.at", "CC BY 4.0",
+            L.s(R.string.d_model_geosphere_region),
+            L.s(R.string.d_model_geosphere_detail), "https://www.geosphere.at", "CC BY 4.0",
         ),
         ForecastModel(
             "italia_meteo_arpae_icon_2i", "ItaliaMeteo ICON-2I", "ItaliaMeteo / ARPAE",
-            "Italy",
-            "2.2 km · 3 days", "https://www.italiameteo.eu", "CC BY 4.0",
+            L.s(R.string.d_model_italia_meteo_arpae_icon_2i_region),
+            L.s(R.string.d_model_italia_meteo_arpae_icon_2i_detail), "https://www.italiameteo.eu", "CC BY 4.0",
         ),
         ForecastModel(
             "cmc_gem_seamless", "GEM", "Environment and Climate Change Canada",
-            "Canada & North America (2.5 km), global",
-            "2.5–15 km · 10 days", "https://weather.gc.ca", "ECCC Open Data Licence",
+            L.s(R.string.d_model_cmc_gem_region),
+            L.s(R.string.d_model_cmc_gem_detail), "https://weather.gc.ca", "ECCC Open Data Licence",
         ),
         ForecastModel(
             "jma_seamless", "JMA", "Japan Meteorological Agency",
-            "Japan & East Asia (5 km), global",
-            "5–55 km · 11 days", "https://www.jma.go.jp", "JMA terms (attribution)",
+            L.s(R.string.d_model_jma_region),
+            L.s(R.string.d_model_jma_detail), "https://www.jma.go.jp", L.s(R.string.d_model_jma_licence),
         ),
         ForecastModel(
             "cma_grapes_global", "CMA GRAPES", "China Meteorological Administration",
-            "Global · China",
-            "15 km · 10 days", "https://www.cma.gov.cn", "CMA open data terms",
+            L.s(R.string.d_model_cma_grapes_global_region),
+            L.s(R.string.d_model_cma_grapes_global_detail), "https://www.cma.gov.cn", L.s(R.string.d_model_cma_grapes_global_licence),
         ),
     )
 

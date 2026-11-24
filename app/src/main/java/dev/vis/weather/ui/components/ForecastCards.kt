@@ -2,6 +2,9 @@
 
 package dev.vis.weather.ui.components
 
+import androidx.annotation.StringRes
+import androidx.compose.ui.res.pluralStringResource
+import dev.vis.weather.L
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -63,6 +66,8 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import dev.vis.weather.data.Forecast
 import dev.vis.weather.data.WeatherInfo
 import dev.vis.weather.ui.Fmt
@@ -70,18 +75,22 @@ import kotlin.math.roundToInt
 
 private val RainBlue = Color(0xFF4A9EFF)
 
-enum class HourlyMetric(val label: String) { TEMP("Temp"), RAIN("Rain"), WIND("Wind"), UV("UV") }
+enum class HourlyMetric(@StringRes private val res: Int) {
+    TEMP(R.string.m_hourly_temp), RAIN(R.string.m_hourly_rain), WIND(R.string.m_hourly_wind), UV(R.string.m_hourly_uv);
+
+    val label: String get() = L.s(res)
+}
 
 @Composable
 fun HourlyCard(f: Forecast, fmt: Fmt, style: dev.vis.weather.data.HourlyStyle = dev.vis.weather.data.HourlyStyle.STANDARD) {
     var metric by rememberSaveable { mutableStateOf(HourlyMetric.TEMP) }
     if (style != dev.vis.weather.data.HourlyStyle.STANDARD) {
-        SectionCard("Next 48 hours", Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
+        SectionCard(stringResource(R.string.m_next_48_hours), Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
             HourlyStrip(f, fmt, cards = style == dev.vis.weather.data.HourlyStyle.CARDS)
         }
         return
     }
-    SectionCard("Next 48 hours", Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
+    SectionCard(stringResource(R.string.m_next_48_hours), Icons.Rounded.Schedule, MaterialShapes.Cookie4Sided) {
         ConnectedChoice(
             options = HourlyMetric.entries,
             selected = metric,
@@ -114,16 +123,20 @@ fun HourlyGraph(hours: List<dev.vis.weather.data.Hour>, fmt: Fmt, metric: Hourly
             HourlyMetric.UV -> it.uv.takeIf { v -> !v.isNaN() } ?: 0.0
         }
     }
+    // Gusts share the wind scale so the gap between the two lines reads as gustiness.
+    val gusts: List<Double>? = if (metric == HourlyMetric.WIND) hours.map { fmt.windValue(it.windGust) }.takeIf { g -> g.any { !it.isNaN() } } else null
+    val gustColor = Color(0xFF35C7B0).copy(alpha = 0.6f)
     val animProgress by animateFloatAsState(1f, label = "graph")
 
+    Column {
     Row(Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 10.dp)) {
-        Box(Modifier.width(colW * hours.size).height(186.dp)) {
+        Box(Modifier.width(colW * hours.size).height(if (gusts != null) 204.dp else 186.dp)) {
             // Columns: time + icon
             Row {
                 hours.forEachIndexed { i, h ->
                     Column(Modifier.width(colW), horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            if (i == 0 && firstIsNow) "Now" else fmt.hour(h.time),
+                            if (i == 0 && firstIsNow) stringResource(R.string.m_now) else fmt.hour(h.time),
                             style = MaterialTheme.typography.labelMedium,
                             color = if (i == 0 && firstIsNow) cs.primary else cs.onSurfaceVariant,
                             fontWeight = if (i == 0 && firstIsNow) FontWeight.Bold else FontWeight.Normal,
@@ -141,14 +154,20 @@ fun HourlyGraph(hours: List<dev.vis.weather.data.Hour>, fmt: Fmt, metric: Hourly
                 val bottomTextY = 160.dp.toPx()
 
                 val vMin = values.minOrNull() ?: 0.0
-                val vMax = values.maxOrNull() ?: 1.0
+                val vMax = maxOf(values.maxOrNull() ?: 1.0, gusts?.filter { !it.isNaN() }?.maxOrNull() ?: Double.NEGATIVE_INFINITY)
                 fun yFor(v: Double, lo: Double, hi: Double): Float {
                     val span = (hi - lo).takeIf { it > 0.0001 } ?: 1.0
                     return (chartBottom - ((v - lo) / span).toFloat() * (chartBottom - chartTop))
                 }
                 fun label(i: Int, text: String, y: Float, style: TextStyle = labelStyle) {
                     val m = measurer.measure(text, style)
-                    drawText(m, topLeft = Offset(i * cw + cw / 2 - m.size.width / 2, y - m.size.height - 4.dp.toPx()))
+                    val tl = Offset(i * cw + cw / 2 - m.size.width / 2, y - m.size.height - 4.dp.toPx())
+                    // Keep wind numbers readable where the dashed gust line runs behind them.
+                    if (gusts != null) {
+                        val pad = 3.dp.toPx()
+                        drawRoundRect(ring, Offset(tl.x - pad, tl.y), Size(m.size.width + pad * 2, m.size.height.toFloat()), CornerRadius(m.size.height / 2f))
+                    }
+                    drawText(m, topLeft = tl)
                 }
                 fun bottom(i: Int, text: String, color: Color = subStyle.color) {
                     if (text.isEmpty()) return
@@ -175,6 +194,23 @@ fun HourlyGraph(hours: List<dev.vis.weather.data.Hour>, fmt: Fmt, metric: Hourly
                             close()
                         }
                         val colorTop = if (metric == HourlyMetric.TEMP) lineColor else Color(0xFF35C7B0)
+                        if (gusts != null) {
+                            val gp = Path()
+                            var started = false
+                            gusts.forEachIndexed { i, g ->
+                                if (g.isNaN()) { started = false; return@forEachIndexed }
+                                val p = Offset(i * cw + cw / 2, yFor(g, vMin, vMax) * animProgress + chartBottom * (1 - animProgress))
+                                if (!started) gp.moveTo(p.x, p.y) else gp.lineTo(p.x, p.y)
+                                started = true
+                            }
+                            drawPath(
+                                gp, gustColor,
+                                style = Stroke(
+                                    2.dp.toPx(), cap = StrokeCap.Round,
+                                    pathEffect = androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(6.dp.toPx(), 5.dp.toPx())),
+                                ),
+                            )
+                        }
                         drawPath(fill, Brush.verticalGradient(listOf(colorTop.copy(alpha = 0.28f), Color.Transparent), chartTop, chartBottom + 8.dp.toPx()))
                         drawPath(path, colorTop, style = Stroke(3.dp.toPx(), cap = StrokeCap.Round))
                         pts.forEachIndexed { i, p ->
@@ -198,6 +234,10 @@ fun HourlyGraph(hours: List<dev.vis.weather.data.Hour>, fmt: Fmt, metric: Hourly
                                         close()
                                     }
                                     drawPath(arrow, subStyle.color)
+                                }
+                                gusts?.getOrNull(i)?.takeIf { !it.isNaN() }?.let { g ->
+                                    val m = measurer.measure(g.roundToInt().toString(), subStyle.copy(color = gustColor.copy(alpha = 1f)))
+                                    drawText(m, topLeft = Offset(i * cw + cw / 2 - m.size.width / 2, bottomTextY + 22.dp.toPx()))
                                 }
                             }
                         }
@@ -225,6 +265,22 @@ fun HourlyGraph(hours: List<dev.vis.weather.data.Hour>, fmt: Fmt, metric: Hourly
             }
         }
     }
+    if (gusts != null) {
+        Row(
+            Modifier.padding(horizontal = 18.dp).padding(top = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Box(Modifier.size(width = 14.dp, height = 3.dp).clip(RoundedCornerShape(2.dp)).background(Color(0xFF35C7B0)))
+            Text(stringResource(R.string.graph_wind_legend, fmt.windUnit), style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+            Spacer(Modifier.width(8.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                repeat(2) { Box(Modifier.size(width = 5.dp, height = 3.dp).clip(RoundedCornerShape(2.dp)).background(gustColor)) }
+            }
+            Text(stringResource(R.string.graph_gust_legend), style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+        }
+    }
+    }
 }
 
 fun uvColor(uv: Double): Color = when {
@@ -243,7 +299,7 @@ fun DailyCard(f: Forecast, fmt: Fmt, onOpenDay: (Int) -> Unit, maxDays: Int = 16
     val hi = days.mapNotNull { it.max.takeIf { v -> !v.isNaN() } }.maxOrNull() ?: 1.0
     val today = days.first().date
 
-    SectionCard("${days.size}-day forecast", Icons.Rounded.CalendarMonth, MaterialShapes.Clover4Leaf) {
+    SectionCard(pluralStringResource(R.plurals.m_daily_forecast_title, days.size, days.size), Icons.Rounded.CalendarMonth, MaterialShapes.Clover4Leaf) {
         Column(Modifier.padding(horizontal = 8.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             days.forEachIndexed { i, d ->
                 Row(
@@ -344,10 +400,10 @@ fun nowcastText(f: Forecast, fmt: Fmt): String? {
     val rainingNow = wet(mins.first().precip) || (!f.current.precipitation.isNaN() && f.current.precipitation >= 0.1)
     return if (rainingNow) {
         val stop = mins.indexOfFirst { !wet(it.precip) }
-        if (stop > 0) "Precipitation should stop around ${fmt.time(mins[stop].time)}" else "Precipitation will continue for at least 3 hours"
+        if (stop > 0) L.s(R.string.m_nowcast_stop, fmt.time(mins[stop].time)) else L.s(R.string.m_nowcast_continue)
     } else {
         val start = mins.indexOfFirst { wet(it.precip) }
-        if (start >= 0) "Precipitation expected from around ${fmt.time(mins[start].time)}" else null
+        if (start >= 0) L.s(R.string.m_nowcast_start, fmt.time(mins[start].time)) else null
     }
 }
 
@@ -377,7 +433,7 @@ fun NowcastCard(f: Forecast, fmt: Fmt, text: String) {
             }
         }
         Row(Modifier.padding(horizontal = 18.dp, vertical = 6.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text("Now", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.m_now), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             mins.lastOrNull()?.let {
                 Text(fmt.time(it.time), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
@@ -404,7 +460,7 @@ private fun HourlyStrip(f: Forecast, fmt: Fmt, cards: Boolean) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        if (now) "Now" else fmt.hour(h.time), style = MaterialTheme.typography.labelMedium,
+                        if (now) stringResource(R.string.m_now) else fmt.hour(h.time), style = MaterialTheme.typography.labelMedium,
                         color = if (now && cards) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Spacer(Modifier.height(6.dp))

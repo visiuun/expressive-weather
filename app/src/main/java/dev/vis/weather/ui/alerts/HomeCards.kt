@@ -36,7 +36,11 @@ import androidx.compose.material3.toShape
 import androidx.compose.foundation.background
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.alerts.AlertPrefs
 import dev.vis.weather.alerts.AlertType
 import dev.vis.weather.alerts.Wardrobe
@@ -60,7 +64,7 @@ fun WarningsBanner(warnings: List<Warning>, fmt: Fmt, onOpen: () -> Unit, modifi
         if (warnings.size > 1) {
             Surface(onClick = onOpen, shape = CircleShape, color = MaterialTheme.colorScheme.surfaceContainerHigh, modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(
-                    "+${warnings.size - 1} more warning${if (warnings.size > 2) "s" else ""}",
+                    pluralStringResource(R.plurals.al_more_warnings, warnings.size - 1, warnings.size - 1),
                     style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
@@ -79,12 +83,14 @@ fun WarningsScreen(
     onBack: () -> Unit,
     onOpenAlertSettings: () -> Unit,
 ) {
-    SubScreen("Weather warnings", onBack, actions = {
-        IconButton(onClick = onOpenAlertSettings) { Icon(Icons.Rounded.Tune, "Warning notifications") }
+    SubScreen(stringResource(R.string.al_warnings_title), onBack, actions = {
+        IconButton(onClick = onOpenAlertSettings) { Icon(Icons.Rounded.Tune, stringResource(R.string.al_warning_notifications)) }
     }) { w ->
         item {
             Text(
-                if (warnings.isEmpty()) "No warnings in effect${placeName?.let { " for $it" } ?: ""}." else placeName ?: "",
+                if (warnings.isEmpty()) {
+                    if (placeName != null) stringResource(R.string.al_no_warnings_for, placeName) else stringResource(R.string.al_no_warnings_sentence)
+                } else placeName ?: "",
                 style = MaterialTheme.typography.titleLarge, modifier = w.padding(horizontal = 4.dp),
             )
         }
@@ -95,9 +101,7 @@ fun WarningsScreen(
         }
         item {
             Text(
-                "Warnings come from the national weather service for each place: NWS (US), Environment and Climate Change Canada, " +
-                    "Deutscher Wetterdienst (via Bright Sky) and MeteoAlarm/EUMETNET for 36 more European countries. " +
-                    "They're for guidance only. Always follow official advice from your national weather service and local authorities.",
+                stringResource(R.string.al_warnings_sources),
                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = w.padding(horizontal = 4.dp),
             )
         }
@@ -124,13 +128,13 @@ fun WardrobeCard(f: Forecast, settings: Settings, onOpenSettings: () -> Unit, mo
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Rounded.Checkroom, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                 Spacer(Modifier.width(8.dp))
-                Text("What to wear", style = MaterialTheme.typography.titleMediumEmphasized, modifier = Modifier.weight(1f))
-                IconButton(onClick = onOpenSettings) { Icon(Icons.Rounded.Tune, "Wardrobe settings", Modifier.size(20.dp)) }
+                Text(stringResource(R.string.al_wardrobe_card_title), style = MaterialTheme.typography.titleMediumEmphasized, modifier = Modifier.weight(1f))
+                IconButton(onClick = onOpenSettings) { Icon(Icons.Rounded.Tune, stringResource(R.string.al_wardrobe_settings), Modifier.size(20.dp)) }
             }
-            ConnectedChoice(listOf(false, true), tomorrow, { if (it) "Tomorrow" else "Today" }, { tomorrow = it }, Modifier.fillMaxWidth())
+            ConnectedChoice(listOf(false, true), tomorrow, { L.s(if (it) R.string.al_day_tomorrow else R.string.al_day_today) }, { tomorrow = it }, Modifier.fillMaxWidth())
             Spacer(Modifier.height(12.dp))
             if (advice == null) {
-                Text("Not enough forecast data for the hours you're out.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.al_wardrobe_no_data), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             } else {
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     advice.items.forEachIndexed { i, item ->

@@ -1,9 +1,12 @@
 package dev.vis.weather.ui.theme
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.graphics.Color
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.data.PaletteStyle
 
 /**
@@ -12,8 +15,8 @@ import dev.vis.weather.data.PaletteStyle
  */
 class SecretTheme internal constructor(
     val id: String,
-    val name: String,
-    val blurb: String,
+    @StringRes private val nameRes: Int,
+    @StringRes private val blurbRes: Int,
     internal val code: String,
     /** Preview colours: background, primary, secondary accent, tertiary accent. */
     val swatches: List<Color>,
@@ -22,6 +25,12 @@ class SecretTheme internal constructor(
     val sky: Color,
     private val build: (dark: Boolean) -> ColorScheme,
 ) {
+    /** Display name, translated. */
+    val name: String get() = L.s(nameRes)
+
+    /** One-line description, translated. */
+    val blurb: String get() = L.s(blurbRes)
+
     private val cache = arrayOfNulls<ColorScheme>(2)
 
     /** Resolves the theme mode: the requested one when available, otherwise the only one this theme has. */
@@ -49,7 +58,7 @@ object SecretThemes {
 
     val all: List<SecretTheme> = listOf(
         SecretTheme(
-            id = "terminal", name = "Terminal", blurb = "Phosphor green on true black. For the root user in you.",
+            id = "terminal", nameRes = R.string.s_secret_terminal, blurbRes = R.string.s_secret_terminal_blurb,
             code = "sudo",
             swatches = listOf(c(0xFF000000), c(0xFF39FF6A), c(0xFF7CE69A), c(0xFFB8FF3C)),
             lightAvailable = false, darkAvailable = true, sky = c(0xFF0B3A18),
@@ -73,7 +82,7 @@ object SecretThemes {
             )
         },
         SecretTheme(
-            id = "ember", name = "Ember", blurb = "Matte black and a single hot coal of red.",
+            id = "ember", nameRes = R.string.s_secret_ember, blurbRes = R.string.s_secret_ember_blurb,
             code = "kindle",
             swatches = listOf(c(0xFF0E0E0E), c(0xFFFF3300), c(0xFFFF8A65), c(0xFFFFB199)),
             lightAvailable = true, darkAvailable = true, sky = c(0xFF5C1400),
@@ -107,19 +116,19 @@ object SecretThemes {
             }
         },
         SecretTheme(
-            id = "glacier", name = "Glacier", blurb = "Blue ice, white light and very cold air.",
+            id = "glacier", nameRes = R.string.s_secret_glacier, blurbRes = R.string.s_secret_glacier_blurb,
             code = "permafrost",
             swatches = listOf(c(0xFFF2FAFC), c(0xFF0F8FB0), c(0xFF8FD8EC), c(0xFFB9C9F2)),
             lightAvailable = true, darkAvailable = true, sky = c(0xFF8FD8EC),
         ) { dark -> SchemeGen.scheme(SchemeGen.Spec(0xFF4FC3E0.toInt(), PaletteStyle.EXPRESSIVE, 0xFF8FB4F0.toInt(), 44.0), dark) },
         SecretTheme(
-            id = "sakura", name = "Sakura", blurb = "Cherry blossom pink with fresh spring leaves.",
+            id = "sakura", nameRes = R.string.s_secret_sakura, blurbRes = R.string.s_secret_sakura_blurb,
             code = "hanami",
             swatches = listOf(c(0xFFFFF7F8), c(0xFFC2416E), c(0xFFF2A7C0), c(0xFF6FA35E)),
             lightAvailable = true, darkAvailable = true, sky = c(0xFFF2A7C0),
         ) { dark -> SchemeGen.scheme(SchemeGen.Spec(0xFFF06C9B.toInt(), PaletteStyle.EXPRESSIVE, 0xFF6FA35E.toInt(), 52.0), dark) },
         SecretTheme(
-            id = "neon_dusk", name = "Neon Dusk", blurb = "Hot pink and electric cyan over a midnight city.",
+            id = "neon_dusk", nameRes = R.string.s_secret_neon_dusk, blurbRes = R.string.s_secret_neon_dusk_blurb,
             code = "afterglow",
             swatches = listOf(c(0xFF07080F), c(0xFFFF3D9A), c(0xFF22E5FF), c(0xFFFFB13D)),
             lightAvailable = false, darkAvailable = true, sky = c(0xFF3A0F2C),
@@ -141,7 +150,7 @@ object SecretThemes {
             )
         },
         SecretTheme(
-            id = "brass", name = "Brass", blurb = "Polished brass, green verdigris and gaslight.",
+            id = "brass", nameRes = R.string.s_secret_brass, blurbRes = R.string.s_secret_brass_blurb,
             code = "clockwork",
             swatches = listOf(c(0xFF111412), c(0xFFE3B341), c(0xFF5FA88A), c(0xFFD9C6A0)),
             lightAvailable = true, darkAvailable = true, sky = c(0xFF6B5418),
@@ -156,13 +165,13 @@ object SecretThemes {
             ) else s
         },
         SecretTheme(
-            id = "moss", name = "Moss", blurb = "Forest floor greens and late-afternoon gold.",
+            id = "moss", nameRes = R.string.s_secret_moss, blurbRes = R.string.s_secret_moss_blurb,
             code = "lichen",
             swatches = listOf(c(0xFFF6F8F1), c(0xFF4C7A2A), c(0xFFA9C98A), c(0xFFC9A85C)),
             lightAvailable = true, darkAvailable = true, sky = c(0xFF5E8C3A),
         ) { dark -> SchemeGen.scheme(SchemeGen.Spec(0xFF5E8C3A.toInt(), PaletteStyle.BALANCED, 0xFFC9A85C.toInt(), 40.0), dark) },
         SecretTheme(
-            id = "paper", name = "Paper", blurb = "Ink on paper. No colour, no distractions.",
+            id = "paper", nameRes = R.string.s_secret_paper, blurbRes = R.string.s_secret_paper_blurb,
             code = "inkwell",
             swatches = listOf(c(0xFFF3F0E8), c(0xFF1A1A1A), c(0xFF6B6B6B), c(0xFFB0ADA5)),
             lightAvailable = true, darkAvailable = true, sky = c(0xFF8A8780),
@@ -190,7 +199,7 @@ object SecretThemes {
             )
         },
         SecretTheme(
-            id = "lagoon", name = "Lagoon", blurb = "Turquoise shallows and coral reefs.",
+            id = "lagoon", nameRes = R.string.s_secret_lagoon, blurbRes = R.string.s_secret_lagoon_blurb,
             code = "atoll",
             swatches = listOf(c(0xFFF2FBFA), c(0xFF00838A), c(0xFF5FD4CF), c(0xFFFF7F66)),
             lightAvailable = true, darkAvailable = true, sky = c(0xFF2FB8B4),

@@ -70,6 +70,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.L
+import dev.vis.weather.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextOverflow
@@ -127,32 +130,32 @@ fun AppearanceScreen(settings: Settings, update: ((Settings) -> Settings) -> Uni
     val unlocked = remember(secretVersion) { SecretThemes.unlocked(context) }
     val activeSecret = SecretThemes.byId(settings.secretTheme)
 
-    SubScreen("Appearance", onBack) { w ->
+    SubScreen(stringResource(R.string.s_appearance), onBack) { w ->
         item(key = "preview") { LivePreview(previewKind, settings, w) }
 
         item(key = "theme") {
-            SettingsGroup("Theme", w) {
+            SettingsGroup(stringResource(R.string.s_ap_group_theme), w) {
                 SettingsChoice(
-                    "Theme", Icons.Rounded.Contrast, MaterialShapes.Cookie4Sided, 0, 2,
+                    stringResource(R.string.s_ap_theme), Icons.Rounded.Contrast, MaterialShapes.Cookie4Sided, 0, 2,
                     ThemeMode.entries, settings.theme,
-                    { when (it) { ThemeMode.SYSTEM -> "System"; ThemeMode.LIGHT -> "Light"; ThemeMode.DARK -> "Dark" } },
+                    { when (it) { ThemeMode.SYSTEM -> L.s(R.string.s_ap_theme_system); ThemeMode.LIGHT -> L.s(R.string.s_ap_theme_light); ThemeMode.DARK -> L.s(R.string.s_ap_theme_dark) } },
                     subtitle = activeSecret?.let { s ->
                         when {
-                            !s.lightAvailable -> "${s.name} is dark only"
-                            !s.darkAvailable -> "${s.name} is light only"
+                            !s.lightAvailable -> stringResource(R.string.s_ap_secret_dark_only, s.name)
+                            !s.darkAvailable -> stringResource(R.string.s_ap_secret_light_only, s.name)
                             else -> null
                         }
                     },
                 ) { v -> update { it.copy(theme = v) } }
                 SettingsSwitch(
-                    "OLED black", "Pure black background in dark theme, saves battery on OLED screens",
+                    stringResource(R.string.s_ap_oled), stringResource(R.string.s_ap_oled_sub),
                     Icons.Rounded.DarkMode, MaterialShapes.Cookie9Sided, 1, 2, settings.oled,
                 ) { v -> haptics.onToggle(v); update { it.copy(oled = v) } }
             }
         }
 
         item(key = "colour") {
-            SettingsGroup("Colour", w) {
+            SettingsGroup(stringResource(R.string.s_ap_group_colour), w) {
                 val sources = buildList {
                     add(ColorSource.WEATHER)
                     if (Build.VERSION.SDK_INT >= 31) add(ColorSource.MATERIAL_YOU)
@@ -160,14 +163,14 @@ fun AppearanceScreen(settings: Settings, update: ((Settings) -> Settings) -> Uni
                 }
                 val n = 5
                 SettingsChoice(
-                    "Colour source", Icons.Rounded.Palette, MaterialShapes.Flower, 0, n,
+                    stringResource(R.string.s_ap_colour_source), Icons.Rounded.Palette, MaterialShapes.Flower, 0, n,
                     sources, if (settings.colorSource in sources) settings.colorSource else ColorSource.WEATHER,
-                    { when (it) { ColorSource.WEATHER -> "Weather"; ColorSource.MATERIAL_YOU -> "Wallpaper"; ColorSource.CUSTOM -> "Custom" } },
+                    { when (it) { ColorSource.WEATHER -> L.s(R.string.s_ap_source_weather); ColorSource.MATERIAL_YOU -> L.s(R.string.s_ap_source_wallpaper); ColorSource.CUSTOM -> L.s(R.string.s_ap_source_custom) } },
                     subtitle = when {
-                        activeSecret != null -> "Overridden by the ${activeSecret.name} secret theme"
-                        settings.colorSource == ColorSource.WEATHER -> "Shifts with the sky: golden sun, slate cloud, deep blue nights"
-                        settings.colorSource == ColorSource.MATERIAL_YOU -> "Material You: colours from your wallpaper"
-                        else -> "Your own colour, below"
+                        activeSecret != null -> stringResource(R.string.s_ap_source_overridden, activeSecret.name)
+                        settings.colorSource == ColorSource.WEATHER -> stringResource(R.string.s_ap_source_weather_sub)
+                        settings.colorSource == ColorSource.MATERIAL_YOU -> stringResource(R.string.s_ap_source_wallpaper_sub)
+                        else -> stringResource(R.string.s_ap_source_custom_sub)
                     },
                 ) { v -> haptics.onTick(); update { it.copy(colorSource = v, secretTheme = null) } }
                 WeatherMap(settings, previewKind, 1, n) { haptics.onTick(); previewKind = it }
@@ -176,31 +179,31 @@ fun AppearanceScreen(settings: Settings, update: ((Settings) -> Settings) -> Uni
                     update { it.copy(colorSource = ColorSource.CUSTOM, customSeed = c, secretTheme = null) }
                 }
                 SettingsAction(
-                    "Custom colour…", "#%06X".format(settings.customSeed and 0xFFFFFF),
+                    stringResource(R.string.s_ap_custom_colour_action), "#%06X".format(settings.customSeed and 0xFFFFFF),
                     Icons.Rounded.Colorize, MaterialShapes.Gem, 3, n,
                     trailing = {
                         Box(Modifier.size(28.dp).clip(CircleShape).background(Color(settings.customSeed)))
                     },
                 ) { customOpen = true }
                 SettingsChoice(
-                    "Palette style", Icons.Rounded.Gradient, MaterialShapes.SoftBurst, 4, n,
+                    stringResource(R.string.s_ap_palette), Icons.Rounded.Gradient, MaterialShapes.SoftBurst, 4, n,
                     PaletteStyle.entries, settings.paletteStyle,
-                    { when (it) { PaletteStyle.BALANCED -> "Balanced"; PaletteStyle.VIBRANT -> "Vibrant"; PaletteStyle.EXPRESSIVE -> "Expressive" } },
-                    subtitle = "How colourful weather and custom themes are",
+                    { when (it) { PaletteStyle.BALANCED -> L.s(R.string.s_ap_palette_balanced); PaletteStyle.VIBRANT -> L.s(R.string.s_ap_palette_vibrant); PaletteStyle.EXPRESSIVE -> L.s(R.string.s_ap_palette_expressive) } },
+                    subtitle = stringResource(R.string.s_ap_palette_sub),
                 ) { v -> haptics.onTick(); update { it.copy(paletteStyle = v) } }
             }
         }
 
         if (unlocked.isNotEmpty()) {
             item(key = "secret") {
-                SettingsGroup("Secret themes", w) {
+                SettingsGroup(stringResource(R.string.s_ap_group_secret), w) {
                     SecretRow(unlocked, settings.secretTheme, 0, 2) { id ->
                         haptics.onConfirm()
                         update { it.copy(secretTheme = id) }
                     }
                     SettingsInfo(
-                        activeSecret?.name ?: "Found ${unlocked.size} of ${SecretThemes.all.size}",
-                        activeSecret?.blurb ?: "More are hidden. Try typing curious words into the city search.",
+                        activeSecret?.name ?: stringResource(R.string.s_ap_secret_found, unlocked.size, SecretThemes.all.size),
+                        activeSecret?.blurb ?: stringResource(R.string.s_ap_secret_hint),
                         1, 2, icon = Icons.Rounded.AutoAwesome,
                     )
                 }
@@ -208,61 +211,61 @@ fun AppearanceScreen(settings: Settings, update: ((Settings) -> Settings) -> Uni
         }
 
         item(key = "text") {
-            SettingsGroup("Text", w) {
+            SettingsGroup(stringResource(R.string.s_ap_group_text), w) {
                 val n = 4
                 SettingsChoice(
-                    "Font style", Icons.Rounded.TextFields, MaterialShapes.Square, 0, n,
+                    stringResource(R.string.s_ap_font_style), Icons.Rounded.TextFields, MaterialShapes.Square, 0, n,
                     FontStyle.entries, settings.fontStyle,
-                    { when (it) { FontStyle.DEFAULT -> "Default"; FontStyle.CHUNKY -> "Chunky"; FontStyle.TALL -> "Tall" } },
-                    subtitle = if (settings.readingFont != ReadingFont.NONE) "Replaced by the reading font" else "Google Sans Flex",
+                    { when (it) { FontStyle.DEFAULT -> L.s(R.string.s_ap_font_default); FontStyle.CHUNKY -> L.s(R.string.s_ap_font_chunky); FontStyle.TALL -> L.s(R.string.s_ap_font_tall) } },
+                    subtitle = if (settings.readingFont != ReadingFont.NONE) stringResource(R.string.s_ap_font_replaced) else "Google Sans Flex",
                 ) { v -> haptics.onTick(); update { it.copy(fontStyle = v) } }
                 SettingsChoice(
-                    "Edges", Icons.Rounded.RoundedCorner, MaterialShapes.Cookie6Sided, 1, n,
+                    stringResource(R.string.s_ap_edges), Icons.Rounded.RoundedCorner, MaterialShapes.Cookie6Sided, 1, n,
                     FontEdges.entries, settings.fontEdges,
-                    { when (it) { FontEdges.SHARP -> "Sharp"; FontEdges.ROUNDED -> "Rounded" } },
+                    { when (it) { FontEdges.SHARP -> L.s(R.string.s_ap_edges_sharp); FontEdges.ROUNDED -> L.s(R.string.s_ap_edges_rounded) } },
                 ) { v -> haptics.onTick(); update { it.copy(fontEdges = v) } }
                 FontSample(2, n)
                 SettingsChoice(
-                    "Reading font", Icons.Rounded.Accessibility, MaterialShapes.Circle, 3, n,
+                    stringResource(R.string.s_ap_reading_font), Icons.Rounded.Accessibility, MaterialShapes.Circle, 3, n,
                     ReadingFont.entries, settings.readingFont,
-                    { when (it) { ReadingFont.NONE -> "None"; ReadingFont.LEXEND -> "Lexend"; ReadingFont.OPEN_DYSLEXIC -> "Dyslexic" } },
-                    subtitle = "Lexend and OpenDyslexic are designed for easier reading",
+                    { when (it) { ReadingFont.NONE -> L.s(R.string.s_ap_reading_none); ReadingFont.LEXEND -> "Lexend"; ReadingFont.OPEN_DYSLEXIC -> L.s(R.string.s_ap_reading_dyslexic) } },
+                    subtitle = stringResource(R.string.s_ap_reading_sub),
                 ) { v -> haptics.onTick(); update { it.copy(readingFont = v) } }
             }
         }
 
         item(key = "layout") {
-            SettingsGroup("Layout", w) {
+            SettingsGroup(stringResource(R.string.s_layout), w) {
                 SettingsSwitch(
-                    "Hero background", "Coloured card behind the current conditions",
+                    stringResource(R.string.s_ap_hero), stringResource(R.string.s_ap_hero_sub),
                     Icons.Rounded.Wallpaper, MaterialShapes.Cookie6Sided, 0, 3, settings.heroBackground,
                 ) { v -> haptics.onToggle(v); update { it.copy(heroBackground = v) } }
                 SettingsChoice(
-                    "Card style", Icons.Rounded.Dashboard, MaterialShapes.Square, 1, 3,
+                    stringResource(R.string.s_ap_card_style), Icons.Rounded.Dashboard, MaterialShapes.Square, 1, 3,
                     CardStyle.entries, settings.cardStyle,
-                    { when (it) { CardStyle.FILLED -> "Filled"; CardStyle.OUTLINED -> "Outlined"; CardStyle.NONE -> "None" } },
+                    { when (it) { CardStyle.FILLED -> L.s(R.string.s_ap_card_filled); CardStyle.OUTLINED -> L.s(R.string.s_ap_card_outlined); CardStyle.NONE -> L.s(R.string.s_ap_card_none) } },
                 ) { v -> haptics.onTick(); update { it.copy(cardStyle = v) } }
                 SettingsChoice(
-                    "Weather icons", Icons.Rounded.WbCloudy, MaterialShapes.Cookie7Sided, 2, 3,
+                    stringResource(R.string.s_ap_icons), Icons.Rounded.WbCloudy, MaterialShapes.Cookie7Sided, 2, 3,
                     listOf(false, true), settings.monoIcons,
-                    { if (it) "Black & white" else "Colour" },
+                    { if (it) L.s(R.string.s_ap_icons_mono) else L.s(R.string.s_ap_icons_colour) },
                 ) { v -> haptics.onTick(); update { it.copy(monoIcons = v) } }
             }
         }
 
         item(key = "effects") {
-            SettingsGroup("Weather effects", w) {
+            SettingsGroup(stringResource(R.string.s_ap_group_effects), w) {
                 SettingsSwitch(
-                    "Animations", "Live rain, snow, fog, stars and lightning behind the forecast",
+                    stringResource(R.string.s_ap_animations), stringResource(R.string.s_ap_animations_sub),
                     Icons.Rounded.Animation, MaterialShapes.Sunny, 0, 3, settings.animations,
                 ) { v -> haptics.onToggle(v); update { it.copy(animations = v) } }
                 SettingsSwitch(
-                    "Pause in battery saver", "Show a still sky while battery saver is on",
+                    stringResource(R.string.s_ap_battery_saver), stringResource(R.string.s_ap_battery_saver_sub),
                     Icons.Rounded.BatterySaver, MaterialShapes.Pill, 1, 3, settings.pauseOnBatterySaver,
                     enabled = settings.animations,
                 ) { v -> haptics.onToggle(v); update { it.copy(pauseOnBatterySaver = v) } }
                 SettingsSwitch(
-                    "Haptic feedback", "Feel thunder rumble and raindrops patter",
+                    stringResource(R.string.s_ap_haptics), stringResource(R.string.s_ap_haptics_sub),
                     Icons.Rounded.Vibration, MaterialShapes.Clover4Leaf, 2, 3, settings.haptics,
                 ) { v -> haptics.onToggle(v); update { it.copy(haptics = v) } }
             }
@@ -325,7 +328,7 @@ private fun LivePreview(kind: SkyKind, settings: Settings, modifier: Modifier) {
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Pill("Feels 21°", cs.tertiaryContainer, cs.onTertiaryContainer)
+                    Pill(stringResource(R.string.s_ap_preview_feels, "21°"), cs.tertiaryContainer, cs.onTertiaryContainer)
                     Pill("↑ 25°", cs.primaryContainer, cs.onPrimaryContainer)
                     Pill("↓ 14°", cs.secondaryContainer, cs.onSecondaryContainer)
                 }
@@ -348,9 +351,9 @@ private fun WeatherMap(settings: Settings, selected: SkyKind, index: Int, count:
     val app = LocalAppColors.current
     SettingsItemSurface(index, count) {
         Column(Modifier.padding(vertical = 16.dp)) {
-            Text("Theme weather map", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 16.dp))
+            Text(stringResource(R.string.s_ap_weather_map), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 16.dp))
             Text(
-                "Tap a sky to preview it above",
+                stringResource(R.string.s_ap_weather_map_sub),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -415,7 +418,7 @@ private fun Dot(c: Color) {
 private fun PresetRow(settings: Settings, index: Int, count: Int, onPick: (Int) -> Unit) {
     SettingsItemSurface(index, count) {
         Column(Modifier.padding(16.dp)) {
-            Text("Preset colours", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.s_ap_presets), style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(12.dp))
             Presets.chunked(6).forEachIndexed { row, colours ->
                 if (row > 0) Spacer(Modifier.height(10.dp))
@@ -450,7 +453,7 @@ private fun SecretRow(themes: List<SecretTheme>, selected: String?, index: Int, 
             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            SecretTile("Default", listOf(MaterialTheme.colorScheme.surfaceContainerLow, MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.tertiary), selected == null) { onSelect(null) }
+            SecretTile(stringResource(R.string.s_ap_secret_default), listOf(MaterialTheme.colorScheme.surfaceContainerLow, MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.tertiary), selected == null) { onSelect(null) }
             themes.forEach { t -> SecretTile(t.name, t.swatches, selected == t.id) { onSelect(t.id) } }
         }
     }
@@ -494,8 +497,8 @@ private fun FontSample(index: Int, count: Int) {
             )
             Spacer(Modifier.width(14.dp))
             Column {
-                Text("Partly cloudy", style = MaterialTheme.typography.titleLargeEmphasized)
-                Text("Feels like 21° · Light breeze", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.s_ap_sample_condition), style = MaterialTheme.typography.titleLargeEmphasized)
+                Text(stringResource(R.string.s_ap_sample_detail, "21°"), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
@@ -528,9 +531,9 @@ private fun CustomColorDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = { TextButton(onClick = { onPick(argb) }) { Text("Apply") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
-        title = { Text("Custom colour") },
+        confirmButton = { TextButton(onClick = { onPick(argb) }) { Text(stringResource(R.string.s_apply)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.s_cancel)) } },
+        title = { Text(stringResource(R.string.s_ap_custom_colour)) },
         text = {
             Column(Modifier.fillMaxWidth()) {
                 // Live mini theme.
@@ -550,15 +553,15 @@ private fun CustomColorDialog(
                         Spacer(Modifier.height(10.dp))
                         Surface(shape = RoundedCornerShape(16.dp), color = preview.surfaceContainer) {
                             Row(Modifier.fillMaxWidth().padding(10.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                Pill("Sunny", preview.primaryContainer, preview.onPrimaryContainer)
+                                Pill(stringResource(R.string.s_ap_sample_sunny), preview.primaryContainer, preview.onPrimaryContainer)
                                 Pill("UV 4", preview.tertiaryContainer, preview.onTertiaryContainer)
-                                Pill("Wind", preview.secondaryContainer, preview.onSecondaryContainer)
+                                Pill(stringResource(R.string.s_ap_sample_wind), preview.secondaryContainer, preview.onSecondaryContainer)
                             }
                         }
                     }
                 }
                 Spacer(Modifier.height(16.dp))
-                Text("Hue", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.s_ap_hue), style = MaterialTheme.typography.labelLarge)
                 Box(
                     Modifier.fillMaxWidth().padding(top = 6.dp).height(10.dp).clip(CircleShape).background(
                         Brush.horizontalGradient(List(7) { i -> Color.hsv(i * 60f % 360f, 1f, 1f) })
@@ -569,12 +572,12 @@ private fun CustomColorDialog(
                     valueRange = 0f..360f,
                     colors = SliderDefaults.colors(thumbColor = c, activeTrackColor = c),
                 )
-                Text("Saturation", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.s_ap_saturation), style = MaterialTheme.typography.labelLarge)
                 Slider(
                     value = sat, onValueChange = { sat = it; syncHex(android.graphics.Color.HSVToColor(floatArrayOf(hue, sat, value))) },
                     colors = SliderDefaults.colors(thumbColor = c, activeTrackColor = c),
                 )
-                Text("Brightness", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.s_ap_brightness), style = MaterialTheme.typography.labelLarge)
                 Slider(
                     value = value, onValueChange = { value = it; syncHex(android.graphics.Color.HSVToColor(floatArrayOf(hue, sat, value))) },
                     colors = SliderDefaults.colors(thumbColor = c, activeTrackColor = c),
@@ -592,7 +595,7 @@ private fun CustomColorDialog(
                         }
                     },
                     prefix = { Text("#") },
-                    label = { Text("Hex") },
+                    label = { Text(stringResource(R.string.s_ap_hex)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters),
                     shape = RoundedCornerShape(16.dp),

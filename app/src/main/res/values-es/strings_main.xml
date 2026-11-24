@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ===== Shared words (used across the whole app) ===== -->
+    <!-- Day label in forecast lists for the current day -->
+    <string name="m_today">Hoy</string>
+    <!-- Day label in forecast lists for the next day -->
+    <string name="m_tomorrow">Mañana</string>
+    <!-- Compact duration, e.g. "13h 42m". %1$d = hours, %2$d = minutes -->
+    <string name="m_duration_hm">%1$d h %2$d min</string>
+    <!-- Label for the current hour in hourly forecasts -->
+    <string name="m_now">Ahora</string>
+    <string name="m_sunrise">Amanecer</string>
+    <string name="m_sunset">Atardecer</string>
+    <!-- Accessibility label of the back arrow in screen headers -->
+    <string name="m_back">Atrás</string>
+
+    <!-- ===== Bottom navigation ===== -->
+    <string name="m_nav_weather">Tiempo</string>
+    <!-- Bottom navigation: the weather map tab -->
+    <string name="m_nav_map">Mapa</string>
+    <string name="m_nav_alerts">Alertas</string>
+    <!-- Shown on the map tab when no location has been chosen yet -->
+    <string name="m_choose_place_first">Primero elige un lugar</string>
+
+    <!-- ===== Main screen: top bar ===== -->
+    <string name="m_current_location">Ubicación actual</string>
+    <string name="m_choose_place">Elige un lugar</string>
+    <!-- Accessibility label of the settings button -->
+    <string name="m_settings">Ajustes</string>
+
+    <!-- ===== Main screen: hero (current conditions) ===== -->
+    <!-- %1$s = apparent temperature, e.g. "Feels 12°" -->
+    <string name="m_hero_feels">Sensación %1$s</string>
+    <!-- %1$s = wet-bulb temperature -->
+    <string name="m_hero_wet_bulb">Bulbo húmedo %1$s</string>
+
+    <!-- ===== Main screen: highlight strip (labels under the round number shapes) ===== -->
+    <!-- %1$s = wind unit (km/h, mph…), %2$s = compass direction, e.g. "km/h NW" -->
+    <string name="m_hl_wind">%1$s %2$s</string>
+    <string name="m_hl_humidity">Humedad</string>
+    <!-- Highest chance of rain within the next 12 hours -->
+    <string name="m_hl_rain_12h">Lluvia 12 h</string>
+    <!-- %1$s = UV level in lower case, e.g. "UV moderate" -->
+    <string name="m_hl_uv">UV %1$s</string>
+    <string name="m_hl_air">Calidad aire</string>
+    <!-- %1$s = distance unit (km or mi), e.g. "km visibility" -->
+    <string name="m_hl_visibility">%1$s de visibilidad</string>
+
+    <!-- ===== Main screen: one-paragraph forecast summary ===== -->
+    <!-- %1$s = time, e.g. "Rain likely around 3 PM." -->
+    <string name="m_summary_rain_likely">Probable lluvia hacia las %1$s.</string>
+    <string name="m_summary_snow_likely">Probable nieve hacia las %1$s.</string>
+    <string name="m_summary_thunder_likely">Probables tormentas hacia las %1$s.</string>
+    <!-- %1$s = today's weather in lower case (e.g. "partly cloudy"), %2$s = high temperature -->
+    <string name="m_summary_today">Hoy: %1$s, máxima de %2$s.</string>
+    <!-- %1$s = tomorrow's high temperature -->
+    <string name="m_summary_warmer">Mañana hará más calor (%1$s).</string>
+    <string name="m_summary_cooler">Mañana hará más fresco (%1$s).</string>
+    <string name="m_summary_similar">Mañana, temperaturas similares.</string>
+    <!-- %1$s = wind speed with unit -->
+    <string name="m_summary_gusts">Rachas fuertes de hasta %1$s.</string>
+
+    <!-- ===== Main screen: stale data banner and footer ===== -->
+    <!-- %1$s = error message (no trailing period), %2$s = time the data was fetched -->
+    <string name="m_error_showing_cached">%1$s. Mostrando datos de las %2$s.</string>
+    <string name="m_updated_just_now">Actualizado ahora mismo</string>
+    <!-- %1$s = time of the last update -->
+    <string name="m_updated_at">Actualizado: %1$s</string>
+    <string name="m_footer_credits">Datos meteorológicos de Open-Meteo.com (CC BY 4.0) · Calidad del aire: Copernicus CAMS · Lugares © colaboradores de OpenStreetMap</string>
+    <!-- %1$d = elevation in metres, %2$s = time-zone ID such as Europe/Berlin -->
+    <string name="m_footer_elevation">Altitud %1$d m · %2$s</string>
+
+    <!-- ===== Main screen: loading / welcome / permission / error states ===== -->
+    <string name="m_loading">Obteniendo la previsión…</string>
+    <string name="m_no_data_yet">Aún no hay datos</string>
+    <string name="m_welcome_title">Hola, tiempo</string>
+    <string name="m_welcome_body">Previsiones detalladas a partir de datos abiertos. Usa tu ubicación o busca cualquier lugar del mundo.</string>
+    <string name="m_use_my_location">Usar mi ubicación</string>
+    <string name="m_search_place">Buscar un lugar</string>
+    <string name="m_permission_title">Acceso a la ubicación</string>
+    <string name="m_permission_body">Permite el acceso a la ubicación para ver la previsión de donde estás. La ubicación aproximada es suficiente.</string>
+    <string name="m_allow_location">Permitir ubicación</string>
+    <string name="m_open_app_settings">Abrir ajustes de la app</string>
+    <string name="m_search_instead">Buscar en su lugar</string>
+    <string name="m_error_title">No se pudo cargar el tiempo</string>
+    <string name="m_try_again">Reintentar</string>
+    <string name="m_choose_another_place">Elegir otro lugar</string>
+
+    <!-- ===== Error / status messages ===== -->
+    <string name="m_err_no_internet">Sin conexión a internet</string>
+    <string name="m_err_timeout">El servicio meteorológico no respondió a tiempo</string>
+    <string name="m_err_generic">Algo salió mal</string>
+    <string name="m_err_location_off">La ubicación está desactivada. Actívala o busca una ciudad.</string>
+    <string name="m_err_location_failed">No se pudo obtener tu ubicación. Vuelve a intentarlo o busca una ciudad.</string>
+    <string name="m_err_permission_denied">Permiso de ubicación denegado. Puedes buscar una ciudad.</string>
+    <string name="m_search_failed">Error en la búsqueda: revisa tu conexión</string>
+    <!-- Toast. %1$s = name of the hidden theme that was unlocked -->
+    <string name="m_secret_theme_unlocked">Tema secreto desbloqueado: %1$s</string>
+
+    <!-- ===== In-app updater ===== -->
+    <!-- %1$s = installed version number -->
+    <string name="m_update_latest">Tienes la última versión (%1$s)</string>
+    <!-- %1$s = new version number -->
+    <string name="m_update_available">Ya está disponible la versión %1$s</string>
+    <string name="m_update_check_failed">No se pudieron buscar actualizaciones</string>
+    <string name="m_update_allow_install">Permite instalar apps desde Expressive Weather y vuelve a tocar Actualizar</string>
+    <!-- %1$s = version number being installed -->
+    <string name="m_update_installing">Instalando %1$s…</string>
+    <!-- %1$s = technical error message -->
+    <string name="m_update_failed">Error al actualizar: %1$s</string>
+    <string name="m_unknown_error">error desconocido</string>
+
+    <!-- ===== Metric names (detail screen titles and detail tile titles) ===== -->
+    <string name="m_metric_wind">Viento</string>
+    <string name="m_metric_humidity">Humedad</string>
+    <string name="m_metric_uv">Índice UV</string>
+    <string name="m_metric_feels">Sensación térmica</string>
+    <!-- Air pressure -->
+    <string name="m_metric_pressure">Presión</string>
+    <string name="m_metric_visibility">Visibilidad</string>
+    <string name="m_metric_precip">Precipitación</string>
+    <string name="m_metric_cloud">Nubosidad</string>
+    <string name="m_metric_sun">Sol</string>
+    <string name="m_metric_moon">Luna</string>
+    <string name="m_metric_air">Calidad del aire</string>
+    <string name="m_metric_pollen">Polen</string>
+    <string name="m_metric_sea">Estado del mar</string>
+    <string name="m_metric_fire">Riesgo de incendio</string>
+
+    <!-- ===== Hourly / daily forecast cards ===== -->
+    <string name="m_next_48_hours">Próximas 48 horas</string>
+    <!-- Hourly graph switcher: short tab labels, keep very short -->
+    <string name="m_hourly_temp">Temp.</string>
+    <string name="m_hourly_rain">Lluvia</string>
+    <string name="m_hourly_wind">Viento</string>
+    <string name="m_hourly_uv">UV</string>
+    <!-- Daily forecast card title, e.g. "16-day forecast" -->
+    <plurals name="m_daily_forecast_title">
+        <item quantity="one">Previsión de %1$d día</item>
+        <item quantity="many">Previsión de %1$d días</item>
+        <item quantity="other">Previsión de %1$d días</item>
+    </plurals>
+    <!-- Rain nowcast card title. %1$s = time -->
+    <string name="m_nowcast_stop">La precipitación debería parar hacia las %1$s</string>
+    <string name="m_nowcast_continue">La precipitación continuará al menos 3 horas</string>
+    <!-- %1$s = time -->
+    <string name="m_nowcast_start">Precipitación prevista a partir de las %1$s</string>
+
+    <!-- ===== Detail tiles (grid on the main screen) ===== -->
+    <!-- Letter marking real north on the wind compass -->
+    <string name="m_compass_north">N</string>
+    <!-- %1$s = compass direction the wind comes from, %2$s = gust speed number -->
+    <string name="m_wind_from_gusts">Del %1$s · rachas %2$s</string>
+    <!-- %1$s = dew point temperature -->
+    <string name="m_dew_point">Punto de rocío %1$s</string>
+    <!-- %1$d = today's maximum UV index, %2$s = advice sentence -->
+    <string name="m_uv_today_max">Máx. de hoy %1$d. %2$s</string>
+    <!-- %1$s = actual air temperature -->
+    <string name="m_feels_actual">Real %1$s</string>
+    <string name="m_feels_wind_colder">El viento hace que se sienta más frío.</string>
+    <string name="m_feels_colder">Se siente más frío que la temperatura real.</string>
+    <string name="m_feels_humid_warmer">La humedad hace que se sienta más calor.</string>
+    <string name="m_feels_warmer">Se siente más cálido que la temperatura real.</string>
+    <string name="m_feels_similar">Similar a la temperatura real.</string>
+    <string name="m_pressure_headache">Riesgo de dolor de cabeza para personas sensibles</string>
+    <!-- Shown under the pressure trend, e.g. "Rising slowly / over the last 3 hours" -->
+    <string name="m_pressure_last_3h">en las últimas 3 horas</string>
+    <!-- Shown under the precipitation amount -->
+    <string name="m_precip_next_24h">previstos en las próximas 24 h</string>
+    <!-- %1$s = precipitation amount with unit -->
+    <string name="m_precip_last_24h">%1$s en las últimas 24 h</string>
+    <!-- %1$d = chance of precipitation in percent -->
+    <string name="m_precip_chance_today">Probabilidad hoy %1$d%%</string>
+    <!-- Cloud cover levels -->
+    <string name="m_cloud_clear">Despejado</string>
+    <string name="m_cloud_mostly_clear">Mayormente despejado</string>
+    <string name="m_cloud_partly">Parcialmente nublado</string>
+    <string name="m_cloud_mostly_cloudy">Mayormente nublado</string>
+    <string name="m_cloud_overcast">Cubierto</string>
+    <!-- Title of the tile showing today's precipitation total -->
+    <string name="m_tile_today_precip">Hoy</string>
+    <!-- %1$s = snow amount with unit -->
+    <string name="m_snow_today">Nieve hoy: %1$s</string>
+    <!-- %1$s = precipitation amount with unit -->
+    <string name="m_precip_more_later">%1$s más después</string>
+    <!-- %1$s = fire danger level, %2$s = time -->
+    <string name="m_fire_peak_by">%1$s hacia las %2$s</string>
+    <string name="m_fire_scale">Índice de Fosberg, 0–100</string>
+    <string name="m_tile_cooling">Confort térmico</string>
+    <string name="m_wet_bulb_temp">Temperatura de bulbo húmedo</string>
+    <!-- %1$s = comfort level, %2$s = time -->
+    <string name="m_cooling_peak_around">%1$s hacia las %2$s</string>
+    <!-- %1$s = sea water temperature -->
+    <string name="m_sea_water">Agua %1$s</string>
+    <!-- %1$d = swell period in seconds -->
+    <string name="m_sea_swell">Mar de fondo de %1$d s</string>
+    <!-- %1$s = compass direction the waves come from -->
+    <string name="m_sea_from">del %1$s</string>
+    <string name="m_next_24_hours">Próximas 24 horas</string>
+    <!-- %1$s = time of the next high tide -->
+    <string name="m_tide_high">Pleamar %1$s</string>
+    <!-- %1$s = time of the next low tide -->
+    <string name="m_tide_low">Bajamar %1$s</string>
+    <string name="m_sea_current_caution">Precaución para bañistas: corriente fuerte</string>
+    <!-- Length of the day (sunrise to sunset) -->
+    <string name="m_daylight">Horas de luz</string>
+    <!-- %1$s = duration, e.g. "6h 12m of sunshine expected today." -->
+    <string name="m_sunshine_today">Hoy se esperan %1$s de sol.</string>
+    <plurals name="m_daylight_longer">
+        <item quantity="one">Mañana el día será %1$d min más largo.</item>
+        <item quantity="many">Mañana el día será %1$d min más largo.</item>
+        <item quantity="other">Mañana el día será %1$d min más largo.</item>
+    </plurals>
+    <plurals name="m_daylight_shorter">
+        <item quantity="one">Mañana el día será %1$d min más corto.</item>
+        <item quantity="many">Mañana el día será %1$d min más corto.</item>
+        <item quantity="other">Mañana el día será %1$d min más corto.</item>
+    </plurals>
+    <string name="m_daylight_same">Mañana habrá aproximadamente las mismas horas de luz.</string>
+    <!-- %1$d = illuminated percentage of the moon -->
+    <string name="m_moon_illuminated">%1$d%% iluminada</string>
+    <!-- %1$s = short date of the next full moon -->
+    <string name="m_moon_full_on">Luna llena %1$s</string>
+    <!-- %1$s = short date of the next new moon -->
+    <string name="m_moon_new_on">Luna nueva %1$s</string>
+    <string name="m_aqi_us">AQI de EE. UU.</string>
+    <!-- %1$d = European AQI value, %2$s = European AQI level name -->
+    <string name="m_aqi_us_eu">AQI de EE. UU. · AQI europeo %1$d (%2$s)</string>
+    <string name="m_pollen_footer">granos/m³ · Solo Europa</string>
+</resources>

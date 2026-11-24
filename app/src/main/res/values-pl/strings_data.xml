@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App icon picker (Settings > App icon): names of the launcher icon variants -->
+    <string name="d_icon_black">Czarna</string>
+    <string name="d_icon_white">Biała</string>
+    <string name="d_icon_color">Kolorowa</string>
+    <!-- Icon that changes with the current weather -->
+    <string name="d_icon_dynamic">Dynamiczna</string>
+    <string name="d_icon_sunny">Słonecznie</string>
+    <string name="d_icon_clear_night">Pogodna noc</string>
+    <string name="d_icon_partly">Częściowe zachmurzenie</string>
+    <string name="d_icon_partly_night">Pochmurna noc</string>
+    <string name="d_icon_cloudy">Pochmurno</string>
+    <string name="d_icon_foggy">Mgliście</string>
+    <string name="d_icon_rainy">Deszczowo</string>
+    <string name="d_icon_snowy">Śnieżnie</string>
+    <string name="d_icon_stormy">Burzowo</string>
+
+    <!-- Astronomy: solstices/equinoxes by calendar month (hemisphere-neutral) -->
+    <string name="d_astro_march_equinox">Równonoc marcowa</string>
+    <string name="d_astro_june_solstice">Przesilenie czerwcowe</string>
+    <string name="d_astro_september_equinox">Równonoc wrześniowa</string>
+    <string name="d_astro_december_solstice">Przesilenie grudniowe</string>
+    <!-- Astronomy: hemisphere-aware season event names -->
+    <string name="d_astro_spring_equinox">Równonoc wiosenna</string>
+    <string name="d_astro_summer_solstice">Przesilenie letnie</string>
+    <string name="d_astro_autumn_equinox">Równonoc jesienna</string>
+    <string name="d_astro_winter_solstice">Przesilenie zimowe</string>
+    <!-- Moon phase names -->
+    <string name="d_moon_new">Nów</string>
+    <string name="d_moon_waxing_crescent">Przybywający sierp</string>
+    <string name="d_moon_first_quarter">Pierwsza kwadra</string>
+    <string name="d_moon_waxing_gibbous">Przybywający garb</string>
+    <string name="d_moon_full">Pełnia</string>
+    <string name="d_moon_waning_gibbous">Ubywający garb</string>
+    <string name="d_moon_last_quarter">Ostatnia kwadra</string>
+    <string name="d_moon_waning_crescent">Ubywający sierp</string>
+
+    <!-- Forecast model picker (Settings > Forecast model). Model and organisation names are brand names and stay untranslated. -->
+    <string name="d_model_auto_name">Auto (zalecane)</string>
+    <!-- Region where the automatic model choice applies -->
+    <string name="d_model_auto_region">Wszędzie</string>
+    <string name="d_model_auto_detail">Wybiera najlepszy krajowy model wysokiej rozdzielczości dla twojej lokalizacji, a dla dalszych dni dołącza modele globalne.</string>
+    <!-- Forecast models: region = where each model is strongest; detail = resolution · forecast range -->
+    <string name="d_model_ecmwf_ifs_region">Globalny · często najdokładniejszy model globalny</string>
+    <string name="d_model_ecmwf_ifs_detail">9 km · 15 dni</string>
+    <string name="d_model_ecmwf_aifs025_single_region">Globalny · model oparty na AI</string>
+    <string name="d_model_ecmwf_aifs025_single_detail">25 km · 15 dni · bez UV, widoczności i szansy opadów</string>
+    <string name="d_model_dwd_icon_region">Europa Środkowa (2 km), Europa (7 km), globalny</string>
+    <string name="d_model_dwd_icon_detail">2–13 km · 7,5 dnia</string>
+    <string name="d_model_ncep_gfs_region">Stany Zjednoczone (HRRR 3 km), globalny</string>
+    <string name="d_model_ncep_gfs_detail">3–25 km · 16 dni</string>
+    <!-- Licence of the model's data -->
+    <string name="d_model_ncep_gfs_licence">Domena publiczna (rząd USA)</string>
+    <string name="d_model_meteofrance_region">Francja (1,3 km), Europa, globalny</string>
+    <string name="d_model_meteofrance_detail">1,3–25 km · 4 dni</string>
+    <string name="d_model_ukmo_region">Wielka Brytania i Irlandia (2 km), globalny</string>
+    <string name="d_model_ukmo_detail">2–10 km · 7 dni</string>
+    <string name="d_model_knmi_region">Holandia i Belgia (2 km), Europa Zachodnia</string>
+    <string name="d_model_knmi_detail">2–5,5 km · 2,5 dnia, potem ECMWF</string>
+    <string name="d_model_dmi_region">Dania, Europa Północna, Islandia, Grenlandia</string>
+    <string name="d_model_dmi_detail">2 km · 2,5 dnia, potem ECMWF</string>
+    <string name="d_model_metno_region">Norwegia, Szwecja, Finlandia, Dania, kraje bałtyckie</string>
+    <string name="d_model_metno_detail">1 km · 2,5 dnia, potem ECMWF</string>
+    <string name="d_model_meteoswiss_icon_region">Szwajcaria i Alpy</string>
+    <string name="d_model_meteoswiss_icon_detail">1–2 km · 5 dni, potem ECMWF</string>
+    <string name="d_model_geosphere_region">Austria i Alpy Wschodnie</string>
+    <string name="d_model_geosphere_detail">1–2,5 km · 2,5 dnia, potem ECMWF</string>
+    <string name="d_model_italia_meteo_arpae_icon_2i_region">Włochy</string>
+    <string name="d_model_italia_meteo_arpae_icon_2i_detail">2,2 km · 3 dni</string>
+    <string name="d_model_cmc_gem_region">Kanada i Ameryka Północna (2,5 km), globalny</string>
+    <string name="d_model_cmc_gem_detail">2,5–15 km · 10 dni</string>
+    <string name="d_model_jma_region">Japonia i Azja Wschodnia (5 km), globalny</string>
+    <string name="d_model_jma_detail">5–55 km · 11 dni</string>
+    <!-- Licence of the model's data -->
+    <string name="d_model_jma_licence">Warunki JMA (z podaniem źródła)</string>
+    <string name="d_model_cma_grapes_global_region">Globalny · Chiny</string>
+    <string name="d_model_cma_grapes_global_detail">15 km · 10 dni</string>
+    <!-- Licence of the model's data -->
+    <string name="d_model_cma_grapes_global_licence">Warunki otwartych danych CMA</string>
+
+    <!-- Location labels (widget/notification location pickers, place names) -->
+    <!-- Follows whichever place is selected in the app -->
+    <string name="d_loc_selected_place">Wybrane miejsce</string>
+    <!-- The device's GPS location -->
+    <string name="d_loc_current_location">Bieżąca lokalizacja</string>
+    <string name="d_loc_saved_place">Zapisane miejsce</string>
+
+    <!-- Settings > Layout: names of the main-screen sections that can be reordered or hidden -->
+    <string name="d_card_warnings">Ostrzeżenia pogodowe</string>
+    <string name="d_card_highlights">Najważniejsze</string>
+    <string name="d_card_nowcast">Deszcz w najbliższych godzinach</string>
+    <string name="d_card_radar">Radar opadów</string>
+    <string name="d_card_hourly">Prognoza godzinowa</string>
+    <string name="d_card_daily">Prognoza dzienna</string>
+    <string name="d_card_wardrobe">Co na siebie włożyć</string>
+    <string name="d_card_friends">Rodzina i znajomi</string>
+    <string name="d_card_details">Kafelki szczegółów</string>
+
+    <!-- App updater errors (shown after "Update failed: ") -->
+    <string name="d_update_http_error">GitHub zwrócił HTTP %1$d</string>
+    <string name="d_update_download_failed">Pobieranie nie powiodło się (HTTP %1$d)</string>
+
+    <!-- Weather condition names (WMO codes) -->
+    <string name="d_wx_sunny">Słonecznie</string>
+    <string name="d_wx_clear">Bezchmurnie</string>
+    <string name="d_wx_mostly_sunny">Przeważnie słonecznie</string>
+    <string name="d_wx_mostly_clear">Przeważnie pogodnie</string>
+    <string name="d_wx_partly_cloudy">Częściowe zachmurzenie</string>
+    <string name="d_wx_overcast">Całkowite zachmurzenie</string>
+    <string name="d_wx_fog">Mgła</string>
+    <string name="d_wx_freezing_fog">Marznąca mgła</string>
+    <string name="d_wx_light_drizzle">Słaba mżawka</string>
+    <string name="d_wx_drizzle">Mżawka</string>
+    <string name="d_wx_heavy_drizzle">Gęsta mżawka</string>
+    <string name="d_wx_freezing_drizzle">Marznąca mżawka</string>
+    <string name="d_wx_light_rain">Słaby deszcz</string>
+    <string name="d_wx_rain">Deszcz</string>
+    <string name="d_wx_heavy_rain">Ulewny deszcz</string>
+    <string name="d_wx_freezing_rain">Marznący deszcz</string>
+    <string name="d_wx_light_snow">Słaby śnieg</string>
+    <string name="d_wx_snow">Śnieg</string>
+    <string name="d_wx_heavy_snow">Intensywny śnieg</string>
+    <string name="d_wx_snow_grains">Śnieg ziarnisty</string>
+    <string name="d_wx_light_showers">Słabe przelotne opady</string>
+    <string name="d_wx_showers">Przelotne opady</string>
+    <string name="d_wx_violent_showers">Gwałtowne ulewy</string>
+    <string name="d_wx_snow_showers">Przelotne opady śniegu</string>
+    <string name="d_wx_heavy_snow_showers">Intensywne opady śniegu</string>
+    <string name="d_wx_thunderstorm">Burza</string>
+    <string name="d_wx_thunderstorm_with_hail">Burza z gradem</string>
+    <string name="d_wx_unknown">Nieznane</string>
+
+    <!-- Beaufort wind force names -->
+    <string name="d_bft_calm">Cisza</string>
+    <string name="d_bft_light_air">Powiew</string>
+    <string name="d_bft_light_breeze">Słaby wiatr</string>
+    <string name="d_bft_gentle_breeze">Łagodny wiatr</string>
+    <string name="d_bft_moderate_breeze">Umiarkowany wiatr</string>
+    <string name="d_bft_fresh_breeze">Dość silny wiatr</string>
+    <string name="d_bft_strong_breeze">Silny wiatr</string>
+    <string name="d_bft_near_gale">Bardzo silny wiatr</string>
+    <string name="d_bft_gale">Sztorm</string>
+    <string name="d_bft_strong_gale">Silny sztorm</string>
+    <string name="d_bft_storm">Bardzo silny sztorm</string>
+    <string name="d_bft_violent_storm">Gwałtowny sztorm</string>
+    <string name="d_bft_hurricane_force">Huragan</string>
+
+    <!-- UV index levels -->
+    <string name="d_uv_low">Niski</string>
+    <string name="d_uv_moderate">Umiarkowany</string>
+    <string name="d_uv_high">Wysoki</string>
+    <string name="d_uv_very_high">Bardzo wysoki</string>
+    <string name="d_uv_extreme">Ekstremalny</string>
+
+    <!-- UV index advice -->
+    <string name="d_uv_advice_low">Ochrona niepotrzebna.</string>
+    <string name="d_uv_advice_moderate">Użyj kremu z filtrem, jeśli długo jesteś na zewnątrz.</string>
+    <string name="d_uv_advice_high">Krem z filtrem, kapelusz i cień w południe.</string>
+    <string name="d_uv_advice_very_high">Unikaj słońca około południa.</string>
+
+    <!-- Visibility levels -->
+    <string name="d_vis_fog_very_poor">Mgła — bardzo słaba</string>
+    <string name="d_vis_poor">Słaba</string>
+    <string name="d_vis_moderate">Umiarkowana</string>
+    <string name="d_vis_good">Dobra</string>
+    <string name="d_vis_excellent">Doskonała</string>
+
+    <!-- US air quality index (AQI) levels and advice -->
+    <string name="d_usaqi_good">Dobra</string>
+    <string name="d_usaqi_good_advice">Jakość powietrza świetna do aktywności na zewnątrz.</string>
+    <string name="d_usaqi_moderate">Umiarkowana</string>
+    <string name="d_usaqi_moderate_advice">Szczególnie wrażliwe osoby powinny ograniczyć długi wysiłek.</string>
+    <string name="d_usaqi_sensitive">Niezdrowa dla wrażliwych</string>
+    <string name="d_usaqi_sensitive_advice">Osoby wrażliwe powinny ograniczyć wysiłek na zewnątrz.</string>
+    <string name="d_usaqi_unhealthy">Niezdrowa</string>
+    <string name="d_usaqi_unhealthy_advice">Wszyscy powinni ograniczyć długotrwały wysiłek na zewnątrz.</string>
+    <string name="d_usaqi_very_unhealthy">Bardzo niezdrowa</string>
+    <string name="d_usaqi_very_unhealthy_advice">Unikaj długotrwałego wysiłku na zewnątrz.</string>
+    <string name="d_usaqi_hazardous">Niebezpieczna</string>
+    <string name="d_usaqi_hazardous_advice">Zostań w domu i ogranicz aktywność.</string>
+
+    <!-- European air quality index levels -->
+    <string name="d_euaqi_good">Dobra</string>
+    <string name="d_euaqi_fair">Dostateczna</string>
+    <string name="d_euaqi_moderate">Umiarkowana</string>
+    <string name="d_euaqi_poor">Zła</string>
+    <string name="d_euaqi_very_poor">Bardzo zła</string>
+    <string name="d_euaqi_extremely_poor">Skrajnie zła</string>
+
+    <!-- Pollen levels -->
+    <string name="d_pollen_none">Brak</string>
+    <string name="d_pollen_low">Niskie</string>
+    <string name="d_pollen_moderate">Umiarkowane</string>
+    <string name="d_pollen_high">Wysokie</string>
+    <string name="d_pollen_very_high">Bardzo wysokie</string>
+
+    <!-- 16-point compass direction abbreviations (wind direction) -->
+    <string name="d_dir_n">N</string>
+    <string name="d_dir_nne">NNE</string>
+    <string name="d_dir_ne">NE</string>
+    <string name="d_dir_ene">ENE</string>
+    <string name="d_dir_e">E</string>
+    <string name="d_dir_ese">ESE</string>
+    <string name="d_dir_se">SE</string>
+    <string name="d_dir_sse">SSE</string>
+    <string name="d_dir_s">S</string>
+    <string name="d_dir_ssw">SSW</string>
+    <string name="d_dir_sw">SW</string>
+    <string name="d_dir_wsw">WSW</string>
+    <string name="d_dir_w">W</string>
+    <string name="d_dir_wnw">WNW</string>
+    <string name="d_dir_nw">NW</string>
+    <string name="d_dir_nnw">NNW</string>
+
+    <!-- Cooling comfort (how well sweat cools you, from wet-bulb temperature): level names and explanations -->
+    <string name="d_cool_normal">Normalne</string>
+    <string name="d_cool_normal_text">Za mało ciepło, by chłodzenie miało znaczenie.</string>
+    <string name="d_cool_good">Dobre</string>
+    <string name="d_cool_good_text">Pot łatwo paruje, a ciało dobrze się chłodzi.</string>
+    <string name="d_cool_reduced">Ograniczone</string>
+    <string name="d_cool_reduced_text">Pocenie chłodzi słabiej. Zwolnij podczas ćwiczeń i pij wodę.</string>
+    <string name="d_cool_difficult">Trudne</string>
+    <string name="d_cool_difficult_text">Chłodzenie jest trudne. Unikaj forsownego wysiłku w najgorętszej porze dnia, szukaj cienia i wentylatorów.</string>
+    <string name="d_cool_very_difficult">Bardzo trudne</string>
+    <string name="d_cool_very_difficult_text">U osób wrażliwych stres cieplny jest prawdopodobny nawet w spoczynku. Przebywaj w chłodnych miejscach.</string>
+    <string name="d_cool_critical">Krytyczne</string>
+    <string name="d_cool_critical_text">Blisko granicy możliwości chłodzenia organizmu. Zostań w klimatyzowanym miejscu i sprawdzaj, jak się mają inni.</string>
+
+    <!-- Humidity comfort (from dew point): level names and explanations -->
+    <string name="d_humid_dry">Sucho</string>
+    <string name="d_humid_dry_text">Rześkie powietrze; skóra i usta mogą być suche.</string>
+    <string name="d_humid_comfortable">Komfortowo</string>
+    <string name="d_humid_comfortable_damp_text">Chłodne, wilgotne powietrze, ale wilgotność nie będzie uciążliwa.</string>
+    <string name="d_humid_comfortable_text">Przyjemnie, wilgotności nie odczujesz.</string>
+    <string name="d_humid_noticeable">Wyczuwalnie wilgotno</string>
+    <string name="d_humid_noticeable_text">Zaczynasz czuć wilgoć w powietrzu.</string>
+    <string name="d_humid_sticky">Lepko</string>
+    <string name="d_humid_sticky_text">Wilgotno; wysiłek męczy bardziej.</string>
+    <string name="d_humid_muggy">Parno</string>
+    <string name="d_humid_muggy_text">Ciężkie, uciążliwe powietrze dla większości osób.</string>
+    <string name="d_humid_oppressive">Duszno</string>
+    <string name="d_humid_oppressive_text">Bardzo niekomfortowo; nie forsuj się.</string>
+
+    <!-- Fire weather danger levels and advice -->
+    <string name="d_fire_low">Niskie</string>
+    <string name="d_fire_low_text">Pożary raczej nie rozprzestrzenią się szybko.</string>
+    <string name="d_fire_moderate">Umiarkowane</string>
+    <string name="d_fire_moderate_text">W suchej roślinności pożary mogą wybuchać i się rozprzestrzeniać. Ostrożnie z ogniem na zewnątrz.</string>
+    <string name="d_fire_high">Wysokie</string>
+    <string name="d_fire_high_text">Pożary mogą szybko się rozprzestrzeniać. Unikaj ognisk i grillowania przy suchej trawie.</string>
+    <string name="d_fire_very_high">Bardzo wysokie</string>
+    <string name="d_fire_very_high_text">Pożary rozprzestrzeniałyby się błyskawicznie i trudno byłoby je opanować. Żadnego otwartego ognia.</string>
+    <string name="d_fire_extreme">Ekstremalne</string>
+    <string name="d_fire_extreme_text">Skrajnie pożarowa pogoda. Przestrzegaj lokalnych zakazów i bądź gotów do ewakuacji na polecenie służb.</string>
+
+    <!-- Pollutant value compared to the WHO guideline limit -->
+    <string name="d_who_well_below_limit">Znacznie poniżej normy</string>
+    <string name="d_who_near_limit">Blisko normy</string>
+    <string name="d_who_above_limit">Powyżej normy</string>
+    <string name="d_who_well_above_limit">Znacznie powyżej normy</string>
+
+    <!-- European air quality index: levels and health advice -->
+    <string name="d_euaqib_good">Dobra</string>
+    <string name="d_euaqib_good_text">Jakość powietrza jest dobra. Korzystaj ze zwykłych aktywności na zewnątrz.</string>
+    <string name="d_euaqib_fair">Dostateczna</string>
+    <string name="d_euaqib_fair_text">Korzystaj ze zwykłych aktywności na zewnątrz.</string>
+    <string name="d_euaqib_moderate">Umiarkowana</string>
+    <string name="d_euaqib_moderate_text">Osoby wrażliwe z objawami powinny rozważyć ograniczenie intensywnej aktywności na zewnątrz.</string>
+    <string name="d_euaqib_poor">Zła</string>
+    <string name="d_euaqib_poor_text">Rozważ ograniczenie intensywnej aktywności na zewnątrz, jeśli masz objawy, takie jak pieczenie oczu, kaszel czy ból gardła.</string>
+    <string name="d_euaqib_very_poor">Bardzo zła</string>
+    <string name="d_euaqib_very_poor_text">Ogranicz aktywność fizyczną na zewnątrz, zwłaszcza jeśli masz objawy.</string>
+    <string name="d_euaqib_extremely_poor">Skrajnie zła</string>
+    <string name="d_euaqib_extremely_poor_text">Unikaj aktywności fizycznej na zewnątrz; osoby wrażliwe powinny zostać w domu.</string>
+
+    <!-- US air quality index: levels and health advice -->
+    <string name="d_usaqib_good">Dobra</string>
+    <string name="d_usaqib_good_text">Jakość powietrza jest zadowalająca i nie stanowi ryzyka lub stanowi niewielkie.</string>
+    <string name="d_usaqib_moderate">Umiarkowana</string>
+    <string name="d_usaqib_moderate_text">Akceptowalna. Szczególnie wrażliwe osoby powinny rozważyć ograniczenie długotrwałego wysiłku.</string>
+    <string name="d_usaqib_unhealthy_for_sensitive_groups">Niezdrowa dla wrażliwych</string>
+    <string name="d_usaqib_unhealthy_for_sensitive_groups_text">Dzieci, seniorzy i osoby z chorobami serca lub płuc powinny ograniczyć długotrwały wysiłek.</string>
+    <string name="d_usaqib_unhealthy">Niezdrowa</string>
+    <string name="d_usaqib_unhealthy_text">Każdy może zacząć odczuwać skutki; osoby wrażliwe powinny unikać długotrwałego wysiłku.</string>
+    <string name="d_usaqib_very_unhealthy">Bardzo niezdrowa</string>
+    <string name="d_usaqib_very_unhealthy_text">Alarm zdrowotny: wszyscy powinni unikać długotrwałego wysiłku na zewnątrz.</string>
+    <string name="d_usaqib_hazardous">Niebezpieczna</string>
+    <string name="d_usaqib_hazardous_text">Warunki kryzysowe: zostań w domu przy zamkniętych oknach.</string>
+
+    <!-- Visibility rating: levels and descriptions -->
+    <string name="d_visr_dense_fog">Gęsta mgła</string>
+    <string name="d_visr_dense_fog_text">Jedź ze światłami przeciwmgłowymi i zachowaj duży odstęp.</string>
+    <string name="d_visr_fog">Mgła</string>
+    <string name="d_visr_fog_text">Zwolnij na drodze; punkty orientacyjne szybko znikają.</string>
+    <string name="d_visr_poor">Słaba</string>
+    <string name="d_visr_poor_text">Zamglenie, smog lub intensywne opady.</string>
+    <string name="d_visr_moderate">Umiarkowana</string>
+    <string name="d_visr_moderate_text">Lekkie zamglenie; odległe wzgórza wyglądają blado.</string>
+    <string name="d_visr_good">Dobra</string>
+    <string name="d_visr_good_text">Dobry widok na całe miasto.</string>
+    <string name="d_visr_excellent">Doskonała</string>
+    <string name="d_visr_excellent_text">Kryształowo czysto — dalekie horyzonty są ostre.</string>
+
+    <!-- Explanations shown under the cooling comfort and fire weather details -->
+    <string name="d_cool_explainer">Ciało chłodzi się, pocąc się. Temperatura termometru mokrego łączy ciepło i wilgotność, by pokazać, jak dobrze pot może parować: im bliżej temperatury skóry (~35 °C), tym słabsze chłodzenie. Powyżej ~31 °C nawet zdrowym osobom trudno długo utrzymać chłód.</string>
+    <string name="d_fire_explainer">Indeks pogody pożarowej Fosberga ocenia, jak szybko pożar mógłby się rozprzestrzeniać na podstawie samej pogody: ciepło i suche powietrze wysuszają drobny materiał palny, jak trawa, a wiatr podsyca płomienie. Indeks nie wie, jak suchy był grunt w ostatnich tygodniach, więc zawsze przestrzegaj oficjalnych ocen zagrożenia pożarowego i zakazów.</string>
+
+    <!-- Pressure trend (change over the last 3 hours): label and explanation -->
+    <string name="d_press_dropping_fast">Szybko spada</string>
+    <string name="d_press_dropping_fast_text">Ciśnienie szybko spada — to znak nadchodzącej burzy lub silnego wiatru.</string>
+    <string name="d_press_falling">Spada</string>
+    <string name="d_press_falling_text">Spadające ciśnienie często zapowiada chmury, deszcz i wiatr.</string>
+    <string name="d_press_rising_fast">Szybko rośnie</string>
+    <string name="d_press_rising_fast_text">Ciśnienie szybko rośnie; pogoda się poprawia, ale może wiać.</string>
+    <string name="d_press_rising">Rośnie</string>
+    <string name="d_press_rising_text">Rosnące ciśnienie zwykle oznacza stabilniejszą, suchszą pogodę.</string>
+    <string name="d_press_steady">Stabilne</string>
+    <string name="d_press_steady_text">Samo ciśnienie nie zapowiada dużych zmian.</string>
+    <string name="d_press_headache_sharp">Ryzyko bólu głowy: gwałtowne spadki ciśnienia mogą wywoływać bóle głowy i migreny u osób wrażliwych.</string>
+    <!-- %1$d = pressure drop in hPa (5 or more) -->
+    <string name="d_press_headache_fall">W ciągu doby ciśnienie spadnie o %1$d hPa, co niektórzy odczuwają jako ból głowy lub stawów.</string>
+
+    <!-- Air pollutants: what each one is (chemical symbols like PM2.5, NO₂ stay as they are) -->
+    <!-- O₃ is the chemical symbol; translate only the word Ozone -->
+    <string name="d_pollutant_o3">O₃ Ozon</string>
+    <string name="d_pollutant_pm25_about">Drobne pyły ze spalania i ruchu drogowego; docierają głęboko do płuc.</string>
+    <string name="d_pollutant_pm10_about">Grubsze pyły: kurz, pyłki, budowy i sól morska.</string>
+    <string name="d_pollutant_o3_about">Powstaje w słońcu ze spalin; najwyższy w upalne popołudnia.</string>
+    <string name="d_pollutant_no2_about">Głównie ze spalin samochodowych; najwyższy przy ruchliwych drogach.</string>
+    <string name="d_pollutant_so2_about">Ze spalania paliw zawierających siarkę i z żeglugi.</string>
+    <string name="d_pollutant_co_about">Tlenek węgla z niepełnego spalania.</string>
+
+    <!-- Cloud cover guidance (Clouds detail) -->
+    <string name="d_cloud_full_sun">Pełne słońce — świetne światło, ale pamiętaj o UV.</string>
+    <string name="d_cloud_clear_night">Bezchmurne niebo: dobre do oglądania gwiazd, a w nocy zrobi się zimniej.</string>
+    <string name="d_cloud_mostly_sunny">Przeważnie słonecznie, z kilkoma chmurami.</string>
+    <string name="d_cloud_mostly_clear_night">Przeważnie pogodna noc.</string>
+    <string name="d_cloud_mixed">Słońce na zmianę z chmurami.</string>
+    <string name="d_cloud_mostly_grey">Przeważnie szaro, z przejaśnieniami.</string>
+    <string name="d_cloud_mostly_cloudy_night">Przeważnie pochmurno, więc noc będzie łagodniejsza.</string>
+    <string name="d_cloud_overcast">Całkowite zachmurzenie — płaskie światło, bez bezpośredniego słońca.</string>
+    <string name="d_cloud_clearing">W ciągu najbliższych godzin niebo się przejaśni.</string>
+    <string name="d_cloud_building">W ciągu najbliższych godzin przybędzie chmur.</string>
+
+    <!-- Temperature comparisons ("than yesterday" = today's high vs yesterday's; "than today" = tomorrow's high vs today's). Each group has 3 variants picked at random for variety; they may be translated the same. -->
+    <string name="d_cmp_yday_same_1">Podobnie jak wczoraj.</string>
+    <string name="d_cmp_yday_same_2">Mniej więcej tak jak wczoraj.</string>
+    <string name="d_cmp_yday_same_3">Prawie jak wczoraj.</string>
+    <string name="d_cmp_yday_little_warmer_1">Trochę cieplej niż wczoraj.</string>
+    <string name="d_cmp_yday_little_warmer_2">Nieco cieplej niż wczoraj.</string>
+    <string name="d_cmp_yday_little_warmer_3">Odrobinę cieplej niż wczoraj.</string>
+    <string name="d_cmp_yday_little_cooler_1">Trochę chłodniej niż wczoraj.</string>
+    <string name="d_cmp_yday_little_cooler_2">Nieco chłodniej niż wczoraj.</string>
+    <string name="d_cmp_yday_little_cooler_3">Odrobinę chłodniej niż wczoraj.</string>
+    <string name="d_cmp_yday_little_colder_1">Trochę zimniej niż wczoraj.</string>
+    <string name="d_cmp_yday_little_colder_2">Nieco zimniej niż wczoraj.</string>
+    <string name="d_cmp_yday_little_colder_3">Odrobinę zimniej niż wczoraj.</string>
+    <string name="d_cmp_yday_few_warmer_1">O kilka stopni cieplej niż wczoraj.</string>
+    <string name="d_cmp_yday_few_warmer_2">Wyraźnie cieplej niż wczoraj.</string>
+    <string name="d_cmp_yday_few_warmer_3">Cieplej niż wczoraj.</string>
+    <string name="d_cmp_yday_few_cooler_1">O kilka stopni chłodniej niż wczoraj.</string>
+    <string name="d_cmp_yday_few_cooler_2">Wyraźnie chłodniej niż wczoraj.</string>
+    <string name="d_cmp_yday_few_cooler_3">Chłodniej niż wczoraj.</string>
+    <string name="d_cmp_yday_few_colder_1">O kilka stopni zimniej niż wczoraj.</string>
+    <string name="d_cmp_yday_few_colder_2">Wyraźnie zimniej niż wczoraj.</string>
+    <string name="d_cmp_yday_few_colder_3">Zimniej niż wczoraj.</string>
+    <string name="d_cmp_yday_much_warmer_1">Dużo cieplej niż wczoraj.</string>
+    <string name="d_cmp_yday_much_warmer_2">Znacznie cieplej niż wczoraj.</string>
+    <string name="d_cmp_yday_much_warmer_3">O wiele cieplej niż wczoraj.</string>
+    <string name="d_cmp_yday_much_cooler_1">Dużo chłodniej niż wczoraj.</string>
+    <string name="d_cmp_yday_much_cooler_2">Znacznie chłodniej niż wczoraj.</string>
+    <string name="d_cmp_yday_much_cooler_3">O wiele chłodniej niż wczoraj.</string>
+    <string name="d_cmp_yday_much_colder_1">Dużo zimniej niż wczoraj.</string>
+    <string name="d_cmp_yday_much_colder_2">Znacznie zimniej niż wczoraj.</string>
+    <string name="d_cmp_yday_much_colder_3">O wiele zimniej niż wczoraj.</string>
+    <string name="d_cmp_today_same_1">Podobnie jak dziś.</string>
+    <string name="d_cmp_today_same_2">Mniej więcej tak jak dziś.</string>
+    <string name="d_cmp_today_same_3">Prawie jak dziś.</string>
+    <string name="d_cmp_today_little_warmer_1">Trochę cieplej niż dziś.</string>
+    <string name="d_cmp_today_little_warmer_2">Nieco cieplej niż dziś.</string>
+    <string name="d_cmp_today_little_warmer_3">Odrobinę cieplej niż dziś.</string>
+    <string name="d_cmp_today_little_cooler_1">Trochę chłodniej niż dziś.</string>
+    <string name="d_cmp_today_little_cooler_2">Nieco chłodniej niż dziś.</string>
+    <string name="d_cmp_today_little_cooler_3">Odrobinę chłodniej niż dziś.</string>
+    <string name="d_cmp_today_little_colder_1">Trochę zimniej niż dziś.</string>
+    <string name="d_cmp_today_little_colder_2">Nieco zimniej niż dziś.</string>
+    <string name="d_cmp_today_little_colder_3">Odrobinę zimniej niż dziś.</string>
+    <string name="d_cmp_today_few_warmer_1">O kilka stopni cieplej niż dziś.</string>
+    <string name="d_cmp_today_few_warmer_2">Wyraźnie cieplej niż dziś.</string>
+    <string name="d_cmp_today_few_warmer_3">Cieplej niż dziś.</string>
+    <string name="d_cmp_today_few_cooler_1">O kilka stopni chłodniej niż dziś.</string>
+    <string name="d_cmp_today_few_cooler_2">Wyraźnie chłodniej niż dziś.</string>
+    <string name="d_cmp_today_few_cooler_3">Chłodniej niż dziś.</string>
+    <string name="d_cmp_today_few_colder_1">O kilka stopni zimniej niż dziś.</string>
+    <string name="d_cmp_today_few_colder_2">Wyraźnie zimniej niż dziś.</string>
+    <string name="d_cmp_today_few_colder_3">Zimniej niż dziś.</string>
+    <string name="d_cmp_today_much_warmer_1">Dużo cieplej niż dziś.</string>
+    <string name="d_cmp_today_much_warmer_2">Znacznie cieplej niż dziś.</string>
+    <string name="d_cmp_today_much_warmer_3">O wiele cieplej niż dziś.</string>
+    <string name="d_cmp_today_much_cooler_1">Dużo chłodniej niż dziś.</string>
+    <string name="d_cmp_today_much_cooler_2">Znacznie chłodniej niż dziś.</string>
+    <string name="d_cmp_today_much_cooler_3">O wiele chłodniej niż dziś.</string>
+    <string name="d_cmp_today_much_colder_1">Dużo zimniej niż dziś.</string>
+    <string name="d_cmp_today_much_colder_2">Znacznie zimniej niż dziś.</string>
+    <string name="d_cmp_today_much_colder_3">O wiele zimniej niż dziś.</string>
+
+    <!-- Precipitation today (Precipitation tile/detail) -->
+    <string name="d_prec_snowing_now">Teraz pada śnieg</string>
+    <string name="d_prec_falling_now">Teraz pada</string>
+    <string name="d_prec_fell_earlier">Padało dziś wcześniej</string>
+    <string name="d_prec_none_so_far">Dziś jeszcze nie padało</string>
+    <string name="d_prec_drying_out">Do końca dnia będzie przesychać.</string>
+    <string name="d_prec_staying_dry">Do końca dnia bez opadów.</string>
+    <string name="d_prec_more_overnight">Więcej opadów w nocy.</string>
+    <string name="d_prec_more_morning">Więcej opadów dziś rano.</string>
+    <string name="d_prec_more_afternoon">Więcej opadów po południu.</string>
+    <string name="d_prec_more_evening">Więcej opadów wieczorem.</string>
+
+    <!-- Precipitation guidance for the next hours -->
+    <string name="d_precg_freezing">Możliwy marznący deszcz — drogi i chodniki mogą pokryć się gołoledzią.</string>
+    <string name="d_precg_snow">Nadciąga śnieg. Zaplanuj więcej czasu na dojazd.</string>
+    <string name="d_precg_heavy">W najbliższych godzinach ulewny deszcz. Spodziewaj się kałuż i rozbryzgów na drogach.</string>
+    <string name="d_precg_umbrella">Wychodząc, weź parasol.</string>
+    <string name="d_precg_shower">Możliwy przelotny deszcz; wystarczy lekka kurtka.</string>
+    <string name="d_precg_none">Przez najbliższe godziny parasol niepotrzebny.</string>
+
+    <!-- Humidity through the day. %1$s = humidity level name (e.g. Sticky, Muggy), %2$s = another level name -->
+    <string name="d_humday_dry">Sucho przez cały dzień</string>
+    <string name="d_humday_dry_text">Mało wilgoci w powietrzu; skóra i usta mogą być suche.</string>
+    <string name="d_humday_comfortable">Komfortowo przez cały dzień</string>
+    <string name="d_humday_comfortable_text">Wilgotność nie będzie odczuwalna.</string>
+    <!-- e.g. "Sticky all day" -->
+    <string name="d_humday_all_day">%1$s przez cały dzień</string>
+    <!-- e.g. "Sticky morning" -->
+    <string name="d_humday_morning">%1$s rano</string>
+    <string name="d_humday_afternoon">%1$s po południu</string>
+    <string name="d_humday_evening">%1$s wieczorem</string>
+    <string name="d_humday_night">%1$s w nocy</string>
+    <!-- %1$s = a full sentence describing the worst period, %2$s = level name for the rest of the day, e.g. "Clammy; exercise feels harder. Comfortable at other times." -->
+    <string name="d_humday_other_times">%1$s W pozostałych porach: %2$s.</string>
+
+    <!-- Stargazing rating and forecast sentence -->
+    <string name="d_star_excellent">Doskonałe</string>
+    <string name="d_star_good">Dobre</string>
+    <string name="d_star_fair">Średnie</string>
+    <string name="d_star_poor">Słabe</string>
+    <string name="d_star_fog">Mgła lub niskie chmury zasłonią dziś w nocy większość nieba.</string>
+    <string name="d_star_cloudy">Chmury zasłonią dziś w nocy większość nieba.</string>
+    <string name="d_star_clear_dark">Bezchmurne niebo i ciemny księżyc — świetna noc, by wypatrzyć słabe gwiazdy i Drogę Mleczną.</string>
+    <string name="d_star_mostly_clear_dark">Przeważnie bezchmurne niebo i ciemny księżyc — świetna noc, by wypatrzyć słabe gwiazdy i Drogę Mleczną.</string>
+    <string name="d_star_patchy_dark">Miejscami chmury, ale księżyc ciemny: szukaj prześwitów.</string>
+    <string name="d_star_clear_bright">Bezchmurne niebo, ale jasny księżyc przyćmi słabsze gwiazdy. Za to świetna okazja, by podziwiać księżyc.</string>
+    <string name="d_star_mostly_clear_bright">Przeważnie bezchmurne niebo, ale jasny księżyc przyćmi słabsze gwiazdy. Za to świetna okazja, by podziwiać księżyc.</string>
+    <string name="d_star_patchy_bright">Miejscami chmury, a jasny księżyc przyćmi słabsze gwiazdy. Za to świetna okazja, by podziwiać księżyc.</string>
+    <string name="d_star_clear_partmoon">Bezchmurne niebo, a księżyc jest widoczny przez część nocy — celuj w czas, gdy zajdzie.</string>
+    <string name="d_star_mostly_clear_partmoon">Przeważnie bezchmurne niebo, a księżyc jest widoczny przez część nocy — celuj w czas, gdy zajdzie.</string>
+    <string name="d_star_patchy_partmoon">Miejscami chmury, a księżyc jest widoczny przez część nocy — celuj w czas, gdy zajdzie.</string>
+    <string name="d_star_clear_some">Bezchmurne niebo z odrobiną światła księżyca; jasne gwiazdy i planety i tak będą dobrze widoczne.</string>
+    <string name="d_star_mostly_clear_some">Przeważnie bezchmurne niebo z odrobiną światła księżyca; jasne gwiazdy i planety i tak będą dobrze widoczne.</string>
+    <string name="d_star_patchy_some">Miejscami chmury i trochę światła księżyca; jasne gwiazdy i planety i tak będą dobrze widoczne.</string>
+
+    <!-- Sea: activity picker -->
+    <string name="d_sea_act_general">Ogólne</string>
+    <string name="d_sea_act_swimming">Pływanie</string>
+    <string name="d_sea_act_surfing">Surfing</string>
+    <string name="d_sea_act_sailing">Żeglarstwo</string>
+
+    <!-- Sea state (Douglas scale from wave height): name and description -->
+    <string name="d_sea_state_calm">Gładkie</string>
+    <string name="d_sea_state_calm_text">Gładka woda, jak lustro.</string>
+    <string name="d_sea_state_rippled">Zmarszczone</string>
+    <string name="d_sea_state_rippled_text">Drobne fale bez łamiących się grzbietów.</string>
+    <string name="d_sea_state_slight">Lekko sfalowane</string>
+    <string name="d_sea_state_slight_text">Małe fale; nieliczne białe grzywy.</string>
+    <string name="d_sea_state_moderate">Umiarkowane</string>
+    <string name="d_sea_state_moderate_text">Dłuższe fale z licznymi białymi grzywami.</string>
+    <string name="d_sea_state_rough">Wzburzone</string>
+    <string name="d_sea_state_rough_text">Duże fale, rozległa piana i bryzgi.</string>
+    <string name="d_sea_state_very_rough">Bardzo wzburzone</string>
+    <string name="d_sea_state_very_rough_text">Spiętrzone morze z pasmami piany.</string>
+    <string name="d_sea_state_high">Silnie wzburzone</string>
+    <string name="d_sea_state_high_text">Wysokie fale z gęstą pianą; niebezpiecznie.</string>
+    <string name="d_sea_state_very_high">Bardzo silnie wzburzone</string>
+    <string name="d_sea_state_very_high_text">Bardzo wysokie fale z długimi łamiącymi się grzbietami.</string>
+    <string name="d_sea_state_phenomenal">Wyjątkowo wzburzone</string>
+    <string name="d_sea_state_phenomenal_text">Wyjątkowe, skrajnie niebezpieczne morze.</string>
+
+    <!-- Swell quality (surfing) -->
+    <string name="d_swell_short">Krótka, nieregularna fala wiatrowa</string>
+    <string name="d_swell_mixed">Mieszana fala średniej jakości</string>
+    <string name="d_swell_clean">Czysta fala martwa</string>
+    <string name="d_swell_long">Długookresowa fala martwa z prawdziwą mocą</string>
+
+    <!-- Wave period explanation. %1$d = seconds between waves -->
+    <string name="d_period_short">Fale przychodzą co %1$d s: krótkie i nierówne, wytworzone przez lokalny wiatr.</string>
+    <string name="d_period_mixed">Fale przychodzą co %1$d s: mieszanka lokalnej fali wiatrowej i fali martwej z daleka.</string>
+    <string name="d_period_long">Fale przychodzą co %1$d s: przebyły długą drogę i niosą więcej energii, niż sugeruje ich wysokość.</string>
+
+    <!-- Wetsuit advice by sea temperature -->
+    <string name="d_wetsuit_none">Pianka niepotrzebna.</string>
+    <string name="d_wetsuit_rash">Koszulka lycra lub cienka góra 0,5–2 mm.</string>
+    <string name="d_wetsuit_shorty">Krótka pianka 2 mm (shorty).</string>
+    <string name="d_wetsuit_32">Pełna pianka 3/2 mm.</string>
+    <string name="d_wetsuit_43">Pełna pianka 4/3 mm; buty opcjonalnie.</string>
+    <string name="d_wetsuit_54">Pianka 5/4 mm z butami i rękawicami.</string>
+    <string name="d_wetsuit_65">Pianka 5/4–6/5 mm z kapturem, butami i rękawicami.</string>
+
+    <!-- How sea water feels, by temperature (short label) -->
+    <string name="d_water_bath">Jak w wannie</string>
+    <string name="d_water_warm">Ciepła</string>
+    <string name="d_water_pleasant">Przyjemna</string>
+    <string name="d_water_fresh">Rześka</string>
+    <string name="d_water_cold">Zimna</string>
+    <string name="d_water_very_cold">Bardzo zimna</string>
+
+    <!-- Ocean current strength: label and advice -->
+    <string name="d_current_weak">Słaby</string>
+    <string name="d_current_weak_text">Ledwo wyczuwalny dryf.</string>
+    <string name="d_current_moderate">Umiarkowany</string>
+    <string name="d_current_moderate_text">Będzie cię powoli znosić; łatwo płynąć pod prąd.</string>
+    <string name="d_current_strong">Silny</string>
+    <string name="d_current_strong_text">Uwaga dla pływaków: tak szybki, jak pływa wiele osób. Trzymaj się blisko brzegu.</string>
+    <string name="d_current_very_strong">Bardzo silny</string>
+    <string name="d_current_very_strong_text">Niebezpieczny dla pływaków: szybszy, niż pływa większość ludzi.</string>
+
+    <!-- Sea guidance: general -->
+    <string name="d_seag_no_data">Brak danych o falach dla tego miejsca.</string>
+    <string name="d_seag_calm">Spokojna woda — dobry czas, by być na morzu lub nad nim.</string>
+    <string name="d_seag_slight">Lekko sfalowane morze. W porządku dla większości aktywności; na małych łodziach może trochę bujać.</string>
+    <string name="d_seag_moderate">Umiarkowane morze. Spodziewaj się bryzgów na plaży i wyboistej jazdy małymi łodziami.</string>
+    <string name="d_seag_rough">Wzburzone morze. Trzymaj się z dala od falochronów i linii wody.</string>
+    <string name="d_seag_dangerous">Niebezpieczne morze. Unikaj odsłoniętych wybrzeży, mol i krawędzi klifów.</string>
+
+    <!-- Sea guidance: swimming -->
+    <string name="d_seag_swim_no_data">Brak danych o falach.</string>
+    <string name="d_seag_swim_gentle">Spokojna woda do pływania.</string>
+    <string name="d_seag_swim_some">Trochę fal; pływaj tam, gdzie sięgasz dna.</string>
+    <string name="d_seag_swim_choppy">Nierówna woda. Pływaj tylko na strzeżonych plażach.</string>
+    <string name="d_seag_swim_rough">Za duże fale do pływania — prawdopodobne silne przyboje i prądy wsteczne.</string>
+    <string name="d_seag_swim_cold">Zimna woda: ryzyko szoku termicznego, wchodź powoli i pływaj krótko.</string>
+    <!-- Sentence about the water temperature feel -->
+    <string name="d_seag_water_bath">Woda ciepła jak w wannie.</string>
+    <string name="d_seag_water_warm">Woda ciepła.</string>
+    <string name="d_seag_water_pleasant">Woda przyjemna.</string>
+    <string name="d_seag_water_fresh">Woda rześka.</string>
+    <string name="d_seag_water_cold">Woda zimna.</string>
+    <string name="d_seag_water_very_cold">Woda bardzo zimna.</string>
+
+    <!-- Sea guidance: surfing -->
+    <string name="d_seag_surf_no_data">Brak danych o fali martwej.</string>
+    <string name="d_seag_surf_flat">Flauta. Niewiele do pływania.</string>
+    <string name="d_seag_surf_small_weak">Małe i słabe — tylko longboardy i początkujący.</string>
+    <string name="d_seag_surf_small_clean">Małe, ale czyste. Dobre na longboard i do nauki.</string>
+    <string name="d_seag_surf_good">Dobra, mocna fala dla średnio zaawansowanych.</string>
+    <string name="d_seag_surf_decent">Przyzwoity rozmiar, ale krótki okres i mniej uporządkowana fala.</string>
+    <string name="d_seag_surf_big">Duża fala — tylko dla doświadczonych.</string>
+    <string name="d_seag_surf_chop">Na fali martwej leży fala wiatrowa, więc ściany będą nierówne.</string>
+
+    <!-- Sea guidance: sailing -->
+    <string name="d_seag_sail_no_data">Brak danych o wietrze.</string>
+    <string name="d_seag_sail_light">Bardzo słaby wiatr — powolna żegluga, może dryf.</string>
+    <string name="d_seag_sail_good">Dobry wiatr do żeglowania.</string>
+    <string name="d_seag_sail_fresh">Dość silny do silnego wiatr. Refuj wcześnie; dla doświadczonych załóg.</string>
+    <string name="d_seag_sail_strong">Silny wiatr — małe jednostki powinny zostać w porcie.</string>
+    <string name="d_seag_sail_gusty">Porywisto: spodziewaj się nagłych zmian kierunku.</string>
+
+    <!-- Sea detail disclaimer -->
+    <string name="d_sea_disclaimer">Tylko wskazówki z modelu, nie do nawigacji ani decyzji o bezpieczeństwie. Warunki na twojej plaży mogą się różnić — zawsze sprawdzaj lokalne ostrzeżenia, flagi i ratowników.</string>
+
+    <!-- Forecast download error. %1$d = HTTP status code, %2$s = server message (technical, may be empty) -->
+    <string name="d_api_http_error">Serwer zwrócił HTTP %1$d %2$s</string>
+    <!-- Pollen types (plants) -->
+    <string name="d_pollen_alder">Olcha</string>
+    <string name="d_pollen_birch">Brzoza</string>
+    <string name="d_pollen_grass">Trawy</string>
+    <string name="d_pollen_mugwort">Bylica</string>
+    <string name="d_pollen_olive">Oliwka</string>
+    <string name="d_pollen_ragweed">Ambrozja</string>
+
+    <!-- Family & friends: main-screen card and screen -->
+    <string name="d_fr_title">Rodzina i znajomi</string>
+    <!-- Label for the user themself in the friends list/avatar -->
+    <string name="d_fr_you">Ty</string>
+    <!-- The user's own row. %1$s = their place name -->
+    <string name="d_fr_you_at">Ty · %1$s</string>
+    <string name="d_fr_card_empty">Sprawdzaj pogodę tam, gdzie mieszkają bliskie ci osoby, i dostawaj ich ostrzeżenia.</string>
+    <string name="d_fr_add_someone">Dodaj kogoś</string>
+    <string name="d_fr_similar">U wszystkich podobna pogoda</string>
+    <!-- %1$s = name(s) of who is warmest, %2$s = name(s) of who is coldest -->
+    <string name="d_fr_warmest_coldest">Najcieplej: %1$s · Najzimniej: %2$s</string>
+    <!-- Two first names joined, e.g. "Anna and Ben" -->
+    <string name="d_fr_two_names">%1$s i %2$s</string>
+    <!-- Compare picker -->
+    <string name="d_fr_cmp_temp">Temperatura</string>
+    <string name="d_fr_cmp_rain">Szansa deszczu</string>
+    <string name="d_fr_cmp_uv">Indeks UV</string>
+    <!-- Day picker -->
+    <string name="d_fr_now">Teraz</string>
+    <string name="d_fr_today">Dziś</string>
+    <string name="d_fr_tomorrow">Jutro</string>
+    <!-- Button / action: add a person -->
+    <string name="d_fr_add">Dodaj</string>
+    <string name="d_fr_intro_title">Pogoda rodziny i znajomych</string>
+    <string name="d_fr_intro_compare">Porównuj temperaturę, deszcz i UV z bliskimi osobami</string>
+    <string name="d_fr_intro_warnings">Dostawaj oficjalne ostrzeżenia pogodowe dla ich miejsc</string>
+    <string name="d_fr_intro_map">Zobacz wszystkich na mapie pogody</string>
+    <string name="d_fr_privacy">Imiona i zdjęcia pochodzą z wybranych przez ciebie kontaktów i zostają na tym urządzeniu. Do serwisu pogodowego wysyłane są tylko współrzędne ich miejsc.</string>
+    <string name="d_fr_see_on_map">Zobacz wszystkich na mapie</string>
+    <!-- Remove dialog. %1$s = person's name -->
+    <string name="d_fr_remove_title">Usunąć: %1$s?</string>
+    <!-- %1$s = the person's place name -->
+    <string name="d_fr_remove_text">Ta osoba zniknie z listy Rodzina i znajomi, a ty przestaniesz dostawać ostrzeżenia dla miejsca: %1$s.</string>
+    <string name="d_fr_remove">Usuń</string>
+    <string name="d_fr_cancel">Anuluj</string>
+    <!-- Warning chip. %1$s = severity colour (e.g. Yellow), %2$s = hazard in lower case (e.g. wind) -->
+    <string name="d_fr_warning">%1$s ostrzeżenie: %2$s</string>
+    <!-- Button: open the person's contact card -->
+    <string name="d_fr_contact">Kontakt</string>
+    <!-- Add dialog -->
+    <string name="d_fr_add_title">Dodaj członka rodziny lub znajomego</string>
+    <string name="d_fr_name">Imię</string>
+    <string name="d_fr_pick_contact">Wybierz kontakt</string>
+    <string name="d_fr_where">Gdzie mieszka ta osoba?</string>
+</resources>

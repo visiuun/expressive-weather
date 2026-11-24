@@ -70,6 +70,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -93,6 +94,7 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.graphics.shapes.Morph
 import androidx.lifecycle.lifecycleScope
+import dev.vis.weather.R
 import dev.vis.weather.data.Place
 import dev.vis.weather.data.Prefs
 import dev.vis.weather.data.Settings
@@ -196,10 +198,10 @@ private fun ShapeConfigScreen(
             Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 8.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, "Cancel") }
+            IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, stringResource(R.string.w_cfg_cancel)) }
             Spacer(Modifier.width(4.dp))
-            Text("Weather shape", style = MaterialTheme.typography.headlineMediumEmphasized, modifier = Modifier.weight(1f))
-            Button(onClick = { onSave(cfg) }) { Text("Save") }
+            Text(stringResource(R.string.widget_shape_config_title), style = MaterialTheme.typography.headlineMediumEmphasized, modifier = Modifier.weight(1f))
+            Button(onClick = { onSave(cfg) }) { Text(stringResource(R.string.w_cfg_save)) }
             Spacer(Modifier.width(8.dp))
         }
 
@@ -214,7 +216,7 @@ private fun ShapeConfigScreen(
         ) {
             full {
                 Row(Modifier.padding(start = 8.dp, bottom = 4.dp), verticalAlignment = Alignment.Bottom) {
-                    Text("Shape", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                    Text(stringResource(R.string.w_cfg_shape), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(8.dp))
                     Text(cfg.shape.label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
@@ -223,13 +225,13 @@ private fun ShapeConfigScreen(
                 ShapeCell(s, s == cfg.shape) { cfg = cfg.copy(shape = s) }
             }
             full {
-                SettingsGroup("Colours", Modifier.padding(top = 18.dp)) {
+                SettingsGroup(stringResource(R.string.w_cfg_colours), Modifier.padding(top = 18.dp)) {
                     SettingsItemSurface(0, 2) {
                         Column(Modifier.padding(16.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text("Colour", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                                Text(stringResource(R.string.w_cfg_colour), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                                 Text(
-                                    if (cfg.color == ShapeColor.THEME && android.os.Build.VERSION.SDK_INT < 31) "App colours" else cfg.color.label,
+                                    if (cfg.color == ShapeColor.THEME && android.os.Build.VERSION.SDK_INT < 31) stringResource(R.string.w_cfg_app_colours) else cfg.color.label,
                                     style = MaterialTheme.typography.titleMediumEmphasized, color = MaterialTheme.colorScheme.primary,
                                 )
                             }
@@ -243,35 +245,35 @@ private fun ShapeConfigScreen(
                         }
                     }
                     SettingsSlider(
-                        "Background", "${(cfg.opacity * 100).roundToInt()}%", 1, 2, cfg.opacity, 0f..1f, steps = 19,
+                        stringResource(R.string.w_cfg_background_opacity), "${(cfg.opacity * 100).roundToInt()}%", 1, 2, cfg.opacity, 0f..1f, steps = 19,
                         icon = Icons.Rounded.Opacity, shape = MaterialShapes.Cookie7Sided,
-                        caption = "Lower it to let the wallpaper show through the shape.",
+                        caption = stringResource(R.string.w_cfg_background_caption),
                     ) { cfg = cfg.copy(opacity = (it * 20).roundToInt() / 20f) }
                 }
             }
             full {
-                SettingsGroup("Show", Modifier.padding(top = 18.dp)) {
+                SettingsGroup(stringResource(R.string.w_cfg_show), Modifier.padding(top = 18.dp)) {
                     SettingsSwitch(
-                        "High & low", "Today's range, when the widget is big enough", Icons.Rounded.Thermostat,
+                        stringResource(R.string.w_cfg_hilo), stringResource(R.string.w_cfg_hilo_desc), Icons.Rounded.Thermostat,
                         MaterialShapes.Arch, 0, 2, cfg.showHiLo,
                     ) { cfg = cfg.copy(showHiLo = it) }
                     SettingsSwitch(
-                        "Place name", "Shown on larger widgets", Icons.Rounded.Title,
+                        stringResource(R.string.w_cfg_place_name), stringResource(R.string.w_cfg_place_name_desc), Icons.Rounded.Title,
                         MaterialShapes.Cookie6Sided, 1, 2, cfg.showPlace,
                     ) { cfg = cfg.copy(showPlace = it) }
                 }
             }
             full {
-                SettingsGroup("Location", Modifier.padding(top = 18.dp)) {
+                SettingsGroup(stringResource(R.string.w_cfg_location), Modifier.padding(top = 18.dp)) {
                     val n = choices.size + 1
                     SettingsAction(
-                        "Follow the app", "Shows the place open in the app", Icons.Rounded.MyLocation, MaterialShapes.Cookie9Sided, 0, n,
+                        stringResource(R.string.w_cfg_follow_app), stringResource(R.string.w_cfg_follow_app_desc), Icons.Rounded.MyLocation, MaterialShapes.Cookie9Sided, 0, n,
                         trailing = { RadioButton(selected = cfg.place.isEmpty(), onClick = null) },
                     ) { cfg = cfg.copy(place = "") }
                     choices.forEachIndexed { i, (key, place) ->
                         val current = key == UiState.CURRENT
                         SettingsAction(
-                            place.name, if (current) "Your location" else place.region.ifBlank { null },
+                            place.name, if (current) stringResource(R.string.w_cfg_your_location) else place.region.ifBlank { null },
                             if (current) Icons.Rounded.NearMe else Icons.Rounded.Place,
                             if (current) MaterialShapes.Circle else MaterialShapes.Clover4Leaf, i + 1, n,
                             trailing = { RadioButton(selected = cfg.place == key, onClick = null) },
@@ -303,7 +305,7 @@ private fun PreviewStage(cfg: ShapeConfig, settings: Settings, d: WData?, dark: 
             ShapePreview(cfg, settings, d, dark, DpSize(76.dp, 76.dp))
         }
         Text(
-            if (dark) "Dark home screen" else "Light home screen",
+            stringResource(if (dark) R.string.w_cfg_dark_home else R.string.w_cfg_light_home),
             style = MaterialTheme.typography.labelSmall,
             color = (if (dark) Color.White else Color.Black).copy(alpha = 0.55f),
             modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 8.dp),

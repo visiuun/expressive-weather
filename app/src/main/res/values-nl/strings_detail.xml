@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ============================================================ Shared (detail screens) -->
+    <!-- Content description of the back button in the top bar -->
+    <string name="dt_back">Terug</string>
+    <!-- Capitalised day words used as titles/labels -->
+    <string name="dt_today">Vandaag</string>
+    <string name="dt_tomorrow">Morgen</string>
+    <string name="dt_tonight">Vannacht</string>
+    <!-- Label for the current hour in charts -->
+    <string name="dt_now">Nu</string>
+    <!-- Lower-case day words used in the middle of a sentence, e.g. "Roughest tomorrow", "In 3 days" -->
+    <string name="dt_today_lc">vandaag</string>
+    <string name="dt_tomorrow_lc">morgen</string>
+    <!-- Used mid-sentence: "Roughest on Monday". %1$s = full weekday name -->
+    <string name="dt_on_weekday">op %1$s</string>
+    <!-- Generic "A · B" join of two values -->
+    <string name="dt_dot_pair">%1$s · %2$s</string>
+    <!-- Generic "label: value" -->
+    <string name="dt_label_value">%1$s: %2$s</string>
+    <!-- "<level> around <time>", e.g. "High around 15:00" -->
+    <string name="dt_label_around">%1$s rond %2$s</string>
+    <!-- Wave period / seconds value, e.g. "8 s" -->
+    <string name="dt_seconds_short">%1$d s</string>
+    <!-- Direction something comes from, e.g. "from SW" -->
+    <string name="dt_from_dir">uit %1$s</string>
+    <string name="dt_below_horizon">Onder de horizon</string>
+
+    <!-- ============================================================ Formatting helpers -->
+    <!-- "Today 14:20" etc. %1$s = time -->
+    <string name="dt_when_today">Vandaag %1$s</string>
+    <string name="dt_when_tomorrow">Morgen %1$s</string>
+    <string name="dt_when_yesterday">Gisteren %1$s</string>
+    <!-- %1$s = short weekday, %2$s = time -->
+    <string name="dt_when_day">%1$s %2$s</string>
+    <!-- Relative day count, lower case, used mid-sentence and capitalised at start -->
+    <plurals name="dt_in_days">
+        <item quantity="one">over %d dag</item>
+        <item quantity="other">over %d dagen</item>
+    </plurals>
+    <!-- Signed durations, %1$s = sign (+ or −) -->
+    <string name="dt_signed_s">%1$s%2$d s</string>
+    <string name="dt_signed_h_min">%1$s%2$d u %3$d min</string>
+    <string name="dt_signed_min_s">%1$s%2$d min %3$d s</string>
+    <!-- Signed pressure change in 3 hours: %1$s = sign, %2$s = number, %3$s = unit -->
+    <string name="dt_pressure_delta">%1$s%2$s %3$s in 3 u</string>
+
+    <!-- ============================================================ Data source line / observation badge -->
+    <!-- %1$s = station code (e.g. EHAM), %2$s = distance -->
+    <string name="dt_obs_label">Lokaal geverifieerd · %1$s %2$s</string>
+    <!-- %1$s station name, %2$s station code, %3$s distance, %4$s temperature, %5$d minutes, %6$s temperature correction -->
+    <plurals name="dt_obs_detail">
+        <item quantity="one">%1$s (%2$s), op %3$s afstand, meldde %4$s %5$d min geleden. De komende uren zijn met %6$s bijgesteld en gaan in 6 uur geleidelijk terug naar het model.</item>
+        <item quantity="other">%1$s (%2$s), op %3$s afstand, meldde %4$s %5$d min geleden. De komende uren zijn met %6$s bijgesteld en gaan in 6 uur geleidelijk terug naar het model.</item>
+    </plurals>
+    <!-- %1$s = forecast model name -->
+    <string name="dt_src_forecast">Verwachting: %1$s via Open-Meteo</string>
+    <string name="dt_src_best_model">Beste regionale model</string>
+    <string name="dt_src_gaps">hiaten automatisch aangevuld</string>
+    <!-- %1$s = station code, %2$s = distance -->
+    <string name="dt_src_corrected">gecorrigeerd met %1$s (%2$s)</string>
+    <string name="dt_src_sea">zee: Open-Meteo Marine</string>
+
+    <!-- ============================================================ Metric detail screen -->
+    <plurals name="dt_next_hours">
+        <item quantity="one">Komend %d uur</item>
+        <item quantity="other">Komende %d uur</item>
+    </plurals>
+    <plurals name="dt_next_days">
+        <item quantity="one">Komende %d dag</item>
+        <item quantity="other">Komende %d dagen</item>
+    </plurals>
+    <plurals name="dt_next_nights">
+        <item quantity="one">Komende %d nacht</item>
+        <item quantity="other">Komende %d nachten</item>
+    </plurals>
+    <!-- Section title, %1$s = metric name in lower case, e.g. "About humidity" -->
+    <string name="dt_about_metric">Over %1$s</string>
+    <!-- Chart legend for the second (dashed) line -->
+    <string name="dt_gusts">Windstoten</string>
+    <!-- Chart legend: actual temperature (vs feels-like) -->
+    <string name="dt_actual">Werkelijk</string>
+
+    <!-- Wind hero. %1$s = compass direction, %2$s = Beaufort description -->
+    <string name="dt_wind_from">Uit %1$s · %2$s</string>
+    <string name="dt_wind_gusts_up_to">Windstoten tot %1$s.</string>
+    <string name="dt_wind_compass_note">De pijl wijst waar de wind naartoe waait — hij volgt het kompas van je telefoon, dus hij klopt met de echte wereld.</string>
+    <string name="dt_wind_no_compass">Dit apparaat heeft geen kompas, dus het noorden is boven.</string>
+    <!-- Humidity hero -->
+    <string name="dt_hum_hero_sub">Dauwpunt %1$s. Kantel of schud je telefoon — het water beweegt mee.</string>
+    <!-- Feels-like hero. %1$s = actual temperature -->
+    <string name="dt_feels_actual">Werkelijk %1$s</string>
+    <string name="dt_feels_wind_chill">Door de wind voelt het kouder aan.</string>
+    <string name="dt_feels_colder">Voelt kouder aan dan de thermometer aangeeft.</string>
+    <string name="dt_feels_humid">Door de luchtvochtigheid voelt het warmer aan.</string>
+    <string name="dt_feels_warmer">Zon en weinig wind laten het warmer aanvoelen.</string>
+    <string name="dt_feels_close">Dicht bij de werkelijke temperatuur.</string>
+    <!-- Visibility hero -->
+    <string name="dt_vis_hero_sub">Hoe ver je voorwerpen duidelijk kunt zien. Mist, regen, sneeuw en nevel verlagen het zicht.</string>
+    <!-- Precipitation hero -->
+    <string name="dt_precip_hero_caption">Verwacht in de komende 24 u</string>
+    <string name="dt_precip_hero_chance">Hoogste kans per uur %1$d%%.</string>
+    <!-- Cloud hero -->
+    <string name="dt_cloud_hero_sub">Deel van de lucht dat door wolken bedekt is.</string>
+    <!-- Sun hero. %1$s = daylight duration, %2$s = sunshine duration -->
+    <string name="dt_sun_hero_sub">%1$s daglicht, %2$s zonneschijn verwacht.</string>
+    <!-- Air quality -->
+    <string name="dt_us_aqi">US AQI</string>
+    <string name="dt_eu_aqi">Europese AQI</string>
+    <!-- Appended after US AQI advice. %1$d = value, %2$s = level -->
+    <string name="dt_air_eu_suffix">Europese AQI %1$d (%2$s).</string>
+    <!-- Pollen -->
+    <string name="dt_pollen_unit">korrels/m³</string>
+    <string name="dt_pollen_grains">%1$d korrels/m³</string>
+    <string name="dt_pollen_none">Geen pollengegevens</string>
+    <string name="dt_pollen_europe_only">Pollenverwachtingen van Copernicus CAMS zijn alleen voor Europa.</string>
+    <string name="dt_by_plant">Per plant</string>
+    <!-- Pollen plant names (only the first 5 letters are shown under the chart) -->
+    <string name="dt_pollen_alder">Els</string>
+    <string name="dt_pollen_birch">Berk</string>
+    <string name="dt_pollen_grass">Gras</string>
+    <string name="dt_pollen_mugwort">Bijvoet</string>
+    <string name="dt_pollen_olive">Olijf</string>
+    <string name="dt_pollen_ragweed">Ambrosia</string>
+    <!-- Sun table -->
+    <string name="dt_sunrise_sunset">Zonsopkomst &amp; -ondergang</string>
+    <!-- %1$s = sunshine duration -->
+    <string name="dt_sun_duration">%1$s zon</string>
+
+    <!-- Cloud cover words (sky condition) -->
+    <string name="dt_cloud_clear">Onbewolkt</string>
+    <string name="dt_cloud_mostly_clear">Overwegend helder</string>
+    <string name="dt_cloud_partly">Half bewolkt</string>
+    <string name="dt_cloud_mostly_cloudy">Overwegend bewolkt</string>
+    <string name="dt_cloud_overcast">Zwaar bewolkt</string>
+
+    <!-- "About ..." explanations on the metric screen -->
+    <string name="dt_about_wind">Windsnelheid is het gemiddelde over 10 minuten op 10 m hoogte. Windstoten zijn korte vlagen die veel sterker kunnen zijn. De richting is waar de wind VANDAAN komt: een noordenwind waait van noord naar zuid.</string>
+    <string name="dt_about_humidity">Relatieve luchtvochtigheid is hoeveel waterdamp de lucht bevat ten opzichte van het maximum bij die temperatuur. Het dauwpunt geeft beter aan hoe benauwd het voelt: hoe hoger, hoe plakkeriger de lucht.</string>
+    <string name="dt_about_uv">De uv-index meet de sterkte van de ultraviolette straling die zonnebrand veroorzaakt. Hij piekt rond het zonnemiddaguur en is hoger in de bergen en bij water, sneeuw en zand. Wolken verlagen hem, maar niet altijd veel.</string>
+    <string name="dt_about_feels">De gevoelstemperatuur combineert de luchttemperatuur met wind, luchtvochtigheid en zon om te schatten hoe het weer op je huid aanvoelt.</string>
+    <string name="dt_about_pressure">Luchtdruk op zeeniveau. De standaarddruk is 1013 hPa. Hogedrukgebieden brengen meestal stabiel, rustig weer; lagedrukgebieden brengen bewolking, wind en regen. Een snelle daling wijst op een naderende storm.</string>
+    <string name="dt_about_visibility">Horizontale afstand waarop voorwerpen duidelijk te zien zijn. Onder 1 km is het mist; onder 10 km betekent meestal nevel, heiigheid of neerslag.</string>
+    <string name="dt_about_precip">Totale hoeveelheid regen, buien en sneeuw (als water) per uur. Het percentage is de kans dat er in dat uur minstens 0,1 mm valt, gecombineerd uit meerdere weermodellen.</string>
+    <string name="dt_about_cloud">Deel van de lucht dat op alle hoogtes door wolken bedekt is. Lage wolken houden de meeste zon tegen; hoge, dunne wolken laten nog veel zon door.</string>
+    <string name="dt_about_sun">Zonsopkomst en zonsondergang zijn de momenten waarop de bovenrand van de zon de horizon raakt. Daglicht is de tijd daartussen; zonneschijn is de tijd met directe zon die niet door wolken wordt verborgen.</string>
+    <string name="dt_about_moon">De maan doorloopt elke 29,5 dag een volledige cyclus van fasen. De fasen worden op je apparaat berekend, dus ze werken ook offline.</string>
+    <string name="dt_about_air">De luchtkwaliteitsindex zet concentraties van vervuilende stoffen om in één getal. Hij is gebaseerd op het model van de Copernicus Atmosphere Monitoring Service (CAMS), niet op een lokale sensor, dus zeer lokale bronnen zijn mogelijk niet zichtbaar.</string>
+    <string name="dt_about_sea">Golfhoogte is de significante golfhoogte: het gemiddelde van het hoogste derde van de golven, ongeveer wat een ervaren waarnemer zou schatten. Losse golven kunnen tot twee keer zo hoog zijn. Swell ontstaat door verre stormen; windgolven door lokale wind. Gegevens: Open-Meteo Marine (golf- en oceaanmodellen van ECMWF, Météo-France, DWD en Copernicus Marine).</string>
+    <string name="dt_about_pollen">Pollenconcentratie in korrels per kubieke meter lucht, uit het Europese pollenmodel van CAMS. Gevoelige mensen kunnen bij gras en berk vanaf ongeveer 10–20 korrels/m³ klachten merken.</string>
+
+    <!-- Scale legends on the metric screen: label (range + level) and explanation -->
+    <!-- UV index scale -->
+    <string name="dt_scale_uv_low">0–2 Laag</string>
+    <string name="dt_scale_uv_low_text">Geen bescherming nodig.</string>
+    <string name="dt_scale_uv_moderate">3–5 Matig</string>
+    <string name="dt_scale_uv_moderate_text">Zoek rond het middaguur schaduw, smeer je in.</string>
+    <string name="dt_scale_uv_high">6–7 Hoog</string>
+    <string name="dt_scale_uv_high_text">Bescherming noodzakelijk, beperk zon rond het middaguur.</string>
+    <string name="dt_scale_uv_very_high">8–10 Zeer hoog</string>
+    <string name="dt_scale_uv_very_high_text">Extra bescherming, vermijd zon rond het middaguur.</string>
+    <string name="dt_scale_uv_extreme">11+ Extreem</string>
+    <string name="dt_scale_uv_extreme_text">Blijf rond het middaguur binnen.</string>
+    <!-- US AQI scale -->
+    <string name="dt_scale_aqi_good">0–50 Goed</string>
+    <string name="dt_scale_aqi_good_text">De luchtkwaliteit is goed.</string>
+    <string name="dt_scale_aqi_moderate">51–100 Matig</string>
+    <string name="dt_scale_aqi_moderate_text">Aanvaardbaar; zeer gevoelige mensen kunnen er last van hebben.</string>
+    <string name="dt_scale_aqi_sensitive">101–150 Ongezond voor gevoelige groepen</string>
+    <string name="dt_scale_aqi_sensitive_text">Kinderen, ouderen en mensen met longziekten kunnen inspanning beter beperken.</string>
+    <string name="dt_scale_aqi_unhealthy">151–200 Ongezond</string>
+    <string name="dt_scale_aqi_unhealthy_text">Iedereen kan effecten gaan merken.</string>
+    <string name="dt_scale_aqi_very_unhealthy">201–300 Zeer ongezond</string>
+    <string name="dt_scale_aqi_very_unhealthy_text">Gezondheidswaarschuwing.</string>
+    <string name="dt_scale_aqi_hazardous">301+ Gevaarlijk</string>
+    <string name="dt_scale_aqi_hazardous_text">Noodsituatie.</string>
+    <!-- Humidity (dew point) scale -->
+    <string name="dt_scale_hum_dry">Dauwpunt &lt; 10°C · Droog</string>
+    <string name="dt_scale_hum_dry_text">Frisse lucht.</string>
+    <string name="dt_scale_hum_comfortable">10–15°C · Aangenaam</string>
+    <string name="dt_scale_hum_comfortable_text">Je merkt de luchtvochtigheid niet.</string>
+    <string name="dt_scale_hum_noticeable">15–18°C · Merkbaar</string>
+    <string name="dt_scale_hum_noticeable_text">Je begint het vocht te voelen.</string>
+    <string name="dt_scale_hum_sticky">18–21°C · Klam</string>
+    <string name="dt_scale_hum_sticky_text">Plakkerig; inspanning voelt zwaarder.</string>
+    <string name="dt_scale_hum_muggy">21–24°C · Benauwd</string>
+    <string name="dt_scale_hum_muggy_text">Onaangenaam voor de meeste mensen.</string>
+    <string name="dt_scale_hum_oppressive">24°C+ · Drukkend</string>
+    <string name="dt_scale_hum_oppressive_text">Zeer onaangenaam.</string>
+    <!-- Sea state scale (wave height) -->
+    <string name="dt_scale_sea_calm">&lt; 0,1 m · Kalm</string>
+    <string name="dt_scale_sea_calm_text">Spiegelglad water.</string>
+    <string name="dt_scale_sea_rippled">0,1–0,5 m · Rimpelig</string>
+    <string name="dt_scale_sea_rippled_text">Golfjes, geen brekende kammen.</string>
+    <string name="dt_scale_sea_slight">0,5–1,25 m · Licht</string>
+    <string name="dt_scale_sea_slight_text">Kleine golven, hier en daar schuimkoppen.</string>
+    <string name="dt_scale_sea_moderate">1,25–2,5 m · Matig</string>
+    <string name="dt_scale_sea_moderate_text">Veel schuimkoppen.</string>
+    <string name="dt_scale_sea_rough">2,5–4 m · Ruw</string>
+    <string name="dt_scale_sea_rough_text">Grote golven, schuim en opspattend water.</string>
+    <string name="dt_scale_sea_very_rough">4–6 m · Zeer ruw</string>
+    <string name="dt_scale_sea_very_rough_text">Opgezweepte zee.</string>
+    <string name="dt_scale_sea_high">6 m+ · Hoog</string>
+    <string name="dt_scale_sea_high_text">Gevaarlijke zee.</string>
+    <!-- Fire weather index scale -->
+    <string name="dt_scale_fire_low">0–14 Laag</string>
+    <string name="dt_scale_fire_low_text">Branden verspreiden zich waarschijnlijk niet snel.</string>
+    <string name="dt_scale_fire_moderate">15–29 Matig</string>
+    <string name="dt_scale_fire_moderate_text">Voorzichtig met vuur buiten.</string>
+    <string name="dt_scale_fire_high">30–49 Hoog</string>
+    <string name="dt_scale_fire_high_text">Vermijd open vuur bij droog gras.</string>
+    <string name="dt_scale_fire_very_high">50–74 Zeer hoog</string>
+    <string name="dt_scale_fire_very_high_text">Geen open vuur.</string>
+    <string name="dt_scale_fire_extreme">75+ Extreem</string>
+    <string name="dt_scale_fire_extreme_text">Volg stookverboden; wees klaar om te vertrekken.</string>
+    <!-- Wind speed scale (labels are just km/h ranges) -->
+    <string name="dt_scale_wind_light_text">Zwak: bladeren ritselen, vlaggen wapperen.</string>
+    <string name="dt_scale_wind_moderate_text">Matig tot vrij krachtig: kleine takken bewegen, stof waait op.</string>
+    <string name="dt_scale_wind_strong_text">Krachtig: grote takken bewegen, ertegenin lopen is lastig.</string>
+    <string name="dt_scale_wind_gale_text">Stormachtig: twijgen breken, schade aan gebouwen mogelijk.</string>
+
+    <!-- ============================================================ Humidity / cooling insight cards -->
+    <string name="dt_humidity_comfort">Vochtcomfort</string>
+    <!-- Short labels under the 6-step humidity comfort scale (keep very short) -->
+    <string name="dt_hum_lvl_dry">Droog</string>
+    <string name="dt_hum_lvl_comfy">Fijn</string>
+    <string name="dt_hum_lvl_noticed">Merkb.</string>
+    <string name="dt_hum_lvl_sticky">Klam</string>
+    <string name="dt_hum_lvl_muggy">Benauwd</string>
+    <string name="dt_hum_lvl_heavy">Zwaar</string>
+    <!-- %1$s = comfort level in lower case, %2$s = dew point -->
+    <string name="dt_hum_right_now">Nu: %1$s met een dauwpunt van %2$s.</string>
+    <string name="dt_cooling_comfort">Afkoelcomfort</string>
+    <!-- %1$s = explanation of current level, %2$s = peak level, %3$s = time -->
+    <string name="dt_cooling_body_peak">%1$s %2$s rond %3$s.</string>
+    <string name="dt_wetbulb_now">Natteboltemp. nu</string>
+    <string name="dt_todays_peak">Piek vandaag</string>
+    <string name="dt_feels_like">Gevoelstemp.</string>
+
+    <!-- ============================================================ Pressure insight cards -->
+    <string name="dt_pressure_trend_title">Trend 3 uur</string>
+    <string name="dt_week_ahead">Komende week</string>
+    <string name="dt_pressure_steady">Vrij stabiel</string>
+    <string name="dt_pressure_dip_rise">Eerst dalend, dan stijgend</string>
+    <string name="dt_pressure_rise_dip">Eerst stijgend, dan dalend</string>
+    <!-- %1$s = pressure unit -->
+    <string name="dt_pressure_steady_body">De luchtdruk blijft de hele week binnen een paar %1$s — geen grote veranderingen op basis van de luchtdruk.</string>
+    <!-- %1$s lowest day (lower case), %2$s value, %3$s unit, %4$s highest day (lower case), %5$s value -->
+    <string name="dt_pressure_week_body">Laagst %1$s (%2$s %3$s): wisselvallig. Hoogst %4$s (%5$s): waarschijnlijk rustiger weer.</string>
+
+    <!-- ============================================================ Precipitation insight cards -->
+    <string name="dt_precip_so_far">Tot nu toe %1$s.</string>
+    <string name="dt_precip_more">Nog %1$s verwacht.</string>
+    <string name="dt_rain">Regen</string>
+    <string name="dt_rain_incl_showers">incl. buien</string>
+    <string name="dt_snow">Sneeuw</string>
+    <string name="dt_fresh_snow">verse sneeuw</string>
+    <string name="dt_ice">IJs</string>
+    <string name="dt_freezing_rain">ijzel</string>
+    <string name="dt_this_week">Deze week</string>
+    <string name="dt_dry_week">Een droge week</string>
+    <string name="dt_precip_in_7_days">%1$s in 7 dagen</string>
+    <string name="dt_precip_no_wet_day">Geen dag met meer dan 1 mm verwacht.</string>
+    <string name="dt_precip_no_wet_day_in">Geen dag met meer dan 1 mm (0,04 in) verwacht.</string>
+    <!-- %1$d wet days, %2$s wettest day (lower case), %3$s amount -->
+    <plurals name="dt_precip_wet_days">
+        <item quantity="one">%1$d natte dag; het natst %2$s met %3$s.</item>
+        <item quantity="other">%1$d natte dagen; het natst %2$s met %3$s.</item>
+    </plurals>
+    <string name="dt_precip_snow_total">In totaal tot %1$s sneeuw.</string>
+
+    <!-- ============================================================ UV insight cards -->
+    <string name="dt_sun_protection">Zonbescherming</string>
+    <string name="dt_uv_no_data">Vandaag geen uv-gegevens</string>
+    <string name="dt_uv_no_protection">Vandaag geen bescherming nodig</string>
+    <!-- %1$s start time, %2$s end time -->
+    <string name="dt_uv_protect">Bescherm je %1$s–%2$s</string>
+    <string name="dt_uv_low_body">De uv blijft laag. Een zonnebril is op heldere dagen of bij sneeuw en water toch een goed idee.</string>
+    <!-- %1$s start, %2$s end, %3$d peak UV index, %4$s peak time -->
+    <string name="dt_uv_window_body">Beperk je tijd in de zon tussen %1$s en %2$s. Piek-uv %3$d rond %4$s.</string>
+    <string name="dt_peak_today">Piek vandaag</string>
+    <string name="dt_peak_tomorrow">Piek morgen</string>
+
+    <!-- ============================================================ Air quality insight cards -->
+    <string name="dt_health">Gezondheid</string>
+    <string name="dt_eu_guidance">EU-advies: %1$s</string>
+    <string name="dt_pollutants_who">Vervuilende stoffen t.o.v. WHO-normen</string>
+    <!-- %1$s = description of pollutant, %2$d = limit -->
+    <string name="dt_who_guideline">%1$s WHO-richtlijn %2$d µg/m³.</string>
+
+    <!-- ============================================================ Clouds & visibility insight cards -->
+    <string name="dt_sky_outlook">Vooruitzicht lucht</string>
+    <string name="dt_visibility">Zicht</string>
+    <string name="dt_sunshine_today">Zon vandaag</string>
+    <!-- Hour with the least cloud -->
+    <string name="dt_clearest">Helderst</string>
+    <string name="dt_cloud_pct">%1$d%% bewolking</string>
+    <string name="dt_visibility_rating">Zichtbeoordeling</string>
+    <!-- %1$s time, %2$s distance, %3$s unit, %4$s rating in lower case -->
+    <string name="dt_vis_lowest">Laagst rond %1$s: %2$s %3$s (%4$s).</string>
+
+    <!-- ============================================================ Feels-like insight card -->
+    <string name="dt_compared_yesterday">Vergeleken met gisteren</string>
+    <string name="dt_tomorrow_prefix">Morgen: %1$s</string>
+
+    <!-- ============================================================ Fire weather insight cards -->
+    <!-- Short labels under the 5-step fire danger scale (keep very short) -->
+    <string name="dt_fire_lvl_low">Laag</string>
+    <string name="dt_fire_lvl_moderate">Matig</string>
+    <string name="dt_fire_lvl_high">Hoog</string>
+    <string name="dt_fire_lvl_very_high">Z. hoog</string>
+    <string name="dt_fire_lvl_extreme">Extreem</string>
+    <string name="dt_temperature">Temperatuur</string>
+    <string name="dt_humidity">Luchtvochtigheid</string>
+    <string name="dt_very_dry">zeer droog</string>
+    <string name="dt_wind">Wind</string>
+    <string name="dt_gusts_lc">windstoten %1$s</string>
+
+    <!-- ============================================================ Sea detail -->
+    <!-- Under the big wave height number. %1$s = unit (m or ft) -->
+    <string name="dt_sea_unit_waves">%1$s golven</string>
+    <!-- %1$s = compass direction -->
+    <string name="dt_sea_waves_from">Golven uit %1$s.</string>
+    <string name="dt_sea_water_temp">Water %1$s.</string>
+    <string name="dt_swell">Swell</string>
+    <string name="dt_wind_waves">Windgolven</string>
+    <string name="dt_wave_period">Golfperiode</string>
+    <string name="dt_wave_similar">De hele week vergelijkbaar</string>
+    <!-- %1$s = "today", "tomorrow" or "on Monday" -->
+    <string name="dt_wave_roughest">Het ruwst %1$s</string>
+    <string name="dt_wave_stay_around">Golven blijven rond %1$s.</string>
+    <!-- %1$s max height, %2$s sea state (lower case), %3$s calmest day ("today"/"on Monday"), %4$s height -->
+    <string name="dt_wave_outlook_body">Tot %1$s (%2$s). Het kalmst %3$s met %4$s.</string>
+    <string name="dt_wave_outlook">Golfverwachting</string>
+    <plurals name="dt_wave_reach">
+        <item quantity="one">Golfverwachtingen reiken hier %d dag vooruit.</item>
+        <item quantity="other">Golfverwachtingen reiken hier %d dagen vooruit.</item>
+    </plurals>
+    <string name="dt_sea_temperature">Zeewatertemperatuur</string>
+    <!-- %1$s = wetsuit advice sentence -->
+    <string name="dt_sea_cold_shock">%1$s Koudeshock is mogelijk — ga langzaam het water in.</string>
+    <string name="dt_air_now">Lucht nu</string>
+    <string name="dt_water_now">Water nu</string>
+    <string name="dt_next_week">Komende week</string>
+    <!-- Sea temperature trend -->
+    <string name="dt_trend_steady">Stabiel</string>
+    <string name="dt_trend_warming">Warmer</string>
+    <string name="dt_trend_cooling">Koeler</string>
+    <string name="dt_currents">Stromingen</string>
+    <string name="dt_current_flow">Stroomt richting %1$s.</string>
+    <string name="dt_current_caution">Let op als je zwemt. Kom je in een stroming terecht, vecht er dan niet tegen: zwem evenwijdig aan de kust en daarna terug.</string>
+    <string name="dt_tides">Getijden</string>
+    <!-- %1$s = time -->
+    <string name="dt_high_tide">Hoogwater %1$s</string>
+    <string name="dt_low_tide">Laagwater %1$s</string>
+    <string name="dt_tide_coming_in">Het wordt vloed.</string>
+    <string name="dt_tide_going_out">Het wordt eb.</string>
+    <string name="dt_tide_range">Getijverschil ongeveer %1$s in de komende twee dagen. Inclusief stormopzet uit het model; lokale getijdentabellen zijn nauwkeuriger.</string>
+    <!-- Tide chart labels. %1$s = height, e.g. "High +1.2 m" -->
+    <string name="dt_tide_high_short">HW %1$s</string>
+    <string name="dt_tide_low_short">LW %1$s</string>
+    <string name="dt_activities">Activiteiten</string>
+
+    <!-- ============================================================ Sun detail -->
+    <string name="dt_first_light">Eerste licht</string>
+    <string name="dt_sunrise">Zonsopkomst</string>
+    <string name="dt_sunset">Zonsondergang</string>
+    <string name="dt_last_light">Laatste licht</string>
+    <string name="dt_sun_today">Zon vandaag</string>
+    <string name="dt_sunset_direction">Richting zonsondergang</string>
+    <!-- %1$s rise compass direction, %2$s rise bearing in degrees, %3$s set compass direction -->
+    <string name="dt_sun_rises_in">Komt op in het %1$s (%2$s°). Kijk richting %3$s voor de zonsondergang.</string>
+    <string name="dt_solar_noon">Zonnemiddag</string>
+    <string name="dt_sun_highest">Zon op het hoogste punt</string>
+    <string name="dt_max_elevation">Max. zonshoogte</string>
+    <string name="dt_golden_hour">Gouden uur</string>
+    <string name="dt_before_sunset">voor zonsondergang</string>
+    <string name="dt_midnight_sun">Middernachtzon: de zon blijft de hele dag boven de horizon.</string>
+    <string name="dt_polar_night">Poolnacht: de zon blijft vandaag onder de horizon.</string>
+    <string name="dt_daylight">Daglicht</string>
+    <string name="dt_daylight_same">Ongeveer hetzelfde als gisteren</string>
+    <!-- %1$s = signed change, e.g. "+2 min 10 s" -->
+    <string name="dt_daylight_vs_yesterday">%1$s t.o.v. gisteren</string>
+    <!-- %1$s = duration -->
+    <string name="dt_daylight_today">Vandaag %1$s daglicht.</string>
+    <string name="dt_daylight_barely">De daglengte verandert deze week nauwelijks.</string>
+    <string name="dt_daylight_longer">De dagen worden langer: %1$s sinds vorige week.</string>
+    <string name="dt_daylight_shorter">De dagen worden korter: %1$s sinds vorige week.</string>
+    <string name="dt_longest_day">Langste dag</string>
+    <string name="dt_shortest_day">Kortste dag</string>
+    <string name="dt_seasonal_highlights">Seizoensmomenten</string>
+    <!-- %1$s = when (e.g. "Thu 14:20"), %2$s = daylight duration -->
+    <string name="dt_season_sub">%1$s · %2$s daglicht</string>
+    <!-- Sun elevation at noon -->
+    <string name="dt_elev_very_low">Zeer lage zon</string>
+    <string name="dt_elev_low">Lage zon</string>
+    <string name="dt_elev_mid">Halfhoog</string>
+    <string name="dt_elev_high">Hoog aan de hemel</string>
+    <!-- One-letter compass points drawn on the small sun compass -->
+    <string name="dt_compass_n">N</string>
+    <string name="dt_compass_e">O</string>
+    <string name="dt_compass_s">Z</string>
+    <string name="dt_compass_w">W</string>
+    <!-- 12-hour reference line on the daylight chart -->
+    <string name="dt_chart_12h">12 u</string>
+
+    <!-- ============================================================ Moon detail -->
+    <string name="dt_waxing">wassend</string>
+    <string name="dt_waning">afnemend</string>
+    <!-- %1$s illumination %, %2$s waxing/waning, %3$d altitude degrees, %4$s compass direction -->
+    <string name="dt_moon_line_up">%1$s verlicht · %2$s · nu op, %3$d° hoog in het %4$s</string>
+    <string name="dt_moon_line_down">%1$s verlicht · %2$s · onder de horizon</string>
+    <string name="dt_moonrise">Maanopkomst</string>
+    <string name="dt_moonset">Maanondergang</string>
+    <string name="dt_up_all_day">Hele dag op</string>
+    <string name="dt_down_all_day">Hele dag onder</string>
+    <string name="dt_stargazing_tonight">Sterrenkijken vannacht</string>
+    <!-- Short labels under the 4-step stargazing scale -->
+    <string name="dt_star_lvl_poor">Slecht</string>
+    <string name="dt_star_lvl_fair">Redelijk</string>
+    <string name="dt_star_lvl_good">Goed</string>
+    <string name="dt_star_lvl_excellent">Top</string>
+    <string name="dt_clouds">Bewolking</string>
+    <string name="dt_average_tonight">gemiddeld vannacht</string>
+    <string name="dt_moonlight">Maanlicht</string>
+    <string name="dt_moon_down">maan onder</string>
+    <string name="dt_moon_up_pct">%1$d%% van de nacht op</string>
+    <string name="dt_best_time">Beste tijd</string>
+    <string name="dt_dark_from">donker vanaf %1$s</string>
+    <string name="dt_moon_facts">Maanfeiten</string>
+    <string name="dt_next_full_moon">Volgende volle maan</string>
+    <string name="dt_next_new_moon">Volgende nieuwe maan</string>
+    <string name="dt_distance">Afstand</string>
+    <string name="dt_moon_perigee">Dicht bij perigeum — de maan lijkt iets groter</string>
+    <string name="dt_moon_perigee_super">Dicht bij perigeum — de maan lijkt iets groter. Supermaan!</string>
+    <string name="dt_moon_apogee">Dicht bij apogeum — de maan lijkt iets kleiner</string>
+    <string name="dt_moon_avg_distance">Gemiddelde afstand 384.400 km</string>
+    <string name="dt_position_now">Positie nu</string>
+    <string name="dt_alt_compass">Hoogte en kompasrichting</string>
+
+    <!-- ============================================================ Day detail screen -->
+    <string name="dt_through_the_day">Door de dag heen</string>
+    <string name="dt_hour_by_hour">Uur voor uur</string>
+    <string name="dt_hourly_source">Modelgegevens per uur · Open-Meteo.com</string>
+    <!-- %1$s max feels-like, %2$s min feels-like -->
+    <string name="dt_feels_like_range">Voelt als %1$s / %2$s</string>
+    <!-- Day summary. %1$s from hour, %2$s to hour, %3$s total amount -->
+    <string name="dt_day_precip_likely_total">Neerslag het waarschijnlijkst %1$s–%2$s, in totaal %3$s.</string>
+    <string name="dt_day_precip_likely">Neerslag het waarschijnlijkst %1$s–%2$s.</string>
+    <string name="dt_day_dry">Droge dag verwacht.</string>
+    <string name="dt_day_warmest">Het warmst rond %1$s, het koelst rond %2$s.</string>
+    <!-- %1$s wind speed, %2$s compass direction, %3$s gust speed -->
+    <string name="dt_day_wind_gusts">Wind tot %1$s uit %2$s, windstoten %3$s.</string>
+    <string name="dt_day_wind">Wind tot %1$s uit %2$s.</string>
+    <!-- Stat tile titles -->
+    <string name="dt_precipitation">Neerslag</string>
+    <string name="dt_uv_max">Uv max.</string>
+    <string name="dt_sunshine">Zonneschijn</string>
+    <string name="dt_dew_point">Dauwpunt</string>
+    <string name="dt_pressure">Luchtdruk</string>
+    <string name="dt_cloud_cover">Bewolking</string>
+    <string name="dt_fire_weather">Brandgevaar</string>
+    <!-- Stat tile captions -->
+    <string name="dt_pct_chance">%1$d%% kans</string>
+    <string name="dt_hours_of_rain">%1$d u regen</string>
+    <string name="dt_amount_of_snow">%1$s sneeuw</string>
+    <!-- Wind tile caption: %1$s gusts, %2$s compass direction, %3$s Beaufort description -->
+    <string name="dt_day_wind_caption_gusts">Windstoten %1$s · %2$s\n%3$s</string>
+    <string name="dt_day_wind_caption">%1$s\n%2$s</string>
+    <!-- UV tile caption: %1$s UV level, %2$s advice / peak time -->
+    <string name="dt_day_uv_caption">%1$s. %2$s</string>
+    <string name="dt_day_uv_caption_peak">%1$s, piek %2$s. %3$s</string>
+    <string name="dt_day_uv_caption_protect">%1$s, piek %2$s. Bescherm je %3$s–%4$s.</string>
+    <!-- %1$d percent, %2$s daylight duration -->
+    <string name="dt_day_sunshine_pct">%1$d%% van %2$s daglicht</string>
+    <!-- %1$s min, %2$s max -->
+    <string name="dt_range">Bereik %1$s–%2$s</string>
+    <string name="dt_lowest_of_day">Laagste van de dag · %1$s</string>
+    <string name="dt_average_over_day">Gemiddeld over de dag</string>
+    <string name="dt_feels_warmer_afternoon">Voelt \'s middags warmer aan dan %1$s</string>
+    <string name="dt_feels_colder_coldest">Voelt op het koudst kouder aan dan %1$s</string>
+    <string name="dt_feels_close_actual">Dicht bij de werkelijke %1$s – %2$s</string>
+    <!-- %1$s fire level, %2$s time -->
+    <string name="dt_fire_peak">%1$s, piek %2$s</string>
+    <!-- %1$s comfort level, %2$s time -->
+    <string name="dt_wetbulb_peak">%1$s · piek natteboltemp. %2$s</string>
+    <string name="dt_sun_and_moon">Zon &amp; maan</string>
+    <!-- %1$s first light, %2$s last light, %3$d elevation, %4$s solar noon time -->
+    <string name="dt_sun_line">Eerste licht %1$s · laatste licht %2$s · zon %3$d° hoog om %4$s</string>
+    <string name="dt_pct_illuminated">%1$d%% verlicht</string>
+    <!-- Moon rise / set times -->
+    <string name="dt_moon_rise">Op %1$s</string>
+    <string name="dt_moon_set">Onder %1$s</string>
+    <!-- Hour row: %1$s wind speed, %2$s direction, %3$s relative humidity; RH = relative humidity -->
+    <string name="dt_hour_line">%1$s %2$s · %3$s RV</string>
+    <string name="dt_hour_line_snow">%1$s %2$s · %3$s RV · %4$s sneeuw</string>
+    <string name="dt_hour_line_precip">%1$s %2$s · %3$s RV · %4$s</string>
+</resources>

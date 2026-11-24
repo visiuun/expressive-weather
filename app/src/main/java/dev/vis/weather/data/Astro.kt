@@ -1,5 +1,8 @@
 package dev.vis.weather.data
 
+import androidx.annotation.StringRes
+import dev.vis.weather.L
+import dev.vis.weather.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -174,9 +177,11 @@ object Astro {
         return (0 until start.lengthOfYear()).map { daylight(start.plusDays(it.toLong()), lat, lon) }
     }
 
-    enum class SeasonEvent(val label: String) {
-        MARCH_EQUINOX("March equinox"), JUNE_SOLSTICE("June solstice"),
-        SEPTEMBER_EQUINOX("September equinox"), DECEMBER_SOLSTICE("December solstice"),
+    enum class SeasonEvent(@StringRes private val labelRes: Int) {
+        MARCH_EQUINOX(R.string.d_astro_march_equinox), JUNE_SOLSTICE(R.string.d_astro_june_solstice),
+        SEPTEMBER_EQUINOX(R.string.d_astro_september_equinox), DECEMBER_SOLSTICE(R.string.d_astro_december_solstice);
+
+        val label: String get() = L.s(labelRes)
     }
 
     /** Exact time of a solstice/equinox in [year] (Meeus ch. 27 start values, refined on the sun's longitude). */
@@ -209,12 +214,12 @@ object Astro {
     /** Hemisphere-aware name: "Summer solstice", "Spring equinox"... */
     fun seasonName(e: SeasonEvent, lat: Double): String {
         val north = lat >= 0
-        return when (e) {
-            SeasonEvent.MARCH_EQUINOX -> if (north) "Spring equinox" else "Autumn equinox"
-            SeasonEvent.JUNE_SOLSTICE -> if (north) "Summer solstice" else "Winter solstice"
-            SeasonEvent.SEPTEMBER_EQUINOX -> if (north) "Autumn equinox" else "Spring equinox"
-            SeasonEvent.DECEMBER_SOLSTICE -> if (north) "Winter solstice" else "Summer solstice"
-        }
+        return L.s(when (e) {
+            SeasonEvent.MARCH_EQUINOX -> if (north) R.string.d_astro_spring_equinox else R.string.d_astro_autumn_equinox
+            SeasonEvent.JUNE_SOLSTICE -> if (north) R.string.d_astro_summer_solstice else R.string.d_astro_winter_solstice
+            SeasonEvent.SEPTEMBER_EQUINOX -> if (north) R.string.d_astro_autumn_equinox else R.string.d_astro_spring_equinox
+            SeasonEvent.DECEMBER_SOLSTICE -> if (north) R.string.d_astro_winter_solstice else R.string.d_astro_summer_solstice
+        })
     }
 
     // ---------------------------------------------------------------- Moon
@@ -294,17 +299,17 @@ object Astro {
         val azimuth: Double,
     )
 
-    fun phaseName(p: Double): String = when {
-        p < 0.0339 -> "New moon"
-        p < 0.216 -> "Waxing crescent"
-        p < 0.284 -> "First quarter"
-        p < 0.466 -> "Waxing gibbous"
-        p < 0.534 -> "Full moon"
-        p < 0.716 -> "Waning gibbous"
-        p < 0.784 -> "Last quarter"
-        p < 0.966 -> "Waning crescent"
-        else -> "New moon"
-    }
+    fun phaseName(p: Double): String = L.s(when {
+        p < 0.0339 -> R.string.d_moon_new
+        p < 0.216 -> R.string.d_moon_waxing_crescent
+        p < 0.284 -> R.string.d_moon_first_quarter
+        p < 0.466 -> R.string.d_moon_waxing_gibbous
+        p < 0.534 -> R.string.d_moon_full
+        p < 0.716 -> R.string.d_moon_waning_gibbous
+        p < 0.784 -> R.string.d_moon_last_quarter
+        p < 0.966 -> R.string.d_moon_waning_crescent
+        else -> R.string.d_moon_new
+    })
 
     /** Elongation of the moon east of the sun, 0..360°. */
     private fun elongation(jd: Double): Double = norm(moon(jd).lon - sun(jd).lon)

@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shared settings words -->
+    <string name="s_back">Terug</string>
+    <string name="s_apply">Toepassen</string>
+    <string name="s_cancel">Annuleren</string>
+    <!-- Accessibility label for the tick on the selected item -->
+    <string name="s_selected">Geselecteerd</string>
+    <string name="s_move_up">Omhoog</string>
+    <string name="s_move_down">Omlaag</string>
+    <!-- Accessibility label for the "open in browser" icon next to a data source -->
+    <string name="s_open_website">Website openen</string>
+
+    <!-- Settings main screen -->
+    <string name="s_settings_title">Instellingen</string>
+    <string name="s_group_look">Uiterlijk &amp; gevoel</string>
+    <string name="s_appearance">Weergave</string>
+    <string name="s_appearance_sub">Kleuren, thema, lettertypen en weereffecten</string>
+    <!-- Settings page title: arrangement of the forecast screen -->
+    <string name="s_layout">Indeling</string>
+    <string name="s_app_icon">App-icoon</string>
+    <string name="s_app_icon_sub">Vast of verandert met het weer</string>
+    <string name="s_widgets">Widgets</string>
+    <string name="s_widgets_sub">Widgets toevoegen aan je startscherm</string>
+    <!-- Row that opens the system per-app language page -->
+    <string name="s_language">Taal</string>
+    <!-- %1$s = name of the current app language, e.g. "English (United Kingdom)" -->
+    <string name="s_language_sub">%1$s · Volgt de taal van je telefoon</string>
+    <!-- Settings group header: weather-related settings -->
+    <string name="s_group_weather">Weer</string>
+    <string name="s_alerts">Meldingen</string>
+    <string name="s_alerts_sub">Waarschuwingen, regen, dagelijkse overzichten en meer</string>
+    <string name="s_friends">Familie &amp; vrienden</string>
+    <string name="s_friends_sub">Het weer waar je dierbaren zijn</string>
+    <string name="s_units">Eenheden</string>
+    <string name="s_units_sub">Metrisch, imperiaal en klok</string>
+    <string name="s_data">Gegevens &amp; nauwkeurigheid</string>
+    <string name="s_data_sub">Weermodel, lokale correctie en bronnen</string>
+    <string name="s_activity">Je activiteit</string>
+    <string name="s_activity_sub">Reeksen, records en weer dat je hebt gezien</string>
+    <string name="s_group_updates">Updates</string>
+    <string name="s_auto_update">Automatisch op updates controleren</string>
+    <string name="s_auto_update_sub">Zoekt bij het starten van de app naar nieuwe versies op GitHub</string>
+    <!-- %1$d = download progress in percent -->
+    <string name="s_update_downloading">Downloaden… %1$d%%</string>
+    <string name="s_update_checking">Controleren…</string>
+    <!-- %1$s = version number -->
+    <string name="s_update_installed">Geïnstalleerde versie %1$s</string>
+    <!-- %1$s = version number -->
+    <string name="s_update_install">Versie %1$s installeren</string>
+    <string name="s_update_check">Controleren op updates</string>
+    <string name="s_group_about">Over</string>
+    <string name="s_about_open_data">Open data, geen tracking</string>
+    <string name="s_about_open_data_body">Geen accounts, advertenties, analytics of Google Play-services. Verwachtingen van Open-Meteo.com (CC BY 4.0) op basis van nationale weerdiensten; waarschuwingen van NWS, ECCC, DWD en MeteoAlarm; radar van RainViewer; kaarten © OpenStreetMap-bijdragers © CARTO. Zie Gegevens &amp; nauwkeurigheid voor alle bronnen.</string>
+    <!-- %1$s = app version number -->
+    <string name="s_about_version">Versie %1$s · Material 3 Expressive</string>
+    <string name="s_source_code">Broncode</string>
+    <string name="s_report_bug">Bug melden</string>
+    <string name="s_report_bug_sub">Opent een nieuwe issue op GitHub</string>
+
+    <!-- Settings > Widgets: list of home screen widgets with a short description each -->
+    <string name="s_widgets_tap_to_add">Tik om toe te voegen aan je startscherm</string>
+    <string name="s_widgets_add_from_picker">Voeg toe via de widgetkiezer van je startscherm</string>
+    <string name="s_widgets_hint">Houd een widget ingedrukt en sleep aan de randen om het formaat te wijzigen. Tik op de plaatsnaam in een widget om naar je volgende opgeslagen plaats te gaan.</string>
+    <!-- Widget name: current conditions -->
+    <string name="s_widget_now">Nu</string>
+    <string name="s_widget_now_desc">Huidig weer, van een slanke pil tot een dashboard</string>
+    <string name="s_widget_hourly">Per uur</string>
+    <string name="s_widget_hourly_desc">De komende 48 uur, per pagina</string>
+    <string name="s_widget_daily">16-daagse verwachting</string>
+    <string name="s_widget_daily_desc">Scrollbare daglijst met temperatuurbalken</string>
+    <string name="s_widget_hub">Verwachtingshub</string>
+    <string name="s_widget_hub_desc">Tabbladen per uur, per dag en details</string>
+    <string name="s_widget_clock">Klok &amp; weer</string>
+    <string name="s_widget_clock_desc">Grote klok en datum naast het weer</string>
+    <string name="s_widget_details">Details</string>
+    <string name="s_widget_details_desc">Gevoelstemperatuur, wind, vochtigheid, uv, lucht en meer</string>
+    <string name="s_widget_rain">Regen</string>
+    <string name="s_widget_rain_desc">Kortetermijnverwachting en grafiek met regenkans</string>
+    <string name="s_widget_sunmoon">Zon &amp; maan</string>
+    <string name="s_widget_sunmoon_desc">Zonnestand en maanfase</string>
+    <string name="s_widget_air">Luchtkwaliteit</string>
+    <string name="s_widget_air_desc">Grote AQI, niveau, fijnstof en pollen</string>
+    <string name="s_widget_shape">Weervorm</string>
+    <string name="s_widget_shape_desc">Temperatuur in een expressieve vorm naar keuze</string>
+    <string name="s_widget_stack">Verwachtingsstapel</string>
+    <string name="s_widget_stack_desc">Nu, uren en dagen als gestapelde panelen</string>
+    <string name="s_widget_tile">Gegevenstegel</string>
+    <string name="s_widget_tile_desc">Eén waarde, groot: wind, uv, lucht, zon, maan en meer</string>
+
+    <!-- Settings > Layout -->
+    <!-- Hourly forecast style option: a temperature graph -->
+    <string name="s_layout_hourly_graph">Grafiek</string>
+    <string name="s_layout_hourly_compact">Compact</string>
+    <string name="s_layout_hourly_cards">Kaarten</string>
+    <!-- Number of days shown in the daily forecast -->
+    <plurals name="s_layout_days">
+        <item quantity="one">%1$d dag</item>
+        <item quantity="other">%1$d dagen</item>
+    </plurals>
+    <!-- "Wet bulb" temperature: a heat-stress measure combining heat and humidity -->
+    <string name="s_wetbulb_group">Natteboltemperatuur</string>
+    <string name="s_wetbulb_show">Natteboltemperatuur tonen</string>
+    <string name="s_wetbulb_show_sub">Naast \"voelt als\": hoe goed zweet je kan afkoelen bij deze hitte en luchtvochtigheid</string>
+    <string name="s_wetbulb_warn">Waarschuw me als het gevaarlijk wordt</string>
+    <string name="s_wetbulb_warn_sub">Een melding zodra de natteboltemperatuur naar verwachting een gevaarlijk niveau bereikt</string>
+    <string name="s_layout_group_screen">Weerscherm</string>
+    <string name="s_layout_reset_order">Volgorde herstellen</string>
+
+    <!-- Settings > Units -->
+    <string name="s_units_temperature">Temperatuur</string>
+    <string name="s_units_wind">Windsnelheid</string>
+    <string name="s_units_precip">Neerslag</string>
+    <string name="s_units_pressure">Luchtdruk</string>
+    <string name="s_units_distance">Afstand</string>
+    <string name="s_units_24h">24-uursklok</string>
+    <string name="s_units_presets">Snelle voorinstellingen</string>
+    <string name="s_units_preset_metric">Metrisch</string>
+    <string name="s_units_preset_imperial">Imperiaal</string>
+    <!-- Unit preset as used in the United Kingdom (°C, mph, miles) -->
+    <string name="s_units_preset_uk">VK</string>
+
+    <!-- Settings > Appearance -->
+    <string name="s_ap_group_theme">Thema</string>
+    <string name="s_ap_theme">Thema</string>
+    <!-- Theme mode: follow the system light/dark setting -->
+    <string name="s_ap_theme_system">Systeem</string>
+    <!-- Theme mode: light (not dark) colours -->
+    <string name="s_ap_theme_light">Licht</string>
+    <!-- Theme mode: dark colours -->
+    <string name="s_ap_theme_dark">Donker</string>
+    <!-- %1$s = secret theme name -->
+    <string name="s_ap_secret_dark_only">%1$s is alleen donker</string>
+    <!-- %1$s = secret theme name -->
+    <string name="s_ap_secret_light_only">%1$s is alleen licht</string>
+    <string name="s_ap_oled">OLED-zwart</string>
+    <string name="s_ap_oled_sub">Puur zwarte achtergrond in donker thema, bespaart batterij op OLED-schermen</string>
+    <string name="s_ap_group_colour">Kleur</string>
+    <string name="s_ap_colour_source">Kleurbron</string>
+    <!-- Colour source option: colours follow the current weather -->
+    <string name="s_ap_source_weather">Weer</string>
+    <!-- Colour source option: Material You colours from the wallpaper -->
+    <string name="s_ap_source_wallpaper">Achtergrond</string>
+    <!-- Colour source option: a colour the user picks -->
+    <string name="s_ap_source_custom">Aangepast</string>
+    <!-- %1$s = secret theme name -->
+    <string name="s_ap_source_overridden">Overschreven door het geheime thema %1$s</string>
+    <string name="s_ap_source_weather_sub">Verandert met de lucht: gouden zon, leigrijze wolken, diepblauwe nachten</string>
+    <string name="s_ap_source_wallpaper_sub">Material You: kleuren uit je achtergrond</string>
+    <string name="s_ap_source_custom_sub">Je eigen kleur, hieronder</string>
+    <string name="s_ap_custom_colour_action">Aangepaste kleur…</string>
+    <string name="s_ap_palette">Paletstijl</string>
+    <string name="s_ap_palette_balanced">Gebalanceerd</string>
+    <string name="s_ap_palette_vibrant">Levendig</string>
+    <string name="s_ap_palette_expressive">Expressief</string>
+    <string name="s_ap_palette_sub">Hoe kleurrijk weer- en aangepaste thema\'s zijn</string>
+    <string name="s_ap_group_secret">Geheime thema\'s</string>
+    <!-- %1$d = themes found, %2$d = total number of secret themes -->
+    <string name="s_ap_secret_found">%1$d van %2$d gevonden</string>
+    <string name="s_ap_secret_hint">Er zijn er meer verstopt. Probeer eens vreemde woorden in de zoekbalk voor steden.</string>
+    <!-- The normal (non-secret) theme -->
+    <string name="s_ap_secret_default">Standaard</string>
+    <string name="s_ap_group_text">Tekst</string>
+    <string name="s_ap_font_style">Letterstijl</string>
+    <!-- Font style option: the standard font -->
+    <string name="s_ap_font_default">Standaard</string>
+    <!-- Font style option: wide and heavy letters -->
+    <string name="s_ap_font_chunky">Fors</string>
+    <!-- Font style option: narrow, tall letters -->
+    <string name="s_ap_font_tall">Smal</string>
+    <string name="s_ap_font_replaced">Vervangen door het leeslettertype</string>
+    <!-- Letter corner style -->
+    <string name="s_ap_edges">Hoeken</string>
+    <string name="s_ap_edges_sharp">Scherp</string>
+    <string name="s_ap_edges_rounded">Afgerond</string>
+    <string name="s_ap_reading_font">Leeslettertype</string>
+    <!-- Reading font option: no special reading font -->
+    <string name="s_ap_reading_none">Geen</string>
+    <!-- Reading font option: short for the OpenDyslexic font -->
+    <string name="s_ap_reading_dyslexic">Dyslexie</string>
+    <string name="s_ap_reading_sub">Lexend en OpenDyslexic zijn ontworpen om makkelijker te lezen</string>
+    <string name="s_ap_hero">Achtergrond bovenaan</string>
+    <string name="s_ap_hero_sub">Gekleurde kaart achter het huidige weer</string>
+    <string name="s_ap_card_style">Kaartstijl</string>
+    <string name="s_ap_card_filled">Gevuld</string>
+    <string name="s_ap_card_outlined">Omlijnd</string>
+    <!-- Card style option: no card background -->
+    <string name="s_ap_card_none">Geen</string>
+    <string name="s_ap_icons">Weericonen</string>
+    <string name="s_ap_icons_mono">Zwart-wit</string>
+    <!-- Weather icon option: coloured icons -->
+    <string name="s_ap_icons_colour">Kleur</string>
+    <string name="s_ap_group_effects">Weereffecten</string>
+    <string name="s_ap_animations">Animaties</string>
+    <string name="s_ap_animations_sub">Live regen, sneeuw, mist, sterren en bliksem achter de verwachting</string>
+    <string name="s_ap_battery_saver">Pauzeren bij batterijbesparing</string>
+    <string name="s_ap_battery_saver_sub">Toon een stilstaande lucht als batterijbesparing aan staat</string>
+    <string name="s_ap_haptics">Haptische feedback</string>
+    <string name="s_ap_haptics_sub">Voel de donder rommelen en regendruppels tikken</string>
+    <!-- Live preview chip, %1$s = sample temperature like "21°" -->
+    <string name="s_ap_preview_feels">Voelt als %1$s</string>
+    <string name="s_ap_weather_map">Weerkaart van thema</string>
+    <string name="s_ap_weather_map_sub">Tik op een lucht om hem hierboven te bekijken</string>
+    <string name="s_ap_presets">Vooraf ingestelde kleuren</string>
+    <!-- Font sample: example weather condition -->
+    <string name="s_ap_sample_condition">Half bewolkt</string>
+    <!-- Font sample: %1$s = sample temperature like "21°" -->
+    <string name="s_ap_sample_detail">Voelt als %1$s · Zwakke wind</string>
+    <!-- Custom colour dialog -->
+    <string name="s_ap_custom_colour">Aangepaste kleur</string>
+    <!-- Preview chip: sunny weather -->
+    <string name="s_ap_sample_sunny">Zonnig</string>
+    <string name="s_ap_sample_wind">Wind</string>
+    <string name="s_ap_hue">Tint</string>
+    <string name="s_ap_saturation">Verzadiging</string>
+    <string name="s_ap_brightness">Helderheid</string>
+    <!-- Hexadecimal colour code field -->
+    <string name="s_ap_hex">Hex</string>
+
+    <!-- Sky looks used for theme previews (Appearance > Theme weather map) -->
+    <string name="s_sky_clear_day">Zonnig</string>
+    <string name="s_sky_clear_night">Heldere nacht</string>
+    <string name="s_sky_partly_day">Half bewolkt</string>
+    <string name="s_sky_partly_night">Bewolkte nacht</string>
+    <string name="s_sky_cloudy_day">Zwaar bewolkt</string>
+    <string name="s_sky_cloudy_night">Grijze nacht</string>
+    <string name="s_sky_fog_day">Mist</string>
+    <string name="s_sky_fog_night">Nachtmist</string>
+    <string name="s_sky_drizzle_day">Motregen</string>
+    <string name="s_sky_drizzle_night">Nachtelijke motregen</string>
+    <string name="s_sky_rain_day">Regen</string>
+    <string name="s_sky_rain_night">Nachtregen</string>
+    <string name="s_sky_freezing_day">IJzel</string>
+    <string name="s_sky_freezing_night">Nachtijzel</string>
+    <string name="s_sky_snow_day">Sneeuw</string>
+    <string name="s_sky_snow_night">Nachtsneeuw</string>
+    <string name="s_sky_thunder_day">Onweer</string>
+    <string name="s_sky_thunder_night">Nachtonweer</string>
+
+    <!-- Secret themes: hidden colour themes. Names and descriptions only; the unlock words are not translated. -->
+    <string name="s_secret_terminal">Terminal</string>
+    <string name="s_secret_terminal_blurb">Fosforgroen op puur zwart. Voor de rootgebruiker in jou.</string>
+    <string name="s_secret_ember">Gloed</string>
+    <string name="s_secret_ember_blurb">Mat zwart en één gloeiend kooltje rood.</string>
+    <string name="s_secret_glacier">Gletsjer</string>
+    <string name="s_secret_glacier_blurb">Blauw ijs, wit licht en ijskoude lucht.</string>
+    <string name="s_secret_sakura">Sakura</string>
+    <string name="s_secret_sakura_blurb">Kersenbloesemroze met fris lentegroen.</string>
+    <string name="s_secret_neon_dusk">Neonschemer</string>
+    <string name="s_secret_neon_dusk_blurb">Felroze en elektrisch cyaan boven een stad om middernacht.</string>
+    <string name="s_secret_brass">Messing</string>
+    <string name="s_secret_brass_blurb">Gepoetst messing, groen kopermos en gaslicht.</string>
+    <string name="s_secret_moss">Mos</string>
+    <string name="s_secret_moss_blurb">Groen van de bosbodem en goud van de late middag.</string>
+    <string name="s_secret_paper">Papier</string>
+    <string name="s_secret_paper_blurb">Inkt op papier. Geen kleur, geen afleiding.</string>
+    <string name="s_secret_lagoon">Lagune</string>
+    <string name="s_secret_lagoon_blurb">Turquoise ondiepten en koraalriffen.</string>
+
+    <!-- Settings > App icon -->
+    <!-- Icon mode that changes with the current weather -->
+    <string name="s_icon_dynamic">Dynamisch</string>
+    <string name="s_icon_dynamic_sub">Verandert met het weer</string>
+    <!-- Group of weather-themed app icons -->
+    <string name="s_icon_group_weather">Weer</string>
+    <!-- Group of the classic app icons -->
+    <string name="s_icon_group_classic">Klassiek</string>
+    <string name="s_icon_hint">Het icoon wordt bijgewerkt als je de app verlaat; bij sommige launchers duurt dat even.</string>
+    <string name="s_icon_hero_dynamic">Dynamisch · past bij het weer van nu</string>
+    <string name="s_icon_hero_fixed">Vast icoon</string>
+    <!-- Accessibility label: badge marking the icon the dynamic mode shows right now -->
+    <string name="s_icon_now_cd">Nu</string>
+
+    <!-- Settings > Data & accuracy -->
+    <string name="s_data_title">Gegevens</string>
+    <string name="s_data_intro">Waar je verwachting vandaan komt</string>
+    <string name="s_data_intro_body">Expressive Weather gebruikt gratis, open data van nationale weerdiensten. Geen account, geen API-sleutel, geen tracking: alleen de locatie die je bekijkt wordt naar de onderstaande diensten gestuurd.</string>
+    <string name="s_data_group_model">Weermodel</string>
+    <string name="s_data_about_models">Over modellen</string>
+    <string name="s_data_about_models_body">Automatisch kiest het scherpste model voor jouw gebied — bijvoorbeeld ICON-D2 in Duitsland, AROME in Frankrijk, HRRR in de VS of Harmonie in Nederland — en vult latere dagen aan met ECMWF en GFS. Zelf een model kiezen is handig om te vergelijken; als het ergens geen gegevens voor heeft (uv, zicht, regenkans of latere dagen), vult de automatische verwachting het gat.</string>
+    <string name="s_data_group_accuracy">Nauwkeurigheid</string>
+    <string name="s_data_local_correction">Lokale correctie</string>
+    <!-- %1$d = search radius in km -->
+    <string name="s_data_local_correction_sub">Vergelijkt de verwachting met het dichtstbijzijnde weerstation op een luchthaven (METAR, binnen %1$d km) en stuurt de komende 6 uur bij richting wat er echt gemeten wordt. Privacy: alleen een ruw gebied rond je (een afgerond vak van ~70 km) wordt naar aviationweather.gov van NOAA gestuurd — nooit je exacte locatie.</string>
+    <string name="s_data_show_source">Gegevensbron tonen</string>
+    <string name="s_data_show_source_sub">Toon onderaan de verwachting welk model en station zijn gebruikt.</string>
+    <string name="s_data_group_sources">Gegevensbronnen</string>
+    <!-- Data sources list: what each provider is used for, and its licence -->
+    <string name="s_src_openmeteo_use">Verwachtingen, luchtkwaliteit (Copernicus CAMS), zee en plaatsen zoeken</string>
+    <string name="s_src_national">Nationale weerdiensten</string>
+    <string name="s_src_national_use">Modellen die Automatisch gebruikt: DWD, NOAA, ECMWF, Météo-France, Met Office, KNMI, DMI, MET Norway, MeteoSwiss, ECCC, JMA en meer</string>
+    <string name="s_src_national_licence">Open data, meestal CC BY 4.0</string>
+    <!-- %1$s = forecast model name -->
+    <string name="s_src_model_use">Weermodel: %1$s</string>
+    <string name="s_src_cams_use">Model voor luchtkwaliteit en pollen (via Open-Meteo)</string>
+    <string name="s_src_cams_licence">Copernicus-licentie</string>
+    <string name="s_src_marine_use">Golven, swell, zeewatertemperatuur, stromingen en getijden</string>
+    <string name="s_src_awc_use">Live luchthavenwaarnemingen (METAR) voor lokale correctie</string>
+    <string name="s_src_public_domain">Publiek domein</string>
+    <string name="s_src_nominatim_use">Namen voor je huidige locatie</string>
+    <string name="s_src_nominatim_licence">ODbL, © OpenStreetMap-bijdragers</string>
+    <string name="s_src_rainviewer_use">Buienradarbeelden</string>
+    <string name="s_src_rainviewer_licence">Gratis API, naamsvermelding</string>
+    <string name="s_src_carto_use">Kaarttegels onder de radar</string>
+    <string name="s_src_carto_licence">© CARTO, © OpenStreetMap-bijdragers</string>
+    <string name="s_src_nhc_use">Banen van tropische stormen en orkanen</string>
+    <string name="s_src_nws_use">Weerwaarschuwingen in de Verenigde Staten</string>
+    <string name="s_src_meteoalarm_use">Weerwaarschuwingen in heel Europa</string>
+    <string name="s_src_dwd_use">Weerwaarschuwingen in Duitsland</string>
+    <string name="s_src_dwd_licence">DWD open data, CC BY 4.0</string>
+    <string name="s_src_eccc_use">Weerwaarschuwingen in Canada</string>
+    <string name="s_src_eccc_licence">ECCC Open Data Licence</string>
+    <string name="s_src_github_use">App-updates</string>
+    <string name="s_src_github_licence">Voorwaarden van GitHub</string>
+
+    <!-- Settings > Your activity (usage stats) -->
+    <string name="s_stats_streak">Huidige reeks</string>
+    <string name="s_stats_best_streak">Beste reeks</string>
+    <!-- Unit shown under a streak number (the number itself is shown separately above) -->
+    <plurals name="s_stats_days_unit">
+        <item quantity="one">dag</item>
+        <item quantity="other">dagen</item>
+    </plurals>
+    <string name="s_stats_hottest">Warmst gezien</string>
+    <string name="s_stats_coldest">Koudst gezien</string>
+    <string name="s_stats_days_checked_in">Dagen ingecheckt</string>
+    <!-- %1$s = date, e.g. "3 Mar 2026" -->
+    <string name="s_stats_since">sinds %1$s</string>
+    <string name="s_stats_places">Verkende plaatsen</string>
+    <!-- %1$d = conditions seen, %2$d = total number of conditions -->
+    <string name="s_stats_conditions">Waargenomen weertypes · %1$d van %2$d</string>
+    <string name="s_stats_privacy">Alleen op dit apparaat bewaard. Niets hiervan wordt ergens geüpload.</string>
+    <!-- Weather conditions collected in "Your activity" -->
+    <string name="s_stats_sky_clear">Helder</string>
+    <string name="s_stats_sky_partly">Half</string>
+    <string name="s_stats_sky_cloudy">Bewolkt</string>
+    <string name="s_stats_sky_fog">Mist</string>
+    <string name="s_stats_sky_drizzle">Motregen</string>
+    <string name="s_stats_sky_rain">Regen</string>
+    <string name="s_stats_sky_freezing">IJzel</string>
+    <string name="s_stats_sky_snow">Sneeuw</string>
+    <string name="s_stats_sky_thunder">Onweer</string>
+
+    <!-- Places screen (search and saved places) -->
+    <string name="s_loc_search_hint">Zoek steden en plaatsen</string>
+    <!-- Accessibility label: clear the search field -->
+    <string name="s_loc_clear">Wissen</string>
+    <!-- %1$s = what the user typed -->
+    <string name="s_loc_no_results">Geen plaatsen gevonden voor ‘%1$s’</string>
+    <string name="s_loc_your_location">Je locatie</string>
+    <string name="s_loc_current">Huidige locatie</string>
+    <string name="s_loc_current_sub">Gps- of netwerklocatie gebruiken</string>
+    <string name="s_loc_saved">Opgeslagen plaatsen</string>
+    <string name="s_loc_empty">Zoek hierboven om plaatsen toe te voegen.</string>
+    <!-- Accessibility label, %1$s = place name -->
+    <string name="s_loc_remove">%1$s verwijderen</string>
+
+    <!-- App update dialog -->
+    <string name="s_upd_title">Update beschikbaar</string>
+    <!-- %1$s = new version, %2$s = installed version -->
+    <string name="s_upd_body">Versie %1$s is uit (je hebt %2$s).</string>
+    <!-- Button while downloading, %1$d = percent -->
+    <string name="s_upd_downloading">Downloaden %1$d%%</string>
+    <!-- Button: install the update -->
+    <string name="s_upd_update">Updaten</string>
+    <string name="s_upd_later">Later</string>
+
+    <!-- Drop Dash: hidden mini game (you steer a raindrop) -->
+    <string name="s_game_exit">Stoppen</string>
+    <!-- %1$d = current score, %2$d = best score -->
+    <string name="s_game_score_best">%1$d   ·   Record %2$d</string>
+    <!-- Shown when the raindrop is lost (game over) -->
+    <string name="s_game_over">Verdampt!</string>
+    <string name="s_game_title">Drop Dash</string>
+    <!-- %1$d = final score -->
+    <string name="s_game_score">Score %1$d</string>
+    <!-- %1$d = final score, which is a new personal best -->
+    <string name="s_game_score_new_best">Score %1$d · nieuw record!</string>
+    <string name="s_game_intro">Sleep om je regendruppel te sturen.\nVang druppeltjes op, ontwijk zonnevlammen en bliksem.</string>
+    <string name="s_game_play_again">Opnieuw spelen</string>
+    <string name="s_game_start">Start</string>
+</resources>

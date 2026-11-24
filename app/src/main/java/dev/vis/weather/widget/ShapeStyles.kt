@@ -13,6 +13,7 @@ import android.graphics.RectF
 import android.graphics.Shader
 import android.os.Build
 import android.util.LruCache
+import androidx.annotation.StringRes
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialShapes
@@ -34,6 +35,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.graphics.shapes.Morph
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.data.Settings
 import dev.vis.weather.data.Sky
 import dev.vis.weather.data.WeatherInfo
@@ -46,34 +49,36 @@ import dev.vis.weather.ui.theme.LightScheme
  */
 
 /** M3 Expressive shapes a shape widget can take. [stretch] shapes fill a non-square widget instead of staying square. */
-enum class WidgetShape(val label: String, val stretch: Boolean = false, val polygon: () -> RoundedPolygon) {
-    COOKIE_9("Cookie 9", polygon = { MaterialShapes.Cookie9Sided }),
-    CIRCLE("Circle", polygon = { MaterialShapes.Circle }),
-    SQUARE("Square", stretch = true, polygon = { MaterialShapes.Square }),
-    PILL("Pill", polygon = { MaterialShapes.Pill }),
-    COOKIE_4("Cookie 4", polygon = { MaterialShapes.Cookie4Sided }),
-    COOKIE_6("Cookie 6", polygon = { MaterialShapes.Cookie6Sided }),
-    COOKIE_7("Cookie 7", polygon = { MaterialShapes.Cookie7Sided }),
-    COOKIE_12("Cookie 12", polygon = { MaterialShapes.Cookie12Sided }),
-    CLOVER_4("Clover 4", polygon = { MaterialShapes.Clover4Leaf }),
-    CLOVER_8("Clover 8", polygon = { MaterialShapes.Clover8Leaf }),
-    SUNNY("Sunny", polygon = { MaterialShapes.Sunny }),
-    VERY_SUNNY("Very sunny", polygon = { MaterialShapes.VerySunny }),
-    SOFT_BURST("Soft burst", polygon = { MaterialShapes.SoftBurst }),
-    SOFT_BOOM("Soft boom", polygon = { MaterialShapes.SoftBoom }),
-    FLOWER("Flower", polygon = { MaterialShapes.Flower }),
-    PIXEL_CIRCLE("Pixel circle", polygon = { MaterialShapes.PixelCircle }),
-    GEM("Gem", polygon = { MaterialShapes.Gem }),
-    PENTAGON("Pentagon", polygon = { MaterialShapes.Pentagon }),
-    DIAMOND("Diamond", polygon = { MaterialShapes.Diamond }),
-    SLANTED("Slanted", polygon = { MaterialShapes.Slanted }),
-    BUN("Bun", polygon = { MaterialShapes.Bun }),
-    GHOST("Ghost", polygon = { MaterialShapes.Ghostish }),
-    ARCH("Arch", polygon = { MaterialShapes.Arch }),
-    CLAMSHELL("Clamshell", polygon = { MaterialShapes.ClamShell }),
-    OVAL("Oval", polygon = { MaterialShapes.Oval }),
-    HEART("Heart", polygon = { MaterialShapes.Heart }),
+enum class WidgetShape(@StringRes private val res: Int, val stretch: Boolean = false, val polygon: () -> RoundedPolygon) {
+    COOKIE_9(R.string.w_shape_cookie_9, polygon = { MaterialShapes.Cookie9Sided }),
+    CIRCLE(R.string.w_shape_circle, polygon = { MaterialShapes.Circle }),
+    SQUARE(R.string.w_shape_square, stretch = true, polygon = { MaterialShapes.Square }),
+    PILL(R.string.w_shape_pill, polygon = { MaterialShapes.Pill }),
+    COOKIE_4(R.string.w_shape_cookie_4, polygon = { MaterialShapes.Cookie4Sided }),
+    COOKIE_6(R.string.w_shape_cookie_6, polygon = { MaterialShapes.Cookie6Sided }),
+    COOKIE_7(R.string.w_shape_cookie_7, polygon = { MaterialShapes.Cookie7Sided }),
+    COOKIE_12(R.string.w_shape_cookie_12, polygon = { MaterialShapes.Cookie12Sided }),
+    CLOVER_4(R.string.w_shape_clover_4, polygon = { MaterialShapes.Clover4Leaf }),
+    CLOVER_8(R.string.w_shape_clover_8, polygon = { MaterialShapes.Clover8Leaf }),
+    SUNNY(R.string.w_shape_sunny, polygon = { MaterialShapes.Sunny }),
+    VERY_SUNNY(R.string.w_shape_very_sunny, polygon = { MaterialShapes.VerySunny }),
+    SOFT_BURST(R.string.w_shape_soft_burst, polygon = { MaterialShapes.SoftBurst }),
+    SOFT_BOOM(R.string.w_shape_soft_boom, polygon = { MaterialShapes.SoftBoom }),
+    FLOWER(R.string.w_shape_flower, polygon = { MaterialShapes.Flower }),
+    PIXEL_CIRCLE(R.string.w_shape_pixel_circle, polygon = { MaterialShapes.PixelCircle }),
+    GEM(R.string.w_shape_gem, polygon = { MaterialShapes.Gem }),
+    PENTAGON(R.string.w_shape_pentagon, polygon = { MaterialShapes.Pentagon }),
+    DIAMOND(R.string.w_shape_diamond, polygon = { MaterialShapes.Diamond }),
+    SLANTED(R.string.w_shape_slanted, polygon = { MaterialShapes.Slanted }),
+    BUN(R.string.w_shape_bun, polygon = { MaterialShapes.Bun }),
+    GHOST(R.string.w_shape_ghost, polygon = { MaterialShapes.Ghostish }),
+    ARCH(R.string.w_shape_arch, polygon = { MaterialShapes.Arch }),
+    CLAMSHELL(R.string.w_shape_clamshell, polygon = { MaterialShapes.ClamShell }),
+    OVAL(R.string.w_shape_oval, polygon = { MaterialShapes.Oval }),
+    HEART(R.string.w_shape_heart, polygon = { MaterialShapes.Heart }),
     ;
+
+    val label: String get() = L.s(res)
 
     companion object {
         fun of(name: String?) = entries.firstOrNull { it.name == name } ?: COOKIE_9
@@ -81,20 +86,22 @@ enum class WidgetShape(val label: String, val stretch: Boolean = false, val poly
 }
 
 /** Where a shape widget's colours come from. */
-enum class ShapeColor(val label: String, val swatch: Long = 0, val onSwatch: Long = 0) {
+enum class ShapeColor(@StringRes private val res: Int, val swatch: Long = 0, val onSwatch: Long = 0) {
     /** Wallpaper colours on Android 12+, the app's palette below; black at night with the OLED option. */
-    THEME("Wallpaper"),
+    THEME(R.string.w_color_wallpaper),
     /** A gradient that follows the current sky, like the weather icons. */
-    SKY("Sky"),
-    BLACK("Black", 0xFF000000, 0xFFFFFFFF),
-    WHITE("White", 0xFFFFFFFF, 0xFF1B1B1F),
-    CORAL("Coral", 0xFFFFB4A6, 0xFF5C1408),
-    AMBER("Amber", 0xFFFFD787, 0xFF462B00),
-    MINT("Mint", 0xFFA8EBC9, 0xFF003823),
-    SKY_BLUE("Sky blue", 0xFFA9D4FF, 0xFF002F57),
-    ROSE("Rose", 0xFFFFB3C8, 0xFF5A0F2A),
-    SLATE("Slate", 0xFF37424F, 0xFFE6EDF5),
+    SKY(R.string.w_color_sky),
+    BLACK(R.string.w_color_black, 0xFF000000, 0xFFFFFFFF),
+    WHITE(R.string.w_color_white, 0xFFFFFFFF, 0xFF1B1B1F),
+    CORAL(R.string.w_color_coral, 0xFFFFB4A6, 0xFF5C1408),
+    AMBER(R.string.w_color_amber, 0xFFFFD787, 0xFF462B00),
+    MINT(R.string.w_color_mint, 0xFFA8EBC9, 0xFF003823),
+    SKY_BLUE(R.string.w_color_sky_blue, 0xFFA9D4FF, 0xFF002F57),
+    ROSE(R.string.w_color_rose, 0xFFFFB3C8, 0xFF5A0F2A),
+    SLATE(R.string.w_color_slate, 0xFF37424F, 0xFFE6EDF5),
     ;
+
+    val label: String get() = L.s(res)
 
     companion object {
         fun of(name: String?) = entries.firstOrNull { it.name == name } ?: THEME

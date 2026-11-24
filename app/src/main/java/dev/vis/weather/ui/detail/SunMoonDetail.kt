@@ -44,7 +44,10 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.data.Astro
 import dev.vis.weather.data.Forecast
 import dev.vis.weather.data.Insights
@@ -75,10 +78,10 @@ fun SunHeroTimes(f: Forecast, fmt: Fmt) {
     val rise = d?.sunrise?.takeIf { it != 0L } ?: s.sunrise
     val set = d?.sunset?.takeIf { it != 0L } ?: s.sunset
     Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
-        TimeCol("First light", fmt.time(s.firstLight), Modifier.weight(1f), Alignment.Start)
-        TimeCol("Sunrise", fmt.time(rise), Modifier.weight(1f), Alignment.CenterHorizontally, big = true)
-        TimeCol("Sunset", fmt.time(set), Modifier.weight(1f), Alignment.CenterHorizontally, big = true)
-        TimeCol("Last light", fmt.time(s.lastLight), Modifier.weight(1f), Alignment.End)
+        TimeCol(stringResource(R.string.dt_first_light), fmt.time(s.firstLight), Modifier.weight(1f), Alignment.Start)
+        TimeCol(stringResource(R.string.dt_sunrise), fmt.time(rise), Modifier.weight(1f), Alignment.CenterHorizontally, big = true)
+        TimeCol(stringResource(R.string.dt_sunset), fmt.time(set), Modifier.weight(1f), Alignment.CenterHorizontally, big = true)
+        TimeCol(stringResource(R.string.dt_last_light), fmt.time(s.lastLight), Modifier.weight(1f), Alignment.End)
     }
 }
 
@@ -99,28 +102,35 @@ fun SunSections(f: Forecast, fmt: Fmt) {
     val year = remember(f.latitude, f.longitude, today.year) { Astro.yearDaylight(today.year, lat, lon) }
     Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
         // ---- Sun path today
-        SectionCard("Sun today", Icons.Rounded.WbSunny, MaterialShapes.Sunny) {
+        SectionCard(stringResource(R.string.dt_sun_today), Icons.Rounded.WbSunny, MaterialShapes.Sunny) {
             Row(Modifier.padding(horizontal = 18.dp), verticalAlignment = Alignment.CenterVertically) {
                 SunCompass(s.riseAzimuth, s.setAzimuth, Modifier.size(120.dp))
                 Spacer(Modifier.width(16.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Sunset direction", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.dt_sunset_direction), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(bearing(s.setAzimuth), style = MaterialTheme.typography.headlineSmallEmphasized)
                     Spacer(Modifier.height(4.dp))
-                    Body("Rises in the ${WeatherInfo.compass(s.riseAzimuth)} (${s.riseAzimuth.takeIf { !it.isNaN() }?.roundToInt() ?: "–"}°). Face ${WeatherInfo.compass(s.setAzimuth)} for the sunset.")
+                    Body(
+                        stringResource(
+                            R.string.dt_sun_rises_in,
+                            WeatherInfo.compass(s.riseAzimuth),
+                            s.riseAzimuth.takeIf { !it.isNaN() }?.roundToInt()?.toString() ?: "–",
+                            WeatherInfo.compass(s.setAzimuth),
+                        )
+                    )
                 }
             }
             Gap()
             StatChips(
                 listOf(
-                    Triple("Solar noon", fmt.time(s.solarNoon), "Sun at its highest"),
-                    Triple("Max elevation", "${s.noonElevation.roundToInt()}°", elevationWord(s.noonElevation)),
-                    Triple("Golden hour", if (s.sunset != 0L) fmt.time(s.sunset - 3600) else "–", "before sunset"),
+                    Triple(stringResource(R.string.dt_solar_noon), fmt.time(s.solarNoon), stringResource(R.string.dt_sun_highest)),
+                    Triple(stringResource(R.string.dt_max_elevation), "${s.noonElevation.roundToInt()}°", elevationWord(s.noonElevation)),
+                    Triple(stringResource(R.string.dt_golden_hour), if (s.sunset != 0L) fmt.time(s.sunset - 3600) else "–", stringResource(R.string.dt_before_sunset)),
                 )
             )
             when {
-                s.polarDay -> { Gap(10.dp); Body("Midnight sun: the sun stays above the horizon all day.", Modifier.padding(horizontal = 18.dp)) }
-                s.polarNight -> { Gap(10.dp); Body("Polar night: the sun stays below the horizon today.", Modifier.padding(horizontal = 18.dp)) }
+                s.polarDay -> { Gap(10.dp); Body(stringResource(R.string.dt_midnight_sun), Modifier.padding(horizontal = 18.dp)) }
+                s.polarNight -> { Gap(10.dp); Body(stringResource(R.string.dt_polar_night), Modifier.padding(horizontal = 18.dp)) }
             }
         }
 
@@ -134,12 +144,12 @@ fun SunSections(f: Forecast, fmt: Fmt) {
         val jan1 = LocalDate.of(today.year, 1, 1)
         val (event, eventTime) = remember(f.current.time) { Astro.nextSeasonEvent(f.current.time, f.zone) }
         InsightCard(
-            "Daylight", Icons.Rounded.WbTwilight, MaterialShapes.SoftBurst,
-            if (abs(dYest) < 5) "About the same as yesterday" else "${signedMinutes(dYest)} vs yesterday",
-            "${fmt.duration(s.daylight)} of daylight today. " + when {
-                abs(dWeek) < 60 -> "Day length is barely changing this week."
-                dWeek > 0 -> "Days are getting longer: ${signedMinutes(dWeek)} since last week."
-                else -> "Days are getting shorter: ${signedMinutes(dWeek)} since last week."
+            stringResource(R.string.dt_daylight), Icons.Rounded.WbTwilight, MaterialShapes.SoftBurst,
+            if (abs(dYest) < 5) stringResource(R.string.dt_daylight_same) else stringResource(R.string.dt_daylight_vs_yesterday, signedMinutes(dYest)),
+            stringResource(R.string.dt_daylight_today, fmt.duration(s.daylight)) + " " + when {
+                abs(dWeek) < 60 -> stringResource(R.string.dt_daylight_barely)
+                dWeek > 0 -> stringResource(R.string.dt_daylight_longer, signedMinutes(dWeek))
+                else -> stringResource(R.string.dt_daylight_shorter, signedMinutes(dWeek))
             },
         ) {
             Gap()
@@ -147,15 +157,15 @@ fun SunSections(f: Forecast, fmt: Fmt) {
             Gap()
             StatChips(
                 listOf(
-                    Triple("Longest day", fmt.shortDate(jan1.plusDays(longestIdx.toLong())), fmt.duration(year[longestIdx])),
-                    Triple("Shortest day", fmt.shortDate(jan1.plusDays(shortestIdx.toLong())), fmt.duration(year[shortestIdx])),
+                    Triple(stringResource(R.string.dt_longest_day), fmt.shortDate(jan1.plusDays(longestIdx.toLong())), fmt.duration(year[longestIdx])),
+                    Triple(stringResource(R.string.dt_shortest_day), fmt.shortDate(jan1.plusDays(shortestIdx.toLong())), fmt.duration(year[shortestIdx])),
                     Triple(Astro.seasonName(event, lat), fmt.shortDate(fmt.localDate(eventTime)), fmt.inDays(eventTime, f.current.time)),
                 )
             )
         }
 
         // ---- Seasonal highlights
-        SectionCard("Seasonal highlights", Icons.Rounded.CalendarMonth, MaterialShapes.Clover4Leaf) {
+        SectionCard(stringResource(R.string.dt_seasonal_highlights), Icons.Rounded.CalendarMonth, MaterialShapes.Clover4Leaf) {
             val events = remember(today.year) {
                 (Astro.SeasonEvent.entries.map { it to Astro.seasonEvent(today.year, it) } +
                     Astro.SeasonEvent.entries.map { it to Astro.seasonEvent(today.year + 1, it) })
@@ -167,7 +177,7 @@ fun SunSections(f: Forecast, fmt: Fmt) {
                     FactRow(
                         Astro.seasonName(e, lat),
                         fmt.shortDate(d),
-                        "${fmt.whenText(t, f.current.time)} · ${fmt.duration(Astro.daylight(d, lat, lon))} of daylight",
+                        stringResource(R.string.dt_season_sub, fmt.whenText(t, f.current.time), fmt.duration(Astro.daylight(d, lat, lon))),
                         icon = if (e == Astro.SeasonEvent.JUNE_SOLSTICE || e == Astro.SeasonEvent.DECEMBER_SOLSTICE) Icons.Rounded.LightMode else Icons.Rounded.WbTwilight,
                         shape = if (e.ordinal % 2 == 0) MaterialShapes.Cookie6Sided else MaterialShapes.Sunny,
                     )
@@ -179,11 +189,11 @@ fun SunSections(f: Forecast, fmt: Fmt) {
 
 private fun elevationWord(e: Double) = when {
     e.isNaN() -> ""
-    e < 0 -> "Below horizon"
-    e < 15 -> "Very low sun"
-    e < 35 -> "Low sun"
-    e < 55 -> "Mid-height"
-    else -> "High overhead"
+    e < 0 -> L.s(R.string.dt_below_horizon)
+    e < 15 -> L.s(R.string.dt_elev_very_low)
+    e < 35 -> L.s(R.string.dt_elev_low)
+    e < 55 -> L.s(R.string.dt_elev_mid)
+    else -> L.s(R.string.dt_elev_high)
 }
 
 /** Small compass with the sunrise and sunset bearings. */
@@ -192,12 +202,16 @@ private fun SunCompass(riseAz: Double, setAz: Double, modifier: Modifier) {
     val cs = MaterialTheme.colorScheme
     val measurer = rememberTextMeasurer()
     val style = MaterialTheme.typography.labelSmall.copy(color = cs.onSurfaceVariant, fontWeight = FontWeight.Bold)
+    val points = listOf(
+        stringResource(R.string.dt_compass_n) to 0f, stringResource(R.string.dt_compass_e) to 90f,
+        stringResource(R.string.dt_compass_s) to 180f, stringResource(R.string.dt_compass_w) to 270f,
+    )
     Canvas(modifier) {
         val r = size.minDimension / 2 - 12.dp.toPx()
         val c = center
         drawCircle(cs.surfaceContainerHighest, r + 8.dp.toPx(), c)
         drawCircle(cs.outlineVariant, r, c, style = Stroke(1.dp.toPx()))
-        listOf("N" to 0f, "E" to 90f, "S" to 180f, "W" to 270f).forEach { (t, a) ->
+        points.forEach { (t, a) ->
             val m = measurer.measure(t, style)
             val rad = Math.toRadians(a.toDouble() - 90)
             val p = Offset(c.x + (r - 10.dp.toPx()) * kotlin.math.cos(rad).toFloat(), c.y + (r - 10.dp.toPx()) * kotlin.math.sin(rad).toFloat())
@@ -226,6 +240,8 @@ fun DaylightYearChart(values: List<Double>, todayIdx: Int, modifier: Modifier) {
     val labelStyle = MaterialTheme.typography.labelMedium.copy(color = cs.onSurface, fontWeight = FontWeight.Bold)
     val ring = cardBackdrop()
     val line = Amber
+    val label12h = stringResource(R.string.dt_chart_12h)
+    val todayLabel = stringResource(R.string.dt_today)
     Canvas(modifier) {
         val bottom = size.height - 18.dp.toPx()
         val top = 22.dp.toPx()
@@ -237,7 +253,7 @@ fun DaylightYearChart(values: List<Double>, todayIdx: Int, modifier: Modifier) {
         if (12.0 in lo..hi) {
             val yy = y(12.0 * 3600)
             drawLine(cs.outlineVariant, Offset(0f, yy), Offset(size.width, yy), 1.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(8f, 8f)))
-            val m = measurer.measure("12 h", style)
+            val m = measurer.measure(label12h, style)
             drawText(m, topLeft = Offset(size.width - m.size.width, yy - m.size.height - 2.dp.toPx()))
         }
         val path = Path().apply {
@@ -263,7 +279,7 @@ fun DaylightYearChart(values: List<Double>, todayIdx: Int, modifier: Modifier) {
         drawLine(cs.primary.copy(alpha = 0.5f), Offset(p.x, top - 6.dp.toPx()), Offset(p.x, bottom), 1.5.dp.toPx())
         drawCircle(ring, 8.dp.toPx(), p)
         drawCircle(cs.primary, 6.dp.toPx(), p)
-        val tm = measurer.measure("Today", labelStyle)
+        val tm = measurer.measure(todayLabel, labelStyle)
         drawText(tm, topLeft = Offset((p.x - tm.size.width / 2).coerceIn(0f, size.width - tm.size.width), 0f))
     }
 }
@@ -279,14 +295,17 @@ fun MoonHeroText(f: Forecast, fmt: Fmt) {
         Text(ms.name, style = MaterialTheme.typography.titleLargeEmphasized, textAlign = TextAlign.Center)
         Spacer(Modifier.height(6.dp))
         Text(
-            "${pctOf(ms.illumination)} illuminated · " + (if (ms.waxing) "waxing" else "waning") +
-                if (ms.altitude > 0) " · up now, ${ms.altitude.roundToInt()}° high in the ${WeatherInfo.compass(ms.azimuth)}" else " · below the horizon",
+            run {
+                val phase = stringResource(if (ms.waxing) R.string.dt_waxing else R.string.dt_waning)
+                if (ms.altitude > 0) stringResource(R.string.dt_moon_line_up, pctOf(ms.illumination), phase, ms.altitude.roundToInt(), WeatherInfo.compass(ms.azimuth))
+                else stringResource(R.string.dt_moon_line_down, pctOf(ms.illumination), phase)
+            },
             style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(14.dp))
         Row(Modifier.fillMaxWidth().padding(horizontal = 24.dp)) {
-            TimeCol("Moonrise", if (md.rise != 0L) fmt.time(md.rise) else if (md.alwaysUp) "Up all day" else "–", Modifier.weight(1f), Alignment.Start, big = true)
-            TimeCol("Moonset", if (md.set != 0L) fmt.time(md.set) else if (md.alwaysDown) "Down all day" else "–", Modifier.weight(1f), Alignment.End, big = true)
+            TimeCol(stringResource(R.string.dt_moonrise), if (md.rise != 0L) fmt.time(md.rise) else if (md.alwaysUp) stringResource(R.string.dt_up_all_day) else "–", Modifier.weight(1f), Alignment.Start, big = true)
+            TimeCol(stringResource(R.string.dt_moonset), if (md.set != 0L) fmt.time(md.set) else if (md.alwaysDown) stringResource(R.string.dt_down_all_day) else "–", Modifier.weight(1f), Alignment.End, big = true)
         }
     }
 }
@@ -302,38 +321,44 @@ fun MoonSections(f: Forecast, fmt: Fmt) {
         if (star != null) {
             val colors = listOf(Color(0xFF4CAF50), Color(0xFF35C7B0), Color(0xFFFFC107), Color(0xFF9AA6B5))
             InsightCard(
-                "Stargazing tonight", Icons.Rounded.AutoAwesome, MaterialShapes.Sunny,
+                stringResource(R.string.dt_stargazing_tonight), Icons.Rounded.AutoAwesome, MaterialShapes.Sunny,
                 star.rating, star.sentence, accent = colors[star.level],
             ) {
                 Gap()
-                LevelScale(colors.reversed(), 3 - star.level, labels = listOf("Poor", "Fair", "Good", "Excellent"))
+                LevelScale(colors.reversed(), 3 - star.level, labels = listOf(
+                    stringResource(R.string.dt_star_lvl_poor), stringResource(R.string.dt_star_lvl_fair),
+                    stringResource(R.string.dt_star_lvl_good), stringResource(R.string.dt_star_lvl_excellent),
+                ))
                 Gap()
                 StatChips(
                     listOf(
-                        Triple("Clouds", if (star.cloud.isNaN()) "–" else "${star.cloud.roundToInt()}%", "average tonight"),
-                        Triple("Moonlight", pctOf(star.moonIllumination), if (star.moonUp < 0.1) "moon down" else "up ${(star.moonUp * 100).roundToInt()}% of night"),
-                        Triple("Best time", if (star.best != 0L) fmt.time(star.best) else "–", "dark from ${fmt.time(star.darkStart)}"),
+                        Triple(stringResource(R.string.dt_clouds), if (star.cloud.isNaN()) "–" else "${star.cloud.roundToInt()}%", stringResource(R.string.dt_average_tonight)),
+                        Triple(
+                            stringResource(R.string.dt_moonlight), pctOf(star.moonIllumination),
+                            if (star.moonUp < 0.1) stringResource(R.string.dt_moon_down) else stringResource(R.string.dt_moon_up_pct, (star.moonUp * 100).roundToInt()),
+                        ),
+                        Triple(stringResource(R.string.dt_best_time), if (star.best != 0L) fmt.time(star.best) else "–", stringResource(R.string.dt_dark_from, fmt.time(star.darkStart))),
                     )
                 )
             }
         }
-        SectionCard("Moon facts", Icons.Rounded.DarkMode, MaterialShapes.Cookie9Sided) {
+        SectionCard(stringResource(R.string.dt_moon_facts), Icons.Rounded.DarkMode, MaterialShapes.Cookie9Sided) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                FactRow("Next full moon", fmt.dateOf(full), fmt.inDays(full, now).replaceFirstChar { it.uppercase() } + " · " + fmt.time(full), Icons.Rounded.Nightlight, MaterialShapes.Circle)
-                FactRow("Next new moon", fmt.dateOf(new), fmt.inDays(new, now).replaceFirstChar { it.uppercase() } + " · " + fmt.time(new), Icons.Rounded.Bedtime, MaterialShapes.Cookie6Sided)
+                FactRow(stringResource(R.string.dt_next_full_moon), fmt.dateOf(full), stringResource(R.string.dt_dot_pair, fmt.inDays(full, now).replaceFirstChar { it.uppercase() }, fmt.time(full)), Icons.Rounded.Nightlight, MaterialShapes.Circle)
+                FactRow(stringResource(R.string.dt_next_new_moon), fmt.dateOf(new), stringResource(R.string.dt_dot_pair, fmt.inDays(new, now).replaceFirstChar { it.uppercase() }, fmt.time(new)), Icons.Rounded.Bedtime, MaterialShapes.Cookie6Sided)
                 FactRow(
-                    "Distance", "${fmt.km(ms.distanceKm)}",
+                    stringResource(R.string.dt_distance), "${fmt.km(ms.distanceKm)}",
                     when {
-                        ms.distanceKm < 362_000 -> "Close to perigee — the moon looks a little bigger" + if (abs(ms.phase - 0.5) < 0.04) ". Supermoon!" else ""
-                        ms.distanceKm > 402_000 -> "Near apogee — the moon looks a little smaller"
-                        else -> "Average distance 384 400 km"
+                        ms.distanceKm < 362_000 -> stringResource(if (abs(ms.phase - 0.5) < 0.04) R.string.dt_moon_perigee_super else R.string.dt_moon_perigee)
+                        ms.distanceKm > 402_000 -> stringResource(R.string.dt_moon_apogee)
+                        else -> stringResource(R.string.dt_moon_avg_distance)
                     },
                     Icons.Rounded.Straighten, MaterialShapes.Pill,
                 )
                 FactRow(
-                    "Position now",
-                    if (ms.altitude > 0) "${ms.altitude.roundToInt()}° ${WeatherInfo.compass(ms.azimuth)}" else "Below horizon",
-                    "Altitude and compass direction", Icons.Rounded.Explore, MaterialShapes.Gem,
+                    stringResource(R.string.dt_position_now),
+                    if (ms.altitude > 0) "${ms.altitude.roundToInt()}° ${WeatherInfo.compass(ms.azimuth)}" else stringResource(R.string.dt_below_horizon),
+                    stringResource(R.string.dt_alt_compass), Icons.Rounded.Explore, MaterialShapes.Gem,
                 )
             }
         }

@@ -1,8 +1,11 @@
 package dev.vis.weather.alerts
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.core.content.edit
 import dev.vis.weather.BuildConfig
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.data.Place
 import dev.vis.weather.data.Updater
 import kotlinx.coroutines.Dispatchers
@@ -19,18 +22,23 @@ import java.time.OffsetDateTime
 import java.util.Locale
 
 /** Official warning levels, mapped from CAP severity (Minor/Moderate/Severe/Extreme). */
-enum class Severity(val label: String, val colorName: String, val argb: Long, val onArgb: Long) {
-    MINOR("Minor", "Blue", 0xFF4F8EF7, 0xFFFFFFFF),
-    MODERATE("Moderate", "Yellow", 0xFFFFC928, 0xFF241A00),
-    SEVERE("Severe", "Amber", 0xFFFF8A1F, 0xFF2A1200),
-    EXTREME("Extreme", "Red", 0xFFE5312B, 0xFFFFFFFF),
+enum class Severity(@StringRes private val labelRes: Int, @StringRes private val colorRes: Int, val argb: Long, val onArgb: Long) {
+    MINOR(R.string.al_severity_minor, R.string.al_level_blue, 0xFF4F8EF7, 0xFFFFFFFF),
+    MODERATE(R.string.al_severity_moderate, R.string.al_level_yellow, 0xFFFFC928, 0xFF241A00),
+    SEVERE(R.string.al_severity_severe, R.string.al_level_amber, 0xFFFF8A1F, 0xFF2A1200),
+    EXTREME(R.string.al_severity_extreme, R.string.al_level_red, 0xFFE5312B, 0xFFFFFFFF);
+
+    val label: String get() = L.s(labelRes)
+    val colorName: String get() = L.s(colorRes)
 }
 
-enum class Hazard(val label: String) {
-    THUNDERSTORM("Thunderstorm"), WIND("Wind"), RAIN("Rain"), FLOOD("Flood"),
-    SNOW_ICE("Snow & ice"), FOG("Fog"), HEAT("Heat"), COLD("Cold"),
-    COASTAL("Coastal"), FIRE("Fire"), AVALANCHE("Avalanche"), TORNADO("Tornado"),
-    HURRICANE("Hurricane"), DUST("Dust"), WEATHER("Weather");
+enum class Hazard(@StringRes private val labelRes: Int) {
+    THUNDERSTORM(R.string.al_hazard_thunderstorm), WIND(R.string.al_hazard_wind), RAIN(R.string.al_hazard_rain), FLOOD(R.string.al_hazard_flood),
+    SNOW_ICE(R.string.al_hazard_snow_ice), FOG(R.string.al_hazard_fog), HEAT(R.string.al_hazard_heat), COLD(R.string.al_hazard_cold),
+    COASTAL(R.string.al_hazard_coastal), FIRE(R.string.al_hazard_fire), AVALANCHE(R.string.al_hazard_avalanche), TORNADO(R.string.al_hazard_tornado),
+    HURRICANE(R.string.al_hazard_hurricane), DUST(R.string.al_hazard_dust), WEATHER(R.string.al_hazard_weather);
+
+    val label: String get() = L.s(labelRes)
 
     companion object {
         fun from(text: String): Hazard {

@@ -1,7 +1,9 @@
 package dev.vis.weather.alerts
 
+import dev.vis.weather.inSentence
 import android.content.Context
 import androidx.core.content.edit
+import dev.vis.weather.L
 import dev.vis.weather.R
 import dev.vis.weather.data.Forecast
 import dev.vis.weather.data.ForecastRepo
@@ -123,16 +125,17 @@ object AlertEngine {
         val f = Fmt(settings, zone)
         val now = System.currentTimeMillis() / 1000
         val window = when {
-            w.onset > now && w.expires > 0 -> "From ${f.dayTime(w.onset)} until ${f.dayTime(w.expires)}"
-            w.expires > 0 -> "Until ${f.dayTime(w.expires)}"
+            w.onset > now && w.expires > 0 -> L.s(R.string.al_warning_from_until, f.dayTime(w.onset), f.dayTime(w.expires))
+            w.expires > 0 -> L.s(R.string.al_warning_until, f.dayTime(w.expires))
             else -> ""
         }
+        val title = L.s(R.string.al_warning_title, w.severity.colorName, w.hazard.label.inSentence())
         return Note(
             type = type,
             key = "warning:${w.id}",
-            title = "${w.severity.colorName} ${w.hazard.label.lowercase()} warning" + if (type == AlertType.FRIENDS) " · $placeName" else "",
+            title = title + if (type == AlertType.FRIENDS) " · $placeName" else "",
             text = listOf(w.headline.ifBlank { w.title }, window).filter { it.isNotBlank() }.joinToString(" · "),
-            bigText = listOf(w.headline.ifBlank { w.title }, window, w.description.take(600), "Issued by ${w.sender}")
+            bigText = listOf(w.headline.ifBlank { w.title }, window, w.description.take(600), L.s(R.string.al_warning_issued_by, w.sender))
                 .filter { it.isNotBlank() }.joinToString("\n\n"),
             placeKey = placeKey,
             placeName = placeName,
@@ -159,7 +162,7 @@ object AlertEngine {
                 alerts.markSent(dedupe)
                 val note = warningNote(w, friend.place.key, friend.name, AlertType.FRIENDS, settings).copy(
                     key = "friend:${friend.id}:${w.id}",
-                    title = "${friend.name}: ${w.severity.colorName.lowercase()} ${w.hazard.label.lowercase()} warning",
+                    title = L.s(R.string.al_warning_title_friend, friend.name, w.severity.colorName.inSentence(), w.hazard.label.inSentence()),
                     open = "friends",
                     icon = R.drawable.ic_stat_person,
                     placeName = friend.place.name,
@@ -177,10 +180,11 @@ object AlertEngine {
         return sky == Sky.SNOW || (h.temp.ok() && h.temp <= 0.5 && sky != Sky.CLEAR)
     }
 
+    /** 0 light, 1 moderate, 2 heavy. */
     private fun intensity(mm15: Double) = when {
-        mm15 < 0.5 -> "Light"
-        mm15 < 2.0 -> ""
-        else -> "Heavy"
+        mm15 < 0.5 -> 0
+        mm15 < 2.0 -> 1
+        else -> 2
     }
 
     private suspend fun checkNowcast(context: Context, settings: Settings, cfg: AlertConfig) {
@@ -208,15 +212,17 @@ object AlertEngine {
             val end = slots.firstOrNull { it.first > now && it.second < thr * 0.5 }?.first
             val snow = isSnowAt(f, now)
             if (snow && !includeSnow) return false
-            val what = if (snow) "Snow" else "Rain"
-            val title = if (snow) "Snowing now" else "Raining now"
-            val text = if (end != null) "Ending in ~${((end - now) / 60).coerceAtLeast(5)} min" else "Set to continue for a while"
+            val what = L.s(if (snow) R.string.al_nowcast_chip_snow else R.string.al_nowcast_chip_rain)
+            val title = L.s(if (snow) R.string.al_nowcast_snowing_now else R.string.al_nowcast_raining_now)
+            val titleWithPlace = if (key != "current") L.s(if (snow) R.string.al_nowcast_snowing_now_in else R.string.al_nowcast_raining_now_in, place.name) else title
+            val text = if (end != null) ((end - now) / 60).coerceAtLeast(5).toInt().let { L.p(R.plurals.al_nowcast_ending_in, it) }
+            else L.s(R.string.al_nowcast_continuing)
             val firstTime = state != "active"
             if (firstTime && !force && nowMs - alerts.lastSent("nowcast-active:${place.key}") < 90 * 60_000L) {
                 alerts.putString(stateKey, "active")
                 return false
             }
-            Notifier.postNowcast(context, "$title in ${place.name}".takeIf { key != "current" } ?: title, text, what, end?.times(1000), steps, snow, key, place.name, silent = !firstTime && !force)
+            Notifier.postNowcast(context, titleWithPlace, text, what, end?.times(1000), steps, snow, key, place.name, silent = !firstTime && !force)
             if (firstTime) alerts.markSent("nowcast-active:${place.key}")
             alerts.putString(stateKey, "active")
             if (firstTime || force) alerts.log(AlertLog(nowMs, AlertType.NOWCAST, title, text, place.name))
@@ -228,20 +234,19 @@ object AlertEngine {
             val snow = isSnowAt(f, startTime)
             if (snow && !includeSnow) return false
             val peak = slots.filter { it.first >= startTime }.take(4).maxOf { it.second }
-            val kind = intensity(peak)
-            val noun = if (snow) "snow" else "rain"
+            val kind = L.s(
+                if (snow) listOf(R.string.al_nowcast_kind_light_snow, R.string.al_nowcast_kind_snow, R.string.al_nowcast_kind_heavy_snow)[intensity(peak)]
+                else listOf(R.string.al_nowcast_kind_light_rain, R.string.al_nowcast_kind_rain, R.string.al_nowcast_kind_heavy_rain)[intensity(peak)]
+            )
             val mins = ((startTime - now) / 60).toInt().coerceAtLeast(1)
-            val title = buildString {
-                append(if (kind.isBlank()) noun.replaceFirstChar { it.uppercase() } else "$kind $noun")
-                append(" approaching")
-                if (key != "current") append(" ${place.name}")
-            }
-            val text = if (mins <= 5) "${noun.replaceFirstChar { it.uppercase() }} starting any moment" else "Starting in ~$mins min"
+            val title = if (key != "current") L.s(R.string.al_nowcast_approaching_place, kind, place.name) else L.s(R.string.al_nowcast_approaching, kind)
+            val text = if (mins <= 5) L.s(if (snow) R.string.al_nowcast_snow_any_moment else R.string.al_nowcast_rain_any_moment)
+            else L.p(R.plurals.al_nowcast_starting_in, mins)
             val firstTime = state != "approaching"
             // Smart cooldown: a new shower right after the last one updates quietly instead of buzzing again.
             val recently = nowMs - alerts.lastSent("nowcast:${place.key}") < 75 * 60_000L
             Notifier.postNowcast(
-                context, title, text, "${mins}m", startTime * 1000, steps, snow, key, place.name,
+                context, title, text, L.s(R.string.al_nowcast_chip_minutes, mins), startTime * 1000, steps, snow, key, place.name,
                 silent = !force && (!firstTime || recently),
             )
             if (firstTime && !recently) {
@@ -282,9 +287,10 @@ object AlertEngine {
         val wet = hours.firstOrNull { it.precipProb.ok() && it.precipProb >= cfg.threshold && (!it.precip.ok() || it.precip >= 0.1) } ?: return null
         val total = hours.dropWhile { it != wet }.sumOf { if (it.precip.ok()) it.precip else 0.0 }
         val snow = WeatherInfo.sky(wet.code) == Sky.SNOW
-        val title = "${if (snow) "Snow" else "Rain"} expected at ${fm.hour(wet.time)}"
-        val text = if (snow) "Dress warmly and allow extra travel time." else "Grab an umbrella before heading out."
-        val big = "$text ${wet.precipProb.roundToInt()}% chance" + (if (total >= 0.1) ", about ${fm.precip(total)} in the next ${cfg.lookahead} h." else ".")
+        val title = L.s(if (snow) R.string.al_snow_expected_at else R.string.al_rain_expected_at, fm.hour(wet.time))
+        val text = L.s(if (snow) R.string.al_snow_advice else R.string.al_rain_advice)
+        val big = if (total >= 0.1) L.s(R.string.al_rain_big_amount, text, wet.precipProb.roundToInt(), fm.precip(total), cfg.lookahead)
+        else L.s(R.string.al_rain_big, text, wet.precipProb.roundToInt())
         return "rain:${place.key}:${wet.time}" to Note(
             AlertType.RAIN, "rain:${place.key}", title, text, big, key, place.name,
             if (snow) R.drawable.ic_stat_snow else R.drawable.ic_stat_rain, open = "metric:PRECIP",
@@ -315,15 +321,15 @@ object AlertEngine {
         if (thunder == null && gusty.isEmpty()) return null
         return if (thunder != null) {
             Note(
-                AlertType.STORM, "storm:${place.key}", "Thunderstorms possible from ${fm.hour(thunder.time)}",
-                "Lightning, heavy downpours and strong gusts are possible. Plan to be indoors.",
+                AlertType.STORM, "storm:${place.key}", L.s(R.string.al_storm_thunder_title, fm.hour(thunder.time)),
+                L.s(R.string.al_storm_thunder_text),
                 placeKey = key, placeName = place.name, icon = R.drawable.ic_stat_warning, open = "metric:PRECIP",
             )
         } else {
             val peak = gusty.maxBy { it.windGust }
             Note(
-                AlertType.STORM, "storm:${place.key}", "Gusts up to ${fm.wind(peak.windGust)} around ${fm.hour(peak.time)}",
-                "Windy from ${fm.hour(gusty.first().time)}. Secure loose objects and take care on bikes and high-sided vehicles.",
+                AlertType.STORM, "storm:${place.key}", L.s(R.string.al_storm_gust_title, fm.wind(peak.windGust), fm.hour(peak.time)),
+                L.s(R.string.al_storm_gust_text, fm.hour(gusty.first().time)),
                 placeKey = key, placeName = place.name, icon = R.drawable.ic_stat_wind, open = "metric:WIND",
             )
         }
@@ -360,14 +366,14 @@ object AlertEngine {
         val value = fm.pressureValue(best)
         val amount = (if (settings.pressureUnit == dev.vis.weather.data.PressureUnit.INHG) String.format(java.util.Locale.getDefault(), "%.2f", value)
         else value.roundToInt().toString()) + " " + fm.pressureUnit
-        val severity = when {
-            best >= 8 -> "Rapid"
-            best >= 5 -> "Significant"
-            else -> "Moderate"
+        val titleRes = when {
+            best >= 8 -> R.string.al_pressure_rapid
+            best >= 5 -> R.string.al_pressure_significant
+            else -> R.string.al_pressure_moderate
         }
         return Note(
-            AlertType.PRESSURE, "pressure:${place.key}", "$severity pressure drop (−$amount)",
-            "Pressure is forecast to drop $amount over 3 hours from ${fm.hour(if (at == 0L) now else at)}. You may want to plan your day accordingly.",
+            AlertType.PRESSURE, "pressure:${place.key}", L.s(titleRes, amount),
+            L.s(R.string.al_pressure_text, amount, fm.hour(if (at == 0L) now else at)),
             placeKey = key, placeName = place.name, icon = R.drawable.ic_stat_bell, open = "metric:PRESSURE",
         )
     }
@@ -400,11 +406,12 @@ object AlertEngine {
         val first = hours.firstOrNull { wb(it) >= cfg.threshold }
         val dangerNow = nowWb.ok() && nowWb >= cfg.threshold
         val title = when {
-            peakWb < cfg.threshold -> "Wet bulb is safe for now"
-            dangerNow -> "Dangerous wet bulb now: ${fm.temp(nowWb)}"
-            else -> "Dangerous wet bulb from ${fm.hour(first?.time ?: peak!!.first.time)}"
+            peakWb < cfg.threshold -> L.s(R.string.al_heat_safe)
+            dangerNow -> L.s(R.string.al_heat_danger_now, fm.temp(nowWb))
+            else -> L.s(R.string.al_heat_danger_from, fm.hour(first?.time ?: peak!!.first.time))
         }
-        val text = "Wet bulb up to ${fm.temp(peakWb)} ($level)" + (peak?.let { " around ${fm.hour(it.first.time)}" } ?: "") + ". $guidance"
+        val text = if (peak != null) L.s(R.string.al_heat_text_at, fm.temp(peakWb), level, fm.hour(peak.first.time), guidance)
+        else L.s(R.string.al_heat_text, fm.temp(peakWb), level, guidance)
         return Note(
             AlertType.HEAT, "heat:${place.key}", title, text,
             placeKey = key, placeName = place.name, icon = R.drawable.ic_stat_thermo,
@@ -425,15 +432,13 @@ object AlertEngine {
         val c = f.current
         val today = f.today
         val title = "${fm.temp(c.temp)} · ${WeatherInfo.describe(c.code, c.isDay)}"
-        val text = buildString {
-            append("Feels ${fm.temp(c.feelsLike)}")
-            if (today != null) append(" · ↑${fm.temp(today.max)} ↓${fm.temp(today.min)}")
-        }
+        val text = if (today != null) L.s(R.string.al_ongoing_feels_high_low, fm.temp(c.feelsLike), fm.temp(today.max), fm.temp(today.min))
+        else L.s(R.string.al_ongoing_feels, fm.temp(c.feelsLike))
         val upcoming = f.upcoming.drop(1)
         val big = buildString {
             append(text)
             Briefings.rainTiming(upcoming.take(12), fm)?.let { append("\n").append(it) }
-            append("\nWind ${fm.wind(c.windSpeed)} ${WeatherInfo.compass(c.windDir)}")
+            append("\n").append(L.s(R.string.al_ongoing_wind, fm.wind(c.windSpeed), WeatherInfo.compass(c.windDir)))
             if (c.uv.ok() && c.isDay) append(" · UV ${c.uv.roundToInt()}")
             append("\n").append(upcoming.filterIndexed { i, _ -> i % 3 == 0 }.take(5).joinToString("   ") { "${fm.hour(it.time)} ${fm.temp(it.temp)}" })
         }
@@ -473,14 +478,14 @@ object AlertEngine {
             AlertType.TODAY -> Briefings.today(f, fm, place.name)?.let { base.copy(title = it.title, text = it.text, bigText = it.big, icon = R.drawable.ic_stat_sun) }
             AlertType.TOMORROW -> Briefings.tomorrow(f, fm)?.let { base.copy(title = it.title, text = it.text, bigText = it.big, icon = R.drawable.ic_stat_cloud, open = "day:1") }
             AlertType.RAIN -> rainNote(f, key, place, cfg, settings)?.second
-                ?: if (force) base.copy(title = "No rain expected", text = "Dry for the next ${cfg.lookahead} hours. You'd be notified here if rain were likely.", icon = R.drawable.ic_stat_rain) else null
+                ?: if (force) base.copy(title = L.s(R.string.al_no_rain_title), text = L.p(R.plurals.al_no_rain_text, cfg.lookahead), icon = R.drawable.ic_stat_rain) else null
             AlertType.WARDROBE -> {
                 val tomorrow = LocalTime.now().hour >= 15
                 val work = cfg.extra.takeIf { it.isNotBlank() }?.let { ForecastRepo.resolve(context, it) }?.let { ForecastRepo.get(context, it) }
                 val commute = cfg.flags.firstOrNull { it in setOf("walk", "transit", "balanced") } ?: "balanced"
                 Wardrobe.advise(f, work, fm, tomorrow, cfg.level, commute)?.let { w ->
                     base.copy(
-                        title = if (tomorrow) "What to wear tomorrow" else "What to wear today",
+                        title = L.s(if (tomorrow) R.string.al_wardrobe_title_tomorrow else R.string.al_wardrobe_title_today),
                         text = w.items.joinToString(" · ") { it.label },
                         bigText = w.items.joinToString(" · ") { it.label } + "\n" + w.summary,
                         icon = R.drawable.ic_stat_shirt, open = "wardrobe",
@@ -496,8 +501,8 @@ object AlertEngine {
                 val low = night.minOfOrNull { if (it.temp.ok()) it.temp else 99.0 } ?: return null
                 if (low > cfg.threshold && !force) return null
                 base.copy(
-                    title = if (low <= cfg.threshold) "Frost warning tonight" else "No frost expected tonight",
-                    text = "Low of ${fm.temp(low)}." + if (low <= cfg.threshold) " Protect your plants and pipes, and allow time to de-ice the car." else "",
+                    title = L.s(if (low <= cfg.threshold) R.string.al_frost_title else R.string.al_frost_none_title),
+                    text = L.s(if (low <= cfg.threshold) R.string.al_frost_low_advice else R.string.al_frost_low, fm.temp(low)),
                     icon = R.drawable.ic_stat_snow, open = "day:1",
                 )
             }
@@ -506,11 +511,12 @@ object AlertEngine {
                 val peak = hrs.filter { it.uv.ok() }.maxByOrNull { it.uv } ?: return null
                 if (peak.uv < cfg.threshold && !force) return null
                 val protect = hrs.filter { it.uv.ok() && it.uv >= 3 }
-                val window = if (protect.isNotEmpty()) " Protect your skin between ${fm.hour(protect.first().time)} and ${fm.hour(protect.last().time + 3600)}." else ""
+                val text = if (protect.isNotEmpty()) L.s(R.string.al_uv_peaks_protect, fm.hour(peak.time), fm.hour(protect.first().time), fm.hour(protect.last().time + 3600))
+                else L.s(R.string.al_uv_peaks, fm.hour(peak.time))
                 base.copy(
-                    title = "UV index: ${peak.uv.roundToInt()} (${WeatherInfo.uvLevel(peak.uv)})",
-                    text = "Peaks around ${fm.hour(peak.time)}.$window",
-                    bigText = "Peaks around ${fm.hour(peak.time)}.$window ${WeatherInfo.uvAdvice(peak.uv)}",
+                    title = L.s(R.string.al_uv_title, peak.uv.roundToInt(), WeatherInfo.uvLevel(peak.uv)),
+                    text = text,
+                    bigText = "$text ${WeatherInfo.uvAdvice(peak.uv)}",
                     icon = R.drawable.ic_stat_sun, open = "metric:UV",
                 )
             }
@@ -522,9 +528,8 @@ object AlertEngine {
                 val band = Briefings.eaqiBand(peak.euAqi)
                 if (band < cfg.threshold.roundToInt() && !force) return null
                 base.copy(
-                    title = "Air quality: ${Briefings.eaqiNames[band]}",
-                    text = "European AQI up to ${peak.euAqi.roundToInt()} around ${fm.hour(peak.time)}." +
-                        if (band >= 3) " Consider reducing intense outdoor activity." else "",
+                    title = L.s(R.string.al_air_title, Briefings.eaqiNames[band]),
+                    text = L.s(if (band >= 3) R.string.al_air_text_advice else R.string.al_air_text, peak.euAqi.roundToInt(), fm.hour(peak.time)),
                     icon = R.drawable.ic_stat_leaf, open = "metric:AIR",
                 )
             }
@@ -534,7 +539,7 @@ object AlertEngine {
                     val pollen = AlertPrefs.get(context).config(AlertType.POLLEN)
                     if (pollenNote(f, pollen, false) == null) return null
                 }
-                base.copy(title = "Hay fever reminder", text = "Time for your daily dose.", icon = R.drawable.ic_stat_pill, open = "metric:POLLEN")
+                base.copy(title = L.s(R.string.al_tablet_title), text = L.s(R.string.al_tablet_text), icon = R.drawable.ic_stat_pill, open = "metric:POLLEN")
             }
             else -> null
         }
@@ -566,18 +571,29 @@ object AlertEngine {
             val need = when (cfg.level) { 2 -> 1; 0 -> 3; else -> 2 }
             if (lvl >= need || (force && lvl > 0)) Triple(cat, lvl, v) else null
         }
-        if (hits.isEmpty()) return if (force) "Pollen is low today" to "Levels are below your threshold for ${cfg.flags.joinToString()}." else null
+        if (hits.isEmpty()) {
+            val plural = mapOf("trees" to R.string.al_pollen_trees, "grass" to R.string.al_pollen_grasses, "weeds" to R.string.al_pollen_weeds)
+            val list = cfg.flags.joinToString { k -> plural[k]?.let { L.s(it) } ?: k }
+            return if (force) L.s(R.string.al_pollen_low_title) to L.s(R.string.al_pollen_low_text, list) else null
+        }
         val top = hits.maxBy { it.second }
-        val names = mapOf("trees" to "tree", "grass" to "grass", "weeds" to "weed")
-        val word = when (top.second) { 3 -> "Very high"; 2 -> "High"; else -> "Elevated" }
+        val names = mapOf("trees" to R.string.al_pollen_tree, "grass" to R.string.al_pollen_grass, "weeds" to R.string.al_pollen_weed)
+        fun name(cat: String) = L.s(names.getValue(cat))
         return if (hits.size == 1) {
-            "$word ${names[top.first]} pollen today" to when (top.second) {
-                3 -> "${names[top.first]!!.replaceFirstChar { it.uppercase() }} pollen levels are very high. Be prepared before heading out."
-                2 -> "${names[top.first]!!.replaceFirstChar { it.uppercase() }} pollen levels are high. Consider keeping windows closed."
-                else -> "${names[top.first]!!.replaceFirstChar { it.uppercase() }} pollen is elevated today."
+            val n = name(top.first)
+            val cap = n.replaceFirstChar { it.uppercase() }
+            when (top.second) {
+                3 -> L.s(R.string.al_pollen_one_very_high_title, n) to L.s(R.string.al_pollen_one_very_high_text, cap)
+                2 -> L.s(R.string.al_pollen_one_high_title, n) to L.s(R.string.al_pollen_one_high_text, cap)
+                else -> L.s(R.string.al_pollen_one_elevated_title, n) to L.s(R.string.al_pollen_one_elevated_text, cap)
             }
         } else {
-            "$word pollen levels today" to "Elevated: ${hits.joinToString { names[it.first]!! }}. Consider keeping windows closed."
+            val title = when (top.second) {
+                3 -> R.string.al_pollen_many_very_high_title
+                2 -> R.string.al_pollen_many_high_title
+                else -> R.string.al_pollen_many_elevated_title
+            }
+            L.s(title) to L.s(R.string.al_pollen_many_text, hits.joinToString { name(it.first) })
         }
     }
 
@@ -587,23 +603,23 @@ object AlertEngine {
         val cfg = AlertPrefs.get(context).config(type)
         return when (type) {
             AlertType.WARNINGS, AlertType.FRIENDS -> {
-                val (key, place) = targetPlace(context, cfg) ?: return "Choose a place first"
+                val (key, place) = targetPlace(context, cfg) ?: return L.s(R.string.al_test_choose_place)
                 val list = WarningStore.refresh(context, place, 0)
                 val w = list.firstOrNull() ?: Warning(
-                    "test:${System.currentTimeMillis()}", "Yellow wind warning", "This is a test of weather warning notifications.",
-                    "No warning is active for ${place.name} right now. Real warnings look like this.", "", Severity.MODERATE,
-                    Hazard.WIND, 0, 0, "Expressive Weather", "Test", null,
+                    "test:${System.currentTimeMillis()}", L.s(R.string.al_test_warning_event), L.s(R.string.al_test_warning_headline),
+                    L.s(R.string.al_test_warning_desc, place.name), "", Severity.MODERATE,
+                    Hazard.WIND, 0, 0, "Expressive Weather", L.s(R.string.al_test_source), null,
                 )
                 Notifier.post(context, warningNote(w, key, place.name, AlertType.WARNINGS, settings).copy(log = false))
                 null
             }
             AlertType.NOWCAST -> {
-                val (key, place) = targetPlace(context, cfg) ?: return "Choose a place first"
-                val f = ForecastRepo.get(context, place, 5 * 60_000L) ?: return "Couldn't load the forecast"
+                val (key, place) = targetPlace(context, cfg) ?: return L.s(R.string.al_test_choose_place)
+                val f = ForecastRepo.get(context, place, 5 * 60_000L) ?: return L.s(R.string.al_test_load_failed)
                 if (!evaluateNowcast(context, f, key, place, cfg, force = true)) {
                     val now = System.currentTimeMillis()
                     Notifier.postNowcast(
-                        context, "Rain approaching (test)", "Starting in ~20 min", "20m", now + 20 * 60_000L,
+                        context, L.s(R.string.al_nowcast_test_title), L.p(R.plurals.al_nowcast_starting_in, 20), L.s(R.string.al_nowcast_chip_minutes, 20), now + 20 * 60_000L,
                         listOf(0.0, 0.0, 0.3, 1.2, 2.5, 0.8, 0.1, 0.0).mapIndexed { i, mm -> Notifier.NowcastStep(i * 15, mm) },
                         false, key, place.name, silent = false,
                     )
@@ -611,32 +627,32 @@ object AlertEngine {
                 null
             }
             AlertType.HEAT -> {
-                val (key, place) = targetPlace(context, cfg) ?: return "Choose a place first"
-                val f = ForecastRepo.get(context, place, 5 * 60_000L) ?: return "Couldn't load the forecast"
+                val (key, place) = targetPlace(context, cfg) ?: return L.s(R.string.al_test_choose_place)
+                val f = ForecastRepo.get(context, place, 5 * 60_000L) ?: return L.s(R.string.al_test_load_failed)
                 heatNote(f, key, place, cfg, settings, force = true)?.let { Notifier.post(context, it.copy(log = false)) }
-                    ?: return "No wet-bulb data for this place"
+                    ?: return L.s(R.string.al_test_no_wet_bulb)
                 null
             }
             AlertType.STORM, AlertType.PRESSURE -> {
-                val (key, place) = targetPlace(context, cfg) ?: return "Choose a place first"
-                val f = ForecastRepo.get(context, place, 5 * 60_000L) ?: return "Couldn't load the forecast"
+                val (key, place) = targetPlace(context, cfg) ?: return L.s(R.string.al_test_choose_place)
+                val f = ForecastRepo.get(context, place, 5 * 60_000L) ?: return L.s(R.string.al_test_load_failed)
                 val note = if (type == AlertType.STORM) stormNote(f, key, place, cfg, settings) else pressureNote(f, key, place, cfg, settings, force = true)
                 Notifier.post(
                     context,
-                    (note ?: Note(type, "${type.name}:${place.key}", "Nothing to report", "Conditions are below your threshold for the next hours.", placeKey = key, placeName = place.name)).copy(log = false),
+                    (note ?: Note(type, "${type.name}:${place.key}", L.s(R.string.al_test_nothing_title), L.s(R.string.al_test_nothing_text), placeKey = key, placeName = place.name)).copy(log = false),
                 )
                 null
             }
             AlertType.ONGOING -> {
-                val (key, place) = targetPlace(context, cfg) ?: return "Choose a place first"
-                val f = ForecastRepo.get(context, place) ?: return "Couldn't load the forecast"
+                val (key, place) = targetPlace(context, cfg) ?: return L.s(R.string.al_test_choose_place)
+                val f = ForecastRepo.get(context, place) ?: return L.s(R.string.al_test_load_failed)
                 showOngoing(context, f, key, place, settings)
                 null
             }
             else -> when (runDaily(context, type, force = true)) {
                 true -> null
-                false -> "Nothing to report right now"
-                null -> "Couldn't load the forecast"
+                false -> L.s(R.string.al_test_nothing_now)
+                null -> L.s(R.string.al_test_load_failed)
             }
         }
     }

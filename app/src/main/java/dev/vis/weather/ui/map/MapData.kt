@@ -1,5 +1,7 @@
 package dev.vis.weather.ui.map
 
+import dev.vis.weather.L
+import dev.vis.weather.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -122,15 +124,15 @@ data class Storm(
 
     val classLabel: String
         get() = when (classification.uppercase(Locale.US)) {
-            "TD" -> "Tropical depression"
-            "STD" -> "Subtropical depression"
-            "TS" -> "Tropical storm"
-            "STS" -> "Subtropical storm"
-            "HU" -> if (category > 0) "Hurricane · Category $category" else "Hurricane"
-            "TY" -> if (category > 0) "Typhoon · Category $category" else "Typhoon"
-            "PTC" -> "Post-tropical cyclone"
-            "PC" -> "Potential tropical cyclone"
-            else -> classification.ifBlank { "Tropical cyclone" }
+            "TD" -> L.s(R.string.map_storm_td)
+            "STD" -> L.s(R.string.map_storm_std)
+            "TS" -> L.s(R.string.map_storm_ts)
+            "STS" -> L.s(R.string.map_storm_sts)
+            "HU" -> if (category > 0) L.s(R.string.map_storm_hu_cat, category) else L.s(R.string.map_storm_hu)
+            "TY" -> if (category > 0) L.s(R.string.map_storm_ty_cat, category) else L.s(R.string.map_storm_ty)
+            "PTC" -> L.s(R.string.map_storm_ptc)
+            "PC" -> L.s(R.string.map_storm_pc)
+            else -> classification.ifBlank { L.s(R.string.map_storm_generic) }
         }
 }
 
@@ -247,7 +249,7 @@ object MapData {
             if (lat == null || lon == null) return@mapNotNull null
             Storm(
                 id = o.optString("id"),
-                name = o.optString("name").ifBlank { "Unnamed" },
+                name = o.optString("name").ifBlank { L.s(R.string.map_storm_unnamed) },
                 classification = o.optString("classification"),
                 intensityKt = o.numOrNull("intensity") ?: Double.NaN,
                 pressureMb = o.numOrNull("pressure") ?: Double.NaN,

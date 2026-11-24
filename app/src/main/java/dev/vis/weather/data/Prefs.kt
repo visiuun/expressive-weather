@@ -18,6 +18,22 @@ class Prefs(context: Context) {
     private inline fun <reified T : Enum<T>> enumOf(key: String, default: T): T =
         sp.getString(key, null)?.let { v -> enumValues<T>().firstOrNull { it.name == v } } ?: default
 
+    /**
+     * A saved order of enum entries. Entries added in an update go right after the entry that
+     * precedes them by default, so new cards/tiles appear in a sensible place.
+     */
+    private fun <E : Enum<E>> savedOrder(key: String, all: List<E>): List<E>? =
+        sp.getString(key, null)?.split(',')?.mapNotNull { n -> all.firstOrNull { it.name == n } }?.distinct()
+            ?.let { saved ->
+                all.filter { it !in saved }.fold(saved) { order, e ->
+                    val at = order.indexOf(all.getOrNull(e.ordinal - 1)) + 1
+                    order.take(at) + e + order.drop(at)
+                }
+            }
+
+    private fun <E : Enum<E>> savedSet(key: String, all: List<E>): Set<E>? =
+        sp.getString(key, null)?.split(',')?.mapNotNull { n -> all.firstOrNull { it.name == n } }?.toSet()
+
     private fun loadSettings(): Settings {
         val d = Settings()
         return Settings(
@@ -41,10 +57,10 @@ class Prefs(context: Context) {
             hourlyStyle = enumOf("hourly_style", d.hourlyStyle),
             showWetBulb = sp.getBoolean("show_wet_bulb", d.showWetBulb),
             dailyDays = sp.getInt("daily_days", d.dailyDays),
-            cardOrder = sp.getString("card_order", null)?.split(',')?.mapNotNull { n -> HomeCard.entries.firstOrNull { it.name == n } }
-                ?.let { saved -> saved + HomeCard.entries.filter { it !in saved } } ?: d.cardOrder,
-            hiddenCards = sp.getString("hidden_cards", null)?.split(',')?.mapNotNull { n -> HomeCard.entries.firstOrNull { it.name == n } }
-                ?.toSet() ?: d.hiddenCards,
+            cardOrder = savedOrder("card_order", HomeCard.entries) ?: d.cardOrder,
+            hiddenCards = savedSet("hidden_cards", HomeCard.entries) ?: d.hiddenCards,
+            tileOrder = savedOrder("tile_order", DetailTile.entries) ?: d.tileOrder,
+            hiddenTiles = savedSet("hidden_tiles", DetailTile.entries) ?: d.hiddenTiles,
             tempUnit = enumOf("temp", d.tempUnit),
             windUnit = enumOf("wind", d.windUnit),
             precipUnit = enumOf("precip", d.precipUnit),
@@ -85,6 +101,8 @@ class Prefs(context: Context) {
             putInt("daily_days", s.dailyDays)
             putString("card_order", s.cardOrder.joinToString(",") { it.name })
             putString("hidden_cards", s.hiddenCards.joinToString(",") { it.name })
+            putString("tile_order", s.tileOrder.joinToString(",") { it.name })
+            putString("hidden_tiles", s.hiddenTiles.joinToString(",") { it.name })
             putString("temp", s.tempUnit.name)
             putString("wind", s.windUnit.name)
             putString("precip", s.precipUnit.name)

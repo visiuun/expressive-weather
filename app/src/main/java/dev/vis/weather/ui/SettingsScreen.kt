@@ -63,6 +63,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.material.icons.rounded.Language
+import dev.vis.weather.R
+import java.util.Locale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
@@ -100,78 +104,91 @@ fun SettingsScreen(
     onOpen: (SettingsPage) -> Unit,
 ) {
     val context = LocalContext.current
-    dev.vis.weather.ui.components.SubScreen("Settings", onBack) { w ->
+    dev.vis.weather.ui.components.SubScreen(stringResource(R.string.s_settings_title), onBack) { w ->
         item {
-            dev.vis.weather.ui.components.SettingsGroup("Look & feel", w) {
-                val n = 4
+            dev.vis.weather.ui.components.SettingsGroup(stringResource(R.string.s_group_look), w) {
+                val n = 5
                 dev.vis.weather.ui.components.SettingsAction(
-                    "Appearance", "Colours, theme, fonts and weather effects", Icons.Rounded.Palette, MaterialShapes.Flower, 0, n, chevron = true,
+                    stringResource(R.string.s_appearance), stringResource(R.string.s_appearance_sub), Icons.Rounded.Palette, MaterialShapes.Flower, 0, n, chevron = true,
                 ) { onOpen(SettingsPage.APPEARANCE) }
                 dev.vis.weather.ui.components.SettingsAction(
-                    "Layout", "Forecast style and the order of sections", Icons.Rounded.Dashboard, MaterialShapes.Square, 1, n, chevron = true,
+                    stringResource(R.string.h_customize_home), stringResource(R.string.h_customize_sub), Icons.Rounded.Dashboard, MaterialShapes.Square, 1, n, chevron = true,
                 ) { onOpen(SettingsPage.LAYOUT) }
                 dev.vis.weather.ui.components.SettingsAction(
-                    "App icon", "Static or changes with the weather", Icons.Rounded.Apps, MaterialShapes.Cookie12Sided, 2, n, chevron = true,
+                    stringResource(R.string.s_app_icon), stringResource(R.string.s_app_icon_sub), Icons.Rounded.Apps, MaterialShapes.Cookie12Sided, 2, n, chevron = true,
                 ) { onOpen(SettingsPage.APP_ICON) }
                 dev.vis.weather.ui.components.SettingsAction(
-                    "Widgets", "Add widgets to your home screen", Icons.Rounded.Widgets, MaterialShapes.Cookie4Sided, 3, n, chevron = true,
+                    stringResource(R.string.s_widgets), stringResource(R.string.s_widgets_sub), Icons.Rounded.Widgets, MaterialShapes.Cookie4Sided, 3, n, chevron = true,
                 ) { onOpen(SettingsPage.WIDGETS) }
+                val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
+                val languageName = locale.getDisplayName(locale).replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
+                dev.vis.weather.ui.components.SettingsAction(
+                    stringResource(R.string.s_language), stringResource(R.string.s_language_sub, languageName),
+                    Icons.Rounded.Language, MaterialShapes.Clover4Leaf, 4, n, chevron = true,
+                ) {
+                    val intent = if (Build.VERSION.SDK_INT >= 33) {
+                        Intent(android.provider.Settings.ACTION_APP_LOCALE_SETTINGS, Uri.fromParts("package", context.packageName, null))
+                    } else {
+                        Intent(android.provider.Settings.ACTION_LOCALE_SETTINGS)
+                    }
+                    runCatching { context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }.onFailure {
+                        runCatching { context.startActivity(Intent(android.provider.Settings.ACTION_LOCALE_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+                    }
+                }
             }
         }
         item {
-            dev.vis.weather.ui.components.SettingsGroup("Weather", w) {
+            dev.vis.weather.ui.components.SettingsGroup(stringResource(R.string.s_group_weather), w) {
                 val n = 5
                 dev.vis.weather.ui.components.SettingsAction(
-                    "Alerts & notifications", "Warnings, rain, daily briefings and more", Icons.Rounded.Notifications, MaterialShapes.Sunny, 0, n, chevron = true,
+                    stringResource(R.string.s_alerts), stringResource(R.string.s_alerts_sub), Icons.Rounded.Notifications, MaterialShapes.Sunny, 0, n, chevron = true,
                 ) { onOpen(SettingsPage.ALERTS) }
                 dev.vis.weather.ui.components.SettingsAction(
-                    "Family & friends", "Weather where your people are", Icons.Rounded.Groups, MaterialShapes.Cookie7Sided, 1, n, chevron = true,
+                    stringResource(R.string.s_friends), stringResource(R.string.s_friends_sub), Icons.Rounded.Groups, MaterialShapes.Cookie7Sided, 1, n, chevron = true,
                 ) { onOpen(SettingsPage.FRIENDS) }
                 dev.vis.weather.ui.components.SettingsAction(
-                    "Units", "Metric, imperial and clock", Icons.Rounded.Thermostat, MaterialShapes.Arch, 2, n, chevron = true,
+                    stringResource(R.string.s_units), stringResource(R.string.s_units_sub), Icons.Rounded.Thermostat, MaterialShapes.Arch, 2, n, chevron = true,
                 ) { onOpen(SettingsPage.UNITS) }
                 dev.vis.weather.ui.components.SettingsAction(
-                    "Data & accuracy", "Forecast model, local correction and sources", Icons.Rounded.Storage, MaterialShapes.Gem, 3, n, chevron = true,
+                    stringResource(R.string.s_data), stringResource(R.string.s_data_sub), Icons.Rounded.Storage, MaterialShapes.Gem, 3, n, chevron = true,
                 ) { onOpen(SettingsPage.DATA) }
                 dev.vis.weather.ui.components.SettingsAction(
-                    "Your activity", "Streaks, records and conditions you've seen", Icons.Rounded.Insights, MaterialShapes.Clover8Leaf, 4, n, chevron = true,
+                    stringResource(R.string.s_activity), stringResource(R.string.s_activity_sub), Icons.Rounded.Insights, MaterialShapes.Clover8Leaf, 4, n, chevron = true,
                 ) { onOpen(SettingsPage.STATS) }
             }
         }
         item {
-            Group("Updates", w) {
+            Group(stringResource(R.string.s_group_updates), w) {
                 SwitchItem(
-                    "Check for updates automatically", "Looks for new releases on GitHub when the app starts",
+                    stringResource(R.string.s_auto_update), stringResource(R.string.s_auto_update_sub),
                     Icons.Rounded.Update, MaterialShapes.Cookie9Sided, 0, 2, settings.autoUpdate,
                 ) { v -> update { it.copy(autoUpdate = v) } }
                 val r = updates.release
                 val progress = updates.progress
                 val status = when {
-                    progress != null -> "Downloading… ${(progress * 100).toInt()}%"
-                    updates.checking -> "Checking…"
+                    progress != null -> stringResource(R.string.s_update_downloading, (progress * 100).toInt())
+                    updates.checking -> stringResource(R.string.s_update_checking)
                     updates.message != null -> updates.message
-                    else -> "Installed version ${Updater.currentVersion}"
+                    else -> stringResource(R.string.s_update_installed, Updater.currentVersion)
                 }
                 ActionItem(
-                    if (r != null) "Install version ${r.version}" else "Check for updates", status,
+                    if (r != null) stringResource(R.string.s_update_install, r.version) else stringResource(R.string.s_update_check), status,
                     Icons.Rounded.SystemUpdate, MaterialShapes.Flower, 1, 2,
                 ) { if (r != null) onInstallUpdate() else onCheckUpdates() }
             }
         }
         item {
-            Group("About", w) {
+            Group(stringResource(R.string.s_group_about), w) {
                 InfoItem(
-                    "Open data, no tracking",
-                    "No accounts, ads, analytics or Google Play Services. Forecasts by Open-Meteo.com (CC BY 4.0) from national weather services; " +
-                        "warnings from NWS, ECCC, DWD and MeteoAlarm; radar by RainViewer; maps © OpenStreetMap contributors © CARTO. " +
-                        "See Data & accuracy for every source.",
+                    stringResource(R.string.s_about_open_data),
+                    stringResource(R.string.s_about_open_data_body),
                     0, 4,
                 )
-                InfoItem("Expressive Weather", "Version ${Updater.currentVersion} · Material 3 Expressive", 1, 4)
-                ActionItem("Source code", Updater.REPO_URL.removePrefix("https://"), Icons.Rounded.Code, MaterialShapes.Cookie6Sided, 2, 4) {
+                InfoItem("Expressive Weather", stringResource(R.string.s_about_version, Updater.currentVersion), 1, 4)
+                ActionItem(stringResource(R.string.s_source_code), Updater.REPO_URL.removePrefix("https://"), Icons.Rounded.Code, MaterialShapes.Cookie6Sided, 2, 4) {
                     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Updater.REPO_URL)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 }
-                ActionItem("Report a bug", "Opens a new issue on GitHub", Icons.Rounded.BugReport, MaterialShapes.Clover4Leaf, 3, 4) {
+                ActionItem(stringResource(R.string.s_report_bug), stringResource(R.string.s_report_bug_sub), Icons.Rounded.BugReport, MaterialShapes.Clover4Leaf, 3, 4) {
                     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Updater.REPO_URL + "/issues/new")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 }
             }
@@ -183,11 +200,11 @@ fun SettingsScreen(
 fun WidgetsScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val pinnable = Build.VERSION.SDK_INT >= 26 && AppWidgetManager.getInstance(context).isRequestPinAppWidgetSupported
-    dev.vis.weather.ui.components.SubScreen("Widgets", onBack) { w ->
+    dev.vis.weather.ui.components.SubScreen(stringResource(R.string.s_widgets), onBack) { w ->
         item {
-            Group(if (pinnable) "Tap to add to your home screen" else "Add from your home screen widget picker", w) {
-                pinnableWidgets.forEachIndexed { i, (title, receiver) ->
-                    ActionItem(title, widgetDescriptions[title], Icons.Rounded.Widgets, widgetShapes[i % widgetShapes.size], i, pinnableWidgets.size) {
+            Group(stringResource(if (pinnable) R.string.s_widgets_tap_to_add else R.string.s_widgets_add_from_picker), w) {
+                pinnableWidgets.forEachIndexed { i, (titleRes, receiver) ->
+                    ActionItem(stringResource(titleRes), widgetDescriptions[titleRes]?.let { stringResource(it) }, Icons.Rounded.Widgets, widgetShapes[i % widgetShapes.size], i, pinnableWidgets.size) {
                         if (pinnable) AppWidgetManager.getInstance(context).requestPinAppWidget(ComponentName(context, receiver), null, null)
                     }
                 }
@@ -195,26 +212,26 @@ fun WidgetsScreen(onBack: () -> Unit) {
         }
         item {
             Text(
-                "Touch and hold a widget, then drag its handles to resize it. Tap the place name on a widget to switch it to your next saved place.",
+                stringResource(R.string.s_widgets_hint),
                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = w.padding(horizontal = 8.dp),
             )
         }
     }
 }
 
-private val widgetDescriptions = mapOf(
-    "Now" to "Current conditions, from a slim pill to a dashboard",
-    "Hourly" to "The next 48 hours, paged",
-    "16-day forecast" to "Scrollable daily list with range bars",
-    "Forecast hub" to "Hourly, daily and details tabs",
-    "Clock & weather" to "Big clock and date beside the weather",
-    "Details" to "Feels like, wind, humidity, UV, air and more",
-    "Rain" to "Nowcast and rain chance chart",
-    "Sun & moon" to "Sun position and moon phase",
-    "Air quality" to "Big AQI, level, particles and pollen",
-    "Weather shape" to "Temperature in an expressive shape you choose",
-    "Forecast stack" to "Now, hours and days as stacked panes",
-    "Data tile" to "One metric, big: wind, UV, air, sun, moon and more",
+private val widgetDescriptions: Map<Int, Int> = mapOf(
+    R.string.s_widget_now to R.string.s_widget_now_desc,
+    R.string.s_widget_hourly to R.string.s_widget_hourly_desc,
+    R.string.s_widget_daily to R.string.s_widget_daily_desc,
+    R.string.s_widget_hub to R.string.s_widget_hub_desc,
+    R.string.s_widget_clock to R.string.s_widget_clock_desc,
+    R.string.s_widget_details to R.string.s_widget_details_desc,
+    R.string.s_widget_rain to R.string.s_widget_rain_desc,
+    R.string.s_widget_sunmoon to R.string.s_widget_sunmoon_desc,
+    R.string.s_widget_air to R.string.s_widget_air_desc,
+    R.string.s_widget_shape to R.string.s_widget_shape_desc,
+    R.string.s_widget_stack to R.string.s_widget_stack_desc,
+    R.string.s_widget_tile to R.string.s_widget_tile_desc,
 )
 
 @Composable
@@ -306,19 +323,19 @@ private fun SwitchItem(
     }
 }
 
-private val pinnableWidgets = listOf(
-    "Now" to NowWidgetReceiver::class.java,
-    "Hourly" to HourlyWidgetReceiver::class.java,
-    "16-day forecast" to DailyWidgetReceiver::class.java,
-    "Forecast hub" to ForecastWidgetReceiver::class.java,
-    "Clock & weather" to ClockWidgetReceiver::class.java,
-    "Details" to DetailsWidgetReceiver::class.java,
-    "Rain" to RainWidgetReceiver::class.java,
-    "Sun & moon" to SunMoonWidgetReceiver::class.java,
-    "Air quality" to AirWidgetReceiver::class.java,
-    "Weather shape" to dev.vis.weather.widget.ShapeWidgetReceiver::class.java,
-    "Forecast stack" to dev.vis.weather.widget.StackWidgetReceiver::class.java,
-    "Data tile" to dev.vis.weather.widget.DataTileWidgetReceiver::class.java,
+private val pinnableWidgets: List<Pair<Int, Class<*>>> = listOf(
+    R.string.s_widget_now to NowWidgetReceiver::class.java,
+    R.string.s_widget_hourly to HourlyWidgetReceiver::class.java,
+    R.string.s_widget_daily to DailyWidgetReceiver::class.java,
+    R.string.s_widget_hub to ForecastWidgetReceiver::class.java,
+    R.string.s_widget_clock to ClockWidgetReceiver::class.java,
+    R.string.s_widget_details to DetailsWidgetReceiver::class.java,
+    R.string.s_widget_rain to RainWidgetReceiver::class.java,
+    R.string.s_widget_sunmoon to SunMoonWidgetReceiver::class.java,
+    R.string.s_widget_air to AirWidgetReceiver::class.java,
+    R.string.s_widget_shape to dev.vis.weather.widget.ShapeWidgetReceiver::class.java,
+    R.string.s_widget_stack to dev.vis.weather.widget.StackWidgetReceiver::class.java,
+    R.string.s_widget_tile to dev.vis.weather.widget.DataTileWidgetReceiver::class.java,
 )
 
 private val widgetShapes = listOf(

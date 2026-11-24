@@ -1,5 +1,7 @@
 package dev.vis.weather.data
 
+import dev.vis.weather.L
+import dev.vis.weather.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -41,31 +43,28 @@ object Indices {
     /** How well sweat can cool the body, from the wet-bulb temperature. */
     fun coolingComfort(wetBulb: Double, temp: Double = Double.NaN): Band = when {
         wetBulb.isNaN() -> Band("–", -1, TEAL, "")
-        !temp.isNaN() && temp < 20 && wetBulb < 18 -> Band("Normal", 0, BLUE, "Not warm enough for cooling to matter.")
-        wetBulb < 21 -> Band("Good", 1, GREEN, "Sweat evaporates easily and your body cools well.")
-        wetBulb < 24 -> Band("Reduced", 2, YELLOW, "Sweating cools you less. Take it easier during exercise and drink water.")
-        wetBulb < 27 -> Band("Difficult", 3, ORANGE, "Cooling is hard. Avoid strenuous activity in the heat of the day, seek shade and fans.")
-        wetBulb < 31 -> Band("Very difficult", 4, RED, "Heat stress is likely even at rest for vulnerable people. Stay in cool places.")
-        else -> Band("Critical", 5, MAROON, "Near the limit of human cooling. Stay in air-conditioning and check on others.")
+        !temp.isNaN() && temp < 20 && wetBulb < 18 -> Band(L.s(R.string.d_cool_normal), 0, BLUE, L.s(R.string.d_cool_normal_text))
+        wetBulb < 21 -> Band(L.s(R.string.d_cool_good), 1, GREEN, L.s(R.string.d_cool_good_text))
+        wetBulb < 24 -> Band(L.s(R.string.d_cool_reduced), 2, YELLOW, L.s(R.string.d_cool_reduced_text))
+        wetBulb < 27 -> Band(L.s(R.string.d_cool_difficult), 3, ORANGE, L.s(R.string.d_cool_difficult_text))
+        wetBulb < 31 -> Band(L.s(R.string.d_cool_very_difficult), 4, RED, L.s(R.string.d_cool_very_difficult_text))
+        else -> Band(L.s(R.string.d_cool_critical), 5, MAROON, L.s(R.string.d_cool_critical_text))
     }
 
-    const val COOLING_EXPLAINER =
-        "Your body cools by sweating. The wet-bulb temperature combines heat and humidity to show how well that sweat can " +
-            "evaporate: the closer it gets to skin temperature (~35 °C), the less cooling you get. Above ~31 °C even " +
-            "healthy people struggle to stay cool for long."
+    val COOLING_EXPLAINER: String get() = L.s(R.string.d_cool_explainer)
 
     // ---- humidity comfort (dew point)
 
     /** Comfort from the dew point. [rh] (optional) keeps damp, cool air from being called "dry". */
     fun humidityComfort(dew: Double, rh: Double = Double.NaN): Band = when {
         dew.isNaN() -> Band("–", -1, TEAL, "")
-        dew < 10 && (rh.isNaN() || rh < 55) -> Band("Dry", 0, BLUE, "Crisp air; skin and lips may feel dry.")
-        dew < 10 -> Band("Comfortable", 1, TEAL, "Cool, damp air, but humidity won't feel uncomfortable.")
-        dew < 15 -> Band("Comfortable", 1, TEAL, "Pleasant, you won't notice the humidity.")
-        dew < 18 -> Band("Noticeable", 2, GREEN, "You can start to feel moisture in the air.")
-        dew < 21 -> Band("Sticky", 3, YELLOW, "Clammy; exercise feels harder.")
-        dew < 24 -> Band("Muggy", 4, ORANGE, "Heavy, uncomfortable air for most people.")
-        else -> Band("Oppressive", 5, RED, "Very uncomfortable; take it easy.")
+        dew < 10 && (rh.isNaN() || rh < 55) -> Band(L.s(R.string.d_humid_dry), 0, BLUE, L.s(R.string.d_humid_dry_text))
+        dew < 10 -> Band(L.s(R.string.d_humid_comfortable), 1, TEAL, L.s(R.string.d_humid_comfortable_damp_text))
+        dew < 15 -> Band(L.s(R.string.d_humid_comfortable), 1, TEAL, L.s(R.string.d_humid_comfortable_text))
+        dew < 18 -> Band(L.s(R.string.d_humid_noticeable), 2, GREEN, L.s(R.string.d_humid_noticeable_text))
+        dew < 21 -> Band(L.s(R.string.d_humid_sticky), 3, YELLOW, L.s(R.string.d_humid_sticky_text))
+        dew < 24 -> Band(L.s(R.string.d_humid_muggy), 4, ORANGE, L.s(R.string.d_humid_muggy_text))
+        else -> Band(L.s(R.string.d_humid_oppressive), 5, RED, L.s(R.string.d_humid_oppressive_text))
     }
 
     // ---- fire weather (Fosberg)
@@ -99,17 +98,14 @@ object Indices {
 
     fun fireBand(v: Double): Band = when {
         v.isNaN() -> Band("–", -1, TEAL, "")
-        v < 15 -> Band("Low", 0, GREEN, "Fires are unlikely to spread quickly.")
-        v < 30 -> Band("Moderate", 1, YELLOW, "Fires can start and spread in dry vegetation. Be careful with flames outdoors.")
-        v < 50 -> Band("High", 2, ORANGE, "Fires can spread quickly. Avoid open fires and barbecues near dry grass.")
-        v < 75 -> Band("Very high", 3, RED, "Fires would spread rapidly and be hard to control. No open fires.")
-        else -> Band("Extreme", 4, MAROON, "Explosive fire weather. Follow local fire bans and be ready to leave if told to.")
+        v < 15 -> Band(L.s(R.string.d_fire_low), 0, GREEN, L.s(R.string.d_fire_low_text))
+        v < 30 -> Band(L.s(R.string.d_fire_moderate), 1, YELLOW, L.s(R.string.d_fire_moderate_text))
+        v < 50 -> Band(L.s(R.string.d_fire_high), 2, ORANGE, L.s(R.string.d_fire_high_text))
+        v < 75 -> Band(L.s(R.string.d_fire_very_high), 3, RED, L.s(R.string.d_fire_very_high_text))
+        else -> Band(L.s(R.string.d_fire_extreme), 4, MAROON, L.s(R.string.d_fire_extreme_text))
     }
 
-    const val FIRE_EXPLAINER =
-        "The Fosberg Fire Weather Index rates how quickly a fire could spread from the weather alone: heat and dry air " +
-            "dry out fine fuels like grass, and wind feeds the flames. It doesn't know how dry the ground has been over " +
-            "recent weeks, so always follow official fire danger ratings and bans."
+    val FIRE_EXPLAINER: String get() = L.s(R.string.d_fire_explainer)
 
     // ---- pressure
 
@@ -126,15 +122,15 @@ object Indices {
         val next24 = f.hourlyAll.drop(idx).take(25).map { it.pressure }
         val drop24 = (now - next24.cleanMin()).takeIf { it.ok() } ?: 0.0
         val (label, text) = when {
-            d <= -3.5 -> "Dropping fast" to "Pressure is falling quickly — a sign of an approaching storm or strong wind."
-            d < -1.0 -> "Falling" to "Falling pressure often comes before clouds, rain and wind."
-            d >= 3.5 -> "Rising fast" to "Pressure is climbing quickly; weather is clearing, but it can be breezy."
-            d > 1.0 -> "Rising" to "Rising pressure usually means settling, drier weather."
-            else -> "Steady" to "No big change from pressure alone."
+            d <= -3.5 -> L.s(R.string.d_press_dropping_fast) to L.s(R.string.d_press_dropping_fast_text)
+            d < -1.0 -> L.s(R.string.d_press_falling) to L.s(R.string.d_press_falling_text)
+            d >= 3.5 -> L.s(R.string.d_press_rising_fast) to L.s(R.string.d_press_rising_fast_text)
+            d > 1.0 -> L.s(R.string.d_press_rising) to L.s(R.string.d_press_rising_text)
+            else -> L.s(R.string.d_press_steady) to L.s(R.string.d_press_steady_text)
         }
         val headache = when {
-            d <= -3.5 || drop24 >= 8 -> "Headache risk: sharp pressure drops can trigger headaches and migraines in sensitive people."
-            drop24 >= 5 -> "Pressure will fall ${drop24.toInt()} hPa over the next day, which some people feel as headaches or joint pain."
+            d <= -3.5 || drop24 >= 8 -> L.s(R.string.d_press_headache_sharp)
+            drop24 >= 5 -> L.s(R.string.d_press_headache_fall, drop24.toInt())
             else -> null
         }
         return PressureTrend(label, d, text, d <= -3.5, headache)
@@ -159,12 +155,12 @@ object Indices {
     data class Pollutant(val name: String, val key: String, val value: Double, val limit: Double, val about: String)
 
     fun pollutants(a: AirQuality): List<Pollutant> = listOf(
-        Pollutant("PM2.5", "pm25", a.pm25, 15.0, "Fine particles from combustion and traffic; they reach deep into the lungs."),
-        Pollutant("PM10", "pm10", a.pm10, 45.0, "Coarser particles: dust, pollen, construction and sea salt."),
-        Pollutant("O₃ Ozone", "o3", a.o3, 100.0, "Forms in sunlight from traffic emissions; peaks on hot afternoons."),
-        Pollutant("NO₂", "no2", a.no2, 25.0, "Mainly from vehicle exhaust; highest near busy roads."),
-        Pollutant("SO₂", "so2", a.so2, 40.0, "From burning sulphur-containing fuels and shipping."),
-        Pollutant("CO", "co", a.co, 4000.0, "Carbon monoxide from incomplete combustion."),
+        Pollutant("PM2.5", "pm25", a.pm25, 15.0, L.s(R.string.d_pollutant_pm25_about)),
+        Pollutant("PM10", "pm10", a.pm10, 45.0, L.s(R.string.d_pollutant_pm10_about)),
+        Pollutant(L.s(R.string.d_pollutant_o3), "o3", a.o3, 100.0, L.s(R.string.d_pollutant_o3_about)),
+        Pollutant("NO₂", "no2", a.no2, 25.0, L.s(R.string.d_pollutant_no2_about)),
+        Pollutant("SO₂", "so2", a.so2, 40.0, L.s(R.string.d_pollutant_so2_about)),
+        Pollutant("CO", "co", a.co, 4000.0, L.s(R.string.d_pollutant_co_about)),
     )
 
     /** WHO 2021 guideline comparison (24 h / 8 h guideline values). */
@@ -172,31 +168,31 @@ object Indices {
         if (v.isNaN()) return Band("–", -1, TEAL, "")
         val r = v / limit
         return when {
-            r < 0.5 -> Band("Well below limit", 0, GREEN, "")
-            r < 1.0 -> Band("Near limit", 1, YELLOW, "")
-            r < 2.0 -> Band("Above limit", 2, ORANGE, "")
-            else -> Band("Well above limit", 3, RED, "")
+            r < 0.5 -> Band(L.s(R.string.d_who_well_below_limit), 0, GREEN, "")
+            r < 1.0 -> Band(L.s(R.string.d_who_near_limit), 1, YELLOW, "")
+            r < 2.0 -> Band(L.s(R.string.d_who_above_limit), 2, ORANGE, "")
+            else -> Band(L.s(R.string.d_who_well_above_limit), 3, RED, "")
         }
     }
 
     fun euAqiBand(v: Double): Band = when {
         v.isNaN() -> Band("–", -1, TEAL, "")
-        v <= 20 -> Band("Good", 0, 0xFF50F0E6, "The air quality is good. Enjoy your usual outdoor activities.")
-        v <= 40 -> Band("Fair", 1, 0xFF50CCAA, "Enjoy your usual outdoor activities.")
-        v <= 60 -> Band("Moderate", 2, 0xFFF0E641, "Sensitive people should consider reducing intense outdoor activity if they have symptoms.")
-        v <= 80 -> Band("Poor", 3, 0xFFFF5050, "Consider reducing intense activities outdoors if you have symptoms such as sore eyes, a cough or sore throat.")
-        v <= 100 -> Band("Very poor", 4, 0xFF960032, "Reduce physical activity outdoors, particularly if you experience symptoms.")
-        else -> Band("Extremely poor", 5, 0xFF7D2181, "Avoid physical activity outdoors; sensitive groups should stay indoors.")
+        v <= 20 -> Band(L.s(R.string.d_euaqib_good), 0, 0xFF50F0E6, L.s(R.string.d_euaqib_good_text))
+        v <= 40 -> Band(L.s(R.string.d_euaqib_fair), 1, 0xFF50CCAA, L.s(R.string.d_euaqib_fair_text))
+        v <= 60 -> Band(L.s(R.string.d_euaqib_moderate), 2, 0xFFF0E641, L.s(R.string.d_euaqib_moderate_text))
+        v <= 80 -> Band(L.s(R.string.d_euaqib_poor), 3, 0xFFFF5050, L.s(R.string.d_euaqib_poor_text))
+        v <= 100 -> Band(L.s(R.string.d_euaqib_very_poor), 4, 0xFF960032, L.s(R.string.d_euaqib_very_poor_text))
+        else -> Band(L.s(R.string.d_euaqib_extremely_poor), 5, 0xFF7D2181, L.s(R.string.d_euaqib_extremely_poor_text))
     }
 
     fun usAqiBand(v: Double): Band = when {
         v.isNaN() -> Band("–", -1, TEAL, "")
-        v <= 50 -> Band("Good", 0, GREEN, "Air quality is satisfactory and poses little or no risk.")
-        v <= 100 -> Band("Moderate", 1, YELLOW, "Acceptable. Unusually sensitive people should consider limiting prolonged exertion.")
-        v <= 150 -> Band("Unhealthy for sensitive groups", 2, ORANGE, "Children, older adults and people with heart or lung disease should reduce prolonged exertion.")
-        v <= 200 -> Band("Unhealthy", 3, RED, "Everyone may begin to feel effects; sensitive groups should avoid prolonged exertion.")
-        v <= 300 -> Band("Very unhealthy", 4, PURPLE, "Health alert: everyone should avoid prolonged outdoor exertion.")
-        else -> Band("Hazardous", 5, MAROON, "Emergency conditions: stay indoors with windows closed.")
+        v <= 50 -> Band(L.s(R.string.d_usaqib_good), 0, GREEN, L.s(R.string.d_usaqib_good_text))
+        v <= 100 -> Band(L.s(R.string.d_usaqib_moderate), 1, YELLOW, L.s(R.string.d_usaqib_moderate_text))
+        v <= 150 -> Band(L.s(R.string.d_usaqib_unhealthy_for_sensitive_groups), 2, ORANGE, L.s(R.string.d_usaqib_unhealthy_for_sensitive_groups_text))
+        v <= 200 -> Band(L.s(R.string.d_usaqib_unhealthy), 3, RED, L.s(R.string.d_usaqib_unhealthy_text))
+        v <= 300 -> Band(L.s(R.string.d_usaqib_very_unhealthy), 4, PURPLE, L.s(R.string.d_usaqib_very_unhealthy_text))
+        else -> Band(L.s(R.string.d_usaqib_hazardous), 5, MAROON, L.s(R.string.d_usaqib_hazardous_text))
     }
 
     // ---- clouds & visibility
@@ -207,28 +203,28 @@ object Indices {
         val later = next.drop(4).cleanAvg()
         val trend = when {
             later.isNaN() -> ""
-            later < cover - 25 -> " Skies clear over the next few hours."
-            later > cover + 25 -> " Clouds build over the next few hours."
+            later < cover - 25 -> L.s(R.string.d_cloud_clearing)
+            later > cover + 25 -> L.s(R.string.d_cloud_building)
             else -> ""
         }
         val base = when {
-            cover < 12 -> if (f.current.isDay) "Full sunshine — great light, but remember the UV." else "Clear sky: good for stars, and it'll get colder overnight."
-            cover < 37 -> if (f.current.isDay) "Mostly sunny with a few clouds." else "Mostly clear night."
-            cover < 62 -> "Sun and clouds taking turns."
-            cover < 87 -> if (f.current.isDay) "Mostly grey with occasional brighter spells." else "Mostly cloudy, which keeps the night milder."
-            else -> "Overcast — flat light and no direct sun."
+            cover < 12 -> if (f.current.isDay) L.s(R.string.d_cloud_full_sun) else L.s(R.string.d_cloud_clear_night)
+            cover < 37 -> if (f.current.isDay) L.s(R.string.d_cloud_mostly_sunny) else L.s(R.string.d_cloud_mostly_clear_night)
+            cover < 62 -> L.s(R.string.d_cloud_mixed)
+            cover < 87 -> if (f.current.isDay) L.s(R.string.d_cloud_mostly_grey) else L.s(R.string.d_cloud_mostly_cloudy_night)
+            else -> L.s(R.string.d_cloud_overcast)
         }
-        return base + trend
+        return if (trend.isEmpty()) base else "$base $trend"
     }
 
     fun visibilityRating(m: Double): Band = when {
         m.isNaN() -> Band("–", -1, TEAL, "")
-        m < 200 -> Band("Dense fog", 5, RED, "Drive with fog lights and leave a big gap.")
-        m < 1000 -> Band("Fog", 4, ORANGE, "Slow down on the road; landmarks disappear quickly.")
-        m < 4000 -> Band("Poor", 3, YELLOW, "Mist, haze or heavy precipitation.")
-        m < 10000 -> Band("Moderate", 2, TEAL, "Some haze; distant hills look faded.")
-        m < 20000 -> Band("Good", 1, GREEN, "Clear views across town.")
-        else -> Band("Excellent", 0, BLUE, "Crystal clear — far horizons are sharp.")
+        m < 200 -> Band(L.s(R.string.d_visr_dense_fog), 5, RED, L.s(R.string.d_visr_dense_fog_text))
+        m < 1000 -> Band(L.s(R.string.d_visr_fog), 4, ORANGE, L.s(R.string.d_visr_fog_text))
+        m < 4000 -> Band(L.s(R.string.d_visr_poor), 3, YELLOW, L.s(R.string.d_visr_poor_text))
+        m < 10000 -> Band(L.s(R.string.d_visr_moderate), 2, TEAL, L.s(R.string.d_visr_moderate_text))
+        m < 20000 -> Band(L.s(R.string.d_visr_good), 1, GREEN, L.s(R.string.d_visr_good_text))
+        else -> Band(L.s(R.string.d_visr_excellent), 0, BLUE, L.s(R.string.d_visr_excellent_text))
     }
 }
 
@@ -238,16 +234,43 @@ object Insights {
 
     private fun pick(options: List<String>, seed: LocalDate): String = options[abs(seed.toEpochDay().toInt()) % options.size]
 
-    private fun phrase(diff: Double, ref: String, seed: LocalDate): String {
+    /** [today]: compare against today (else yesterday). Each option list holds string resources. */
+    private fun phrase(diff: Double, today: Boolean, seed: LocalDate): String {
         val warmer = diff > 0
         val a = abs(diff)
-        val w = if (warmer) "warmer" else listOf("cooler", "colder")[abs(seed.dayOfYear) % 2]
-        return when {
-            a < 1.0 -> pick(listOf("Similar to $ref.", "About the same as $ref.", "Much like $ref."), seed)
-            a < 3.0 -> pick(listOf("A little $w than $ref.", "Slightly $w than $ref.", "A touch $w than $ref."), seed)
-            a < 6.0 -> pick(listOf("A few degrees $w than $ref.", "Noticeably $w than $ref.", "${w.replaceFirstChar { it.uppercase() }} than $ref."), seed)
-            else -> pick(listOf("Much $w than $ref.", "A lot $w than $ref.", "Far $w than $ref."), seed)
+        // 0 = warmer, 1 = cooler, 2 = colder (cooler/colder alternate by day for variety).
+        val w = if (warmer) 0 else 1 + abs(seed.dayOfYear) % 2
+        val ids = when {
+            a < 1.0 -> if (today) listOf(R.string.d_cmp_today_same_1, R.string.d_cmp_today_same_2, R.string.d_cmp_today_same_3) else listOf(R.string.d_cmp_yday_same_1, R.string.d_cmp_yday_same_2, R.string.d_cmp_yday_same_3)
+            a < 3.0 -> if (today) when (w) {
+                0 -> listOf(R.string.d_cmp_today_little_warmer_1, R.string.d_cmp_today_little_warmer_2, R.string.d_cmp_today_little_warmer_3)
+                1 -> listOf(R.string.d_cmp_today_little_cooler_1, R.string.d_cmp_today_little_cooler_2, R.string.d_cmp_today_little_cooler_3)
+                else -> listOf(R.string.d_cmp_today_little_colder_1, R.string.d_cmp_today_little_colder_2, R.string.d_cmp_today_little_colder_3)
+            } else when (w) {
+                0 -> listOf(R.string.d_cmp_yday_little_warmer_1, R.string.d_cmp_yday_little_warmer_2, R.string.d_cmp_yday_little_warmer_3)
+                1 -> listOf(R.string.d_cmp_yday_little_cooler_1, R.string.d_cmp_yday_little_cooler_2, R.string.d_cmp_yday_little_cooler_3)
+                else -> listOf(R.string.d_cmp_yday_little_colder_1, R.string.d_cmp_yday_little_colder_2, R.string.d_cmp_yday_little_colder_3)
+            }
+            a < 6.0 -> if (today) when (w) {
+                0 -> listOf(R.string.d_cmp_today_few_warmer_1, R.string.d_cmp_today_few_warmer_2, R.string.d_cmp_today_few_warmer_3)
+                1 -> listOf(R.string.d_cmp_today_few_cooler_1, R.string.d_cmp_today_few_cooler_2, R.string.d_cmp_today_few_cooler_3)
+                else -> listOf(R.string.d_cmp_today_few_colder_1, R.string.d_cmp_today_few_colder_2, R.string.d_cmp_today_few_colder_3)
+            } else when (w) {
+                0 -> listOf(R.string.d_cmp_yday_few_warmer_1, R.string.d_cmp_yday_few_warmer_2, R.string.d_cmp_yday_few_warmer_3)
+                1 -> listOf(R.string.d_cmp_yday_few_cooler_1, R.string.d_cmp_yday_few_cooler_2, R.string.d_cmp_yday_few_cooler_3)
+                else -> listOf(R.string.d_cmp_yday_few_colder_1, R.string.d_cmp_yday_few_colder_2, R.string.d_cmp_yday_few_colder_3)
+            }
+            else -> if (today) when (w) {
+                0 -> listOf(R.string.d_cmp_today_much_warmer_1, R.string.d_cmp_today_much_warmer_2, R.string.d_cmp_today_much_warmer_3)
+                1 -> listOf(R.string.d_cmp_today_much_cooler_1, R.string.d_cmp_today_much_cooler_2, R.string.d_cmp_today_much_cooler_3)
+                else -> listOf(R.string.d_cmp_today_much_colder_1, R.string.d_cmp_today_much_colder_2, R.string.d_cmp_today_much_colder_3)
+            } else when (w) {
+                0 -> listOf(R.string.d_cmp_yday_much_warmer_1, R.string.d_cmp_yday_much_warmer_2, R.string.d_cmp_yday_much_warmer_3)
+                1 -> listOf(R.string.d_cmp_yday_much_cooler_1, R.string.d_cmp_yday_much_cooler_2, R.string.d_cmp_yday_much_cooler_3)
+                else -> listOf(R.string.d_cmp_yday_much_colder_1, R.string.d_cmp_yday_much_colder_2, R.string.d_cmp_yday_much_colder_3)
+            }
         }
+        return pick(ids.map { L.s(it) }, seed)
     }
 
     private fun yesterdayMax(f: Forecast): Double {
@@ -261,7 +284,7 @@ object Insights {
         val t = f.today ?: return null
         val y = yesterdayMax(f)
         if (y.isNaN() || t.max.isNaN()) return null
-        return phrase(t.max - y, "yesterday", t.date)
+        return phrase(t.max - y, false, t.date)
     }
 
     /** "Much colder than today." — tomorrow's high vs today's high. Null without data. */
@@ -269,7 +292,7 @@ object Insights {
         val t = f.today ?: return null
         val tm = f.daily.getOrNull(1) ?: return null
         if (t.max.isNaN() || tm.max.isNaN()) return null
-        return phrase(tm.max - t.max, "today", tm.date)
+        return phrase(tm.max - t.max, true, tm.date)
     }
 
     data class PrecipToday(
@@ -282,7 +305,7 @@ object Insights {
         val snowSoFar: Double,
         val snowLater: Double,
         val fallingNow: Boolean,
-        /** "None so far today", "Fell earlier today", "Falling now". */
+        /** L.s(R.string.d_prec_none_so_far), L.s(R.string.d_prec_fell_earlier), L.s(R.string.d_prec_falling_now). */
         val headline: String,
         /** "2.4 mm more expected this evening." style detail, unit-agnostic (caller formats amounts). */
         val laterText: String,
@@ -305,17 +328,16 @@ object Insights {
         )
         val falling = nowP >= 0.05 || WeatherInfo.sky(f.current.code).let { it == Sky.RAIN || it == Sky.DRIZZLE || it == Sky.SNOW || it == Sky.THUNDER || it == Sky.FREEZING } && nowP > 0
         val headline = when {
-            falling -> if (WeatherInfo.sky(f.current.code) == Sky.SNOW) "Snowing now" else "Falling now"
-            soFar >= 0.05 -> "Fell earlier today"
-            else -> "None so far today"
+            falling -> if (WeatherInfo.sky(f.current.code) == Sky.SNOW) L.s(R.string.d_prec_snowing_now) else L.s(R.string.d_prec_falling_now)
+            soFar >= 0.05 -> L.s(R.string.d_prec_fell_earlier)
+            else -> L.s(R.string.d_prec_none_so_far)
         }
         val wetLater = fut.filter { it.precip.ok() && it.precip >= 0.1 }
         val laterText = when {
-            wetLater.isEmpty() -> if (soFar >= 0.05 || falling) "Drying out for the rest of the day." else "Staying dry for the rest of the day."
+            wetLater.isEmpty() -> if (soFar >= 0.05 || falling) L.s(R.string.d_prec_drying_out) else L.s(R.string.d_prec_staying_dry)
             else -> {
                 val h = Instant.ofEpochSecond(wetLater.first().time - 3600).atZone(f.zone).hour
-                val part = when (h) { in 0..5 -> "overnight"; in 6..11 -> "this morning"; in 12..17 -> "this afternoon"; else -> "this evening" }
-                "More expected $part."
+                L.s(when (h) { in 0..5 -> R.string.d_prec_more_overnight; in 6..11 -> R.string.d_prec_more_morning; in 12..17 -> R.string.d_prec_more_afternoon; else -> R.string.d_prec_more_evening })
             }
         }
         return PrecipToday(soFar, later, soFar + later, snowSoFar, snowLater, falling, headline, laterText)
@@ -356,12 +378,12 @@ object Insights {
         val amount = next6.map { it.precip }.cleanSum()
         val types = precipTypes(f.upcoming.take(12))
         return when {
-            types.iceMm >= 0.2 -> "Freezing rain possible — roads and paths can turn to sheet ice."
-            types.snowCm >= 2 -> "Snow on the way. Allow extra time for travel."
-            amount >= 10 -> "Heavy rain in the next hours. Expect puddles and spray on the roads."
-            amount >= 2 || (prob.ok() && prob >= 60) -> "Take an umbrella if you're heading out."
-            prob.ok() && prob >= 30 -> "A shower is possible; a light jacket should do."
-            else -> "No umbrella needed for the next few hours."
+            types.iceMm >= 0.2 -> L.s(R.string.d_precg_freezing)
+            types.snowCm >= 2 -> L.s(R.string.d_precg_snow)
+            amount >= 10 -> L.s(R.string.d_precg_heavy)
+            amount >= 2 || (prob.ok() && prob >= 60) -> L.s(R.string.d_precg_umbrella)
+            prob.ok() && prob >= 30 -> L.s(R.string.d_precg_shower)
+            else -> L.s(R.string.d_precg_none)
         }
     }
 
@@ -371,6 +393,7 @@ object Insights {
     fun humidityDay(f: Forecast, date: LocalDate): Pair<String, String>? {
         val hours = f.hourlyAll.filter { date(f, it.time) == date && it.dewPoint.ok() }
         if (hours.isEmpty()) return null
+        // Internal keys, not shown.
         fun part(h: Hour) = when (Instant.ofEpochSecond(h.time).atZone(f.zone).hour) {
             in 6..11 -> "morning"; in 12..17 -> "afternoon"; in 18..23 -> "evening"; else -> "night"
         }
@@ -382,10 +405,18 @@ object Insights {
         val band = worstEntry.value
         val best = bands.values.minBy { it.level }
         return when {
-            band.level <= 0 -> "Dry all day" to "Low moisture in the air; skin and lips may feel dry."
-            band.level <= 1 -> "Comfortable all day" to "Humidity won't be noticeable."
-            best.level == band.level -> "${band.label} all day" to band.text
-            else -> "${band.label} $worst" to "${band.text} ${best.label} at other times."
+            band.level <= 0 -> L.s(R.string.d_humday_dry) to L.s(R.string.d_humday_dry_text)
+            band.level <= 1 -> L.s(R.string.d_humday_comfortable) to L.s(R.string.d_humday_comfortable_text)
+            best.level == band.level -> L.s(R.string.d_humday_all_day, band.label) to band.text
+            else -> L.s(
+                when (worst) {
+                    "morning" -> R.string.d_humday_morning
+                    "afternoon" -> R.string.d_humday_afternoon
+                    "evening" -> R.string.d_humday_evening
+                    else -> R.string.d_humday_night
+                },
+                band.label,
+            ) to L.s(R.string.d_humday_other_times, band.text, best.label)
         }
     }
 
@@ -432,10 +463,10 @@ object Insights {
         val c = if (cloud.isNaN()) 50.0 else cloud
         val score = (100 - c * 0.85 - moon.illumination * moonUp * 35 - (if (fog) 15 else 0)).coerceIn(0.0, 100.0).toInt()
         val (rating, level) = when {
-            score >= 75 -> "Excellent" to 0
-            score >= 55 -> "Good" to 1
-            score >= 35 -> "Fair" to 2
-            else -> "Poor" to 3
+            score >= 75 -> L.s(R.string.d_star_excellent) to 0
+            score >= 55 -> L.s(R.string.d_star_good) to 1
+            score >= 35 -> L.s(R.string.d_star_fair) to 2
+            else -> L.s(R.string.d_star_poor) to 3
         }
         // Best hour: least cloud, preferring the moon below the horizon.
         val best = hours.minByOrNull { h ->
@@ -443,21 +474,21 @@ object Insights {
             (if (h.cloudCover.ok()) h.cloudCover else 50.0) + (if (alt > 0) moon.illumination * 30 else 0.0)
         }?.time ?: 0L
         val moonBright = moon.illumination * moonUp
+        // 0 = clear, 1 = mostly clear, 2 = patchy cloud (thicker cloud is handled by its own sentence).
         val sky = when {
-            c < 15 -> "Clear skies"
-            c < 40 -> "Mostly clear skies"
-            c < 70 -> "Patchy cloud"
-            else -> "Thick cloud"
+            c < 15 -> 0
+            c < 40 -> 1
+            else -> 2
         }
-        val sentence = when {
-            fog -> "Fog or low cloud will hide most of the sky tonight."
-            c >= 70 -> "Clouds will hide most of the sky tonight."
-            moonBright < 0.2 && c < 40 -> "$sky and a dark moon — a great night to spot faint stars and the Milky Way."
-            moonBright < 0.2 -> "$sky, but a dark moon: look for gaps in the cloud."
-            moon.illumination > 0.7 && moonUp > 0.5 -> "$sky, but the bright moon will wash out fainter stars. Great for moon-gazing though."
-            moonUp < 0.5 -> "$sky, with the moon up for part of the night — aim for when it's down."
-            else -> "$sky with some moonlight; bright stars and planets will still stand out."
-        }
+        val sentence = L.s(when {
+            fog -> R.string.d_star_fog
+            c >= 70 -> R.string.d_star_cloudy
+            moonBright < 0.2 && c < 40 -> if (sky == 0) R.string.d_star_clear_dark else R.string.d_star_mostly_clear_dark
+            moonBright < 0.2 -> R.string.d_star_patchy_dark
+            moon.illumination > 0.7 && moonUp > 0.5 -> intArrayOf(R.string.d_star_clear_bright, R.string.d_star_mostly_clear_bright, R.string.d_star_patchy_bright)[sky]
+            moonUp < 0.5 -> intArrayOf(R.string.d_star_clear_partmoon, R.string.d_star_mostly_clear_partmoon, R.string.d_star_patchy_partmoon)[sky]
+            else -> intArrayOf(R.string.d_star_clear_some, R.string.d_star_mostly_clear_some, R.string.d_star_patchy_some)[sky]
+        })
         return Stargazing(rating, level, score, cloud, moon.illumination, moonUp, start, end, best, sentence)
     }
 }

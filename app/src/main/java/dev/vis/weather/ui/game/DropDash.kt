@@ -3,6 +3,8 @@
 package dev.vis.weather.ui.game
 
 import android.content.Context
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -160,10 +162,10 @@ fun DropDashScreen(onExit: () -> Unit) {
             if (flash > 0f) drawRect(Color.White.copy(alpha = flash * 0.6f))
         }
         Row(Modifier.statusBarsPadding().padding(8.dp).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onExit) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Exit", tint = Color.White) }
+            IconButton(onClick = onExit) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.s_game_exit), tint = Color.White) }
             Spacer(Modifier.weight(1f))
             Surface(shape = RoundedCornerShape(50), color = Color.Black.copy(alpha = 0.35f)) {
-                Text("$score   ·   Best $best", color = Color.White, style = MaterialTheme.typography.titleMediumEmphasized, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                Text(stringResource(R.string.s_game_score_best, score, best), color = Color.White, style = MaterialTheme.typography.titleMediumEmphasized, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
             }
         }
         if (!running) {
@@ -171,14 +173,15 @@ fun DropDashScreen(onExit: () -> Unit) {
                 Modifier.align(Alignment.Center).padding(32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Text(if (over) "Evaporated!" else "Drop Dash", style = MaterialTheme.typography.displaySmallEmphasized, color = Color.White)
+                Text(if (over) stringResource(R.string.s_game_over) else stringResource(R.string.s_game_title), style = MaterialTheme.typography.displaySmallEmphasized, color = Color.White)
                 Text(
-                    if (over) "Score $score" + (if (score >= best && score > 0) " · new best!" else "")
-                    else "Drag to steer your raindrop.\nSoak up droplets, dodge sun flares and lightning.",
+                    if (over) {
+                        if (score >= best && score > 0) stringResource(R.string.s_game_score_new_best, score) else stringResource(R.string.s_game_score, score)
+                    } else stringResource(R.string.s_game_intro),
                     style = MaterialTheme.typography.bodyLarge, color = Color.White.copy(alpha = 0.85f), textAlign = TextAlign.Center,
                 )
                 Spacer(Modifier.height(4.dp))
-                Button(onClick = { reset() }) { Text(if (over) "Play again" else "Start") }
+                Button(onClick = { reset() }) { Text(if (over) stringResource(R.string.s_game_play_again) else stringResource(R.string.s_game_start)) }
             }
         }
     }

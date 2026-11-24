@@ -8,4 +8,216 @@
     <string name="widget_tile_label">Data tile</string>
     <string name="widget_tile_desc">One number, big: wind, UV, air quality, humidity, pressure, rain, sun, moon and more. Choose it in the widget settings.</string>
     <string name="widget_tile_config_title">Data tile</string>
+
+    <!-- Home screen widgets: shared empty / loading states -->
+    <string name="w_pick_location">Pick a location in the app</string>
+    <!-- %1$s = place name -->
+    <string name="w_loading_place">Loading %1$s…</string>
+    <!-- %1$s = place name -->
+    <string name="w_tap_to_load_place">Tap to load %1$s</string>
+    <!-- Short versions for the small "Weather shape" widget -->
+    <string name="w_pick_place">Pick a place</string>
+    <string name="w_loading">Loading…</string>
+    <string name="w_tap_to_load">Tap to load</string>
+
+    <!-- Home screen widgets: common labels -->
+    <!-- First column of an hourly forecast: the current hour -->
+    <string name="w_now">Now</string>
+    <!-- Accessibility: tapping the pin icon switches the widget to the next saved place -->
+    <string name="w_switch_location">Switch location</string>
+    <!-- Accessibility: arrow showing where the wind blows from -->
+    <string name="w_wind_direction">Wind direction</string>
+    <!-- %1$s = feels-like temperature, e.g. "Feels 12°" -->
+    <string name="w_feels">Feels %1$s</string>
+    <!-- %1$s = feels-like temperature, %2$s = today's high and low ("↑14°  ↓6°") -->
+    <string name="w_feels_hilo">Feels %1$s · %2$s</string>
+    <!-- Accessibility: paging buttons in the hourly strip -->
+    <string name="w_earlier">Earlier</string>
+    <string name="w_later">Later</string>
+
+    <!-- Forecast widget tabs -->
+    <string name="w_tab_hourly">Hourly</string>
+    <string name="w_tab_daily">Daily</string>
+    <string name="w_tab_details">Details</string>
+
+    <!-- Metric names (widget tile titles and the Data tile picker) -->
+    <string name="w_metric_wind">Wind</string>
+    <string name="w_metric_uv">UV index</string>
+    <string name="w_metric_air">Air quality</string>
+    <string name="w_metric_feels">Feels like</string>
+    <string name="w_metric_humidity">Humidity</string>
+    <string name="w_metric_pressure">Pressure</string>
+    <string name="w_metric_rain">Rain chance</string>
+    <string name="w_metric_sun">Sunrise &amp; sunset</string>
+    <string name="w_metric_moon">Moon</string>
+    <string name="w_metric_visibility">Visibility</string>
+    <string name="w_metric_cloud">Cloud cover</string>
+    <string name="w_sunrise">Sunrise</string>
+    <string name="w_sunset">Sunset</string>
+
+    <!-- Small notes under metric values. %1$s is a formatted value (temperature, time, amount) -->
+    <!-- %1$s = actual air temperature -->
+    <string name="w_note_actual">Actual %1$s</string>
+    <!-- Short form of "dew point", space is tight -->
+    <string name="w_note_dew">Dew %1$s</string>
+    <string name="w_note_dew_point">Dew point %1$s</string>
+    <!-- %1$s = compass direction, e.g. "From NW" -->
+    <string name="w_note_from">From %1$s</string>
+    <!-- %1$s = today's total precipitation, e.g. "Today 3 mm" -->
+    <string name="w_note_today_precip">Today %1$s</string>
+    <!-- %1$s = sunset time, short for "sunset" -->
+    <string name="w_note_set">Set %1$s</string>
+    <!-- %1$s = sunrise time -->
+    <string name="w_note_sunrise_at">Sunrise %1$s</string>
+    <!-- %1$s = sunset time -->
+    <string name="w_note_sunset_at">Sunset %1$s</string>
+
+    <!-- Data tile widget -->
+    <!-- %1$s = compass direction the wind comes from, e.g. "Wind from NW" -->
+    <string name="w_tile_wind_from">Wind from %1$s</string>
+    <!-- %1$s = gust speed with unit -->
+    <string name="w_tile_gusts">Gusts %1$s</string>
+    <!-- %1$d = today's highest UV index -->
+    <string name="w_tile_uv_max">Today\'s max %1$d</string>
+    <string name="w_unavailable_here">Unavailable here</string>
+    <string name="w_tile_feels_colder">Colder than actual</string>
+    <string name="w_tile_feels_warmer">Warmer than actual</string>
+    <string name="w_tile_feels_close">Close to actual</string>
+    <!-- Humidity comfort levels (based on dew point) -->
+    <string name="w_tile_humidity_dry">Dry</string>
+    <string name="w_tile_humidity_comfortable">Comfortable</string>
+    <string name="w_tile_humidity_humid">Humid</string>
+    <string name="w_tile_humidity_muggy">Muggy</string>
+    <!-- Pressure trend -->
+    <string name="w_tile_pressure_rising">Rising</string>
+    <string name="w_tile_pressure_falling">Falling</string>
+    <string name="w_tile_pressure_steady">Steady</string>
+    <string name="w_tile_pressure_note">Over the last 3 h</string>
+    <!-- Rain chance; %1$s = hour, e.g. "Likely at 3 PM" -->
+    <string name="w_tile_rain_likely_at">Likely at %1$s</string>
+    <string name="w_tile_rain_possible">Possible</string>
+    <string name="w_tile_rain_unlikely">Unlikely</string>
+    <!-- %1$s = total precipitation over the next 12 hours -->
+    <string name="w_tile_rain_note">Next 12 h · %1$s</string>
+    <!-- %1$s = length of daylight, e.g. "12 h 5 min daylight" -->
+    <string name="w_tile_daylight">%1$s daylight</string>
+    <!-- Moon -->
+    <string name="w_tile_moon_full_tonight">Full tonight</string>
+    <!-- %1$d = days until full moon; "d" = days -->
+    <plurals name="w_tile_moon_full_in">
+        <item quantity="one">Full in %1$d d</item>
+        <item quantity="other">Full in %1$d d</item>
+    </plurals>
+    <!-- Shown under the moon's illuminated percentage -->
+    <string name="w_tile_moon_illuminated">Illuminated</string>
+
+    <!-- Rain widget -->
+    <!-- Under the biggest rain chance of the next 12 hours -->
+    <string name="w_rain_max_chance">max chance</string>
+    <string name="w_rain_next_2h">Rain for at least the next 2 hours</string>
+    <!-- %1$d = minutes -->
+    <plurals name="w_rain_stopping">
+        <item quantity="one">Rain stopping in ~%1$d min</item>
+        <item quantity="other">Rain stopping in ~%1$d min</item>
+    </plurals>
+    <!-- %1$d = minutes -->
+    <plurals name="w_rain_starting">
+        <item quantity="one">Rain starting in ~%1$d min</item>
+        <item quantity="other">Rain starting in ~%1$d min</item>
+    </plurals>
+    <!-- %1$s = hour -->
+    <string name="w_rain_likely_around">Rain likely around %1$s</string>
+    <string name="w_rain_slight_chance">Slight chance of rain in the next 12 h</string>
+    <string name="w_rain_none">No rain expected in the next 12 h</string>
+
+    <!-- Sun & moon widget -->
+    <!-- %1$s = length of daylight -->
+    <string name="w_sun_of_daylight">%1$s of daylight</string>
+    <!-- %1$d = illuminated percentage of the moon -->
+    <string name="w_moon_full_tonight">%1$d%% · full tonight</string>
+    <!-- %1$d = illuminated percentage, %2$d = days until full moon ("d" = days) -->
+    <plurals name="w_moon_full_in">
+        <item quantity="one">%1$d%% · full in %2$d d</item>
+        <item quantity="other">%1$d%% · full in %2$d d</item>
+    </plurals>
+
+    <!-- Air quality widget -->
+    <!-- %1$s = pollen type (e.g. Grass), %2$s = level in lower case (e.g. high) -->
+    <string name="w_air_pollen">%1$s %2$s</string>
+    <!-- Short US AQI levels that fit a pill -->
+    <string name="w_aqi_good">Good</string>
+    <string name="w_aqi_moderate">Moderate</string>
+    <string name="w_aqi_sensitive">Unhealthy for some</string>
+    <string name="w_aqi_unhealthy">Unhealthy</string>
+    <string name="w_aqi_very_unhealthy">Very unhealthy</string>
+    <string name="w_aqi_hazardous">Hazardous</string>
+
+    <!-- Widget settings screens (Data tile and Weather shape) -->
+    <string name="w_cfg_cancel">Cancel</string>
+    <string name="w_cfg_save">Save</string>
+    <!-- Section header: what the widget shows -->
+    <string name="w_cfg_show">Show</string>
+    <string name="w_cfg_location">Location</string>
+    <string name="w_cfg_follow_app">Follow the app</string>
+    <string name="w_cfg_follow_app_desc">Shows the place open in the app</string>
+    <string name="w_cfg_your_location">Your location</string>
+    <!-- Weather shape settings -->
+    <string name="w_cfg_shape">Shape</string>
+    <string name="w_cfg_colours">Colours</string>
+    <string name="w_cfg_colour">Colour</string>
+    <!-- Colour mode name on Android 11 and older (no wallpaper colours) -->
+    <string name="w_cfg_app_colours">App colours</string>
+    <!-- Slider for the shape's background opacity -->
+    <string name="w_cfg_background_opacity">Background</string>
+    <string name="w_cfg_background_caption">Lower it to let the wallpaper show through the shape.</string>
+    <string name="w_cfg_hilo">High &amp; low</string>
+    <string name="w_cfg_hilo_desc">Today\'s range, when the widget is big enough</string>
+    <string name="w_cfg_place_name">Place name</string>
+    <string name="w_cfg_place_name_desc">Shown on larger widgets</string>
+    <!-- Caption under the preview, which shows the widget on a dark / light wallpaper -->
+    <string name="w_cfg_dark_home">Dark home screen</string>
+    <string name="w_cfg_light_home">Light home screen</string>
+
+    <!-- Weather shape widget: shape names (Material 3 Expressive shapes). The number is the count of bumps / leaves. -->
+    <string name="w_shape_cookie_9">Cookie 9</string>
+    <string name="w_shape_circle">Circle</string>
+    <string name="w_shape_square">Square</string>
+    <string name="w_shape_pill">Pill</string>
+    <string name="w_shape_cookie_4">Cookie 4</string>
+    <string name="w_shape_cookie_6">Cookie 6</string>
+    <string name="w_shape_cookie_7">Cookie 7</string>
+    <string name="w_shape_cookie_12">Cookie 12</string>
+    <string name="w_shape_clover_4">Clover 4</string>
+    <string name="w_shape_clover_8">Clover 8</string>
+    <!-- Sun-like shape with rays -->
+    <string name="w_shape_sunny">Sunny</string>
+    <string name="w_shape_very_sunny">Very sunny</string>
+    <string name="w_shape_soft_burst">Soft burst</string>
+    <string name="w_shape_soft_boom">Soft boom</string>
+    <string name="w_shape_flower">Flower</string>
+    <string name="w_shape_pixel_circle">Pixel circle</string>
+    <string name="w_shape_gem">Gem</string>
+    <string name="w_shape_pentagon">Pentagon</string>
+    <string name="w_shape_diamond">Diamond</string>
+    <string name="w_shape_slanted">Slanted</string>
+    <string name="w_shape_bun">Bun</string>
+    <string name="w_shape_ghost">Ghost</string>
+    <string name="w_shape_arch">Arch</string>
+    <string name="w_shape_clamshell">Clamshell</string>
+    <string name="w_shape_oval">Oval</string>
+    <string name="w_shape_heart">Heart</string>
+
+    <!-- Weather shape widget: colour choices -->
+    <!-- Colours taken from the wallpaper (Material You) -->
+    <string name="w_color_wallpaper">Wallpaper</string>
+    <!-- A gradient following the current sky -->
+    <string name="w_color_sky">Sky</string>
+    <string name="w_color_black">Black</string>
+    <string name="w_color_white">White</string>
+    <string name="w_color_coral">Coral</string>
+    <string name="w_color_amber">Amber</string>
+    <string name="w_color_mint">Mint</string>
+    <string name="w_color_sky_blue">Sky blue</string>
+    <string name="w_color_rose">Rose</string>
+    <string name="w_color_slate">Slate</string>
 </resources>

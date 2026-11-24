@@ -2,6 +2,8 @@ package dev.vis.weather.data
 
 import android.content.Context
 import android.location.Geocoder
+import dev.vis.weather.L
+import dev.vis.weather.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -33,7 +35,7 @@ object WeatherApi {
             val code = conn.responseCode
             if (code !in 200..299) {
                 val err = conn.errorStream?.bufferedReader()?.use { it.readText() }.orEmpty()
-                throw IOException("Server returned HTTP $code ${err.take(200)}")
+                throw IOException(L.s(R.string.d_api_http_error, code, err.take(200)))
             }
             return conn.inputStream.bufferedReader().use { it.readText() }
         } finally {
@@ -149,7 +151,7 @@ object WeatherApi {
             }
         } catch (_: Exception) {
         }
-        Place("Current location", String.format(Locale.US, "%.3f, %.3f", lat, lon), lat, lon)
+        Place(L.s(R.string.d_loc_current_location), String.format(Locale.US, "%.3f, %.3f", lat, lon), lat, lon)
     }
 
     // ---- parsing
@@ -370,12 +372,12 @@ object WeatherApi {
     private fun parseAir(json: String): AirQuality? = try {
         val c = JSONObject(json).getJSONObject("current")
         val pollen = listOf(
-            "Alder" to "alder_pollen",
-            "Birch" to "birch_pollen",
-            "Grass" to "grass_pollen",
-            "Mugwort" to "mugwort_pollen",
-            "Olive" to "olive_pollen",
-            "Ragweed" to "ragweed_pollen",
+            L.s(R.string.d_pollen_alder) to "alder_pollen",
+            L.s(R.string.d_pollen_birch) to "birch_pollen",
+            L.s(R.string.d_pollen_grass) to "grass_pollen",
+            L.s(R.string.d_pollen_mugwort) to "mugwort_pollen",
+            L.s(R.string.d_pollen_olive) to "olive_pollen",
+            L.s(R.string.d_pollen_ragweed) to "ragweed_pollen",
         ).map { (label, key) -> label to c.num(key) }.filter { !it.second.isNaN() }
         val hourly = JSONObject(json).optJSONObject("hourly")?.let { h ->
             val t = h.getJSONArray("time")

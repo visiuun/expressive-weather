@@ -2,6 +2,7 @@
 
 package dev.vis.weather.ui.alerts
 
+import dev.vis.weather.inSentence
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,7 +45,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.alerts.AlertConfig
 import dev.vis.weather.alerts.AlertEngine
 import dev.vis.weather.alerts.AlertPrefs
@@ -110,7 +115,7 @@ fun AlertDetailScreen(
             ) {
                 Row(Modifier.padding(horizontal = 22.dp, vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        if (c.enabled) "On" else "Off",
+                        stringResource(if (c.enabled) R.string.al_on else R.string.al_off),
                         style = MaterialTheme.typography.headlineSmallEmphasized,
                         modifier = Modifier.weight(1f),
                         color = if (c.enabled) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
@@ -120,7 +125,7 @@ fun AlertDetailScreen(
             }
         }
         item {
-            SettingsGroup("How it works", w) {
+            SettingsGroup(stringResource(R.string.al_how_it_works), w) {
                 SettingsItemSurface(0, 1) {
                     Row(Modifier.padding(16.dp)) {
                         Icon(Icons.Rounded.Info, null, tint = MaterialTheme.colorScheme.primary)
@@ -134,23 +139,23 @@ fun AlertDetailScreen(
         // ---- schedule
         if (type.trigger == Trigger.DAILY) {
             item {
-                SettingsGroup(if (type == AlertType.RAIN && c.allDay) "Active hours" else "Notification time", w) {
+                SettingsGroup(stringResource(if (type == AlertType.RAIN && c.allDay) R.string.al_active_hours else R.string.al_notification_time), w) {
                     if (type == AlertType.RAIN) {
                         SettingsChoice(
-                            "Check", null, MaterialShapes.Circle, 0, 2, listOf(false, true), c.allDay,
-                            { if (it) "All day" else "Once daily" },
+                            stringResource(R.string.al_check), null, MaterialShapes.Circle, 0, 2, listOf(false, true), c.allDay,
+                            { L.s(if (it) R.string.al_all_day else R.string.al_once_daily) },
                         ) { v -> set { it.copy(allDay = v) } }
                     }
                     SettingsItemSurface(if (type == AlertType.RAIN) 1 else 0, if (type == AlertType.RAIN) 2 else 1) {
                         Row(Modifier.padding(12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             if (type == AlertType.RAIN && c.allDay) {
-                                TimeChip("Start", timeLabel(c.time, settings.use24h), Modifier.weight(1f)) { picking = 1 }
-                                TimeChip("End", timeLabel(c.endTime, settings.use24h), Modifier.weight(1f)) { picking = 2 }
+                                TimeChip(stringResource(R.string.al_start), timeLabel(c.time, settings.use24h), Modifier.weight(1f)) { picking = 1 }
+                                TimeChip(stringResource(R.string.al_end), timeLabel(c.endTime, settings.use24h), Modifier.weight(1f)) { picking = 2 }
                             } else {
                                 TimeChip(
                                     when (type) {
-                                        AlertType.TABLET -> "Reminder time"
-                                        else -> "Alert time"
+                                        AlertType.TABLET -> stringResource(R.string.al_reminder_time)
+                                        else -> stringResource(R.string.al_alert_time)
                                     },
                                     timeLabel(c.time, settings.use24h), Modifier.weight(1f),
                                 ) { picking = 1 }
@@ -168,25 +173,26 @@ fun AlertDetailScreen(
         if (type != AlertType.FRIENDS && type != AlertType.TABLET) {
             item {
                 LocationPicker(
-                    if (type == AlertType.WARDROBE) "Home location" else "Location", c.location, places, currentPlace, w,
+                    stringResource(if (type == AlertType.WARDROBE) R.string.al_home_location else R.string.al_location), c.location, places, currentPlace, w,
                 ) { v -> set { it.copy(location = v) } }
             }
         }
         if (type == AlertType.WARDROBE) {
             item {
-                LocationPicker("Work location", c.extra.ifBlank { "none" }, places, currentPlace, w, allowNone = true, auto = false) { v ->
+                LocationPicker(stringResource(R.string.al_work_location), c.extra.ifBlank { "none" }, places, currentPlace, w, allowNone = true, auto = false) { v ->
                     set { it.copy(extra = if (v == "none") "" else v) }
                 }
             }
         }
 
         item {
+            val sentText = stringResource(R.string.al_test_sent)
             Column(w, horizontalAlignment = Alignment.CenterHorizontally) {
                 Button(
                     onClick = {
                         testing = true
                         scope.launch {
-                            testMessage = AlertEngine.test(context, type) ?: "Sent. Check your notifications."
+                            testMessage = AlertEngine.test(context, type) ?: sentText
                             testing = false
                         }
                     },
@@ -195,7 +201,7 @@ fun AlertDetailScreen(
                 ) {
                     Icon(Icons.Rounded.NotificationsActive, null)
                     Spacer(Modifier.width(10.dp))
-                    Text(if (testing) "Checking the forecast…" else "Send a test notification", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(if (testing) R.string.al_checking_forecast else R.string.al_send_test), style = MaterialTheme.typography.titleMedium)
                 }
                 testMessage?.let {
                     Spacer(Modifier.height(8.dp))
@@ -243,38 +249,45 @@ private fun Hero(type: AlertType, enabled: Boolean, modifier: Modifier) {
 private fun howItWorks(type: AlertType, c: AlertConfig, s: Settings, fmt: Fmt): String {
     val t = timeLabel(c.time, s.use24h)
     return when (type) {
-        AlertType.WARNINGS -> "About every 30 minutes the app checks the national weather service for your location" +
-            (if ("saved" in c.flags) " and your saved places" else "") +
-            ". You're notified once per warning, and again if it's upgraded. Amber and red warnings break through quiet hours."
-        AlertType.NOWCAST -> "Every 15 minutes the app checks the 15-minute precipitation nowcast. When ${if (c.threshold >= 2) "heavy " else if (c.threshold >= 0.5) "moderate " else ""}rain" +
-            (if ("snow" in c.flags) " or snow" else "") + " is due within ${c.lookahead} minutes, you get a live countdown that keeps updating until it starts, " +
-            "then tells you when it should stop. On Android 16 it appears as a Live Update chip in the status bar."
-        AlertType.RAIN -> if (c.allDay) "Roughly every 15 minutes between ${timeLabel(c.time, s.use24h)} and ${timeLabel(c.endTime, s.use24h)}, the app looks ${c.lookahead} hours ahead. " +
-            "When the chance of rain reaches ${c.threshold.roundToInt()}%, you'll get a heads-up, at most once every 3 hours."
-        else "At $t, the app checks the next ${c.lookahead} hours. If the chance of rain reaches ${c.threshold.roundToInt()}%, you'll get a notification with the expected start time."
-        AlertType.STORM -> "Every 30 minutes the app looks ${c.lookahead} hours ahead for gusts of ${fmt.wind(c.threshold)} or more, or thunderstorms. At most one alert every 8 hours."
-        AlertType.TODAY -> "At $t you get a short briefing: conditions, high and low, when rain is likely, notable wind or UV, and how it compares with yesterday."
-        AlertType.TOMORROW -> "At $t the app looks at tomorrow's forecast and sends a short, readable summary of what to expect and how it compares with today."
-        AlertType.WARDROBE -> "At $t (or the evening before if set after 15:00) the app looks at the hours you're out, adjusts for how you feel the cold and your commute, and suggests what to wear and bring." +
-            if (c.extra.isNotBlank()) " Your work location's forecast is used for 09:00–17:00." else ""
-        AlertType.FROST -> "At $t the app checks tonight's lowest temperature until 10:00 tomorrow. If it reaches ${fmt.temp(c.threshold)} or below, you'll get a frost warning."
-        AlertType.UV -> "At $t the app checks today's UV forecast. If it will exceed ${c.threshold.roundToInt()}, you'll be told the peak time and when to protect your skin."
-        AlertType.HEAT -> "Every 30 minutes the app checks the wet-bulb temperature now and for the next ${c.lookahead} hours. When it reaches ${fmt.temp(c.threshold)} (${dev.vis.weather.alerts.Briefings.coolingLevel(c.threshold).first.lowercase()}), you're warned right away, and again the same day only if it gets worse. These alerts sound even during quiet hours."
-        AlertType.AIR -> "At $t the app checks the European Air Quality Index for the next 18 hours. If it reaches ${dev.vis.weather.alerts.Briefings.eaqiNames[c.threshold.roundToInt().coerceIn(1, 6)].lowercase()} or worse, you'll get an alert."
-        AlertType.POLLEN -> "At $t the app checks the pollen forecast for ${c.flags.filter { it in setOf("trees", "grass", "weeds") }.joinToString().ifBlank { "your allergens" }}. " +
-            "With ${listOf("low", "moderate", "high")[c.level]} sensitivity you're alerted from ${listOf("very high", "high", "moderate")[c.level]} levels."
-        AlertType.TABLET -> "A daily reminder at $t" + if ("pollen-days" in c.flags) ", only on days your pollen alert threshold is reached." else "."
-        AlertType.PRESSURE -> "Every 30 minutes the app looks 12 hours ahead for a pressure fall of ${AlertEngine.pressureThreshold(c.level).roundToInt()} hPa or more within 3 hours. At most one alert every 18 hours."
-        AlertType.FRIENDS -> "About every 40 minutes the app checks official warnings at each Family & friends place and lets you know about ${Severity.entries[c.threshold.roundToInt()].colorName.lowercase()} warnings or worse."
-        AlertType.ONGOING -> "A silent notification keeps the current temperature in your status bar, with today's high and low, rain timing and the next hours. It refreshes in the background every 15–30 minutes."
+        AlertType.WARNINGS -> L.s(if ("saved" in c.flags) R.string.al_how_warnings_saved else R.string.al_how_warnings)
+        AlertType.NOWCAST -> {
+            val snow = "snow" in c.flags
+            val what = when {
+                c.threshold >= 2 -> if (snow) R.string.al_how_nowcast_heavy_rain_snow else R.string.al_how_nowcast_heavy_rain
+                c.threshold >= 0.5 -> if (snow) R.string.al_how_nowcast_moderate_rain_snow else R.string.al_how_nowcast_moderate_rain
+                else -> if (snow) R.string.al_how_nowcast_rain_snow else R.string.al_how_nowcast_rain
+            }
+            L.p(R.plurals.al_how_nowcast, c.lookahead, c.lookahead, L.s(what))
+        }
+        AlertType.RAIN -> if (c.allDay) L.p(R.plurals.al_how_rain_all_day, c.lookahead, c.lookahead, timeLabel(c.time, s.use24h), timeLabel(c.endTime, s.use24h), c.threshold.roundToInt())
+        else L.p(R.plurals.al_how_rain_once, c.lookahead, c.lookahead, t, c.threshold.roundToInt())
+        AlertType.STORM -> L.p(R.plurals.al_how_storm, c.lookahead, c.lookahead, fmt.wind(c.threshold))
+        AlertType.TODAY -> L.s(R.string.al_how_today, t)
+        AlertType.TOMORROW -> L.s(R.string.al_how_tomorrow, t)
+        AlertType.WARDROBE -> L.s(R.string.al_how_wardrobe, t) +
+            if (c.extra.isNotBlank()) " " + L.s(R.string.al_how_wardrobe_work) else ""
+        AlertType.FROST -> L.s(R.string.al_how_frost, t, fmt.temp(c.threshold))
+        AlertType.UV -> L.s(R.string.al_how_uv, t, c.threshold.roundToInt())
+        AlertType.HEAT -> L.p(R.plurals.al_how_heat, c.lookahead, c.lookahead, fmt.temp(c.threshold), dev.vis.weather.alerts.Briefings.coolingLevel(c.threshold).first.inSentence())
+        AlertType.AIR -> L.s(R.string.al_how_air, t, dev.vis.weather.alerts.Briefings.eaqiNames[c.threshold.roundToInt().coerceIn(1, 6)].inSentence())
+        AlertType.POLLEN -> {
+            val names = mapOf("trees" to R.string.al_pollen_trees, "grass" to R.string.al_pollen_grasses, "weeds" to R.string.al_pollen_weeds)
+            val list = c.flags.filter { it in names }.joinToString { L.s(names.getValue(it)) }.ifBlank { L.s(R.string.al_how_pollen_fallback) }
+            L.s(R.string.al_how_pollen, t, list) + " " +
+                L.s(listOf(R.string.al_how_pollen_low, R.string.al_how_pollen_moderate, R.string.al_how_pollen_high)[c.level])
+        }
+        AlertType.TABLET -> L.s(if ("pollen-days" in c.flags) R.string.al_how_tablet_pollen else R.string.al_how_tablet, t)
+        AlertType.PRESSURE -> L.s(R.string.al_how_pressure, AlertEngine.pressureThreshold(c.level).roundToInt())
+        AlertType.FRIENDS -> L.s(R.string.al_how_friends, Severity.entries[c.threshold.roundToInt()].colorName.lowercase())
+        AlertType.ONGOING -> L.s(R.string.al_how_ongoing)
     }
 }
 
 private fun disclaimer(type: AlertType): String? = when (type) {
-    AlertType.WARNINGS, AlertType.FRIENDS -> "Weather warnings are for guidance only. Always follow official advice from your national weather service and local authorities."
-    AlertType.POLLEN, AlertType.TABLET -> "Pollen data is for guidance only and is not a substitute for professional advice."
-    AlertType.PRESSURE, AlertType.HEAT -> "This is not medical advice. Consult a healthcare professional for health concerns."
-    AlertType.NOWCAST, AlertType.RAIN -> "Precipitation forecasts are estimates and may vary from actual conditions."
+    AlertType.WARNINGS, AlertType.FRIENDS -> L.s(R.string.al_disclaimer_warnings)
+    AlertType.POLLEN, AlertType.TABLET -> L.s(R.string.al_disclaimer_pollen)
+    AlertType.PRESSURE, AlertType.HEAT -> L.s(R.string.al_disclaimer_health)
+    AlertType.NOWCAST, AlertType.RAIN -> L.s(R.string.al_disclaimer_precip)
     else -> null
 }
 
@@ -290,15 +303,15 @@ private fun Options(
 ) {
     val fmt = remember(s) { Fmt(s, ZoneId.systemDefault()) }
     when (type) {
-        AlertType.WARNINGS, AlertType.FRIENDS -> SettingsGroup("Alert levels", w) {
+        AlertType.WARNINGS, AlertType.FRIENDS -> SettingsGroup(stringResource(R.string.al_opt_alert_levels), w) {
             val n = if (type == AlertType.WARNINGS) 2 else 2
             SettingsChoice(
-                "Notify me from", null, MaterialShapes.Circle, 0, n, Severity.entries, Severity.entries[c.threshold.roundToInt().coerceIn(0, 3)],
+                stringResource(R.string.al_opt_notify_from), null, MaterialShapes.Circle, 0, n, Severity.entries, Severity.entries[c.threshold.roundToInt().coerceIn(0, 3)],
                 { it.colorName },
             ) { v -> set { it.copy(threshold = v.ordinal.toDouble()) } }
             if (type == AlertType.WARNINGS) {
                 SettingsSwitch(
-                    "Saved locations", "Also notify about warnings at your current location and every saved place",
+                    stringResource(R.string.al_opt_saved_locations), stringResource(R.string.al_opt_saved_locations_sub),
                     Icons.Rounded.Place, MaterialShapes.Cookie6Sided, 1, 2, "saved" in c.flags,
                 ) { on -> set { it.copy(flags = if (on) it.flags + "saved" else it.flags - "saved") } }
             } else {
@@ -306,74 +319,78 @@ private fun Options(
                     Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                         ShapeBadge(Icons.Rounded.Groups, MaterialShapes.Flower, size = 40.dp)
                         Spacer(Modifier.width(14.dp))
-                        Text("Manage family & friends", style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.al_opt_manage_friends), style = MaterialTheme.typography.titleMedium)
                     }
                 }
             }
             Spacer(Modifier.height(10.dp))
             LevelLegend()
         }
-        AlertType.NOWCAST -> SettingsGroup("Sensitivity", w) {
+        AlertType.NOWCAST -> SettingsGroup(stringResource(R.string.al_opt_sensitivity), w) {
             val levels = listOf(0.1, 0.5, 2.0)
             SettingsChoice(
-                "Intensity", null, MaterialShapes.Circle, 0, 3, levels, levels.minBy { kotlin.math.abs(it - c.threshold) },
-                { when (it) { 0.1 -> "Any"; 0.5 -> "Moderate+"; else -> "Heavy" } },
+                stringResource(R.string.al_opt_intensity), null, MaterialShapes.Circle, 0, 3, levels, levels.minBy { kotlin.math.abs(it - c.threshold) },
+                { L.s(when (it) { 0.1 -> R.string.al_opt_intensity_any; 0.5 -> R.string.al_opt_intensity_moderate; else -> R.string.al_opt_intensity_heavy }) },
             ) { v -> set { it.copy(threshold = v) } }
             SettingsSlider(
-                "Heads-up", "${c.lookahead} min before", 1, 3, c.lookahead.toFloat(), 15f..120f, steps = 6,
+                stringResource(R.string.al_opt_heads_up), pluralStringResource(R.plurals.al_opt_min_before, c.lookahead, c.lookahead), 1, 3, c.lookahead.toFloat(), 15f..120f, steps = 6,
             ) { v -> set { it.copy(lookahead = (v / 15).roundToInt() * 15) } }
-            SettingsSwitch("Include snow", null, null, MaterialShapes.Circle, 2, 3, "snow" in c.flags) { on ->
+            SettingsSwitch(stringResource(R.string.al_opt_include_snow), null, null, MaterialShapes.Circle, 2, 3, "snow" in c.flags) { on ->
                 set { it.copy(flags = if (on) it.flags + "snow" else it.flags - "snow") }
             }
         }
-        AlertType.RAIN -> SettingsGroup("Rain", w) {
-            SettingsSlider("Look-ahead window", "${c.lookahead} h", 0, 2, c.lookahead.toFloat(), 1f..12f, steps = 10) { v ->
+        AlertType.RAIN -> SettingsGroup(stringResource(R.string.al_opt_rain), w) {
+            SettingsSlider(stringResource(R.string.al_opt_lookahead_window), stringResource(R.string.al_opt_hours_short, c.lookahead), 0, 2, c.lookahead.toFloat(), 1f..12f, steps = 10) { v ->
                 set { it.copy(lookahead = v.roundToInt()) }
             }
-            SettingsSlider("Chance of rain", "${c.threshold.roundToInt()}% or more", 1, 2, c.threshold.toFloat(), 30f..90f, steps = 5) { v ->
+            SettingsSlider(stringResource(R.string.al_opt_chance_of_rain), stringResource(R.string.al_opt_percent_or_more, c.threshold.roundToInt()), 1, 2, c.threshold.toFloat(), 30f..90f, steps = 5) { v ->
                 set { it.copy(threshold = ((v / 10).roundToInt() * 10).toDouble()) }
             }
         }
-        AlertType.STORM -> SettingsGroup("Thresholds", w) {
-            SettingsSlider("Gusts", fmt.wind(c.threshold), 0, 2, c.threshold.toFloat(), 30f..120f, steps = 17) { v ->
+        AlertType.STORM -> SettingsGroup(stringResource(R.string.al_opt_thresholds), w) {
+            SettingsSlider(stringResource(R.string.al_opt_gusts), fmt.wind(c.threshold), 0, 2, c.threshold.toFloat(), 30f..120f, steps = 17) { v ->
                 set { it.copy(threshold = ((v / 5).roundToInt() * 5).toDouble()) }
             }
-            SettingsSlider("Look ahead", "${c.lookahead} h", 1, 2, c.lookahead.toFloat(), 3f..24f, steps = 6) { v ->
+            SettingsSlider(stringResource(R.string.al_opt_look_ahead), stringResource(R.string.al_opt_hours_short, c.lookahead), 1, 2, c.lookahead.toFloat(), 3f..24f, steps = 6) { v ->
                 set { it.copy(lookahead = ((v / 3).roundToInt() * 3)) }
             }
         }
-        AlertType.FROST -> SettingsGroup("Threshold", w) {
-            SettingsSlider("Overnight low at or below", fmt.temp(c.threshold), 0, 1, c.threshold.toFloat(), -6f..4f, steps = 9) { v ->
+        AlertType.FROST -> SettingsGroup(stringResource(R.string.al_opt_threshold), w) {
+            SettingsSlider(stringResource(R.string.al_opt_frost_low), fmt.temp(c.threshold), 0, 1, c.threshold.toFloat(), -6f..4f, steps = 9) { v ->
                 set { it.copy(threshold = v.roundToInt().toDouble()) }
             }
         }
-        AlertType.UV -> SettingsGroup("Threshold", w) {
+        AlertType.UV -> SettingsGroup(stringResource(R.string.al_opt_threshold), w) {
             SettingsSlider(
-                "UV index above", "${c.threshold.roundToInt()} · ${dev.vis.weather.data.WeatherInfo.uvLevel(c.threshold)}", 0, 1,
+                stringResource(R.string.al_opt_uv_above), "${c.threshold.roundToInt()} · ${dev.vis.weather.data.WeatherInfo.uvLevel(c.threshold)}", 0, 1,
                 c.threshold.toFloat(), 1f..11f, steps = 9,
-                caption = "Adjust the slider to set the minimum UV level that triggers an alert.",
+                caption = stringResource(R.string.al_opt_uv_caption),
             ) { v -> set { it.copy(threshold = v.roundToInt().toDouble()) } }
         }
-        AlertType.HEAT -> SettingsGroup("Threshold", w) {
+        AlertType.HEAT -> SettingsGroup(stringResource(R.string.al_opt_threshold), w) {
             SettingsSlider(
-                "Warn me from", "${fmt.temp(c.threshold)} · ${dev.vis.weather.alerts.Briefings.coolingLevel(c.threshold).first}", 0, 2,
+                stringResource(R.string.al_opt_warn_from), "${fmt.temp(c.threshold)} · ${dev.vis.weather.alerts.Briefings.coolingLevel(c.threshold).first}", 0, 2,
                 c.threshold.toFloat(), 24f..32f, steps = 7,
-                caption = "Around 31° wet bulb the body can no longer cool itself, even at rest in the shade.",
+                caption = stringResource(R.string.al_opt_heat_caption),
             ) { v -> set { it.copy(threshold = v.roundToInt().toDouble()) } }
-            SettingsSlider("Look ahead", "${c.lookahead} h", 1, 2, c.lookahead.toFloat(), 3f..24f, steps = 6) { v ->
+            SettingsSlider(stringResource(R.string.al_opt_look_ahead), stringResource(R.string.al_opt_hours_short, c.lookahead), 1, 2, c.lookahead.toFloat(), 3f..24f, steps = 6) { v ->
                 set { it.copy(lookahead = ((v / 3).roundToInt() * 3)) }
             }
         }
-        AlertType.AIR -> SettingsGroup("Threshold", w) {
+        AlertType.AIR -> SettingsGroup(stringResource(R.string.al_opt_threshold), w) {
             SettingsChoice(
-                "Alert from", null, MaterialShapes.Circle, 0, 1, listOf(2, 3, 4, 5), c.threshold.roundToInt().coerceIn(2, 5),
+                stringResource(R.string.al_opt_alert_from), null, MaterialShapes.Circle, 0, 1, listOf(2, 3, 4, 5), c.threshold.roundToInt().coerceIn(2, 5),
                 { dev.vis.weather.alerts.Briefings.eaqiNames[it] },
             ) { v -> set { it.copy(threshold = v.toDouble()) } }
         }
-        AlertType.POLLEN -> SettingsGroup("My allergies", w) {
+        AlertType.POLLEN -> SettingsGroup(stringResource(R.string.al_opt_my_allergies), w) {
             SettingsItemSurface(0, 2) {
                 FlowRow(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf("trees" to "Trees (alder, birch, olive)", "grass" to "Grass", "weeds" to "Weeds (mugwort, ragweed)").forEach { (k, label) ->
+                    listOf(
+                        "trees" to stringResource(R.string.al_opt_allergy_trees),
+                        "grass" to stringResource(R.string.al_opt_allergy_grass),
+                        "weeds" to stringResource(R.string.al_opt_allergy_weeds),
+                    ).forEach { (k, label) ->
                         val on = k in c.flags
                         FilterChip(
                             selected = on,
@@ -384,38 +401,48 @@ private fun Options(
                     }
                 }
             }
-            SettingsChoice("Sensitivity", null, MaterialShapes.Circle, 1, 2, listOf(0, 1, 2), c.level, { listOf("Low", "Moderate", "High")[it] }) { v ->
+            SettingsChoice(
+                stringResource(R.string.al_opt_sensitivity), null, MaterialShapes.Circle, 1, 2, listOf(0, 1, 2), c.level,
+                { L.s(listOf(R.string.al_opt_sens_low, R.string.al_opt_sens_moderate, R.string.al_opt_sens_high)[it]) },
+            ) { v ->
                 set { it.copy(level = v) }
             }
         }
-        AlertType.TABLET -> SettingsGroup("Options", w) {
+        AlertType.TABLET -> SettingsGroup(stringResource(R.string.al_opt_options), w) {
             SettingsSwitch(
-                "Only on high-pollen days", "Uses your Pollen alert allergies and sensitivity", null, MaterialShapes.Circle, 0, 1,
+                stringResource(R.string.al_opt_pollen_days), stringResource(R.string.al_opt_pollen_days_sub), null, MaterialShapes.Circle, 0, 1,
                 "pollen-days" in c.flags,
             ) { on -> set { it.copy(flags = if (on) it.flags + "pollen-days" else it.flags - "pollen-days") } }
         }
-        AlertType.PRESSURE -> SettingsGroup("Sensitivity", w) {
+        AlertType.PRESSURE -> SettingsGroup(stringResource(R.string.al_opt_sensitivity), w) {
             SettingsChoice(
-                "Drop threshold", null, MaterialShapes.Circle, 0, 1, listOf(0, 1, 2), c.level,
-                { "${listOf("Low", "Medium", "High")[it]} (${AlertEngine.pressureThreshold(it).let { v -> if (v % 1.0 == 0.0) v.roundToInt().toString() else v.toString() }} hPa/3h)" },
-                subtitle = "More sensitive alerts for smaller drops",
+                stringResource(R.string.al_opt_drop_threshold), null, MaterialShapes.Circle, 0, 1, listOf(0, 1, 2), c.level,
+                {
+                    L.s(
+                        listOf(R.string.al_opt_drop_low, R.string.al_opt_drop_medium, R.string.al_opt_drop_high)[it],
+                        AlertEngine.pressureThreshold(it).let { v -> if (v % 1.0 == 0.0) v.roundToInt().toString() else v.toString() },
+                    )
+                },
+                subtitle = stringResource(R.string.al_opt_drop_sub),
             ) { v -> set { it.copy(level = v) } }
         }
-        AlertType.WARDROBE -> SettingsGroup("You", w) {
+        AlertType.WARDROBE -> SettingsGroup(stringResource(R.string.al_opt_you), w) {
             val commute = c.flags.firstOrNull { it in setOf("walk", "transit", "balanced") } ?: "balanced"
             SettingsChoice(
-                "Daily commute", null, MaterialShapes.Circle, 0, 2, listOf("walk", "balanced", "transit"), commute,
-                { when (it) { "walk" -> "Walk & bike"; "transit" -> "Transit & car"; else -> "Mixed" } },
-                subtitle = when (commute) {
-                    "walk" -> "Active commute with high exposure to wind, spray and cold"
-                    "transit" -> "Subway, bus or car, mostly sheltered from the weather"
-                    else -> "Walking to transit, mixed travel, or general advice"
-                },
+                stringResource(R.string.al_opt_commute), null, MaterialShapes.Circle, 0, 2, listOf("walk", "balanced", "transit"), commute,
+                { L.s(when (it) { "walk" -> R.string.al_opt_commute_walk; "transit" -> R.string.al_opt_commute_transit; else -> R.string.al_opt_commute_mixed }) },
+                subtitle = stringResource(
+                    when (commute) {
+                        "walk" -> R.string.al_opt_commute_walk_sub
+                        "transit" -> R.string.al_opt_commute_transit_sub
+                        else -> R.string.al_opt_commute_mixed_sub
+                    }
+                ),
             ) { v -> set { it.copy(flags = it.flags - setOf("walk", "transit", "balanced") + v) } }
             SettingsChoice(
-                "Temperature sensitivity", null, MaterialShapes.Circle, 1, 2, listOf(0, 1, 2), c.level,
-                { listOf("Feel cold", "Normal", "Feel warm")[it] },
-                subtitle = "Adjusts advice to how easily you feel the cold or heat",
+                stringResource(R.string.al_opt_temp_sensitivity), null, MaterialShapes.Circle, 1, 2, listOf(0, 1, 2), c.level,
+                { L.s(listOf(R.string.al_opt_feel_cold, R.string.al_opt_feel_normal, R.string.al_opt_feel_warm)[it]) },
+                subtitle = stringResource(R.string.al_opt_temp_sensitivity_sub),
             ) { v -> set { it.copy(level = v) } }
         }
         else -> {}
@@ -425,9 +452,9 @@ private fun Options(
 @Composable
 private fun LevelLegend() {
     val rows = listOf(
-        Severity.MODERATE to "Severe weather possible. Be aware and prepared.",
-        Severity.SEVERE to "Severe weather likely. Take action to stay safe.",
-        Severity.EXTREME to "Extreme weather. Danger to life — take immediate action.",
+        Severity.MODERATE to stringResource(R.string.al_legend_yellow),
+        Severity.SEVERE to stringResource(R.string.al_legend_amber),
+        Severity.EXTREME to stringResource(R.string.al_legend_red),
     )
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         rows.forEach { (sev, text) ->
@@ -456,10 +483,16 @@ private fun LocationPicker(
     auto: Boolean = true,
     onPick: (String) -> Unit,
 ) {
+    val notSet = stringResource(R.string.al_loc_not_set)
+    val notSetSub = stringResource(R.string.al_loc_not_set_sub)
+    val follow = stringResource(R.string.al_loc_auto)
+    val followSub = stringResource(R.string.al_loc_auto_sub)
+    val current = stringResource(R.string.al_loc_current)
+    val currentSub = currentPlace?.name ?: stringResource(R.string.al_loc_current_sub)
     val options = buildList {
-        if (allowNone) add(Triple("none", "Not set", "Use home for the whole day"))
-        if (auto) add(Triple("auto", "Follow the app", "Whichever place you're viewing"))
-        add(Triple("current", "Current location", currentPlace?.name ?: "Your device location"))
+        if (allowNone) add(Triple("none", notSet, notSetSub))
+        if (auto) add(Triple("auto", follow, followSub))
+        add(Triple("current", current, currentSub))
         places.forEach { add(Triple(it.key, it.name, it.region)) }
     }
     SettingsGroup(title, w) {

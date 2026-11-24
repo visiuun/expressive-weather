@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Customize home (Settings → Layout, and the button at the bottom of the main screen) -->
+    <string name="h_customize_home">Personalizza la home</string>
+    <string name="h_sections_hint">Trascina le maniglie per ordinare le sezioni. Disattiva ciò che non ti serve e tocca una sezione per regolarla.</string>
+    <string name="h_customize_sub">Ordina sezioni e riquadri, nascondi ciò che non ti serve</string>
+    <string name="h_drag_handle">Trascina per riordinare</string>
+    <string name="h_options">Opzioni</string>
+    <!-- Subtitle of the weather warnings section, which can't be hidden -->
+    <string name="h_warnings_always">Mostrata quando c\'è un\'allerta in corso</string>
+    <!-- Subtitle of the detail tiles section: "12 of 16 tiles" -->
+    <string name="h_tiles_shown">%1$d di %2$d riquadri</string>
+    <string name="h_tiles_hint">Scegli e ordina i riquadri. Alcuni compaiono solo quando hanno qualcosa da dire, come rischio incendi, comfort termico, mare e pollini.</string>
+    <!-- Marks a tile that spans the full width -->
+    <string name="h_tile_wide">Largo</string>
+    <!-- Detail tile: today\'s total precipitation -->
+    <string name="h_tile_today_precip">Precipitazioni di oggi</string>
+</resources>

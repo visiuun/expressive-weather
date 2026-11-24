@@ -2,6 +2,8 @@
 
 package dev.vis.weather.ui
 
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.R
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
@@ -197,11 +199,13 @@ fun WeatherApp(vm: WeatherViewModel) {
                                 onOpenWarnings = { push(Screen.WARNINGS) },
                                 onOpenFriends = { push(Screen.FRIENDS) },
                                 onOpenAlert = openAlert,
+                                onOpenMap = { tab(Screen.MAP) },
+                                onCustomize = { push(Screen.LAYOUT) },
                             )
                             Screen.MAP -> {
                                 val place = state.activePlace ?: state.currentPlace ?: state.places.firstOrNull()
                                 if (place == null) {
-                                    Box(Modifier.fillMaxSize()) { Text("Choose a place first", Modifier.fillMaxWidth()) }
+                                    Box(Modifier.fillMaxSize()) { Text(stringResource(R.string.m_choose_place_first), Modifier.fillMaxWidth()) }
                                 } else {
                                     val friends by Friends.flow(context).collectAsState()
                                     val markers = remember(state.forecast, state.places, friends, place) {
@@ -321,9 +325,9 @@ fun WeatherApp(vm: WeatherViewModel) {
                 ) {
                     dev.vis.weather.ui.components.PillNav(
                         listOf(
-                            dev.vis.weather.ui.components.PillNavItem("Weather", Icons.Rounded.WbSunny, screen == Screen.MAIN) { tab(Screen.MAIN) },
-                            dev.vis.weather.ui.components.PillNavItem("Map", Icons.Rounded.Map, screen == Screen.MAP) { tab(Screen.MAP) },
-                            dev.vis.weather.ui.components.PillNavItem("Alerts", Icons.Rounded.Notifications, screen == Screen.ALERTS, warnings.size) { tab(Screen.ALERTS) },
+                            dev.vis.weather.ui.components.PillNavItem(stringResource(R.string.m_nav_weather), Icons.Rounded.WbSunny, screen == Screen.MAIN) { tab(Screen.MAIN) },
+                            dev.vis.weather.ui.components.PillNavItem(stringResource(R.string.m_nav_map), Icons.Rounded.Map, screen == Screen.MAP) { tab(Screen.MAP) },
+                            dev.vis.weather.ui.components.PillNavItem(stringResource(R.string.m_nav_alerts), Icons.Rounded.Notifications, screen == Screen.ALERTS, warnings.size) { tab(Screen.ALERTS) },
                         ),
                     )
                 }

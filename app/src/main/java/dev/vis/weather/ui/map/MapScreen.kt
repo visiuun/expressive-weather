@@ -134,6 +134,10 @@ import androidx.graphics.shapes.RoundedPolygon
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.currentStateAsState
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.data.Place
 import dev.vis.weather.data.Settings
 import dev.vis.weather.data.WeatherInfo
@@ -161,7 +165,7 @@ private const val INITIAL_ZOOM = 7.0
  * forecast grids and storms instead of downloading them again.
  */
 @Stable
-private object MapSession {
+internal object MapSession {
     var radar by mutableStateOf<RadarData?>(null)
     var radarIndex by mutableIntStateOf(0)
     var playing by mutableStateOf<Boolean?>(null)
@@ -173,14 +177,32 @@ private object MapSession {
     var error by mutableStateOf<String?>(null)
     var retry by mutableIntStateOf(0)
 
+    /** Untranslated key ([fetch]'s `what`) of the request that produced [error]. */
+    private var errorKey: String? = null
+
+    private fun errorMessage(what: String): String = L.s(
+        when (what) {
+            "radar" -> R.string.map_error_radar
+            "forecast map" -> R.string.map_error_forecast
+            "storms" -> R.string.map_error_storms
+            else -> R.string.map_error_generic
+        },
+    )
+
     suspend fun <T> fetch(what: String, block: suspend () -> T): T? {
         loading++
         return try {
-            block().also { if (error?.contains(what) == true) error = null }
+            block().also {
+                if (error != null && errorKey == what) {
+                    error = null
+                    errorKey = null
+                }
+            }
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            error = "Couldn't load $what"
+            errorKey = what
+            error = errorMessage(what)
             null
         } finally {
             loading--
@@ -706,11 +728,13 @@ private fun StormMarker(storm: Storm, animate: Boolean, modifier: Modifier, onCl
         val v by t.animateFloat(0f, -360f, infiniteRepeatable(tween(6000, easing = LinearEasing)), label = "r")
         v
     } else 0f
+    val cd = stringResource(R.string.map_storm_cd, storm.classLabel, storm.name)
+    val badge = if (storm.category > 0) stringResource(R.string.map_storm_cat_short, storm.category) else storm.classification.uppercase()
     Column(
         modifier
             .clip(RoundedCornerShape(20.dp))
             .clickable(onClick = onClick)
-            .semantics(mergeDescendants = true) { contentDescription = "${storm.classLabel} ${storm.name}" },
+            .semantics(mergeDescendants = true) { contentDescription = cd },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Canvas(Modifier.size(44.dp)) {
@@ -734,7 +758,7 @@ private fun StormMarker(storm: Storm, animate: Boolean, modifier: Modifier, onCl
         }
         Surface(shape = CircleShape, color = color, contentColor = Color(0xFF1B1B1F), shadowElevation = 3.dp) {
             Text(
-                "${storm.name} · ${if (storm.category > 0) "Cat ${storm.category}" else storm.classification.uppercase()}",
+                stringResource(R.string.map_storm_marker, storm.name, badge),
                 Modifier.padding(horizontal = 10.dp, vertical = 3.dp),
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold,
@@ -770,17 +794,17 @@ private fun MapLayer.shape(): RoundedPolygon = when (this) {
 }
 
 private fun relativeLabel(minutes: Long): String {
-    if (minutes == 0L) return "Now"
+    if (minutes == 0L) return L.s(R.string.map_now)
     val a = abs(minutes)
     val sign = if (minutes < 0) "−" else "+"
     return when {
-        a < 60 -> "$sign$a min"
-        a % 60 == 0L -> "$sign${a / 60}h"
-        else -> "$sign${a / 60}h ${a % 60}m"
+        a < 60 -> L.s(R.string.map_rel_minutes, sign, a)
+        a % 60 == 0L -> L.s(R.string.map_rel_hours, sign, a / 60)
+        else -> L.s(R.string.map_rel_hours_minutes, sign, a / 60, a % 60)
     }
 }
 
-private fun radarLabel(r: RadarData, i: Int): String {
+internal fun radarLabel(r: RadarData, i: Int): String {
     val latest = r.frames.getOrNull(r.latestPast)?.time ?: return ""
     val f = r.frames.getOrNull(i) ?: return ""
     return relativeLabel((f.time - latest) / 60)
@@ -791,7 +815,8 @@ private fun hourLabel(fmt: Fmt, g: FieldGrid, h: Int): Pair<String, String> {
     val epoch = g.times[i]
     val today = fmt.localDate(System.currentTimeMillis() / 1000)
     val day = fmt.dayName(fmt.localDate(epoch), today)
-    return (if (i == 0) "Now" else "+${i}h") to "$day ${fmt.hour(epoch)}"
+    return (if (i == 0) L.s(R.string.map_now) else L.s(R.string.map_rel_hours, "+", i)) to
+        L.s(R.string.map_day_time, day, fmt.hour(epoch))
 }
 
 @Composable
@@ -846,17 +871,17 @@ private fun BoxScope.TopPanel(
                             val sub = when {
                                 layer == MapLayer.RADAR && radar != null && radar.frames.isNotEmpty() -> {
                                     val fr = radar.frames[radarIndex.coerceIn(0, radar.frames.lastIndex)]
-                                    "${radarLabel(radar, radarIndex)} · ${fmt.time(fr.time)} · RainViewer"
+                                    stringResource(R.string.map_sub_radar, radarLabel(radar, radarIndex), fmt.time(fr.time))
                                 }
-                                layer == MapLayer.RADAR && radar != null -> "No radar frames available right now"
+                                layer == MapLayer.RADAR && radar != null -> stringResource(R.string.map_sub_radar_empty)
                                 layer.isModel && field != null -> {
                                     val (a, b) = hourLabel(fmt, field.grid, hour)
-                                    "$a · $b · Open-Meteo"
+                                    stringResource(R.string.map_sub_model, a, b)
                                 }
                                 layer == MapLayer.STORMS && storms != null ->
                                     if (storms.isEmpty()) "NOAA National Hurricane Center"
-                                    else "${storms.size} active · NOAA NHC"
-                                else -> "Loading…"
+                                    else pluralStringResource(R.plurals.map_sub_storms_active, storms.size, storms.size)
+                                else -> stringResource(R.string.map_loading)
                             }
                             Text(sub, style = MaterialTheme.typography.labelMedium, color = cs.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
@@ -874,7 +899,7 @@ private fun BoxScope.TopPanel(
                     Icon(Icons.Rounded.ErrorOutline, null, Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
                     Text(error.orEmpty(), style = MaterialTheme.typography.labelLarge)
-                    TextButton(onClick = onRetry) { Text("Retry") }
+                    TextButton(onClick = onRetry) { Text(stringResource(R.string.map_retry)) }
                 }
             }
         }
@@ -883,7 +908,7 @@ private fun BoxScope.TopPanel(
                 Row(Modifier.padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Rounded.WbSunny, null, Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text("No active tropical storms right now", style = MaterialTheme.typography.labelLarge)
+                    Text(stringResource(R.string.map_no_storms),style = MaterialTheme.typography.labelLarge)
                 }
             }
         }
@@ -910,13 +935,21 @@ private fun Legend(layer: MapLayer, fmt: Fmt) {
     val dark = LocalAppColors.current.isDark
     val cs = MaterialTheme.colorScheme
     val (colors, labels) = when (layer) {
-        MapLayer.RADAR -> Ramp.RadarLegend to listOf("Light", "Moderate", "Heavy")
+        MapLayer.RADAR -> Ramp.RadarLegend to listOf(
+            stringResource(R.string.map_legend_radar_light),
+            stringResource(R.string.map_legend_radar_moderate),
+            stringResource(R.string.map_legend_radar_heavy),
+        )
         MapLayer.TEMPERATURE -> Ramp.Temperature.legend() to listOf(fmt.temp(-40.0), fmt.temp(-10.0), fmt.temp(20.0), fmt.temp(50.0))
         MapLayer.WIND -> Ramp.Wind.legend() to listOf(fmt.windNum(0.0), fmt.windNum(60.0), "${fmt.windNum(120.0)} ${fmt.windUnit}")
-        MapLayer.CLOUDS -> Ramp.forLayer(layer, dark)!!.legend() to listOf("Clear", "Partly", "Overcast")
+        MapLayer.CLOUDS -> Ramp.forLayer(layer, dark)!!.legend() to listOf(
+            stringResource(R.string.map_legend_cloud_clear),
+            stringResource(R.string.map_legend_cloud_partly),
+            stringResource(R.string.map_legend_cloud_overcast),
+        )
         MapLayer.PRESSURE -> Ramp.Pressure.legend() to listOf(fmt.pressureNum(960.0), fmt.pressureNum(1005.0), "${fmt.pressureNum(1050.0)} ${fmt.pressureUnit}")
         // Non-linear scale: show the stops evenly (0.1 · 0.5 · 1.5 · 3 · 6 · 12 · 25 mm).
-        MapLayer.PRECIPITATION -> Ramp.Precipitation.stopColors() to listOf(fmt.precip(0.1), fmt.precip(3.0), "${fmt.precip(25.0)}/h")
+        MapLayer.PRECIPITATION -> Ramp.Precipitation.stopColors() to listOf(fmt.precip(0.1), fmt.precip(3.0), stringResource(R.string.map_legend_per_hour, fmt.precip(25.0)))
         MapLayer.STORMS -> listOf(Color(0xFF4A9EFF), Color(0xFF35C7B0), Color(0xFFFFD84D), Color(0xFFFFA63D), Color(0xFFFF6B3D), Color(0xFFE5304D), Color(0xFFC2185B)) to
             listOf("TD", "TS", "1", "2", "3", "4", "5")
         MapLayer.NONE -> return
@@ -990,7 +1023,7 @@ private fun BoxScope.BottomPanel(
                 Row(Modifier.padding(horizontal = 10.dp, vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(if (TileLoader.cartoBlocked.value) "© OpenStreetMap contributors" else "© OpenStreetMap © CARTO", style = MaterialTheme.typography.labelSmall)
                     Spacer(Modifier.width(4.dp))
-                    Icon(Icons.Rounded.Info, "Map data sources", Modifier.size(14.dp))
+                    Icon(Icons.Rounded.Info, stringResource(R.string.map_cd_sources),Modifier.size(14.dp))
                 }
             }
             Spacer(Modifier.weight(1f))
@@ -999,7 +1032,7 @@ private fun BoxScope.BottomPanel(
                 shape = MaterialShapes.Cookie9Sided.toShape(),
                 containerColor = cs.primaryContainer,
                 contentColor = cs.onPrimaryContainer,
-            ) { Icon(Icons.Rounded.MyLocation, "Centre on my place") }
+            ) { Icon(Icons.Rounded.MyLocation, stringResource(R.string.map_cd_recenter)) }
         }
 
         val frames = radar?.frames.orEmpty()
@@ -1014,7 +1047,7 @@ private fun BoxScope.BottomPanel(
                     shapes = IconButtonDefaults.shapes(),
                     modifier = Modifier.size(48.dp),
                 ) {
-                    Icon(if (playing) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, if (playing) "Pause" else "Play")
+                    Icon(if (playing) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, stringResource(if (playing) R.string.map_cd_pause else R.string.map_cd_play))
                 }
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
@@ -1025,7 +1058,7 @@ private fun BoxScope.BottomPanel(
                         Spacer(Modifier.weight(1f))
                         frames.getOrNull(idx)?.let {
                             Text(
-                                (if (it.forecast) "Forecast · " else "") + fmt.time(it.time),
+                                if (it.forecast) stringResource(R.string.map_radar_forecast_time, fmt.time(it.time)) else fmt.time(it.time),
                                 style = MaterialTheme.typography.labelMedium, color = cs.onSurfaceVariant,
                             )
                         }
@@ -1060,7 +1093,7 @@ private fun BoxScope.BottomPanel(
                     enabled = hour != 0,
                     shapes = IconButtonDefaults.shapes(),
                     modifier = Modifier.size(48.dp),
-                ) { Icon(Icons.Rounded.Restore, "Back to now") }
+                ) { Icon(Icons.Rounded.Restore, stringResource(R.string.map_cd_back_to_now)) }
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
                     val (a, b) = hourLabel(fmt, g, hour)
@@ -1076,9 +1109,9 @@ private fun BoxScope.BottomPanel(
                         valueRange = 0f..maxH.toFloat(),
                     )
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("Now", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-                        Text("+${maxH / 2}h", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
-                        Text("+${maxH}h", style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+                        Text(stringResource(R.string.map_now), style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+                        Text(stringResource(R.string.map_rel_hours, "+", maxH / 2), style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
+                        Text(stringResource(R.string.map_rel_hours, "+", maxH), style = MaterialTheme.typography.labelSmall, color = cs.onSurfaceVariant)
                     }
                 }
             }
@@ -1144,12 +1177,13 @@ private fun TimelineCard(content: @Composable androidx.compose.foundation.layout
 
 private class Source(val name: String, val what: String, val license: String, val url: String, val icon: ImageVector, val shape: RoundedPolygon)
 
-private val SOURCES = listOf(
-    Source("OpenStreetMap contributors", "Map data and standard map tiles", "Open Database License (ODbL)", "https://www.openstreetmap.org/copyright", Icons.Rounded.Map, MaterialShapes.Cookie4Sided),
-    Source("CARTO", "Positron & Dark Matter basemaps", "© CARTO", "https://carto.com/attributions", Icons.Rounded.Map, MaterialShapes.Cookie6Sided),
-    Source("RainViewer", "Radar imagery", "Free RainViewer API", "https://www.rainviewer.com/api.html", Icons.Rounded.Radar, MaterialShapes.Cookie9Sided),
-    Source("Open-Meteo", "Temperature, wind, cloud, pressure & precipitation", "CC BY 4.0", "https://open-meteo.com/", Icons.Rounded.Thermostat, MaterialShapes.Sunny),
-    Source("NOAA National Hurricane Center", "Tropical storms", "U.S. public domain", "https://www.nhc.noaa.gov/", Icons.Rounded.Cyclone, MaterialShapes.SoftBurst),
+// Service names and licence names stay untranslated; descriptions are resolved per call so they follow the locale.
+private fun sources() = listOf(
+    Source("OpenStreetMap contributors", L.s(R.string.map_source_osm_what), "Open Database License (ODbL)", "https://www.openstreetmap.org/copyright", Icons.Rounded.Map, MaterialShapes.Cookie4Sided),
+    Source("CARTO", L.s(R.string.map_source_carto_what), "© CARTO", "https://carto.com/attributions", Icons.Rounded.Map, MaterialShapes.Cookie6Sided),
+    Source("RainViewer", L.s(R.string.map_source_rainviewer_what), L.s(R.string.map_source_rainviewer_license), "https://www.rainviewer.com/api.html", Icons.Rounded.Radar, MaterialShapes.Cookie9Sided),
+    Source("Open-Meteo", L.s(R.string.map_source_openmeteo_what), "CC BY 4.0", "https://open-meteo.com/", Icons.Rounded.Thermostat, MaterialShapes.Sunny),
+    Source("NOAA National Hurricane Center", L.s(R.string.map_source_nhc_what), L.s(R.string.map_source_nhc_license), "https://www.nhc.noaa.gov/", Icons.Rounded.Cyclone, MaterialShapes.SoftBurst),
 )
 
 @Composable
@@ -1164,16 +1198,15 @@ private fun SourcesSheet(onDismiss: () -> Unit) {
                 .padding(horizontal = 20.dp)
                 .padding(bottom = 16.dp),
         ) {
-            Text("Map data", style = MaterialTheme.typography.headlineSmallEmphasized)
+            Text(stringResource(R.string.map_sources_title), style = MaterialTheme.typography.headlineSmallEmphasized)
             Spacer(Modifier.height(4.dp))
             Text(
-                "Tiles and weather data are fetched directly from these services. No account, no API key, " +
-                    "and nothing about you is sent beyond the map area you're looking at.",
+                stringResource(R.string.map_sources_body),
                 style = MaterialTheme.typography.bodyMedium,
                 color = cs.onSurfaceVariant,
             )
             Spacer(Modifier.height(12.dp))
-            SOURCES.forEach { src ->
+            sources().forEach { src ->
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -1186,7 +1219,7 @@ private fun SourcesSheet(onDismiss: () -> Unit) {
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
                         Text(src.name, style = MaterialTheme.typography.titleSmall)
-                        Text("${src.what} · ${src.license}", style = MaterialTheme.typography.bodySmall, color = cs.onSurfaceVariant)
+                        Text(stringResource(R.string.map_source_line, src.what, src.license),style = MaterialTheme.typography.bodySmall, color = cs.onSurfaceVariant)
                     }
                     Icon(Icons.AutoMirrored.Rounded.OpenInNew, null, Modifier.size(18.dp), tint = cs.onSurfaceVariant)
                 }
@@ -1223,16 +1256,22 @@ private fun StormSheet(storm: Storm, fmt: Fmt, onDismiss: () -> Unit) {
             }
             Spacer(Modifier.height(16.dp))
             val rows = buildList {
-                add("Sustained wind" to if (storm.intensityKt.isNaN()) "–" else "${fmt.wind(storm.windKmh)} · ${storm.intensityKt.roundToInt()} kt")
-                add("Pressure" to "${fmt.pressureNum(storm.pressureMb)} ${fmt.pressureUnit}")
+                add(L.s(R.string.map_storm_wind) to if (storm.intensityKt.isNaN()) "–" else "${fmt.wind(storm.windKmh)} · ${storm.intensityKt.roundToInt()} kt")
+                add(L.s(R.string.map_storm_pressure) to "${fmt.pressureNum(storm.pressureMb)} ${fmt.pressureUnit}")
                 add(
-                    "Moving" to if (storm.movementDir.isNaN() || storm.movementMph.isNaN()) "Stationary or unknown"
-                    else "${WeatherInfo.compass(storm.movementDir)} at ${fmt.wind(storm.movementKmh)}",
+                    L.s(R.string.map_storm_moving) to if (storm.movementDir.isNaN() || storm.movementMph.isNaN()) L.s(R.string.map_storm_stationary)
+                    else L.s(R.string.map_storm_moving_value, WeatherInfo.compass(storm.movementDir), fmt.wind(storm.movementKmh)),
                 )
-                add("Position" to String.format(java.util.Locale.US, "%.1f°%s, %.1f°%s", abs(storm.lat), if (storm.lat >= 0) "N" else "S", abs(storm.lon), if (storm.lon >= 0) "E" else "W"))
+                add(
+                    L.s(R.string.map_storm_position) to String.format(
+                        java.util.Locale.US, "%.1f°%s, %.1f°%s",
+                        abs(storm.lat), L.s(if (storm.lat >= 0) R.string.map_hemi_north else R.string.map_hemi_south),
+                        abs(storm.lon), L.s(if (storm.lon >= 0) R.string.map_hemi_east else R.string.map_hemi_west),
+                    ),
+                )
                 storm.lastUpdate?.let { iso ->
                     val t = runCatching { java.time.Instant.parse(iso).epochSecond }.getOrNull()
-                    if (t != null) add("Updated" to fmt.time(t))
+                    if (t != null) add(L.s(R.string.map_storm_updated) to fmt.time(t))
                 }
             }
             Surface(shape = RoundedCornerShape(24.dp), color = cs.surfaceContainerHigh) {
@@ -1250,7 +1289,7 @@ private fun StormSheet(storm: Storm, fmt: Fmt, onDismiss: () -> Unit) {
                 FilledTonalButton(onClick = { runCatching { uri.openUri(url) } }, modifier = Modifier.fillMaxWidth()) {
                     Icon(Icons.AutoMirrored.Rounded.OpenInNew, null, Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text("Read the NHC advisory")
+                    Text(stringResource(R.string.map_storm_advisory))
                 }
             }
         }

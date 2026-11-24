@@ -26,4 +26,12 @@
     <string name="shortcut_alerts_long">Alerts &amp; warnings</string>
     <string name="shortcut_friends">Friends</string>
     <string name="shortcut_friends_long">Family &amp; friends</string>
+
+    <string name="radar_title">Rain radar</string>
+    <string name="radar_open_map">Map</string>
+    <string name="radar_forecast">Forecast</string>
+    <string name="radar_unavailable">Radar unavailable right now</string>
+    <string name="radar_credit">Radar © RainViewer · Map © OpenStreetMap contributors, © CARTO</string>
+    <string name="graph_wind_legend">Wind (%1$s)</string>
+    <string name="graph_gust_legend">Gusts</string>
 </resources>

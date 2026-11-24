@@ -1,5 +1,6 @@
 package dev.vis.weather.widget
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Air
 import androidx.compose.material.icons.rounded.Compress
@@ -34,24 +35,28 @@ import androidx.glance.layout.size
 import androidx.glance.layout.width
 import androidx.glance.text.FontWeight
 import androidx.glance.text.TextAlign
+import dev.vis.weather.L
+import dev.vis.weather.R
 import dev.vis.weather.data.WeatherInfo
 import dev.vis.weather.ui.components.Metric
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
 /** What a "Data tile" widget shows; chosen per widget in [DataTileConfigActivity]. */
-enum class TileMetric(val label: String, val icon: ImageVector, val metric: Metric) {
-    WIND("Wind", Icons.Rounded.Air, Metric.WIND),
-    UV("UV index", Icons.Rounded.WbSunny, Metric.UV),
-    AIR("Air quality", Icons.Rounded.Masks, Metric.AIR),
-    FEELS("Feels like", Icons.Rounded.Thermostat, Metric.FEELS),
-    HUMIDITY("Humidity", Icons.Rounded.WaterDrop, Metric.HUMIDITY),
-    PRESSURE("Pressure", Icons.Rounded.Compress, Metric.PRESSURE),
-    RAIN("Rain chance", Icons.Rounded.Umbrella, Metric.PRECIP),
-    SUN("Sunrise & sunset", Icons.Rounded.WbTwilight, Metric.SUN),
-    MOON("Moon", Icons.Rounded.DarkMode, Metric.MOON),
-    VISIBILITY("Visibility", Icons.Rounded.Visibility, Metric.VISIBILITY),
+enum class TileMetric(@StringRes private val res: Int, val icon: ImageVector, val metric: Metric) {
+    WIND(R.string.w_metric_wind, Icons.Rounded.Air, Metric.WIND),
+    UV(R.string.w_metric_uv, Icons.Rounded.WbSunny, Metric.UV),
+    AIR(R.string.w_metric_air, Icons.Rounded.Masks, Metric.AIR),
+    FEELS(R.string.w_metric_feels, Icons.Rounded.Thermostat, Metric.FEELS),
+    HUMIDITY(R.string.w_metric_humidity, Icons.Rounded.WaterDrop, Metric.HUMIDITY),
+    PRESSURE(R.string.w_metric_pressure, Icons.Rounded.Compress, Metric.PRESSURE),
+    RAIN(R.string.w_metric_rain, Icons.Rounded.Umbrella, Metric.PRECIP),
+    SUN(R.string.w_metric_sun, Icons.Rounded.WbTwilight, Metric.SUN),
+    MOON(R.string.w_metric_moon, Icons.Rounded.DarkMode, Metric.MOON),
+    VISIBILITY(R.string.w_metric_visibility, Icons.Rounded.Visibility, Metric.VISIBILITY),
     ;
+
+    val label: String get() = L.s(res)
 
     companion object {
         fun of(name: String?) = entries.firstOrNull { it.name == name } ?: WIND
@@ -78,44 +83,44 @@ fun TileMetric.read(d: WData): Reading {
     val f = d.fmt
     return when (this) {
         TileMetric.WIND -> Reading(
-            "Wind from ${WeatherInfo.compass(c.windDir)}", f.windNum(c.windSpeed), f.windUnit,
-            WeatherInfo.beaufort(c.windSpeed), note = if (c.windGust.isNaN()) null else "Gusts ${f.wind(c.windGust)}", windDir = c.windDir,
+            L.s(R.string.w_tile_wind_from, WeatherInfo.compass(c.windDir)), f.windNum(c.windSpeed), f.windUnit,
+            WeatherInfo.beaufort(c.windSpeed), note = if (c.windGust.isNaN()) null else L.s(R.string.w_tile_gusts, f.wind(c.windGust)), windDir = c.windDir,
         )
         TileMetric.UV -> Reading(
             label, if (c.uv.isNaN()) "–" else c.uv.roundToInt().toString(), pill = WeatherInfo.uvLevel(c.uv), dot = uvColor(c.uv),
-            note = d.day?.uvMax?.takeIf { !it.isNaN() }?.let { "Today's max ${it.roundToInt()}" },
+            note = d.day?.uvMax?.takeIf { !it.isNaN() }?.let { L.s(R.string.w_tile_uv_max, it.roundToInt()) },
         )
         TileMetric.AIR -> {
             val aqi = d.f.air?.usAqi ?: Double.NaN
-            if (aqi.isNaN()) Reading(label, "–", note = "Unavailable here")
+            if (aqi.isNaN()) Reading(label, "–", note = L.s(R.string.w_unavailable_here))
             else Reading(label, aqi.roundToInt().toString(), pill = aqiShort(aqi), dot = aqiColor(aqi), note = "PM2.5 ${d.f.air!!.pm25.roundToInt()} µg/m³")
         }
         TileMetric.FEELS -> {
             val diff = f.tempValue(d.feels) - f.tempValue(d.temp)
             Reading(
                 label, f.temp(d.feels),
-                pill = when { diff <= -2 -> "Colder than actual"; diff >= 2 -> "Warmer than actual"; else -> "Close to actual" },
-                note = "Actual ${f.temp(d.temp)}",
+                pill = when { diff <= -2 -> L.s(R.string.w_tile_feels_colder); diff >= 2 -> L.s(R.string.w_tile_feels_warmer); else -> L.s(R.string.w_tile_feels_close) },
+                note = L.s(R.string.w_note_actual, f.temp(d.temp)),
             )
         }
         TileMetric.HUMIDITY -> Reading(
             label, f.pct(c.humidity),
             pill = when {
                 c.dewPoint.isNaN() -> null
-                c.dewPoint < 10 -> "Dry"
-                c.dewPoint < 16 -> "Comfortable"
-                c.dewPoint < 21 -> "Humid"
-                else -> "Muggy"
+                c.dewPoint < 10 -> L.s(R.string.w_tile_humidity_dry)
+                c.dewPoint < 16 -> L.s(R.string.w_tile_humidity_comfortable)
+                c.dewPoint < 21 -> L.s(R.string.w_tile_humidity_humid)
+                else -> L.s(R.string.w_tile_humidity_muggy)
             },
-            note = "Dew point ${f.temp(c.dewPoint)}",
+            note = L.s(R.string.w_note_dew_point, f.temp(c.dewPoint)),
         )
         TileMetric.PRESSURE -> {
             val past = d.f.hourlyAll.minByOrNull { abs(it.time - (d.nowSec - 3 * 3600)) }?.pressure ?: Double.NaN
             val delta = c.pressure - past
             Reading(
                 label, f.pressureNum(c.pressure), f.pressureUnit,
-                pill = when { delta.isNaN() -> null; delta >= 1 -> "Rising"; delta <= -1 -> "Falling"; else -> "Steady" },
-                note = "Over the last 3 h",
+                pill = when { delta.isNaN() -> null; delta >= 1 -> L.s(R.string.w_tile_pressure_rising); delta <= -1 -> L.s(R.string.w_tile_pressure_falling); else -> L.s(R.string.w_tile_pressure_steady) },
+                note = L.s(R.string.w_tile_pressure_note),
             )
         }
         TileMetric.RAIN -> {
@@ -125,31 +130,31 @@ fun TileMetric.read(d: WData): Reading {
             val p = peak?.precipProb ?: Double.NaN
             Reading(
                 label, f.pct(p),
-                pill = when { p.isNaN() -> null; p >= 50 -> "Likely at ${f.hour(peak!!.time)}"; p >= 20 -> "Possible"; else -> "Unlikely" },
-                note = "Next 12 h · ${f.precip(total)}",
+                pill = when { p.isNaN() -> null; p >= 50 -> L.s(R.string.w_tile_rain_likely_at, f.hour(peak!!.time)); p >= 20 -> L.s(R.string.w_tile_rain_possible); else -> L.s(R.string.w_tile_rain_unlikely) },
+                note = L.s(R.string.w_tile_rain_note, f.precip(total)),
             )
         }
         TileMetric.SUN -> {
             val today = d.day
-            if (today == null) Reading("Sunrise", "–")
+            if (today == null) Reading(L.s(R.string.w_sunrise), "–")
             else {
                 val now = d.nowSec
                 val (title, at, other) = when {
-                    now < today.sunrise -> Triple("Sunrise", today.sunrise, "Sunset ${f.time(today.sunset)}")
-                    now < today.sunset -> Triple("Sunset", today.sunset, "Sunrise ${f.time(today.sunrise)}")
+                    now < today.sunrise -> Triple(L.s(R.string.w_sunrise), today.sunrise, L.s(R.string.w_note_sunset_at, f.time(today.sunset)))
+                    now < today.sunset -> Triple(L.s(R.string.w_sunset), today.sunset, L.s(R.string.w_note_sunrise_at, f.time(today.sunrise)))
                     else -> {
                         val next = d.days.getOrNull(1)
-                        Triple("Sunrise", next?.sunrise ?: today.sunrise, "Sunset ${f.time(next?.sunset ?: today.sunset)}")
+                        Triple(L.s(R.string.w_sunrise), next?.sunrise ?: today.sunrise, L.s(R.string.w_note_sunset_at, f.time(next?.sunset ?: today.sunset)))
                     }
                 }
                 val t = f.time(at)
-                Reading(title, t.substringBefore(' '), t.substringAfter(' ', ""), "${f.duration(today.daylight)} daylight", note = other)
+                Reading(title, t.substringBefore(' '), t.substringAfter(' ', ""), L.s(R.string.w_tile_daylight, f.duration(today.daylight)), note = other)
             }
         }
         TileMetric.MOON -> {
             val m = WeatherInfo.moon()
             val full = m.daysToFull.roundToInt()
-            Reading(m.name, "${(m.illumination * 100).roundToInt()}%", pill = if (full == 0 || full >= 29) "Full tonight" else "Full in $full d", note = "Illuminated")
+            Reading(m.name, "${(m.illumination * 100).roundToInt()}%", pill = if (full == 0 || full >= 29) L.s(R.string.w_tile_moon_full_tonight) else L.p(R.plurals.w_tile_moon_full_in, full), note = L.s(R.string.w_tile_moon_illuminated))
         }
         TileMetric.VISIBILITY -> Reading(label, f.distanceNum(c.visibility), f.distanceUnit, WeatherInfo.visibilityLevel(c.visibility))
     }
@@ -210,7 +215,7 @@ class DataTileWidget : WeatherWidget() {
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (!r.windDir.isNaN()) {
                 Image(
-                    ImageProvider(WidgetArt.windArrow(r.windDir, dp2px(size * 0.42f))), "Wind direction",
+                    ImageProvider(WidgetArt.windArrow(r.windDir, dp2px(size * 0.42f))), wStr(R.string.w_wind_direction),
                     GlanceModifier.size(size * 0.42f), colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
                 )
                 Spacer(GlanceModifier.width(6.dp))

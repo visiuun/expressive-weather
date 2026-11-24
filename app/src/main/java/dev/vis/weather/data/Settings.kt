@@ -60,8 +60,8 @@ enum class HomeCard(@StringRes private val titleRes: Int, val removable: Boolean
     HIGHLIGHTS(R.string.d_card_highlights),
     NOWCAST(R.string.d_card_nowcast),
     HOURLY(R.string.d_card_hourly),
-    RADAR(R.string.d_card_radar),
     DAILY(R.string.d_card_daily),
+    RADAR(R.string.d_card_radar),
     WARDROBE(R.string.d_card_wardrobe),
     DETAILS(R.string.d_card_details),
     FRIENDS(R.string.d_card_friends);

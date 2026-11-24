@@ -21,8 +21,8 @@ android {
         applicationId = "dev.vis.weather"
         minSdk = 24
         targetSdk = 36
-        versionCode = 9
-        versionName = "1.6.0"
+        versionCode = 10
+        versionName = "1.6.1"
     }
 
     signingConfigs {

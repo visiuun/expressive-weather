@@ -63,8 +63,8 @@ enum class HomeCard(@StringRes private val titleRes: Int, val removable: Boolean
     HOURLY(R.string.d_card_hourly),
     DAILY(R.string.d_card_daily),
     WARDROBE(R.string.d_card_wardrobe),
-    FRIENDS(R.string.d_card_friends),
-    DETAILS(R.string.d_card_details);
+    DETAILS(R.string.d_card_details),
+    FRIENDS(R.string.d_card_friends);
 
     val title: String get() = L.s(titleRes)
 }
@@ -112,11 +112,11 @@ data class Settings(
     val pauseOnBatterySaver: Boolean = true,
     val haptics: Boolean = true,
     // Layout
-    val hourlyStyle: HourlyStyle = HourlyStyle.STANDARD,
+    val hourlyStyle: HourlyStyle = HourlyStyle.COMPACT,
     /** Show the wet-bulb temperature next to "feels like" on the main screen. */
     val showWetBulb: Boolean = false,
     /** Days in the daily list on the main screen: 3, 5, 7 or 16. */
-    val dailyDays: Int = 16,
+    val dailyDays: Int = 7,
     val cardOrder: List<HomeCard> = HomeCard.entries,
     val hiddenCards: Set<HomeCard> = emptySet(),
     val tileOrder: List<DetailTile> = DetailTile.entries,

@@ -61,6 +61,9 @@
     <!-- Settings > Widgets: list of home screen widgets with a short description each -->
     <string name="s_widgets_tap_to_add">Tap to add to your home screen</string>
     <string name="s_widgets_add_from_picker">Add from your home screen widget picker</string>
+    <string name="s_widgets_location">Location</string>
+    <string name="s_widgets_follow_location">Follow your location</string>
+    <string name="s_widgets_follow_location_desc">Widgets set to your location update while the app is closed. Needs location access “Allow all the time”.</string>
     <string name="s_widgets_hint">Touch and hold a widget, then drag its handles to resize it. Tap the place name on a widget to switch it to your next saved place.</string>
     <!-- Widget name: current conditions -->
     <string name="s_widget_now">Now</string>

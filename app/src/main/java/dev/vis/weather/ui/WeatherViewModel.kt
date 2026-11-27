@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.math.abs
 
 data class UiState(
     val places: List<Place> = emptyList(),
@@ -253,20 +252,15 @@ class WeatherViewModel(app: Application) : AndroidViewModel(app) {
             return null
         }
         _state.update { it.copy(needsPermission = false) }
-        val loc = LocationProvider.getLocation(app)
-        val previous = _state.value.currentPlace
-        if (loc == null) {
+        // The widget worker may have moved it while the app was closed.
+        val previous = prefs.currentPlace ?: _state.value.currentPlace
+        val place = LocationProvider.currentPlace(app, previous)
+        if (place == null) {
             if (previous != null) return previous
             val msg = if (!LocationProvider.isLocationEnabled(app)) L.s(R.string.m_err_location_off)
             else L.s(R.string.m_err_location_failed)
             _state.update { it.copy(loading = false, error = msg) }
             return null
-        }
-        // Avoid re-geocoding when we haven't moved much (~1 km).
-        val place = if (previous != null && abs(previous.lat - loc.latitude) < 0.01 && abs(previous.lon - loc.longitude) < 0.01) {
-            previous
-        } else {
-            WeatherApi.reverse(app, loc.latitude, loc.longitude)
         }
         prefs.currentPlace = place
         _state.update { it.copy(currentPlace = place) }

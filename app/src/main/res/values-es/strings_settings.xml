@@ -61,6 +61,9 @@
     <!-- Settings > Widgets: list of home screen widgets with a short description each -->
     <string name="s_widgets_tap_to_add">Toca para añadir a tu pantalla de inicio</string>
     <string name="s_widgets_add_from_picker">Añádelo desde el selector de widgets de tu pantalla de inicio</string>
+    <string name="s_widgets_location">Ubicación</string>
+    <string name="s_widgets_follow_location">Seguir tu ubicación</string>
+    <string name="s_widgets_follow_location_desc">Los widgets con tu ubicación se actualizan aunque la app esté cerrada. Requiere acceso a la ubicación «Permitir todo el tiempo».</string>
     <string name="s_widgets_hint">Mantén presionado un widget y arrastra sus controles para cambiar su tamaño. Toca el nombre del lugar en un widget para pasar al siguiente lugar guardado.</string>
     <!-- Widget name: current conditions -->
     <string name="s_widget_now">Ahora</string>

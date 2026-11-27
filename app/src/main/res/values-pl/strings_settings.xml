@@ -61,6 +61,9 @@
     <!-- Settings > Widgets: list of home screen widgets with a short description each -->
     <string name="s_widgets_tap_to_add">Kliknij, by dodać do ekranu głównego</string>
     <string name="s_widgets_add_from_picker">Dodaj z listy widżetów na ekranie głównym</string>
+    <string name="s_widgets_location">Lokalizacja</string>
+    <string name="s_widgets_follow_location">Śledź swoją lokalizację</string>
+    <string name="s_widgets_follow_location_desc">Widżety ustawione na Twoją lokalizację aktualizują się nawet przy zamkniętej aplikacji. Wymaga dostępu do lokalizacji „Zezwalaj zawsze”.</string>
     <string name="s_widgets_hint">Przytrzymaj widżet i przeciągnij uchwyty, by zmienić jego rozmiar. Kliknij nazwę miejsca na widżecie, by przełączyć go na kolejne zapisane miejsce.</string>
     <!-- Widget name: current conditions -->
     <string name="s_widget_now">Teraz</string>

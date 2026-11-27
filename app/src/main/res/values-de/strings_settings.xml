@@ -61,6 +61,9 @@
     <!-- Settings > Widgets: list of home screen widgets with a short description each -->
     <string name="s_widgets_tap_to_add">Tippen, um es zum Startbildschirm hinzuzufügen</string>
     <string name="s_widgets_add_from_picker">Über die Widget-Auswahl deines Startbildschirms hinzufügen</string>
+    <string name="s_widgets_location">Standort</string>
+    <string name="s_widgets_follow_location">Deinem Standort folgen</string>
+    <string name="s_widgets_follow_location_desc">Widgets mit deinem Standort aktualisieren sich auch bei geschlossener App. Benötigt Standortzugriff „Immer zulassen“.</string>
     <string name="s_widgets_hint">Halte ein Widget gedrückt und ziehe an den Griffen, um die Größe zu ändern. Tippe auf den Ortsnamen in einem Widget, um zum nächsten gespeicherten Ort zu wechseln.</string>
     <!-- Widget name: current conditions -->
     <string name="s_widget_now">Jetzt</string>

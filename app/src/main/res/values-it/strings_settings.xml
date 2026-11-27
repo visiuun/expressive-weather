@@ -61,6 +61,9 @@
     <!-- Settings > Widgets: list of home screen widgets with a short description each -->
     <string name="s_widgets_tap_to_add">Tocca per aggiungere alla schermata Home</string>
     <string name="s_widgets_add_from_picker">Aggiungi dal selettore widget della schermata Home</string>
+    <string name="s_widgets_location">Posizione</string>
+    <string name="s_widgets_follow_location">Segui la tua posizione</string>
+    <string name="s_widgets_follow_location_desc">I widget impostati sulla tua posizione si aggiornano anche ad app chiusa. Richiede l\'accesso alla posizione “Consenti sempre”.</string>
     <string name="s_widgets_hint">Tieni premuto un widget, poi trascina le maniglie per ridimensionarlo. Tocca il nome del luogo su un widget per passare al luogo salvato successivo.</string>
     <!-- Widget name: current conditions -->
     <string name="s_widget_now">Ora</string>

@@ -26,6 +26,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dev.vis.weather.MainActivity
 import dev.vis.weather.data.Forecast
+import dev.vis.weather.data.LocationProvider
 import dev.vis.weather.data.Place
 import dev.vis.weather.data.Prefs
 import dev.vis.weather.data.Settings
@@ -122,10 +123,15 @@ object WidgetUpdater {
     suspend fun refreshAll(context: Context) {
         val all = ids(context)
         if (all.isEmpty()) return
-        val places = all.mapNotNull { (_, id) ->
-            val st = runCatching { getAppWidgetState(context, PreferencesGlanceStateDefinition, id) }.getOrNull()
-            WidgetRepo.resolve(context, st?.get(WidgetKeys.PLACE))?.second
-        }.distinctBy { it.key }
+        val pinned = all.map { (_, id) ->
+            runCatching { getAppWidgetState(context, PreferencesGlanceStateDefinition, id) }.getOrNull()?.get(WidgetKeys.PLACE)
+        }
+        // With "Allow all the time", widgets showing your location follow you while the app is closed.
+        if (pinned.any { WidgetRepo.resolve(context, it)?.first == UiState.CURRENT } && LocationProvider.hasBackground(context)) {
+            val prefs = Prefs(context)
+            runCatching { LocationProvider.currentPlace(context, prefs.currentPlace) }.getOrNull()?.let { prefs.currentPlace = it }
+        }
+        val places = pinned.mapNotNull { WidgetRepo.resolve(context, it)?.second }.distinctBy { it.key }
         coroutineScope { places.map { async { WidgetRepo.fetch(context, it) } }.awaitAll() }
         updateAll(context, busy = false)
     }

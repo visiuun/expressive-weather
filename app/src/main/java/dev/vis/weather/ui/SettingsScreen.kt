@@ -2,6 +2,19 @@
 
 package dev.vis.weather.ui
 
+import dev.vis.weather.widget.WidgetRefreshWorker
+import dev.vis.weather.data.LocationProvider
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.rounded.NearMe
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.compose.rememberLauncherForActivityResult
+import android.os.SystemClock
+import android.content.Context
+import android.Manifest
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
@@ -200,7 +213,22 @@ fun SettingsScreen(
 fun WidgetsScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val pinnable = Build.VERSION.SDK_INT >= 26 && AppWidgetManager.getInstance(context).isRequestPinAppWidgetSupported
+    val requestBackgroundLocation = rememberBackgroundLocationRequest()
+    var background by remember { mutableStateOf(LocationProvider.hasBackground(context)) }
+    // The grant usually happens on the system settings page, so re-check whenever we come back.
+    LifecycleResumeEffect(Unit) {
+        background = LocationProvider.hasBackground(context)
+        onPauseOrDispose { }
+    }
     dev.vis.weather.ui.components.SubScreen(stringResource(R.string.s_widgets), onBack) { w ->
+        item {
+            Group(stringResource(R.string.s_widgets_location), w) {
+                SwitchItem(
+                    stringResource(R.string.s_widgets_follow_location), stringResource(R.string.s_widgets_follow_location_desc),
+                    Icons.Rounded.NearMe, MaterialShapes.Circle, 0, 1, background,
+                ) { on -> if (on) requestBackgroundLocation() else openAppDetails(context) }
+            }
+        }
         item {
             Group(stringResource(if (pinnable) R.string.s_widgets_tap_to_add else R.string.s_widgets_add_from_picker), w) {
                 pinnableWidgets.forEachIndexed { i, (titleRes, receiver) ->
@@ -217,6 +245,43 @@ fun WidgetsScreen(onBack: () -> Unit) {
             )
         }
     }
+}
+
+/**
+ * Asks for "Allow all the time" location, getting the foreground grant first if needed.
+ * From Android 11 the system answers with its settings page instead of a dialog.
+ */
+@Composable
+private fun rememberBackgroundLocationRequest(): () -> Unit {
+    val context = LocalContext.current
+    var askedAt by remember { mutableStateOf(0L) }
+    val onGranted = { WidgetRefreshWorker.runNow(context) }
+    val background = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        when {
+            granted -> onGranted()
+            // Answered instantly = no UI was shown (denied before), so send them to the app's settings.
+            SystemClock.elapsedRealtime() - askedAt < 500 -> openAppDetails(context)
+        }
+    }
+    fun askBackground() {
+        if (Build.VERSION.SDK_INT < 29) { onGranted(); return }
+        askedAt = SystemClock.elapsedRealtime()
+        background.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+    }
+    val foreground = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+        if (result.values.any { it }) askBackground() else openAppDetails(context)
+    }
+    return {
+        if (LocationProvider.hasPermission(context)) askBackground()
+        else foreground.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION))
+    }
+}
+
+private fun openAppDetails(context: Context) {
+    context.startActivity(
+        Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null))
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+    )
 }
 
 private val widgetDescriptions: Map<Int, Int> = mapOf(

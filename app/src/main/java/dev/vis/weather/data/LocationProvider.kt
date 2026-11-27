@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.coroutines.resume
+import kotlin.math.abs
 
 /**
  * Location via the platform [LocationManager] only. No Google Play Services required,
@@ -24,6 +25,23 @@ object LocationProvider {
     fun hasPermission(context: Context): Boolean =
         ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
             ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+    /**
+     * Location while the app is closed (widgets). Implied by the foreground grant before
+     * Android 10; from then on it is a separate "Allow all the time" grant.
+     */
+    fun hasBackground(context: Context): Boolean = hasPermission(context) && (Build.VERSION.SDK_INT < 29 ||
+        ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
+
+    /**
+     * The [Place] for the device's position, or null without a fix. Reuses [previous] (no
+     * reverse geocoding) when we haven't moved more than ~1 km.
+     */
+    suspend fun currentPlace(context: Context, previous: Place?): Place? {
+        val loc = getLocation(context) ?: return null
+        if (previous != null && abs(previous.lat - loc.latitude) < 0.01 && abs(previous.lon - loc.longitude) < 0.01) return previous
+        return WeatherApi.reverse(context, loc.latitude, loc.longitude)
+    }
 
     private fun hasFine(context: Context): Boolean =
         ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED

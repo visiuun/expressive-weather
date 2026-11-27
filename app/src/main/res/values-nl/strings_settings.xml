@@ -61,6 +61,9 @@
     <!-- Settings > Widgets: list of home screen widgets with a short description each -->
     <string name="s_widgets_tap_to_add">Tik om toe te voegen aan je startscherm</string>
     <string name="s_widgets_add_from_picker">Voeg toe via de widgetkiezer van je startscherm</string>
+    <string name="s_widgets_location">Locatie</string>
+    <string name="s_widgets_follow_location">Je locatie volgen</string>
+    <string name="s_widgets_follow_location_desc">Widgets met je locatie werken bij, ook als de app gesloten is. Vereist locatietoegang ‘Altijd toestaan’.</string>
     <string name="s_widgets_hint">Houd een widget ingedrukt en sleep aan de randen om het formaat te wijzigen. Tik op de plaatsnaam in een widget om naar je volgende opgeslagen plaats te gaan.</string>
     <!-- Widget name: current conditions -->
     <string name="s_widget_now">Nu</string>
